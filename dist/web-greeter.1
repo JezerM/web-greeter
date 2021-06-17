@@ -1,16 +1,36 @@
-.TH "web-greeter" "1" "2016.01.10"
+.TH "web-greeter" "1" "2020.6.14" GNU
 .nh
 .ad l
 .SH "NAME"
 web-greeter
 .SH "SYNOPSIS"
 .PP
-LightDM greeter that uses webkit2 for theming via HTML/JavaScript\&.
+LightDM greeter that uses chromium for theming via HTML/JavaScript\&.
 .PP
 .SH "DESCRIPTION"
 .PP
-web-greeter is a LightDM greeter that uses webkit2 for theming\&.  Themes can be written
+web-greeter is a LightDM greeter that uses chromium for theming\&.  Themes can be written
 using a combination of HTML and Javascript\&.
+.PP
+.SH "OPTIONS"
+.TP
+\fB\-h, \-\-help\fR
+Shows the help
+.TP
+\fB\-v, \-\-version\fR
+Print program version
+.TP
+\fB\-\-debug\fR
+Forces the greeter to run in debug mode
+.TP
+\fB\-\-normal\fR
+Forces the greeter to run in normal mode
+.TP
+\fB\-\-list\fR
+Shows the available themes
+.TP
+\fB\-\-theme\ \fITHEME\fR
+Sets the theme to use
 .PP
 .SH "THEME JAVASCRIPT API"
 Please note that all properties and functions which are marked as "deprecated" are
@@ -91,7 +111,7 @@ Suspends the system, if the greeter has the authority to do so\&.
 Hibernates the system, if the greeter has the authority to do so\&.
 .RE
 .PP
-\fBlightdm\&.start_session_sync(session)\fR
+\fBlightdm\&.start_session(session)\fR
 .RS 4
 Once LightDM has successfully authenticated the user, start the user's session
 by calling this function\&.  "session" is the authenticated user's session\&.
@@ -248,35 +268,39 @@ objects\&.
 The following calls can be made to read configuration keys out of the
 web-greeter configuration file\&.
 .PP
-config\&.get_str(section, key)\fR
+\fBgreeter_config\&.get_str(section, key)\fR
 .RS 4
 Returns the string value associated with key under the "section" in the configuration file\&.
 .RE
 .PP
-config\&.get_num(section, key)\fR
+\fBgreeter_config\&.get_num(section, key)\fR
 .RS 4
 Returns the numeric value associated with key under the "section" in the configuration file\&.
 .RE
 .PP
-config\&.get_bool(section, key)\fR
+\fBgreeter_config\&.get_bool(section, key)\fR
 .RS 4
 Returns the boolean value associated with key under the "section" in the configuration file\&.
 .RE
 .PP
-The greeterutil object has some utility functions associated with it which
+The theme_utils object has some utility functions associated with it which
 are intended to make a theme author's work easier\&.
 .PP
-greeterutil\&.dirlist(path)\fR
+\fBtheme_utils\&.dirlist(path)\fR
 .RS 4
 Returns an array of strings of filenames present at "path", or Null if the
 path does not exist\&.
 .RE
 .PP
-greeterutil\&.txt2html(txt)\fR
+\fBtheme_utils\&.bind_this(context)\fR
 .RS 4
-Returns a simple HTML conversion of the passed text\&.  Newlines are replaced
-with <br>, and the characters \&&, <, >, and " are replaced with their HTML
-equivalents\&.
+Binds this to class, context, for all of the class's methods\&.
+.RE
+.PP
+\fBtheme_utils\&.get_current_localized_time()\fR
+.RS 4
+Get the current time in a localized format\&. Time format and language are
+auto-detected by default, but can be set manually in the greeter config file\&.
 .RE
 .PP
 Please see the LightDM API documentation for the complete list of calls
@@ -284,23 +308,30 @@ available\&.  The web-greeter implements all of the LightDM API\&.
 .PP
 .SH "CONFIGURATION"
 .PP
-\fB/etc/lightdm/web-greeter\&.conf\fR
+\fB/etc/lightdm/web-greeter\&.yml\fR
 .RS 4
-Keyfile that contains one key: webkit-theme\&.  This should point to which
+Keyfile that contains one key: theme\&.  This should point to which
 theme the greeter should use\&.
 .RE
 .SH "FILES"
 .PP
-\fB/usr/share/lightdm-webkit/themes\fR
+\fB/usr/share/web-greeter/themes\fR
 .RS 4
 Directory where themes should be stored\&.
 .RE
 .SH "EXAMPLES"
 .PP
-Please see the "antergos" and "simple" themes that are shipped with web-greeter\&.
+Please see the "default" and "simple" themes that are shipped with web-greeter\&.
+.TP
+\fBCommand Line\fR
+.RS 4
+web-greeter --theme simple --debug
+.TP
+web-greeter --normal
 .SH "SEE ALSO"
 .PP
-http://people\&.ubuntu\&.com/~robert-ancell/lightdm/reference/core\&.html
+http://people\&.ubuntu\&.com/~robert-ancell/lightdm/reference/
+https://lazka\&.github\&.io/pgi-docs/#LightDM-1
 .SH "AUTHOR"
 .PP
 The legacy lightdm-webkit-greeter was written by Robert Ancell <robert\&.ancell\&@canonical\&.com\&>\&.
