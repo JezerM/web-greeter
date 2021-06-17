@@ -240,7 +240,7 @@ class Greeter(BridgeObject):
 
     @bridge.method(result=bool)
     def hibernate(self):
-        return LightDMGreeter.hibernate()
+        return LightDM.hibernate()
 
     @bridge.method(str)
     def respond(self, response):
@@ -249,7 +249,7 @@ class Greeter(BridgeObject):
 
     @bridge.method(result=bool)
     def restart(self):
-        return LightDMGreeter.restart()
+        return LightDM.restart()
 
     @bridge.method(str)
     def set_language(self, lang):
@@ -259,7 +259,7 @@ class Greeter(BridgeObject):
 
     @bridge.method(result=bool)
     def shutdown(self):
-        return LightDMGreeter.shutdown()
+        return LightDM.shutdown()
 
     @bridge.method(str, result=bool)
     def start_session(self, session):
@@ -267,7 +267,7 @@ class Greeter(BridgeObject):
 
     @bridge.method(result=bool)
     def suspend(self):
-        return LightDMGreeter.suspend()
+        return LightDM.suspend()
 
 
 
