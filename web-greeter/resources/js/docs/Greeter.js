@@ -308,6 +308,52 @@ class Greeter {
 	 */
 	suspend() {}
 
+	/**
+	 * Gets the brightness
+	 * @type {Number}
+	 * @readonly
+	 */
+	get brightness() {}
+
+	/**
+	 * Set the brightness
+	 * @arg {Number} quantity The quantity to set
+	 */
+	brightnessSet( quantity ) {}
+
+	/**
+	 * Increase the brightness
+	 * @arg {Number} quantity The quantity to increase
+	 */
+	brightnessIncrease( quantity ) {}
+
+	/**
+	 * Decrease the brightness
+	 * @arg {Number} quantity The quantity to decrease
+	 */
+	brightnessDecrease( quantity ) {}
+
+	/**
+	 * Gets the battery data
+	 * @type {Object}
+	 * @readonly
+	 */
+	get batteryData() {}
+
+	/**
+	 * Whether or not the greeter can access to battery data
+	 * @type {boolean}
+	 * @readonly
+	 */
+	get can_access_battery() {}
+
+	/**
+	 * Whether or not the greeter can control display brightness
+	 * @type {boolean}
+	 * @readonly
+	 */
+	get can_access_brightness() {}
+
 }
 
 

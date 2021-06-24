@@ -39,6 +39,8 @@ WebGreeter:
             theme: default
             time_format: LT
             time_language: auto
+        features:
+            battery: False
         greeters_dir: '@greeters_dir@'
         locale_dir: '@locale_dir@'
         themes_dir: '@themes_dir@'

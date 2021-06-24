@@ -26,7 +26,20 @@ sudo make install
 ```
 
 ## Theme Javascript API
-[Antergos](https://github.com/Antergos) documentation is no longer available. Although, you can see the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
+[Antergos][Antergos] documentation is no longer available. Although, you can see the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
+
+## Enable features
+### Brightness control
+To control the brightness inside the greeter, I recommend to use [acpilight][acpilight] replacement for `xbacklight`.
+
+udev rules are needed to be applied before using it. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
+
+If you don't want to or don't have a compatible device, disable it inside `/etc/lightdm/web-greeter.yml`
+
+### Battery status
+`acpi` is the only tool you need (and a battery).
+
+You can disable it inside `/etc/lightdm/web-greeter.yml`
 
 ## Debugging
 You can run the greeter from within your desktop session if you add the following line to the desktop file for your session located in `/usr/share/xsessions/`: `X-LightDM-Allow-Greeter=true`.
@@ -41,4 +54,6 @@ web-greeter --debug
 
 > ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
 
+[antergos]: https://github.com/Antergos "Antergos"
 [whither]: https://github.com/JezerM/whither "Whither"
+[acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"

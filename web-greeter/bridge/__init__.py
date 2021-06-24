@@ -26,6 +26,8 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
+import re
+
 
 def language_to_dict(lang):
     return dict(code=lang.get_code(), name=lang.get_name(), territory=lang.get_territory())
@@ -62,6 +64,18 @@ def user_to_dict(user):
         name=user.get_name(),
         real_name=user.get_real_name(),
         # ---->>> END DEPRECATED! <<<----
+    )
+
+def battery_to_dict(batt):
+    if batt == "":
+        return dict()
+    formatted = re.sub("%|,|\n", "", batt)
+    colon = formatted.split(": ")
+    splitted = colon[1].split(" ")
+    return dict(
+        name = colon[0],
+        level = int(splitted[1]),
+        state = splitted[0]
     )
 
 

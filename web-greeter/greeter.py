@@ -35,6 +35,7 @@ from typing import (
     ClassVar,
     Type,
     List,
+    Tuple,
 )
 from logging import (
     getLogger,
@@ -44,81 +45,12 @@ from logging import (
 )
 
 # 3rd-Party Libs
-from whither.app import App
-from whither.base.config_loader import ConfigLoader
-from whither.bridge import BridgeObject
 
 # This Application
-import resources
-from bridge import (
-    Config,
-    Greeter,
-    ThemeUtils,
-)
+from utils import config
 
-# Typing Helpers
-BridgeObj = Type[BridgeObject]
-
-
-BASE_DIR = os.path.dirname(os.path.realpath(__file__))
-CONFIG_FILE = os.path.join(BASE_DIR, 'whither.yml')
-
-custom_config = {}
-
-class WebGreeter(App):
-    greeter = None         # type: ClassVar[BridgeObj] | None
-    greeter_config = None  # type: ClassVar[BridgeObj] | None
-    theme_utils = None     # type: ClassVar[BridgeObj] | None
-
-    def __init__(self, *args, **kwargs) -> None:
-        super().__init__('WebGreeter', *args, **kwargs)
-        self.logger.debug('Web Greeter started.')
-        self.greeter = Greeter(self.config.themes_dir)
-        self.greeter_config = Config(self.config)
-        self.theme_utils = ThemeUtils(self.greeter, self.config)
-        self._web_container.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
-
-        self._web_container.initialize_bridge_objects()
-        self._web_container.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
-        self.load_theme()
-
-    @classmethod
-    def __pre_init__(cls):
-        ConfigLoader.add_filter(cls.validate_greeter_config_data)
-
-    def _before_web_container_init(self):
-        self.get_and_apply_user_config()
-
-    @classmethod
-    def validate_greeter_config_data(cls, key: str, data: str) -> str:
-        if "'@" not in data:
-            return data
-
-        if 'WebGreeter' == key:
-            path = '../build/web-greeter/whither.yml'
-        else:
-            path = '../build/dist/web-greeter.yml'
-
-        return open(path, 'r').read()
-
-    def get_and_apply_user_config(self):
-        self.logger.debug("Aplying config")
-        config_file = os.path.join(self.config.config_dir, 'web-greeter.yml')
-        branding_config = ConfigLoader('branding', config_file).config
-        greeter_config = ConfigLoader('greeter', config_file).config
-
-        greeter_config.update(custom_config)
-
-        self.config.branding.update(branding_config)
-        self.config.greeter.update(greeter_config)
-
-        self._config.debug_mode = greeter_config['debug_mode']
-        self._config.allow_remote_urls = not greeter_config['secure_mode']
-
-    def load_theme(self):
-        self.logger.debug('Loading theme...')
-        theme_url = '/{0}/{1}/index.html'.format(self.config.themes_dir, self.config.greeter.theme)
-        self._web_container.load(theme_url)
+import globals
+from globals import WebGreeter
 
 def loadWhitherConf():
     global whither_yaml
@@ -257,11 +189,14 @@ def yargs(args: List[str]):
     pass
 
 if __name__ == '__main__':
+    custom_config = globals.custom_config
+
     if args_lenght > 1:
         args = sys.argv
         args.pop(0)
         yargs(args)
 
-    greeter = WebGreeter()
 
-    greeter.run()
+    globals.greeter = WebGreeter()
+
+    globals.greeter.run()

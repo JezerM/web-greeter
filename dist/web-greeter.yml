@@ -31,3 +31,20 @@ greeter:
     theme: default
     time_format: LT
     time_language: auto
+
+#
+# features:
+#     battery:             Enable greeter and themes to get battery status.
+#     backlight:
+#         enabled:         Enable greeter and themes to control display backlight.
+#         value:           The amount to increase/decrease brightness by greeter.
+#         steps:           How many steps are needed to do the change. 0 for instant change.
+#
+# NOTE: Backlight feature uses 'acpilight' or 'xbacklight' as brightness controller
+#
+features:
+    battery: '@battery_enabled@'
+    backlight:
+        enabled: '@backlight_enabled@'
+        value: 10
+        steps: 0

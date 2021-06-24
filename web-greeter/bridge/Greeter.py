@@ -26,6 +26,8 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 # Standard Lib
+import subprocess
+import re
 
 # 3rd-Party Libs
 import gi
@@ -44,12 +46,53 @@ from . import (
     layout_to_dict,
     session_to_dict,
     user_to_dict,
+    battery_to_dict,
 )
-
 
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
 
+
+def changeBrightness(self, method: str, quantity: int):
+    if self._config.features.backlight["enabled"] != True:
+        return
+    try:
+        steps = self._config.features.backlight["steps"]
+        child = subprocess.run(["xbacklight", method, str(quantity), "-steps", str(steps)])
+        if child.returncode == 1:
+            raise ChildProcessError("xbacklight returned 1")
+    except Exception as err:
+        print("[ERROR] Brightness:", err)
+    finally:
+        self.property_changed.emit()
+    pass
+
+def getBrightness(self):
+    if self._config.features.backlight["enabled"] != True:
+        return -1
+    try:
+        level = subprocess.run(["xbacklight", "-get"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        return int(level.stdout)
+    except Exception as err:
+        print("[ERROR] Battery:", err)
+        return -1
+
+def updateBattery(self):
+    if self._config.features.battery != True:
+        return
+    try:
+        acpi = subprocess.run(["acpi", "-b"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+
+        battery = acpi.stdout.split(": ")
+        data = re.sub("%|,", "", battery[1])
+        level = data.split(" ")[1]
+
+        self._battery = int(level)
+        self._acpi = acpi.stdout
+    except Exception as err:
+        print("[ERROR] Battery: ", err)
+    else:
+        self.property_changed.emit()
 
 class Greeter(BridgeObject):
 
@@ -64,11 +107,15 @@ class Greeter(BridgeObject):
     noop_signal = bridge.signal()
     property_changed = bridge.signal()
 
-    def __init__(self, themes_dir, *args, **kwargs):
+    _battery = -1
+    _acpi = ""
+
+    def __init__(self, config, *args, **kwargs):
         super().__init__(name='LightDMGreeter', *args, **kwargs)
 
+        self._config = config
         self._shared_data_directory = ''
-        self._themes_directory = themes_dir
+        self._themes_directory = config.themes_dir
 
         LightDMGreeter.connect_to_daemon_sync()
 
@@ -122,6 +169,14 @@ class Greeter(BridgeObject):
     def autologin_user(self):
         return LightDMGreeter.get_autologin_user_hint()
 
+    @bridge.prop(Variant, notify=property_changed)
+    def batteryData(self):
+        return battery_to_dict(self._acpi)
+
+    @bridge.prop(int, notify=property_changed)
+    def brightness(self):
+        return getBrightness(self)
+
     @bridge.prop(bool, notify=noop_signal)
     def can_hibernate(self):
         return LightDM.get_can_hibernate()
@@ -137,6 +192,14 @@ class Greeter(BridgeObject):
     @bridge.prop(bool, notify=noop_signal)
     def can_suspend(self):
         return LightDM.get_can_suspend()
+
+    @bridge.prop(bool, notify=noop_signal)
+    def can_access_brightness(self):
+        return self._config.features.backlight["enabled"]
+
+    @bridge.prop(bool, notify=noop_signal)
+    def can_access_battery(self):
+        return self._config.features.battery
 
     @bridge.prop(str, notify=noop_signal)
     def default_session(self):
@@ -228,6 +291,18 @@ class Greeter(BridgeObject):
         LightDMGreeter.authenticate_as_guest()
         self.property_changed.emit()
 
+    @bridge.method(int)
+    def brightnessSet(self, quantity):
+        return changeBrightness(self, "-set", quantity)
+
+    @bridge.method(int)
+    def brightnessIncrease(self, quantity):
+        return changeBrightness(self, "-inc", quantity)
+
+    @bridge.method(int)
+    def brightnessDecrease(self, quantity):
+        return changeBrightness(self, "-dec", quantity)
+
     @bridge.method()
     def cancel_authentication(self):
         LightDMGreeter.cancel_authentication()
@@ -269,7 +344,7 @@ class Greeter(BridgeObject):
     def suspend(self):
         return LightDM.suspend()
 
-
-
-
+    @bridge.method()
+    def batteryUpdate(self):
+        return updateBattery(self)
 

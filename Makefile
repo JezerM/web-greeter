@@ -30,6 +30,8 @@ themes_dir            ?= $(abspath $(PREFIX)/share/web-greeter/themes)
 logo_image            ?= $(themes_dir)/default/img/antergos-logo-user.png
 stays_on_top          := True
 user_image            ?= $(themes_dir)/default/img/antergos.png
+battery_enabled				:= False
+backlight_enabled			:= False
 
 
 ifeq ($(MAKECMDGOALS),build_dev)
@@ -51,6 +53,8 @@ _apply_config:
 	@$(SET_CONFIG) logo_image            $(logo_image)
 	@$(SET_CONFIG) stays_on_top          $(stays_on_top)
 	@$(SET_CONFIG) user_image            $(user_image)
+	@$(SET_CONFIG) battery_enabled       $(battery_enabled)
+	@$(SET_CONFIG) backlight_enabled     $(backlight_enabled)
 
 _build_init: clean
 	$(DO) build-init
