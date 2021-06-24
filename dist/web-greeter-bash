@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# bash completion for web-greeter
+
+_web-greeter() {
+	local cur="${COMP_WORDS[COMP_CWORD]}"
+	local last="${COMP_WORDS[COMP_CWORD - 1]}"
+	local xpat='!*.jpg'
+	local options='--debug --normal --list --theme --help -h --version -v'
+
+	case "${last}" in
+		--theme)
+			options=$(ls -1d /usr/share/web-greeter/themes/*/ | cut -c 1- |
+				rev | cut -c 2- | rev | sort | sed 's/\/usr\/share\/web-greeter\/themes\///')
+			;;
+	esac
+
+	COMPREPLY=( $(compgen -W "${options}" -- "${cur}") )
+}
+
+complete -F _web-greeter web-greeter

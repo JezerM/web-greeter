@@ -61,7 +61,7 @@ init_build_dir() {
 prepare_install() {
 	cd "${BUILD_DIR}"
 	mkdir -p \
-		"${INSTALL_ROOT}${PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters} \
+		"${INSTALL_ROOT}${PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters,zsh/vendor-completions,bash-completion/completions} \
 		"${INSTALL_ROOT}"/etc/{lightdm,xdg/lightdm/lightdm.conf.d}
 
 	# Themes
@@ -71,6 +71,10 @@ prepare_install() {
 
 	# Man Page
 	cp "${BUILD_DIR}/dist/${PKGNAME}.1" "${INSTALL_ROOT}${PREFIX}/share/man/man1"
+
+	# Command line completions
+	cp "${BUILD_DIR}/dist/${PKGNAME}-bash" "${INSTALL_ROOT}${PREFIX}/share/bash-completion/completions/${PKGNAME}"
+	cp "${BUILD_DIR}/dist/${PKGNAME}-zsh" "${INSTALL_ROOT}${PREFIX}/share/zsh/vendor-completions/_${PKGNAME}"
 
 	# Greeter Config
 	cp "${BUILD_DIR}/dist/${PKGNAME}.yml" "${INSTALL_ROOT}/etc/lightdm"
