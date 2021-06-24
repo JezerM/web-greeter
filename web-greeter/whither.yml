@@ -45,10 +45,10 @@ WebGreeter:
         locale_dir: '@locale_dir@'
         themes_dir: '@themes_dir@'
         version:
-            full: '3.0.0rc3'
+            full: '3.0.0rc4'
             major: 3
             minor: 0
             micro: 0
             alpha: False
             beta: False
-            rc: 3
+            rc: 4
