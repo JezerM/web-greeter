@@ -1,0 +1,6 @@
+[theme]
+name=gruvbox
+description=A grubox lightdm web-greeter theme
+engine=web-greeter
+url=index.html
+session=awesome

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, viewport-fit=cover, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="css/style.css" class="style">
+  <link rel="stylesheet" href="fonts/material/css/materialdesignicons.css" class="style">
+  <title>Gruvbox greeter</title>
+</head>
+<body>
+  <div id="background"></div>
+  <div id="cover" class="hide">
+    <div id="message"></div>
+  </div>
+  <div id="screen">
+    <div id="login-form">
+      <div id="login-form-box">
+        <div id="user-image">
+          <div id="background-image">
+            <i class="mdi mdi-account"></i>
+          </div>
+          <img src="" alt="">
+        </div>
+        <div id="user-label">
+          <b>User</b>
+        </div>
+
+        <div id="pass-form">
+          <form action="POST">
+            <div id="input">
+              <input id="input-password" name="password" type="password" autocomplete="off" autofocus="true" placeholder="Enter your password">
+            </div>
+            <div>
+              <button id="submit-button" type="submit" class="button">
+                <i class="mdi mdi-chevron-right"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="sessions-list">
+          <button id="sessions-button" class="button">
+            <span class="mdi mdi-chevron-down"></span>
+          </button>
+          <ul id="sessions-dropdown" class="dropdown hide">
+            <li><button>Awesome</button></li>
+            <li><button>Ubuntu</button></li>
+          </div>
+        </ul>
+        <div id="users-list">
+          <button id="users-button" class="button">
+            <i class="mdi mdi-chevron-down"></i>
+          </button>
+          <ul id="users-dropdown" class="dropdown hide">
+            <li><button>Normal sheer</button></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <div id="session-label" class="info">
+    </div>
+
+    <div id="system-status" class="label-bar">
+      <div id="brightness-label"></div>
+      <div id="battery-label"></div>
+    </div>
+    <div id="system-power" class="label-bar">
+      <div id="shutdown-btn" class="hide">
+        <span class="mdi mdi-power"></span>
+      </div>
+      <div id="restart-btn" class="hide">
+        <span class="mdi mdi-restart"></span>
+      </div>
+      <div id="suspend-btn" class="hide">
+        <span class="mdi mdi-power-sleep"></span>
+      </div>
+      <div id="hibernate-btn" class="hide">
+        <span class="mdi mdi-power-cycle"></span>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/debug.js"></script>
+  <script src="js/authenticate.js"></script>
+  <script src="js/accounts.js"></script>
+  <script src="js/sessions.js"></script>
+  <script src="js/power.js"></script>
+  <script src="js/battery.js"></script>
+  <script src="js/brightness.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>
