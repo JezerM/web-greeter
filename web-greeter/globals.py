@@ -49,6 +49,9 @@ from bridge import (
     ThemeUtils,
 )
 
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtGui import QColor
+
 # Typing Helpers
 BridgeObj = Type[BridgeObject]
 
@@ -68,6 +71,9 @@ class WebGreeter(App):
         self.greeter_config = Config(self.config)
         self.theme_utils = ThemeUtils(self.greeter, self.config)
         self._web_container.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
+
+        page = self._main_window.widget.centralWidget().page()
+        page.setBackgroundColor(QColor(0,0,0))
 
         self._web_container.initialize_bridge_objects()
         self._web_container.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
