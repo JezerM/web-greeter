@@ -45,12 +45,13 @@ def javaScriptConsoleMessage(self, level: WebPage.JavaScriptConsoleMessageLevel,
     elif level == WebPage.JavaScriptConsoleMessageLevel.WarningMessageLevel:
         typeLog = "[WARNING]"
     elif level == WebPage.JavaScriptConsoleMessageLevel.InfoMessageLevel:
-        typeLog = "[LOG]"
+        return
     else:
         return
 
     logMessage = "{typ} {source} {line}: {msg}".format(typ = typeLog, msg = message, source = sourceID, line = lineNumber)
     print(logMessage)
+
     if error:
         errorMessage = "{source} {line}: {msg}".format(source = sourceID, line = lineNumber, msg = message)
         errorPrompt(errorMessage)
@@ -87,7 +88,10 @@ class ErrorDialog(QDialog):
         self.done(2)
 
 def errorPrompt(err):
-    print("ERROR PROMPT")
+
+    if not globals.greeter.config.greeter.detect_theme_errors:
+        return
+
     dia = ErrorDialog(globals.greeter._main_window.widget.centralWidget(), err)
 
     dia.exec()

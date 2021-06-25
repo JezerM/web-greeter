@@ -38,21 +38,21 @@ String.prototype.capitalize = function() {
 
 /**
  * @memberOf window
- * @type {LightDM.LightDMGreeter}
+ * @type {LightDM.Greeter}
  */
 let lightdm = null;
 
 /**
  * @memberOf window
- * @type {LightDM.GreeterUtil}
+ * @type {LightDM.ThemeUtils}
  */
-let greeter_util = null;
+let theme_utils = null;
 
 /**
  * @memberOf window
- * @type {LightDM.ConfigFile}
+ * @type {LightDM.GreeterConfig}
  */
-let config = null;
+let greeter_config = null;
 
 
 /**
@@ -61,7 +61,7 @@ let config = null;
 
 /**
  * Interface for object that holds info about a session. Session objects are not
- * created by the theme's code, but rather by the {@link LightDMGreeter} class.
+ * created by the theme's code, but rather by the {@link Greeter} class.
  * @memberOf LightDM
  */
 class LightDMSession  {
@@ -92,7 +92,7 @@ class LightDMSession  {
 
 /**
  * Interface for object that holds info about a language on this system. Language objects are not
- * created by the theme's code, but rather by the {@link LightDMGreeter} class.
+ * created by the theme's code, but rather by the {@link Greeter} class.
  * @memberOf LightDM
  */
 class LightDMLanguage {
@@ -123,7 +123,7 @@ class LightDMLanguage {
 
 /**
  * Interface for object that holds info about a keyboard layout on this system. Language
- * objects are not created by the theme's code, but rather by the {@link LightDMGreeter} class.
+ * objects are not created by the theme's code, but rather by the {@link Greeter} class.
  * @memberOf LightDM
  */
 class LightDMLayout {
@@ -154,7 +154,7 @@ class LightDMLayout {
 
 /**
  * Interface for object that holds info about a user account on this system. User
- * objects are not created by the theme's code, but rather by the {@link LightDMGreeter} class.
+ * objects are not created by the theme's code, but rather by the {@link Greeter} class.
  * @memberOf LightDM
  */
 class LightDMUser {
@@ -214,22 +214,6 @@ class LightDMUser {
 		 * @readonly
 		 */
 		this.session = user_info.session;
-
-		/**
-		 * DEPRECATED!
-		 * @deprecated See {@link LightDMUser.username}.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.name = user_info.name;
-
-		/**
-		 * DEPRECATED!
-		 * @deprecated See {@link LightDMUser.display_name}.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.real_name = user_info.real_name;
 	}
 }
 
@@ -240,7 +224,7 @@ class LightDMUser {
  * with the global variable: `greeter_util`.
  * @memberOf LightDM
  */
-class GreeterUtil {
+class ThemeUtils {
 
 	constructor() {
 		if ( null !== greeter_util ) {
@@ -287,7 +271,7 @@ class GreeterUtil {
  * with the global variable: `config`.
  * @memberOf LightDM
  */
-class ConfigFile {
+class GreeterConfig {
 
 	constructor() {
 		if ( null !== config ) {
@@ -342,13 +326,13 @@ let MockObjects = {
 
 
 /**
- * Singleton class which implements the LightDMGreeter Interface. Greeter themes will
+ * Singleton class which implements the Greeter Interface. Greeter themes will
  * interact directly with this class to facilitate the user log in processes.
  * The greeter will automatically create an instance of this class when it starts.
  * The instance can be accessed with the global variable: `lightdm`.
  * @memberOf LightDM
  */
-class LightDMGreeter {
+class Greeter {
 
 	constructor() {
 		if ( null !== lightdm ) {
@@ -816,9 +800,6 @@ let MockData = () => ({
 			username: 'superman',
 			logged_in: false,
 			session: 'gnome',
-
-			name: 'superman',
-			real_name: 'Clark Kent'
 		},
 		{
 			display_name: 'Bruce Wayne',
@@ -829,30 +810,24 @@ let MockData = () => ({
 			username: 'batman',
 			logged_in: false,
 			session: 'cinnamon',
-
-			name: 'batman',
-			real_name: 'Bruce Wayne'
 		},
 		{
 			display_name: 'Peter Parker',
 			language: null,
 			layout: null,
-			image: '/usr/share/lightdm-webkit/themes/antergos/img/antergos-logo-user',
+			image: '/usr/share/web-greeter/themes/antergos/img/antergos-logo-user',
 			home_directory: '/home/spiderman',
 			username: 'spiderman',
 			logged_in: false,
 			session: 'MATE',
-
-			name: 'spiderman',
-			real_name: 'Peter Parker'
 		}
 	]
 });
 
 
-new ConfigFile();
-new GreeterUtil();
-new LightDMGreeter();
+new GreeterConfig();
+new ThemeUtils();
+new Greeter();
 
 
 // mock lighdm for testing

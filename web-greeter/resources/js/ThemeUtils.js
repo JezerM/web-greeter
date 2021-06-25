@@ -1,5 +1,5 @@
 /*
- * GreeterUtils.js
+ * ThemeUtils.js
  *
  * Copyright © 2017 Antergos Developers <dev@antergos.com>
  *

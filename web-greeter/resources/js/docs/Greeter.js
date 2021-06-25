@@ -266,9 +266,7 @@ class Greeter {
 	 * Triggers the system to hibernate.
 	 * @returns {boolean} {@link true} if hibernation initiated, otherwise {@link false}
 	 */
-	hibernate() {
-		return this._do_mocked_system_action('hibernate');
-	}
+	hibernate() {}
 
 	/**
 	 * Provide a response to a prompt.
