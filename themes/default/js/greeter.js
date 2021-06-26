@@ -305,8 +305,9 @@ class BackgroundManager {
 		}
 
 		random_bg = Math.floor( Math.random() * _config.background_images.length );
+		let image = _config.background_images[random_bg];
 
-		return _config.background_images[ random_bg ];
+		return image;
 	}
 
 
@@ -355,7 +356,7 @@ class BackgroundManager {
 	 */
 	background_selected_handler( event ) {
 		let $target = $( event.target ),
-			image = $target.attr( 'data-img' );
+			image = event.target.parentElement.dataset.img
 
 		$( '.bg.active' ).removeClass( 'active' );
 		$target.addClass( 'active' );
