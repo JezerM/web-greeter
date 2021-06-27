@@ -27,6 +27,38 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 import re
+from logging import (
+    getLogger,
+    DEBUG,
+    ERROR,
+    Formatter,
+    StreamHandler,
+)
+
+log_format = ''.join([
+    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
+    'lineno)d: %(message)s'
+])
+formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+logger = getLogger("greeter")
+logger.propagate = False
+stream_handler = StreamHandler()
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)
+
+def debugLog(txt: str, level: int = 1):
+    if (level == 1):
+        logger.debug(txt)
+    elif (level == 2):
+        logger.info(txt)
+    elif (level == 3):
+        logger.warn(txt)
+    elif (level == 4):
+        logger.error(txt)
+    else:
+        logger.debug(txt)
 
 
 def language_to_dict(lang):
@@ -60,10 +92,6 @@ def user_to_dict(user):
         logged_in=user.get_logged_in(),
         session=user.get_session(),
         username=user.get_name(),
-        # ---->>> BEGIN DEPRECATED! <<<----
-        name=user.get_name(),
-        real_name=user.get_real_name(),
-        # ---->>> END DEPRECATED! <<<----
     )
 
 def battery_to_dict(batt):

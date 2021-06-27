@@ -47,6 +47,7 @@ from . import (
     session_to_dict,
     user_to_dict,
     battery_to_dict,
+    debugLog
 )
 
 LightDMGreeter = LightDM.Greeter()
@@ -62,9 +63,9 @@ def changeBrightness(self, method: str, quantity: int):
         if child.returncode == 1:
             raise ChildProcessError("xbacklight returned 1")
     except Exception as err:
-        print("[ERROR] Brightness:", err)
-    finally:
-        self.property_changed.emit()
+        debugLog("Brightness: {}".format(err), 4)
+    else:
+        self.brightness_update.emit()
     pass
 
 def getBrightness(self):
@@ -74,7 +75,7 @@ def getBrightness(self):
         level = subprocess.run(["xbacklight", "-get"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         return int(level.stdout)
     except Exception as err:
-        print("[ERROR] Battery:", err)
+        debugLog("Battery: {}".format(err), 4)
         return -1
 
 def updateBattery(self):
@@ -90,7 +91,7 @@ def updateBattery(self):
         self._battery = int(level)
         self._acpi = acpi.stdout
     except Exception as err:
-        print("[ERROR] Battery: ", err)
+        debugLog("Battery: {}".format(err), 4)
     else:
         self.property_changed.emit()
 
@@ -103,6 +104,8 @@ class Greeter(BridgeObject):
     reset = bridge.signal()
     show_message = bridge.signal(str, LightDM.MessageType, arguments=('text', 'type'))
     show_prompt = bridge.signal(str, LightDM.PromptType, arguments=('text', 'type'))
+
+    brightness_update = bridge.signal()
 
     noop_signal = bridge.signal()
     property_changed = bridge.signal()
@@ -149,6 +152,7 @@ class Greeter(BridgeObject):
             lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype)
         )
 
+
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
         QTimer().singleShot(300, lambda: _signal.emit(*args))
@@ -173,7 +177,7 @@ class Greeter(BridgeObject):
     def batteryData(self):
         return battery_to_dict(self._acpi)
 
-    @bridge.prop(int, notify=property_changed)
+    @bridge.prop(int, notify=brightness_update)
     def brightness(self):
         return getBrightness(self)
 
@@ -291,6 +295,10 @@ class Greeter(BridgeObject):
         LightDMGreeter.authenticate_as_guest()
         self.property_changed.emit()
 
+    @bridge.method()
+    def batteryUpdate(self):
+        return updateBattery(self)
+
     @bridge.method(int)
     def brightnessSet(self, quantity):
         return changeBrightness(self, "-set", quantity)
@@ -338,13 +346,11 @@ class Greeter(BridgeObject):
 
     @bridge.method(str, result=bool)
     def start_session(self, session):
-        return LightDMGreeter.start_session_sync(session)
+        if not session.strip():
+            return
+        return LightDMGreeter.start_session(session)
 
     @bridge.method(result=bool)
     def suspend(self):
         return LightDM.suspend()
-
-    @bridge.method()
-    def batteryUpdate(self):
-        return updateBattery(self)
 

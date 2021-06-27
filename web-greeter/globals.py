@@ -48,12 +48,73 @@ from bridge import (
     Greeter,
     ThemeUtils,
 )
+from logging import (
+    getLogger,
+    DEBUG,
+    ERROR,
+    Formatter,
+    StreamHandler,
+)
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QColor
+import subprocess
 
 # Typing Helpers
 BridgeObj = Type[BridgeObject]
+
+
+log_format = ''.join([
+    '%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(',
+    'lineno)d : %(funcName)s | %(message)s'
+])
+formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+stream_handler = StreamHandler()
+logger = getLogger("debug")
+
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
+logger.propagate = False
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)
+
+def debugLog(txt: str, level: int = 1):
+    if (level == 1):
+        logger.debug(txt)
+    elif (level == 2):
+        logger.info(txt)
+    elif (level == 3):
+        logger.warn(txt)
+    elif (level == 4):
+        logger.error(txt)
+    else:
+        logger.debug(txt)
+
+initial_timeout = 0
+
+def setScreenSaver(timeout: int):
+    global initial_timeout
+    timeout = timeout if timeout >= 0 else 300
+    try:
+        child = subprocess.Popen(["xset", "q"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        awk = subprocess.run(["awk", "/^  timeout: / {print $2}"], stdout=subprocess.PIPE, stdin=child.stdout, text=True)
+
+        initial_timeout = int(awk.stdout.replace("\n", ""))
+
+        subprocess.run(["xset", "s", str(timeout)], check=True)
+
+    except Exception as err:
+        debugLog("Screensaver timeout couldn't be set", 4)
+    else:
+        debugLog("Screensaver timeout set")
+
+def resetScreenSaver():
+    try:
+        subprocess.run(["xset", "s", str(initial_timeout)])
+    except Exception as err:
+        debugLog("Screensaver reset failed", 4)
+    else:
+        debugLog("Screensaver reset")
 
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
@@ -75,6 +136,8 @@ class WebGreeter(App):
         page = self._main_window.widget.centralWidget().page()
         page.setBackgroundColor(QColor(0,0,0))
 
+        setScreenSaver(self.config.greeter["screensaver_timeout"])
+
         self._web_container.initialize_bridge_objects()
         self._web_container.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
         self.load_theme()
@@ -85,6 +148,9 @@ class WebGreeter(App):
 
     def _before_web_container_init(self):
         self.get_and_apply_user_config()
+
+    def _before_exit(self):
+        resetScreenSaver()
 
     @classmethod
     def validate_greeter_config_data(cls, key: str, data: str) -> str:

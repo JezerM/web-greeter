@@ -37,12 +37,6 @@ from typing import (
     List,
     Tuple,
 )
-from logging import (
-    getLogger,
-    DEBUG,
-    Formatter,
-    StreamHandler,
-)
 
 # 3rd-Party Libs
 
@@ -63,23 +57,6 @@ def loadWhitherConf():
 
     whither_yaml = yaml.safe_load(file_test)
     webGreeter_conf = whither_yaml["WebGreeter"]
-
-
-def debugLog(txt: str):
-    log_format = ''.join([
-        '%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(',
-        'lineno)d : %(funcName)s | %(message)s'
-    ])
-
-    formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
-    stream_handler = StreamHandler()
-    logger = getLogger()
-
-    stream_handler.setLevel(DEBUG)
-    stream_handler.setFormatter(formatter)
-    logger.setLevel(DEBUG)
-    logger.addHandler(stream_handler)
-    logger.debug(txt)
 
 def show_help():
     version = webGreeter_conf["app"]["version"]["full"]
@@ -124,7 +101,7 @@ def changeTheme(theme: str):
     if theme in dirlist:
         custom_config["theme"] = theme
     else:
-        debugLog("Theme not found. Going with config theme")
+        globals.debugLog("Theme not found. Going with config theme", 4)
     return
 
 def listThemes(quiet = False):
@@ -195,7 +172,6 @@ if __name__ == '__main__':
         args = sys.argv
         args.pop(0)
         yargs(args)
-
 
     globals.greeter = WebGreeter()
 

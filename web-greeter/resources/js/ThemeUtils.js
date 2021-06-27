@@ -100,11 +100,11 @@ class ThemeUtils {
 	 */
 	dirlist( path, only_images = true, callback ) {
 		if ( '' === path || 'string' !== typeof path ) {
-			console.error('[ERROR] theme_utils.dirlist(): path must be a non-empty string!');
+			console.error(`theme_utils.dirlist(): path must be a non-empty string!`);
 			return callback([]);
 
 		} else if ( null !== path.match(/^[^/].+/) ) {
-			console.error('[ERROR] theme_utils.dirlist(): path must be absolute!');
+			console.error(`theme_utils.dirlist(): path must be absolute!`);
 			return callback([]);
 		}
 
@@ -116,7 +116,7 @@ class ThemeUtils {
 		try {
 			return _ThemeUtils.dirlist( path, only_images, callback );
 		} catch( err ) {
-			console.error( `[ERROR] theme_utils.dirlist(): ${err}` );
+			console.error(`theme_utils.dirlist(): ${err}`);
 			return callback([]);
 		}
 	}

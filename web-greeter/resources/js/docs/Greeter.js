@@ -314,19 +314,19 @@ class Greeter {
 	get brightness() {}
 
 	/**
-	 * Set the brightness
+	 * Set the brightness to quantity
 	 * @arg {Number} quantity The quantity to set
 	 */
 	brightnessSet( quantity ) {}
 
 	/**
-	 * Increase the brightness
+	 * Increase the brightness by quantity
 	 * @arg {Number} quantity The quantity to increase
 	 */
 	brightnessIncrease( quantity ) {}
 
 	/**
-	 * Decrease the brightness
+	 * Decrease the brightness by quantity
 	 * @arg {Number} quantity The quantity to decrease
 	 */
 	brightnessDecrease( quantity ) {}
@@ -344,6 +344,11 @@ class Greeter {
 	 * @readonly
 	 */
 	get can_access_battery() {}
+
+	/**
+	 * Updates the battery data
+	 */
+	batteryUpdate() {}
 
 	/**
 	 * Whether or not the greeter can control display brightness

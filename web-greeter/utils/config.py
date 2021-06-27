@@ -31,28 +31,56 @@ from PyQt5.QtCore import QUrl, pyqtSignal, Qt
 from PyQt5.QtWidgets import QDialogButtonBox, QDialog, QVBoxLayout, QLabel, QPushButton, QAbstractButton
 from PyQt5.QtGui import QKeyEvent
 
+from logging import (
+    getLogger,
+    DEBUG,
+    ERROR,
+    Formatter,
+    StreamHandler,
+)
+
 import globals
+
+log_format = ''.join([
+    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
+    'lineno)d: %(message)s'
+])
+formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+logger = getLogger("javascript")
+logger.propagate = False
+stream_handler = StreamHandler()
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)
 
 def javaScriptConsoleMessage(self, level: WebPage.JavaScriptConsoleMessageLevel, message: str, lineNumber: int, sourceID: str):
     if sourceID == "":
         sourceID = "console"
 
-    error = False
-    typeLog = ""
+    logLevel = 0
     if level == WebPage.JavaScriptConsoleMessageLevel.ErrorMessageLevel:
-        typeLog = "[ERROR]"
-        error = True
+        logLevel = 40
     elif level == WebPage.JavaScriptConsoleMessageLevel.WarningMessageLevel:
-        typeLog = "[WARNING]"
+        logLevel = 30
     elif level == WebPage.JavaScriptConsoleMessageLevel.InfoMessageLevel:
         return
     else:
         return
 
-    logMessage = "{typ} {source} {line}: {msg}".format(typ = typeLog, msg = message, source = sourceID, line = lineNumber)
-    print(logMessage)
+    record = logger.makeRecord(
+        name="javascript",
+        level=logLevel,
+        fn="",
+        lno=lineNumber,
+        msg=message,
+        args=(),
+        exc_info=None
+    )
+    record.filename = sourceID
+    logger.handle(record)
 
-    if error:
+    if logLevel == 40:
         errorMessage = "{source} {line}: {msg}".format(source = sourceID, line = lineNumber, msg = message)
         errorPrompt(errorMessage)
 
