@@ -26,7 +26,9 @@ sudo make install
 ```
 
 ## Theme Javascript API
-[Antergos][Antergos] documentation is no longer available. Although, you can see the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
+[Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Actual documentation is available in [Gitbook][ApiDoc].
+
+You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes][./themes] for real use cases.
 
 ## Enable features
 ### Brightness control
@@ -57,3 +59,5 @@ web-greeter --debug
 [antergos]: https://github.com/Antergos "Antergos"
 [whither]: https://github.com/JezerM/whither "Whither"
 [acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
+[WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
+[ApiDoc]: https://amyuki4.gitbook.io/web-greeter/ "API Documentation"
