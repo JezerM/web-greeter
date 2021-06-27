@@ -12,6 +12,12 @@ class Debug {
       return false
     }
 
+    window.greeter_config = {
+      greeter: {
+        debug_mode: true,
+      }
+    }
+
     window.lightdm = {
       is_authenticated: false,
       authentication_user: null,
@@ -85,15 +91,19 @@ class Debug {
       },
       shutdown: () => {
         console.log("System is shutting down...")
+        setTimeout(() => location.reload(), 2000)
       },
       restart: () => {
         console.log("System is rebooting...")
+        setTimeout(() => location.reload(), 2000)
       },
       hibernate: () => {
         console.log("System is hibernating")
+        setTimeout(() => location.reload(), 2000)
       },
       suspend: () => {
         console.log("System is suspending")
+        setTimeout(() => location.reload(), 2000)
       },
       batteryData: {
         name: "Battery 0",

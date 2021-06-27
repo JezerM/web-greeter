@@ -19,12 +19,17 @@ async function wait(ms) {
 }
 
 async function initGreeter() {
+
+  if (greeter_config.greeter.debug_mode) {
+    debug = new Debug()
+  }
+
   if (lightdm.authentication_complete) {
     lightdm.authentication_complete.connect(() => authentication_done())
   }
 
-  if (greeter_config.greeter.debug_mode) {
-    debug = new Debug()
+  if (lightdm.brightness_update) {
+    lightdm.brightness_update.connect(() => brightness._updateData())
   }
 
   accounts = new Accounts()

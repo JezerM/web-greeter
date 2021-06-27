@@ -20,9 +20,6 @@ class Brightness {
   _setTimer() {
     if (!lightdm.can_access_brightness) return
     this._updateData()
-    setInterval(() => {
-      this._updateData()
-    }, 1000) // Every second
 
   }
 
