@@ -348,7 +348,7 @@ class Greeter(BridgeObject):
     def start_session(self, session):
         if not session.strip():
             return
-        return LightDMGreeter.start_session(session)
+        return LightDMGreeter.start_session_sync(session)
 
     @bridge.method(result=bool)
     def suspend(self):
