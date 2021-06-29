@@ -181,6 +181,10 @@ class Greeter(BridgeObject):
     def brightness(self):
         return getBrightness(self)
 
+    @brightness.setter
+    def brightness(self, quantity):
+        return changeBrightness(self, "-set", quantity)
+
     @bridge.prop(bool, notify=noop_signal)
     def can_hibernate(self):
         return LightDM.get_can_hibernate()
