@@ -7,13 +7,16 @@
     "src": "src"
   },
   "scripts": {
-    "build": "node index.js",
-    "clean": "rm docs/* -f"
+    "docs": "node index.js",
+    "clean": "rm docs/api/* -f",
+    "build": "honkit build",
+    "serve": "honkit serve"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "honkit": "^3.6.20",
     "jsdoc-to-markdown": "^7.0.1"
   }
 }

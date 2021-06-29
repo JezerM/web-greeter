@@ -2,7 +2,7 @@
 
 ## LightDM.Language
 Interface for object that holds info about a language on the system. Language objects are not
-created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
 
 <a id="LightDM.Language+code"></a>
 

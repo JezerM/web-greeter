@@ -1,7 +1,7 @@
 <a id="LightDM.Battery"></a>
 
 ## LightDM.Battery
-Interface for object that holds info about the battery on the system. This object is not created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+Interface for object that holds info about the battery on the system. This object is not created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
 
 <a id="LightDM.Battery+level"></a>
 

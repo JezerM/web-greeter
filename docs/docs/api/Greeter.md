@@ -4,7 +4,7 @@
 Base class for the greeter's Theme JavaScript API. Greeter themes will interact
 directly with an object derived from this class to facilitate the user log-in process.
 The greeter will automatically create an instance when it starts.
-The instance can be accessed using the global variable: [`lightdm`](#dl-window-lightdm).
+The instance can be accessed using the global variable: `lightdm`.
 
 <a id="LightDM.Greeter+authentication_user"></a>
 
@@ -41,17 +41,7 @@ The battery data
 <a id="LightDM.Greeter+brightness"></a>
 
 ### greeter.brightness : <code>Number</code>
-Gets the brightness
-
-<a id="LightDM.Greeter+brightness"></a>
-
-### greeter.brightness
-Sets the brightness
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| quantity | <code>Number</code> | The quantity to set |
+The display brightness
 
 <a id="LightDM.Greeter+can_access_battery"></a>
 
@@ -230,7 +220,7 @@ Gets emitted when the greeter should show a message to the user.
 ### greeter.show\_prompt : <code>Signal</code>
 Gets emitted when the greeter should show a prompt to the user.
 
-<a id="LightDM.Greeter+authenticate"></a>
+<a name="LightDM.Greeter+authenticate"></a>
 
 ### greeter.authenticate(username)
 Starts the authentication procedure for a user.

@@ -35,7 +35,7 @@ let localized_invalid_date = null,
 /**
  * Provides various utility methods for use in greeter themes. The greeter will automatically
  * create an instance of this class when it starts. The instance can be accessed
- * with the global variable: [`theme_utils`](#dl-window-theme_utils).
+ * with the global variable: `theme_utils`.
  *
  * @memberOf LightDM
  */

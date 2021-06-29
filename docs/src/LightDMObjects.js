@@ -35,6 +35,7 @@
 
 /**
  * The greeter's Theme JavaScript API.
+ * Accesible through `lightdm` global variable.
  *
  * @namespace LightDM
  */
@@ -42,7 +43,7 @@
 
 /**
  * Interface for object that holds info about a session. Session objects are not
- * created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+ * created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
  *
  * @memberOf LightDM
  */
@@ -84,7 +85,7 @@ class Session  {
 
 /**
  * Interface for object that holds info about a language on the system. Language objects are not
- * created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+ * created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
  *
  * @memberOf LightDM
  */
@@ -126,7 +127,7 @@ class Language {
 
 /**
  * Interface for object that holds info about a keyboard layout on the system. Language
- * objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+ * objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
  *
  * @memberOf LightDM
  */
@@ -168,7 +169,7 @@ class Layout {
 
 /**
  * Interface for object that holds info about a user account on the system. User
- * objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+ * objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
  *
  * @memberOf LightDM
  */
@@ -253,7 +254,7 @@ class User {
 }
 
 /**
- * Interface for object that holds info about the battery on the system. This object is not created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+ * Interface for object that holds info about the battery on the system. This object is not created by the theme's code, but rather by the [`LightDM.Greeter`]{@link Greeter.md} class.
  *
  * @memberOf LightDM
  */
@@ -290,4 +291,26 @@ class Battery {
 	get state() {
 		return this._state;
 	}
+}
+
+
+/**
+ * Interface for signals connected to LightDM itself. This is not created by the theme's code, but rather by Web Greeter.
+ * When Web Greeter triggers the signal, all calbacks are executed.
+ *
+ * @memberOf LightDM
+ */
+class Signal {
+
+	/**
+	 * Connects a callback to the signal.
+	 * @param {Function} callback The callback to attach.
+	 */
+	connect( callback ) {}
+
+	/**
+	 * Disconnects a callback to the signal.
+	 * @param {Function} callback The callback to disattach.
+	 */
+	disconnect( callback ) {}
 }

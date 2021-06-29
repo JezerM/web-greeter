@@ -30,7 +30,7 @@
  * Base class for the greeter's Theme JavaScript API. Greeter themes will interact
  * directly with an object derived from this class to facilitate the user log-in process.
  * The greeter will automatically create an instance when it starts.
- * The instance can be accessed using the global variable: [`lightdm`](#dl-window-lightdm).
+ * The instance can be accessed using the global variable: `lightdm`.
  *
  * @memberOf LightDM
  */
@@ -84,14 +84,10 @@ class Greeter {
 	get batteryData() {}
 
 	/**
-	 * Gets the brightness
+	 * The display brightness
 	 * @type {Number}
 	 */
 	get brightness() {}
-	/**
-	 * Sets the brightness
-	 * @param {Number} quantity The quantity to set
-	 */
 	set brightness( quantity ) {}
 
 	/**
@@ -394,14 +390,6 @@ class Greeter {
 	show_prompt;
 
 }
-
-class Signal {
-
-	connect( callback ) {}
-
-	disconnect( callback ) {}
-}
-
 
 /**
  * Moment.js instance - Loaded and instantiated automatically by the greeter.

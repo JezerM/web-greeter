@@ -2,7 +2,7 @@
 
 ## LightDM.Session
 Interface for object that holds info about a session. Session objects are not
-created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
 
 <a id="LightDM.Session+name"></a>
 

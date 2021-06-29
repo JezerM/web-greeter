@@ -2,7 +2,7 @@
 
 ## LightDM.Layout
 Interface for object that holds info about a keyboard layout on the system. Language
-objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
 
 <a id="LightDM.Layout+description"></a>
 

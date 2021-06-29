@@ -2,7 +2,7 @@
 
 ## LightDM.User
 Interface for object that holds info about a user account on the system. User
-objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](#dl-LightDM-Greeter) class.
+objects are not created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter.md) class.
 
 <a id="LightDM.User+display_name"></a>
 

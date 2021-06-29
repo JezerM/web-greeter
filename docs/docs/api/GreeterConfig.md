@@ -4,7 +4,7 @@
 Provides greeter themes with a way to access values from the greeter's config
 file located at `/etc/lightdm/web-greeter.yml`. The greeter will
 create an instance of this class when it starts. The instance can be accessed
-with the global variable: [`greeter_config`](#dl-window-greeter_config).
+with the global variable: `greeter_config`.
 
 <a id="LightDM.GreeterConfig+branding"></a>
 
@@ -49,7 +49,7 @@ Holds keys/values from the `features` section of the config file.
 | --- | --- | --- |
 | battery | <code>Boolean</code> | Enable greeter and themes to ger battery status. |
 | backlight | <code>Object</code> |  |
-| enabled | <code>Boolean</code> | Enable greeter and themes to control display backlight. |
-| value | <code>Number</code> | The amount to increase/decrease brightness by greeter. |
-| steps | <code>Number</code> | How many steps are needed to do the change. |
+| backlight.enabled | <code>Boolean</code> | Enable greeter and themes to control display backlight. |
+| backlight.value | <code>Number</code> | The amount to increase/decrease brightness by greeter. |
+| backlight.steps | <code>Number</code> | How many steps are needed to do the change. |
 
