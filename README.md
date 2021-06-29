@@ -1,8 +1,18 @@
 # Web Greeter for LightDM
 
-This is a try to update the [Antergos web-greeter](https://github.com/Antergos/web-greeter), following what they left, so all the credits should go with them.
+A modern, visually appealing greeter for LightDM, that allows to create web based themes with HTML, CSS and JavaScript.
+
+This is a try to update the [Antergos web-greeter](https://github.com/Antergos/web-greeter), following what they left.
 
 As this is based on the [master release](https://github.com/Antergos/web-greeter/tree/master), which does some API changes, actual themes would need to do changes to work correctly.
+
+## Features
+
+- Create themes with HTML, CSS and JavaScript!
+- Should work everywhere.
+- JavaScript error handling, allowing to load the default theme.
+- Themes could be simple, or very complex.
+- Battery and brightness control.
 
 ## Dependencies
 |                       |     arch      |        ubuntu        |       fedora        |       openSUSE        | 
@@ -25,7 +35,7 @@ cd web-greeter
 sudo make install
 ```
 
-## Theme Javascript API
+## Theme JavaScript API
 [Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Actual documentation is available in [Gitbook][ApiDoc].
 
 You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes][./themes] for real use cases.
