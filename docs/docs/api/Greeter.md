@@ -220,7 +220,7 @@ Gets emitted when the greeter should show a message to the user.
 ### greeter.show\_prompt : <code>Signal</code>
 Gets emitted when the greeter should show a prompt to the user.
 
-<a name="LightDM.Greeter+authenticate"></a>
+<a id="LightDM.Greeter+authenticate"></a>
 
 ### greeter.authenticate(username)
 Starts the authentication procedure for a user.
