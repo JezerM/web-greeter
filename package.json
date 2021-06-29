@@ -9,7 +9,7 @@
   "scripts": {
     "docs": "node index.js",
     "clean": "rm docs/api/* -f",
-    "build": "honkit build",
+    "build": "honkit build && rm -r -f docs/ && cp _book docs/ -r",
     "serve": "honkit serve"
   },
   "keywords": [],

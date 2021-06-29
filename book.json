@@ -1,3 +1,6 @@
 {
-  "root": "mds/"
+  "root": "mds/",
+  "title": "Web Greeter Documentation",
+  "description": "Documentation for LightDM Web Greeter",
+  "author": "Antergos & JezerM"
 }

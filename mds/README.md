@@ -17,4 +17,4 @@ See the [JavaScript API][jsAPI] here, and some [HOWTO][howto] here too!
 
 
 [jsAPI]: ./api/LightDM.md
-[howto]: ./howto
+[howto]: ./howto/intro.md

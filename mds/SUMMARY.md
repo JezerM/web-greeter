@@ -1,6 +1,6 @@
 # Summary
 
-* [Introduction](README.md)
+* [Web Greeter](README.md)
 
 ## Javascript API
 * [LightDM](api/LightDM.md)
