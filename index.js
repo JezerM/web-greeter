@@ -3,7 +3,7 @@ const jsdoc2md = require("jsdoc-to-markdown")
 const fs = require('fs')
 const path = require('path')
 
-const outputDir = "./docs/api/"
+const outputDir = "./mds/api/"
 
 function generateFiles(file) {
   const templateData = jsdoc2md.getTemplateDataSync({

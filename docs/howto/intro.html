@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>Session · HonKit</title>
+        <title>Introduction · HonKit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.6.20">
@@ -56,10 +56,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="User.html" />
     
-    
-    <link rel="prev" href="Layout.html" />
+    <link rel="prev" href="../api/Signal.html" />
     
 
     </head>
@@ -108,9 +106,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="LightDM.html">
+        <li class="chapter " data-level="2.1" data-path="../api/LightDM.html">
             
-                <a href="LightDM.html">
+                <a href="../api/LightDM.html">
             
                     
                     LightDM
@@ -121,9 +119,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="Greeter.html">
+        <li class="chapter " data-level="2.2" data-path="../api/Greeter.html">
             
-                <a href="Greeter.html">
+                <a href="../api/Greeter.html">
             
                     
                     Greeter
@@ -134,9 +132,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.3" data-path="GreeterConfig.html">
+        <li class="chapter " data-level="2.3" data-path="../api/GreeterConfig.html">
             
-                <a href="GreeterConfig.html">
+                <a href="../api/GreeterConfig.html">
             
                     
                     GreeterConfig
@@ -147,9 +145,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.4" data-path="ThemeUtils.html">
+        <li class="chapter " data-level="2.4" data-path="../api/ThemeUtils.html">
             
-                <a href="ThemeUtils.html">
+                <a href="../api/ThemeUtils.html">
             
                     
                     ThemeUtils
@@ -160,9 +158,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.5" data-path="Battery.html">
+        <li class="chapter " data-level="2.5" data-path="../api/Battery.html">
             
-                <a href="Battery.html">
+                <a href="../api/Battery.html">
             
                     
                     Battery
@@ -173,9 +171,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.6" data-path="Language.html">
+        <li class="chapter " data-level="2.6" data-path="../api/Language.html">
             
-                <a href="Language.html">
+                <a href="../api/Language.html">
             
                     
                     Language
@@ -186,9 +184,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.7" data-path="Layout.html">
+        <li class="chapter " data-level="2.7" data-path="../api/Layout.html">
             
-                <a href="Layout.html">
+                <a href="../api/Layout.html">
             
                     
                     Layout
@@ -199,9 +197,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.8" data-path="Session.html">
+        <li class="chapter " data-level="2.8" data-path="../api/Session.html">
             
-                <a href="Session.html">
+                <a href="../api/Session.html">
             
                     
                     Session
@@ -212,9 +210,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.9" data-path="User.html">
+        <li class="chapter " data-level="2.9" data-path="../api/User.html">
             
-                <a href="User.html">
+                <a href="../api/User.html">
             
                     
                     User
@@ -225,9 +223,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.10" data-path="Signal.html">
+        <li class="chapter " data-level="2.10" data-path="../api/Signal.html">
             
-                <a href="Signal.html">
+                <a href="../api/Signal.html">
             
                     
                     Signal
@@ -245,9 +243,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="../howto/intro.html">
+        <li class="chapter active" data-level="3.1" data-path="intro.html">
             
-                <a href="../howto/intro.html">
+                <a href="intro.html">
             
                     
                     Introduction
@@ -288,7 +286,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Session</a>
+        <a href=".." >Introduction</a>
     </h1>
 </div>
 
@@ -303,20 +301,44 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a id="LightDM.Session"></a></p>
-<h2 id="lightdmsession">LightDM.Session</h2>
-<p>Interface for object that holds info about a session. Session objects are not
-created by the theme&apos;s code, but rather by the <a href="Greeter.html"><code>LightDM.Greeter</code></a> class.</p>
-<p><a id="LightDM.Session+name"></a></p>
-<h3 id="sessionname--string">session.name : <code>String</code></h3>
-<p>The name for the session.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Session+key"></a></p>
-<h3 id="sessionkey--string">session.key : <code>String</code></h3>
-<p>The key for the session.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Session+comment"></a></p>
-<h3 id="sessioncomment--string">session.comment : <code>String</code></h3>
-<p>The comment for the session.</p>
-<p><strong>Read only</strong>: true  </p>
+                                <h1 id="introduction">Introduction</h1>
+<p>Web Greeter has a simple API, documented here, which allows to communicate to the Web Greeter itself and the LightDM API.</p>
+<p>To create a theme, you will need these essential functions:</p>
+<pre><code class="lang-javascript">lightdm.authenticate(username)
+
+lightdm.respond(response)
+
+lightdm.start_session(session)
+</code></pre>
+<h3 id="lightdmauthenticateusername"><a href="../api/Greeter.html#LightDM.Greeter+authenticate">lightdm.authenticate(username)</a></h3>
+<p>This method starts the authentication procedure for a user, allowing to start the user session.</p>
+<h3 id="lightdmrespondresponse">lightdm.respond(response)</h3>
+<p>Provide a response to a prompt. Basically, this acts like a password provider. After the authentication is initiated, you need to provide the user password with this method. It could be &quot;12345&quot;, &quot;password&quot;, &quot;strongpassword&quot;, y&apos;know, a password.</p>
+<blockquote>
+<p>NOTE: If authentication is not initiated, this will cause an error.</p>
+</blockquote>
+<h3 id="lightdmstartsessionsession">lightdm.start_session(session)</h3>
+<p>Starts a session for the authenticated user. After the user is authenticated, you will need to start the session with this method.</p>
+<blockquote>
+<p>NOTE: If user is not authenticated, this won&apos;t work.</p>
+</blockquote>
+<p>And that&apos;s it. You can create a simple javascript file with this:</p>
+<pre><code class="lang-javascript">lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
+lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
+lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
+</code></pre>
+<p>Although, if this could really work, it won&apos;t at first. The <code>lightdm</code> object is not available when the greeter is initiated, it is after a little delay. To make this work, an event is triggered when the API is ready to be used. Add an event listener to the <code>GreeterReady</code> event.</p>
+<pre><code class="lang-javascript"><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
+</code></pre>
+<p>And so, it will look like this:</p>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initGreeter</span>(<span class="hljs-params"></span>) </span>{
+  lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
+  lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
+  lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
+}
+
+<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
+</code></pre>
 
                                 
                                 </section>
@@ -344,14 +366,10 @@ created by the theme&apos;s code, but rather by the <a href="Greeter.html"><code
 
             
                 
-                <a href="Layout.html" class="navigation navigation-prev " aria-label="Previous page: Layout">
+                <a href="../api/Signal.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Signal">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="User.html" class="navigation navigation-next " aria-label="Next page: User">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -360,7 +378,7 @@ created by the theme&apos;s code, but rather by the <a href="Greeter.html"><code
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Session","level":"2.8","depth":1,"next":{"title":"User","level":"2.9","depth":1,"path":"api/User.md","ref":"api/User.md","articles":[]},"previous":{"title":"Layout","level":"2.7","depth":1,"path":"api/Layout.md","ref":"api/Layout.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"docs/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"api/Session.md","mtime":"2021-06-29T05:43:55.649Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-29T17:10:05.985Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"3.1","depth":1,"previous":{"title":"Signal","level":"2.10","depth":1,"path":"api/Signal.md","ref":"api/Signal.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"howto/intro.md","mtime":"2021-06-29T03:43:07.187Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-29T17:23:06.299Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

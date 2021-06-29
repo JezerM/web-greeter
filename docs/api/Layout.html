@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>GreeterConfig · HonKit</title>
+        <title>Layout · HonKit</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.6.20">
@@ -56,10 +56,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="ThemeUtils.html" />
+    <link rel="next" href="Session.html" />
     
     
-    <link rel="prev" href="Greeter.html" />
+    <link rel="prev" href="Language.html" />
     
 
     </head>
@@ -134,7 +134,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.3" data-path="GreeterConfig.html">
+        <li class="chapter " data-level="2.3" data-path="GreeterConfig.html">
             
                 <a href="GreeterConfig.html">
             
@@ -186,7 +186,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.7" data-path="Layout.html">
+        <li class="chapter active" data-level="2.7" data-path="Layout.html">
             
                 <a href="Layout.html">
             
@@ -288,7 +288,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >GreeterConfig</a>
+        <a href=".." >Layout</a>
     </h1>
 </div>
 
@@ -303,132 +303,20 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a id="LightDM.GreeterConfig"></a></p>
-<h2 id="lightdmgreeterconfig">LightDM.GreeterConfig</h2>
-<p>Provides greeter themes with a way to access values from the greeter&apos;s config
-file located at <code>/etc/lightdm/web-greeter.yml</code>. The greeter will
-create an instance of this class when it starts. The instance can be accessed
-with the global variable: <code>greeter_config</code>.</p>
-<p><a id="LightDM.GreeterConfig+branding"></a></p>
-<h3 id="greeterconfigbranding--object">greeterConfig.branding : <code>object</code></h3>
-<p>Holds keys/values from the <code>branding</code> section of the config file.</p>
-<p><strong>Read only</strong>: true<br><strong>Properties</strong></p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>background_images_dir</td>
-<td><code>string</code></td>
-<td>Path to directory that contains background images                                      for use in greeter themes.</td>
-</tr>
-<tr>
-<td>logo</td>
-<td><code>string</code></td>
-<td>Path to distro logo image for use in greeter themes.</td>
-</tr>
-<tr>
-<td>user_image</td>
-<td><code>string</code></td>
-<td>Default user image/avatar. This is used by greeter themes                                      for users that have not configured a <code>.face</code> image.</td>
-</tr>
-</tbody>
-</table>
-<p><a id="LightDM.GreeterConfig+greeter"></a></p>
-<h3 id="greeterconfiggreeter--object">greeterConfig.greeter : <code>object</code></h3>
-<p>Holds keys/values from the <code>greeter</code> section of the config file.</p>
-<p><strong>Read only</strong>: true<br><strong>Properties</strong></p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>debug_mode</td>
-<td><code>boolean</code></td>
-<td>Greeter theme debug mode.</td>
-</tr>
-<tr>
-<td>detect_theme_errors</td>
-<td><code>boolean</code></td>
-<td>Provide an option to load a fallback theme when theme                                     errors are detected.</td>
-</tr>
-<tr>
-<td>screensaver_timeout</td>
-<td><code>number</code></td>
-<td>Blank the screen after this many seconds of inactivity.</td>
-</tr>
-<tr>
-<td>secure_mode</td>
-<td><code>boolean</code></td>
-<td>Don&apos;t allow themes to make remote http requests.</td>
-</tr>
-<tr>
-<td>time_format</td>
-<td><code>string</code></td>
-<td>A moment.js format string to be used by the greeter to                                     generate localized time for display.</td>
-</tr>
-<tr>
-<td>time_language</td>
-<td><code>string</code></td>
-<td>Language to use when displaying the time or <code>auto</code>                                     to use the system&apos;s language.</td>
-</tr>
-<tr>
-<td>theme</td>
-<td><code>string</code></td>
-<td>The name of the theme to be used by the greeter.</td>
-</tr>
-</tbody>
-</table>
-<p><a id="LightDM.GreeterConfig+features"></a></p>
-<h3 id="greeterconfigfeatures--object">greeterConfig.features : <code>Object</code></h3>
-<p>Holds keys/values from the <code>features</code> section of the config file.</p>
-<p><strong>Properties</strong></p>
-<table>
-<thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>battery</td>
-<td><code>Boolean</code></td>
-<td>Enable greeter and themes to ger battery status.</td>
-</tr>
-<tr>
-<td>backlight</td>
-<td><code>Object</code></td>
-<td></td>
-</tr>
-<tr>
-<td>backlight.enabled</td>
-<td><code>Boolean</code></td>
-<td>Enable greeter and themes to control display backlight.</td>
-</tr>
-<tr>
-<td>backlight.value</td>
-<td><code>Number</code></td>
-<td>The amount to increase/decrease brightness by greeter.</td>
-</tr>
-<tr>
-<td>backlight.steps</td>
-<td><code>Number</code></td>
-<td>How many steps are needed to do the change.</td>
-</tr>
-</tbody>
-</table>
+                                <p><a id="LightDM.Layout"></a></p>
+<h2 id="lightdmlayout">LightDM.Layout</h2>
+<p>Interface for object that holds info about a keyboard layout on the system. Language
+objects are not created by the theme&apos;s code, but rather by the <a href="Greeter.html"><code>LightDM.Greeter</code></a> class.</p>
+<p><a id="LightDM.Layout+description"></a></p>
+<h3 id="layoutdescription--string">layout.description : <code>String</code></h3>
+<p>The description for the layout.</p>
+<p><strong>Read only</strong>: true<br><a id="LightDM.Layout+name"></a></p>
+<h3 id="layoutname--string">layout.name : <code>String</code></h3>
+<p>The name for the layout.</p>
+<p><strong>Read only</strong>: true<br><a id="LightDM.Layout+short_description"></a></p>
+<h3 id="layoutshortdescription--string">layout.short_description : <code>String</code></h3>
+<p>The territory for the layout.</p>
+<p><strong>Read only</strong>: true  </p>
 
                                 
                                 </section>
@@ -456,12 +344,12 @@ with the global variable: <code>greeter_config</code>.</p>
 
             
                 
-                <a href="Greeter.html" class="navigation navigation-prev " aria-label="Previous page: Greeter">
+                <a href="Language.html" class="navigation navigation-prev " aria-label="Previous page: Language">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="ThemeUtils.html" class="navigation navigation-next " aria-label="Next page: ThemeUtils">
+                <a href="Session.html" class="navigation navigation-next " aria-label="Next page: Session">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -472,7 +360,7 @@ with the global variable: <code>greeter_config</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"GreeterConfig","level":"2.3","depth":1,"next":{"title":"ThemeUtils","level":"2.4","depth":1,"path":"api/ThemeUtils.md","ref":"api/ThemeUtils.md","articles":[]},"previous":{"title":"Greeter","level":"2.2","depth":1,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"docs/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"api/GreeterConfig.md","mtime":"2021-06-29T05:43:55.525Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-29T17:10:05.985Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Layout","level":"2.7","depth":1,"next":{"title":"Session","level":"2.8","depth":1,"path":"api/Session.md","ref":"api/Session.md","articles":[]},"previous":{"title":"Language","level":"2.6","depth":1,"path":"api/Language.md","ref":"api/Language.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"gitbook":"*"},"file":{"path":"api/Layout.md","mtime":"2021-06-29T17:21:09.868Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-29T17:23:06.299Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
