@@ -50,3 +50,8 @@ Makefile.in
 /install-sh
 /missing
 /stamp-h1
+
+# gh-pages
+_book/
+node_modules/
+package-lock.json

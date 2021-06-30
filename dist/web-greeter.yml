@@ -18,6 +18,7 @@ branding:
 #     screensaver_timeout: Blank the screen after this many seconds of inactivity.
 #     secure_mode:         Don't allow themes to make remote http requests.
 #     theme:               Greeter theme to use.
+#     icon_theme:          Icon/cursor theme to use, located in /usr/share/icons/
 #     time_format:         A moment.js format string so the greeter can generate localized time for display.
 #     time_language:       Language to use when displaying the time or "auto" to use the system's language.
 #
@@ -29,6 +30,7 @@ greeter:
     screensaver_timeout: 300
     secure_mode: True
     theme: default
+    icon_theme: Adwaita
     time_format: LT
     time_language: auto
 

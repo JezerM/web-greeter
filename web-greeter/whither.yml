@@ -37,10 +37,15 @@ WebGreeter:
             screensaver_timeout: 300
             secure_mode: True
             theme: default
+            icon_theme: Adwaita
             time_format: LT
             time_language: auto
         features:
             battery: False
+            backlight:
+                enabled: False
+                value: 10
+                steps: 0
         greeters_dir: '@greeters_dir@'
         locale_dir: '@locale_dir@'
         themes_dir: '@themes_dir@'

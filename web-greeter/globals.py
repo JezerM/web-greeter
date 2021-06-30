@@ -177,6 +177,8 @@ class WebGreeter(App):
         self.config.greeter.update(greeter_config)
         self.config.features.update(features_config)
 
+        os.environ["XCURSOR_THEME"] = greeter_config["icon_theme"]
+
         self._config.debug_mode = greeter_config['debug_mode']
         self._config.allow_remote_urls = not greeter_config['secure_mode']
 
