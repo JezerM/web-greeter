@@ -176,7 +176,7 @@ class Greeter {
 
 	/**
 	 * The current language or {@link null} if no language.
-	 * @type {Language|null}
+	 * @type {Language|Null}
 	 * @readonly
 	 */
 	get language() {}
@@ -258,7 +258,7 @@ class Greeter {
 	/**
 	 * Starts the authentication procedure for a user.
 	 *
-	 * @param {String|null} username A username or {@link null} to prompt for a username.
+	 * @param {String|Null} username A username or {@link null} to prompt for a username.
 	 */
 	authenticate( username ) {}
 

@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>Introduction · Web Greeter Documentation</title>
+        <title>Authentication · Web Greeter Documentation</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.6.20">
@@ -56,10 +56,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="theming.html" />
     
-    
-    <link rel="prev" href="../api/Signal.html" />
+    <link rel="prev" href="theming.html" />
     
 
     </head>
@@ -251,7 +249,7 @@
         
         
     
-        <li class="chapter active" data-level="3.1" data-path="intro.html">
+        <li class="chapter " data-level="3.1" data-path="intro.html">
             
                 <a href="intro.html">
             
@@ -277,7 +275,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.3" data-path="auth.html">
+        <li class="chapter active" data-level="3.3" data-path="auth.html">
             
                 <a href="auth.html">
             
@@ -320,7 +318,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Introduction</a>
+        <a href=".." >Authentication</a>
     </h1>
 </div>
 
@@ -335,44 +333,73 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="introduction">Introduction</h1>
-<p>Web Greeter has a simple API, documented here, which allows to communicate to the Web Greeter itself and the LightDM API.</p>
-<p>To create a theme, you will need these essential functions:</p>
-<pre><code class="lang-javascript">lightdm.authenticate(username)
+                                <h1 id="authentication">Authentication</h1>
+<p>Previous examples are too much simple, and not so useful. They are insecure, as the greeter inmediately logs in (unless you want it that way~). You probably want to select users and enter your password. This can be easily done with a simple form.</p>
+<h2 id="manual-login">Manual login</h2>
+<p>With manual login, the user needs to enter both the username and the password.</p>
+<h3 id="html">HTML</h3>
+<pre><code class="lang-html"><span class="hljs-tag">&lt;<span class="hljs-name">form</span> <span class="hljs-attr">action</span>=<span class="hljs-string">&quot;POST&quot;</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;login&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;text&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;user&quot;</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">&quot;off&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter your username&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">input</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">name</span>=<span class="hljs-string">&quot;password&quot;</span> <span class="hljs-attr">autocomplete</span>=<span class="hljs-string">&quot;off&quot;</span> <span class="hljs-attr">placeholder</span>=<span class="hljs-string">&quot;Enter your password&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">button</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&quot;submit-button&quot;</span> <span class="hljs-attr">type</span>=<span class="hljs-string">&quot;submit&quot;</span>&gt;</span>Submit<span class="hljs-tag">&lt;/<span class="hljs-name">button</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">form</span>&gt;</span>
+</code></pre>
+<p>Here, we create a <code>form</code> with any action (it does not matter) and two inputs, one for the user and another one for the password, and a submit button.</p>
+<h3 id="javascript">JavaScript</h3>
+<pre><code class="lang-javascript"><span class="hljs-keyword">const</span> form = <span class="hljs-built_in">document</span>.querySelector(<span class="hljs-string">&quot;form#login&quot;</span>)
 
-lightdm.respond(response)
-
-lightdm.start_session(session)
-</code></pre>
-<h3 id="lightdmauthenticateusername"><a href="../api/Greeter.html#LightDM.Greeter+authenticate">lightdm.authenticate(username)</a></h3>
-<p>This method starts the authentication procedure for a user, allowing to start the user session.</p>
-<h3 id="lightdmrespondresponse"><a href="../api/Greeter.html#LightDM.Greeter+respond">lightdm.respond(response)</a></h3>
-<p>Provide a response to a prompt. Basically, this acts like a password provider. After the authentication is initiated, you need to provide the user password with this method. It could be &quot;12345&quot;, &quot;password&quot;, &quot;strongpassword&quot;, y&apos;know, a password.</p>
-<blockquote>
-<p>NOTE: If authentication is not initiated, this will cause an error.</p>
-</blockquote>
-<h3 id="lightdmstartsessionsession"><a href="../api/Greeter.html#LightDM.Greeter+start_session">lightdm.start_session(session)</a></h3>
-<p>Starts a session for the authenticated user. After the user is authenticated, you will need to start the session with this method.</p>
-<blockquote>
-<p>NOTE: If user is not authenticated, this won&apos;t work.</p>
-</blockquote>
-<p>And that&apos;s it. You can create a simple javascript file with this:</p>
-<pre><code class="lang-javascript">lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
-lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
-lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
-</code></pre>
-<p>Although, if this could really work, it won&apos;t at first. The <code>lightdm</code> object is not available when the greeter is initiated, it is after a little delay. To make this work, an event is triggered when the API is ready to be used. Add an event listener to the <code>GreeterReady</code> event.</p>
-<pre><code class="lang-javascript"><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
-</code></pre>
-<p>And so, it will look like this:</p>
-<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initGreeter</span>(<span class="hljs-params"></span>) </span>{
-  lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
-  lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
-  lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">getArrayForm</span>(<span class="hljs-params">inputs</span>) </span>{
+  <span class="hljs-keyword">if</span> (!inputs) <span class="hljs-keyword">return</span> {}
+  <span class="hljs-keyword">var</span> data = {}
+  inputs.forEach(<span class="hljs-function"><span class="hljs-params">x</span> =&gt;</span> {
+    data[x.name] = x.value
+  })
+  <span class="hljs-keyword">return</span> data
 }
 
-<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
+form.addEventListener(<span class="hljs-string">&quot;submit&quot;</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+  event.preventDefault()
+  <span class="hljs-keyword">var</span> inputs = form.querySelectorAll(<span class="hljs-string">&quot;input&quot;</span>)
+  <span class="hljs-keyword">var</span> data = getArrayForm(inputs)
+  <span class="hljs-keyword">if</span> (<span class="hljs-built_in">Object</span>.keys(data).length === <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>
+
+  lightdm.cancel_authentication()
+  lightdm.authenticate(data.user)
+  lightdm.respond(data.password)
+  lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
+})
 </code></pre>
+<p>Add an event listener on &quot;submit&quot; event, which gets the form inputs and transform them to a simple <code>{name: value}</code> object. And so, lightdm authenticates with the username in <code>data.user</code> (the user input) and responds with the password in <code>data.password</code> (the password input). Then, starts the Ubuntu session.</p>
+<blockquote>
+<p>NOTE: <code>lightdm.cancel_authentication()</code> allows to start another authentication procedure. If this isn&apos;t called, <code>lightdm.authenticate</code> could cause problems.</p>
+</blockquote>
+<h2 id="select-user">Select user</h2>
+<p>The greeter provides a way to get a list of available users with the member <a href="../api/Greeter.html#LightDM.Greeter+users"><code>lightdm.users</code></a>, which returns an array of <a href="../api/User.html">User</a>.</p>
+<p>Creating a user selection is a bit more complex, requiring to create a button for every user that starts the authentication for the selected user.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">let</span> users = lightdm.users
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">updateUser</span>(<span class="hljs-params">user</span>) </span>{
+  <span class="hljs-comment">// Update visual things</span>
+
+  lightdm.cancel_authentication()
+  lightdm.authenticate(user.username)
+}
+
+<span class="hljs-keyword">for</span> (<span class="hljs-keyword">let</span> i = <span class="hljs-number">0</span>; i &lt; users.length; i++) {
+  <span class="hljs-keyword">var</span> button = <span class="hljs-built_in">document</span>.createElement(<span class="hljs-string">&quot;button&quot;</span>)
+  button.innerHTML = users[i].display_name
+  button.addEventListener(<span class="hljs-string">&quot;click&quot;</span>, <span class="hljs-function">() =&gt;</span> {
+    updateUser(users[i])
+  })
+
+  whateverElement.appendChild(button)
+}
+</code></pre>
+<p>For every user, creates a button with the <code>display_name</code> as text. Then, adds an event listener on &quot;click&quot; event, which updates the user. Inside <code>updateUser</code>, theme could update visual things, such as a label containing the actual user, the image, or things like that; then, cancels the current authentication procedure (if any) and starts a new authentication with the selected user.</p>
+<p>You could add these buttons wherever you want. Or, in another way, you could create whatever element you want as long as every element starts a new authentication procedure.</p>
+<h2 id="both">Both</h2>
+<p>The greeter offers a way to know if user wanted to show a manual login with <a href="../api/Greeter.html#LightDM.Greeter+show_manual_login_hint"><code>lightdm.show_manual_login_hint</code></a>, an option inside the lightdm config (<code>/etc/lightdm/lightdm.conf</code>).</p>
+<p>Anyway, you could implement this option no matter if user decided to <code>show_manual_login</code>. But, it&apos;s always a good choice to implement every case.</p>
 
                                 
                                 </section>
@@ -400,14 +427,10 @@ lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
 
             
                 
-                <a href="../api/Signal.html" class="navigation navigation-prev " aria-label="Previous page: Signal">
+                <a href="theming.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Theming">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="theming.html" class="navigation navigation-next " aria-label="Next page: Theming">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -416,7 +439,7 @@ lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"3.1","depth":1,"next":{"title":"Theming","level":"3.2","depth":1,"path":"howto/theming.md","ref":"howto/theming.md","articles":[]},"previous":{"title":"Signal","level":"2.1.9","depth":2,"path":"api/Signal.md","ref":"api/Signal.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/intro.md","mtime":"2021-06-29T21:03:43.133Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"3.3","depth":1,"previous":{"title":"Theming","level":"3.2","depth":1,"path":"howto/theming.md","ref":"howto/theming.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/auth.md","mtime":"2021-06-30T01:34:54.371Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

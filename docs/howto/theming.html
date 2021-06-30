@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>ThemeUtils · Web Greeter Documentation</title>
+        <title>Theming · Web Greeter Documentation</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.6.20">
@@ -56,10 +56,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="Battery.html" />
+    <link rel="next" href="auth.html" />
     
     
-    <link rel="prev" href="GreeterConfig.html" />
+    <link rel="prev" href="intro.html" />
     
 
     </head>
@@ -108,9 +108,9 @@
         
         
     
-        <li class="chapter " data-level="2.1" data-path="LightDM.html">
+        <li class="chapter " data-level="2.1" data-path="../api/LightDM.html">
             
-                <a href="LightDM.html">
+                <a href="../api/LightDM.html">
             
                     
                     LightDM
@@ -122,9 +122,9 @@
             <ul class="articles">
                 
     
-        <li class="chapter " data-level="2.1.1" data-path="Greeter.html">
+        <li class="chapter " data-level="2.1.1" data-path="../api/Greeter.html">
             
-                <a href="Greeter.html">
+                <a href="../api/Greeter.html">
             
                     
                     Greeter
@@ -135,9 +135,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.2" data-path="GreeterConfig.html">
+        <li class="chapter " data-level="2.1.2" data-path="../api/GreeterConfig.html">
             
-                <a href="GreeterConfig.html">
+                <a href="../api/GreeterConfig.html">
             
                     
                     GreeterConfig
@@ -148,9 +148,9 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.1.3" data-path="ThemeUtils.html">
+        <li class="chapter " data-level="2.1.3" data-path="../api/ThemeUtils.html">
             
-                <a href="ThemeUtils.html">
+                <a href="../api/ThemeUtils.html">
             
                     
                     ThemeUtils
@@ -161,9 +161,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.4" data-path="Battery.html">
+        <li class="chapter " data-level="2.1.4" data-path="../api/Battery.html">
             
-                <a href="Battery.html">
+                <a href="../api/Battery.html">
             
                     
                     Battery
@@ -174,9 +174,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.5" data-path="Language.html">
+        <li class="chapter " data-level="2.1.5" data-path="../api/Language.html">
             
-                <a href="Language.html">
+                <a href="../api/Language.html">
             
                     
                     Language
@@ -187,9 +187,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.6" data-path="Layout.html">
+        <li class="chapter " data-level="2.1.6" data-path="../api/Layout.html">
             
-                <a href="Layout.html">
+                <a href="../api/Layout.html">
             
                     
                     Layout
@@ -200,9 +200,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.7" data-path="Session.html">
+        <li class="chapter " data-level="2.1.7" data-path="../api/Session.html">
             
-                <a href="Session.html">
+                <a href="../api/Session.html">
             
                     
                     Session
@@ -213,9 +213,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.8" data-path="User.html">
+        <li class="chapter " data-level="2.1.8" data-path="../api/User.html">
             
-                <a href="User.html">
+                <a href="../api/User.html">
             
                     
                     User
@@ -226,9 +226,9 @@
             
         </li>
     
-        <li class="chapter " data-level="2.1.9" data-path="Signal.html">
+        <li class="chapter " data-level="2.1.9" data-path="../api/Signal.html">
             
-                <a href="Signal.html">
+                <a href="../api/Signal.html">
             
                     
                     Signal
@@ -251,9 +251,9 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="../howto/intro.html">
+        <li class="chapter " data-level="3.1" data-path="intro.html">
             
-                <a href="../howto/intro.html">
+                <a href="intro.html">
             
                     
                     Introduction
@@ -264,9 +264,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.2" data-path="../howto/theming.html">
+        <li class="chapter active" data-level="3.2" data-path="theming.html">
             
-                <a href="../howto/theming.html">
+                <a href="theming.html">
             
                     
                     Theming
@@ -277,9 +277,9 @@
             
         </li>
     
-        <li class="chapter " data-level="3.3" data-path="../howto/auth.html">
+        <li class="chapter " data-level="3.3" data-path="auth.html">
             
-                <a href="../howto/auth.html">
+                <a href="auth.html">
             
                     
                     Authentication
@@ -320,7 +320,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >ThemeUtils</a>
+        <a href=".." >Theming</a>
     </h1>
 </div>
 
@@ -335,83 +335,51 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a id="LightDM.ThemeUtils"></a></p>
-<h2 id="lightdmthemeutils">LightDM.ThemeUtils</h2>
-<p>Provides various utility methods for use in greeter themes. The greeter will automatically
-create an instance of this class when it starts. The instance can be accessed
-with the global variable: <code>theme_utils</code>.</p>
-<p><a id="LightDM.ThemeUtils+bind_this"></a></p>
-<h3 id="themeutilsbindthiscontext-⇒-object">themeUtils.bind_this(context) ⇒ <code>Object</code></h3>
-<p>Binds <code>this</code> to class, <code>context</code>, for all of the class&apos;s methods.</p>
-<p><strong>Returns</strong>: <code>Object</code> - <code>context</code> with <code>this</code> bound to it for all of its methods.  </p>
-<table>
-<thead>
-<tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>context</td>
-<td><code>Object</code></td>
-<td>An ES6 class instance with at least one method.</td>
-</tr>
-</tbody>
-</table>
-<p><a id="LightDM.ThemeUtils+dirlist"></a></p>
-<h3 id="themeutilsdirlistpath-onlyimages-callback">themeUtils.dirlist(path, only_images, callback)</h3>
-<p>Returns the contents of directory found at <code>path</code> provided that the (normalized) <code>path</code>
-meets at least one of the following conditions:</p>
+                                <h1 id="theming">Theming</h1>
+<p>Web Greeter allows to create impressive themes with web technologies, but with some considerations:</p>
 <ul>
-<li>Is located within the greeter themes&apos; root directory.</li>
-<li>Has been explicitly allowed in the greeter&apos;s config file.</li>
-<li>Is located within the greeter&apos;s shared data directory (<code>/var/lib/lightdm-data</code>).</li>
-<li>Is located in <code>/tmp</code>.</li>
+<li>No HTTP requests (unless <code>secure_mode</code> is deactivated)</li>
+<li>File access limited to:<ul>
+<li>Theme root directory (<code>/usr/share/web-greeter/</code>)</li>
+<li>Files explicitily allowed in the config file, in <code>branding</code> section (<code>/etc/lightdm/web-greeter.yml</code>)</li>
+<li>Greeter&apos;s shared data directory (<code>/var/lib/lightdm-data/</code>)</li>
+<li>Located in <code>/tmp</code></li>
 </ul>
-<table>
-<thead>
-<tr>
-<th>Param</th>
-<th>Type</th>
-<th>Default</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>path</td>
-<td><code>String</code></td>
-<td></td>
-<td>The abs path to desired directory.</td>
-</tr>
-<tr>
-<td>only_images</td>
-<td><code>Boolean</code></td>
-<td><code>true</code></td>
-<td>Include only images in the results. Default <code>true</code>.</td>
-</tr>
-<tr>
-<td>callback</td>
-<td><code>function</code></td>
-<td></td>
-<td>Callback function to be called with the result.</td>
-</tr>
-</tbody>
-</table>
-<p><a id="LightDM.ThemeUtils+get_current_localized_time"></a></p>
-<h3 id="themeutilsgetcurrentlocalizedtime-⇒-string">themeUtils.get_current_localized_time() ⇒ <code>String</code></h3>
-<p>Get the current time in a localized format. Time format and language are auto-detected
-by default, but can be set manually in the greeter config file.</p>
-<ul>
-<li><code>language</code> defaults to the system&apos;s language, but can be set manually in the config file.</li>
-<li>When <code>time_format</code> config file option has a valid value, time will be formatted
-according to that value.</li>
-<li>When <code>time_format</code> does not have a valid value, the time format will be <code>LT</code>
-which is <code>1:00 PM</code> or <code>13:00</code> depending on the system&apos;s locale.</li>
+</li>
 </ul>
-<p><strong>Returns</strong>: <code>String</code> - The current localized time.  </p>
+<p>With this said, you&apos;re limited to local access most of the time. If the theme needs an external library, you need to provide it within the theme.</p>
+<h2 id="creating-the-theme">Creating the theme</h2>
+<p>The theme is a web-page. Add an <code>index.html</code>, style it with some CSS, and add the LightDM API with some JavaScript.</p>
+<pre><code class="lang-html"><span class="hljs-meta">&lt;!DOCTYPE <span class="hljs-meta-keyword">html</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">&quot;en&quot;</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">head</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">&quot;UTF-8&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">link</span> <span class="hljs-attr">rel</span>=<span class="hljs-string">&quot;stylesheet&quot;</span> <span class="hljs-attr">href</span>=<span class="hljs-string">&quot;style.css&quot;</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;style&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">title</span>&gt;</span>Example Theme<span class="hljs-tag">&lt;/<span class="hljs-name">title</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">head</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">body</span>&gt;</span>
+  <span class="hljs-comment">&lt;!-- HTML things --&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">body</span>&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">&quot;main.js&quot;</span>&gt;</span><span class="handlebars"><span class="xml">
+<span class="hljs-tag">&lt;/<span class="hljs-name">html</span>&gt;</span>
+</span></span></code></pre>
+<pre><code class="lang-css">* {
+  --bg: <span class="hljs-number">#282828</span>;
+  <span class="hljs-attribute">font-size</span>: <span class="hljs-number">16px</span>;
+}
+
+<span class="hljs-selector-tag">html</span> {
+  <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--bg);
+}
+</code></pre>
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initGreeter</span>(<span class="hljs-params"></span>) </span>{
+  lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
+  lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
+  lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
+}
+
+<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
+</code></pre>
 
                                 
                                 </section>
@@ -439,12 +407,12 @@ which is <code>1:00 PM</code> or <code>13:00</code> depending on the system&apos
 
             
                 
-                <a href="GreeterConfig.html" class="navigation navigation-prev " aria-label="Previous page: GreeterConfig">
+                <a href="intro.html" class="navigation navigation-prev " aria-label="Previous page: Introduction">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="Battery.html" class="navigation navigation-next " aria-label="Next page: Battery">
+                <a href="auth.html" class="navigation navigation-next " aria-label="Next page: Authentication">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -455,7 +423,7 @@ which is <code>1:00 PM</code> or <code>13:00</code> depending on the system&apos
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"ThemeUtils","level":"2.1.3","depth":2,"next":{"title":"Battery","level":"2.1.4","depth":2,"path":"api/Battery.md","ref":"api/Battery.md","articles":[]},"previous":{"title":"GreeterConfig","level":"2.1.2","depth":2,"path":"api/GreeterConfig.md","ref":"api/GreeterConfig.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/ThemeUtils.md","mtime":"2021-06-30T01:54:55.509Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Theming","level":"3.2","depth":1,"next":{"title":"Authentication","level":"3.3","depth":1,"path":"howto/auth.md","ref":"howto/auth.md","articles":[]},"previous":{"title":"Introduction","level":"3.1","depth":1,"path":"howto/intro.md","ref":"howto/intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/theming.md","mtime":"2021-06-29T21:41:09.976Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -117,7 +117,7 @@ Whether or not the greeter has successfully authenticated.
 **Read only**: true  
 <a id="LightDM.Greeter+language"></a>
 
-### greeter.language : <code>Language</code> \| <code>null</code>
+### greeter.language : <code>Language</code> \| <code>Null</code>
 The current language or [null](null) if no language.
 
 **Read only**: true  
@@ -228,7 +228,7 @@ Starts the authentication procedure for a user.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| username | <code>String</code> \| <code>null</code> | A username or [null](null) to prompt for a username. |
+| username | <code>String</code> &#124; <code>Null</code> | A username or [null](null) to prompt for a username. |
 
 <a id="LightDM.Greeter+authenticate_as_guest"></a>
 
@@ -328,7 +328,7 @@ Start a session for the authenticated user.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| session | <code>String</code> \| <code>null</code> | The session to log into or [null](null) to use the default. |
+| session | <code>String</code> &#124; <code>null</code> | The session to log into or [null](null) to use the default. |
 
 <a id="LightDM.Greeter+suspend"></a>
 
