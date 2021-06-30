@@ -28,6 +28,7 @@
 # Standard Lib
 import subprocess
 import re
+import threading
 
 # 3rd-Party Libs
 import gi
@@ -52,7 +53,6 @@ from . import (
 
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
-
 
 def changeBrightness(self, method: str, quantity: int):
     if self._config.features.backlight["enabled"] != True:
@@ -183,7 +183,9 @@ class Greeter(BridgeObject):
 
     @brightness.setter
     def brightness(self, quantity):
-        return changeBrightness(self, "-set", quantity)
+        thread = threading.Thread(target=changeBrightness,
+                                  args=(self, "-set", quantity))
+        thread.start()
 
     @bridge.prop(bool, notify=noop_signal)
     def can_hibernate(self):
@@ -305,15 +307,21 @@ class Greeter(BridgeObject):
 
     @bridge.method(int)
     def brightnessSet(self, quantity):
-        return changeBrightness(self, "-set", quantity)
+        thread = threading.Thread(target=changeBrightness,
+                                  args=(self, "-set", quantity))
+        thread.start()
 
     @bridge.method(int)
     def brightnessIncrease(self, quantity):
-        return changeBrightness(self, "-inc", quantity)
+        thread = threading.Thread(target=changeBrightness,
+                                  args=(self, "-inc", quantity))
+        thread.start()
 
     @bridge.method(int)
     def brightnessDecrease(self, quantity):
-        return changeBrightness(self, "-dec", quantity)
+        thread = threading.Thread(target=changeBrightness,
+                                  args=(self, "-dec", quantity))
+        thread.start()
 
     @bridge.method()
     def cancel_authentication(self):
