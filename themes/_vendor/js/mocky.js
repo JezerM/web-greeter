@@ -1,4 +1,4 @@
-class Language {
+class LightDMLanguage {
 	constructor( {code, name, territory} ) {
 		this.code = code;
 		this.name = name;
@@ -6,7 +6,7 @@ class Language {
 	}
 }
 
-class Layout {
+class LightDMLayout {
 	constructor( {name, description, short_description} ) {
 		this.name = name;
 		this.description = description;
@@ -14,7 +14,7 @@ class Layout {
 	}
 }
 
-class Session {
+class LightDMSession {
 	constructor( {key, name, comment} ) {
 		this.key = key;
 		this.name = name;
@@ -22,7 +22,7 @@ class Session {
 	}
 }
 
-class User {
+class LightDMUser {
 	constructor( {display_name, username, language, layout, image, home_directory, session, logged_in} ) {
 		this.display_name = display_name;
 		this.username = username;
@@ -35,7 +35,7 @@ class User {
 	}
 }
 
-class Battery {
+class LightDMBattery {
 	constructor( {name, level, status}) {
 		this.name = name;
 		this.level = level;
@@ -43,75 +43,121 @@ class Battery {
 	}
 }
 
+let allSignals = [];
+
+class Signal {
+	constructor(name) {
+		this._name = name;
+		this._callbacks = [];
+		allSignals.push(this);
+	}
+
+	/**
+	 * Connects a callback to the signal.
+	 * @param {Function} callback The callback to attach.
+	 */
+	connect(callback) {
+		if (typeof callback !== 'function') return;
+		this._callbacks.push(callback);
+	}
+	/**
+	 * Disconnects a callback to the signal.
+	 * @param {Function} callback The callback to disattach.
+	 */
+	disconnect(callback) {
+		var ind = this._callbacks.findIndex( (cb) => {return cb === callback});
+		if (ind == -1) return;
+		this._callbacks.splice(ind, 1);
+	}
+
+	_run() {
+		this._callbacks.forEach( (cb) => {
+			if (typeof cb !== 'function') return;
+			cb()
+		})
+	}
+}
+
+/**
+ * Emits a signal.
+ * @param {String} name The signal's name.
+ */
+function emitSignal(name) {
+	var signal = allSignals.find( (s) => {
+		return s._name === name;
+	})
+	signal._run()
+}
+
 _mockData = {
 	languages: [
-		Language({
+		new LightDMLanguage({
 			name: 'English',
 			code: 'en_US.utf8',
 			territory: 'USA'
 		}),
-		Language({
+		new LightDMLanguage({
 			name: 'Catalan',
 			code: 'ca_ES.utf8',
 			territory: 'Spain'
 		}),
-		Language({
+		new LightDMLanguage({
 			name: 'French',
 			code: 'fr_FR.utf8',
 			territory: 'France'
 		})
 	],
 	layouts: [
-		Layout({
+		new LightDMLayout({
 			name: 'us',
 			short_description: 'en',
 			description: 'English (US)'
 		}),
-		Layout({
+		new LightDMLayout({
 			name: 'at',
 			short_description: 'de',
 			description: 'German (Austria)'
 		}),
-		Layout({
+		new LightDMLayout({
 			name: 'us rus',
 			short_description: 'ru',
 			description: 'Russian (US, phonetic)'
 		})
 	],
 	sessions: [
-		Session({
+		new LightDMSession({
 			key: 'gnome',
 			name: 'GNOME',
 			comment: 'This session logs you into GNOME'
 		}),
-		Session({
+		new LightDMSession({
 			key: 'cinnamon',
 			name: 'Cinnamon',
 			comment: 'This session logs you into Cinnamon'
 		}),
-		Session({
+		new LightDMSession({
 			key: 'plasma',
 			name: 'Plasma',
 			comment: 'Plasma by KDE'
 		}),
-		Session({
+		new LightDMSession({
 			key: 'awesome',
 			name: 'Awesome wm',
 			comment: 'An Awesome WM'
 		}),
-		Session({
+		new LightDMSession({
 			key: 'mate',
 			name: 'MATE',
 			comment: 'This session logs you into MATE'
 		}),
-		Session({
+		new LightDMSession({
 			key: 'openbox',
 			name: 'Openbox',
 			comment: 'This session logs you into Openbox'
 		})
 	],
 	users: [
-		User({
+		new LightDMUser({
 			display_name: 'Clark Kent',
 			username: 'superman',
 			language: null,
@@ -121,7 +167,7 @@ _mockData = {
 			session: 'gnome',
 			logged_in: false,
 		}),
-		User({
+		new LightDMUser({
 			display_name: 'Bruce Wayne',
 			username: 'batman',
 			language: null,
@@ -131,7 +177,7 @@ _mockData = {
 			session: 'cinnamon',
 			logged_in: false,
 		}),
-		User({
+		new LightDMUser({
 			display_name: 'Peter Parker',
 			username: 'spiderman',
 			language: null,
@@ -142,11 +188,11 @@ _mockData = {
 			logged_in: false,
 		})
 	],
-	battery: Battery({
+	battery: new LightDMBattery({
 		name: "Battery 0",
 		level: 85,
 		state: "Discharging"
-	})
+	}),
 }
 
 
@@ -160,6 +206,8 @@ class Greeter {
 
 		return window.lightdm;
 	}
+
+	mock = true;
 
 	_authentication_user = null;
 	/**
@@ -206,7 +254,7 @@ class Greeter {
 	_batteryData = _mockData.battery;
 	/**
 	 * Gets the battery data.
-	 * @type {Battery}
+	 * @type {LightDMBattery}
 	 * @readonly
 	 */
 	get batteryData() {
@@ -226,7 +274,10 @@ class Greeter {
 	 * @param {Number} quantity The quantity to set
 	 */
 	set brightness( quantity ) {
+		if (quantity > 100) quantity = 100;
+		if (quantity < 0) quantity = 0;
 		this._brightness = quantity;
+		emitSignal("brightness_update");
 	}
 
 	_can_access_battery = true;
@@ -352,7 +403,7 @@ class Greeter {
 	_language = null;
 	/**
 	 * The current language or {@link null} if no language.
-	 * @type {Language|null}
+	 * @type {LightDMLanguage|null}
 	 * @readonly
 	 */
 	get language() {
@@ -362,7 +413,7 @@ class Greeter {
 	_languages = _mockData.languages;
 	/**
 	 * A list of languages to present to the user.
-	 * @type {Language[]}
+	 * @type {LightDMLanguage[]}
 	 * @readonly
 	 */
 	get languages() {
@@ -372,7 +423,7 @@ class Greeter {
 	_layout = _mockData.layouts[0];
 	/**
 	 * The currently active layout for the selected user.
-	 * @type {Layout}
+	 * @type {LightDMLayout}
 	 */
 	get layout() {
 		return this._layout;
@@ -381,7 +432,7 @@ class Greeter {
 	_layouts = _mockData.layouts;
 	/**
 	 * A list of keyboard layouts to present to the user.
-	 * @type {Layout[]}
+	 * @type {LightDMLayout[]}
 	 * @readonly
 	 */
 	get layouts() {
@@ -421,7 +472,7 @@ class Greeter {
 	_sessions = _mockData.sessions;
 	/**
 	 * List of available sessions.
-	 * @type {Session[]}
+	 * @type {LightDMSession[]}
 	 * @readonly
 	 */
 	get sessions() {
@@ -455,11 +506,11 @@ class Greeter {
 	_users = _mockData.users;
 	/**
 	 * List of available users.
-	 * @type {User[]}
+	 * @type {LightDMUser[]}
 	 * @readonly
 	 */
 	get users() {
-		return this.authentication_user;
+		return this._users;
 	}
 
 	/**
@@ -468,18 +519,23 @@ class Greeter {
 	 * @param {String|null} username A username or {@link null} to prompt for a username.
 	 */
 	authenticate( username ) {
+		this._in_authentication = true;
+		this._authentication_user = username;
 	}
 
 	/**
 	 * Starts the authentication procedure for the guest user.
 	 */
 	authenticate_as_guest() {
+		this._in_authentication = true;
+		this._authentication_user = "guest";
 	}
 
 	/**
 	 * Updates the battery data
 	 */
 	batteryUpdate() {
+		console.log("Battery updated")
 	}
 
 	/**
@@ -487,6 +543,7 @@ class Greeter {
 	 * @param {Number} quantity The quantity to set
 	 */
 	brightnessSet( quantity ) {
+		this.brightness = quantity;
 	}
 
 	/**
@@ -494,6 +551,7 @@ class Greeter {
 	 * @param {Number} quantity The quantity to increase
 	 */
 	brightnessIncrease( quantity ) {
+		this.brightness += quantity;
 	}
 
 	/**
@@ -501,12 +559,15 @@ class Greeter {
 	 * @param {Number} quantity The quantity to decrease
 	 */
 	brightnessDecrease( quantity ) {
+		this.brightness -= quantity;
 	}
 
 	/**
 	 * Cancel user authentication that is currently in progress.
 	 */
 	cancel_authentication() {
+		this._in_authentication = false;
+		this._authentication_user = "";
 	}
 
 	/**
@@ -516,25 +577,30 @@ class Greeter {
 	}
 
 	/**
-	 * Get the value of a hint.
-	 * @param {String} name The name of the hint to get.
-	 * @returns {String|Boolean|Number|null}
-	 */
-	get_hint( name ) {
-	}
-
-	/**
 	 * Triggers the system to hibernate.
 	 * @returns {Boolean} {@link true} if hibernation initiated, otherwise {@link false}
 	 */
 	hibernate() {
+		alert("Hibernating system");
+		location.reload();
 	}
 
+	_default_password = "justice";
 	/**
 	 * Provide a response to a prompt.
 	 * @param {*} response
 	 */
 	respond( response ) {
+		console.log("Response:", response);
+		if (response === this._default_password) {
+			this._is_authenticated = true;
+			emitSignal("authentication_complete")
+		} else {
+			this._is_authenticated = false;
+			setTimeout(() => {
+				emitSignal("authentication_complete")
+			}, 2000)
+		}
 	}
 
 	/**
@@ -542,6 +608,8 @@ class Greeter {
 	 * @returns {Boolean} {@link true} if restart initiated, otherwise {@link false}
 	 */
 	restart() {
+		alert("Restarting system");
+		location.reload();
 	}
 
 	/**
@@ -558,6 +626,8 @@ class Greeter {
 	 * @returns {Boolean} {@link true} if shutdown initiated, otherwise {@link false}
 	 */
 	shutdown() {
+		alert("Shutting down system");
+		location.reload();
 	}
 
 	/**
@@ -566,13 +636,33 @@ class Greeter {
 	 * @returns {Boolean} {@link true} if successful, otherwise {@link false}
 	 */
 	start_session( session ) {
+		if (!this._is_authenticated) return;
+		alert(`Session started with: "${session}"`);
+		location.reload();
 	}
 
 	/**
 	 * Triggers the system to suspend/sleep.
 	 * @returns {Boolean} {@link true} if suspend/sleep initiated, otherwise {@link false}
 	 */
-	suspend() {}
+	suspend() {
+		alert("Suspending system");
+		location.reload();
+	}
+
+	authentication_complete = new Signal("authentication_complete");
+
+	autologin_timer_expired = new Signal("autologin_timer_expired");
+
+	brightness_update = new Signal("brightness_update");
+
+	idle = new Signal("idle");
+
+	reset = new Signal("reset");
+
+	show_message = new Signal("show_message");
+
+	show_prompt = new Signal("show_prompt");
 
 }
 
@@ -661,6 +751,10 @@ class GreeterConfig {
 
 }
 
+let localized_invalid_date = null,
+	time_language = null,
+	time_format = null
+
 class ThemeUtils {
 	constructor() {
 		if ("theme_utils" in window) {
@@ -745,7 +839,12 @@ class ThemeUtils {
 	}
 }
 
-
 new ThemeUtils();
 new GreeterConfig();
 new Greeter();
+
+const GreeterReady = new Event("GreeterReady")
+
+setTimeout(() => {
+	window.dispatchEvent(GreeterReady)
+}, 1000)
