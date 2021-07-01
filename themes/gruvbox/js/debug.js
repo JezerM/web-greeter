@@ -1,6 +1,6 @@
 class Debug {
   constructor() {
-    this._debugPass = "just"
+    this._debugPass = "pes"
     this._init()
   }
 
@@ -18,7 +18,12 @@ class Debug {
       }
     }
 
-    window.lightdm = {
+    if (!window.lightdm) {
+      window.lightdm =  {}
+    }
+
+    var local_lightdm = {
+      default_password: "pes",
       is_authenticated: false,
       authentication_user: null,
       default_session: "awesome",
@@ -126,5 +131,16 @@ class Debug {
         if (lightdm.brightness < 0) lightdm.brightness = 0
       }
     }
+
+    if (lightdm.mock == undefined) {
+      window.lightdm = {}
+      Object.assign(window.lightdm, local_lightdm)
+    } else {
+      Object.keys(local_lightdm).forEach((key) => {
+        var realKey = `_${key}`
+        lightdm[realKey] = local_lightdm[key]
+      })
+    }
+
   }
 }

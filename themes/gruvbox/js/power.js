@@ -14,20 +14,24 @@ class Power {
     this._cover.classList.remove("hide")
   }
 
-  _do_shutdown() {
+  async _do_shutdown() {
     this._show_message("Shutting down")
+    await wait(1000)
     lightdm.shutdown()
   }
-  _do_restart() {
+  async _do_restart() {
     this._show_message("Restarting")
+    await wait(1000)
     lightdm.restart()
   }
-  _do_hibernate() {
+  async _do_hibernate() {
     this._show_message("Hibernating")
+    await wait(1000)
     lightdm.hibernate()
   }
-  _do_suspend() {
+  async _do_suspend() {
     this._show_message("Suspending")
+    await wait(1000)
     lightdm.suspend()
   }
 
