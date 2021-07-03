@@ -13,6 +13,7 @@ As this is based on the [master release](https://github.com/Antergos/web-greeter
 - JavaScript error handling, allowing to load the default theme.
 - Themes could be simple, or very complex.
 - Battery and brightness control.
+- Tab completion for zsh and bash.
 
 ## Dependencies
 |                       |     arch      |        ubuntu        |       fedora        |       openSUSE        | 
@@ -46,12 +47,12 @@ To control the brightness inside the greeter, I recommend to use [acpilight][acp
 
 udev rules are needed to be applied before using it. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
 
-If you don't want to or don't have a compatible device, disable it inside `/etc/lightdm/web-greeter.yml`
+If you don't want to or don't have a compatible device, disable it inside `/etc/lightdm/web-greeter.yml` (disabled by default)
 
 ### Battery status
 `acpi` is the only tool you need (and a battery).
 
-You can disable it inside `/etc/lightdm/web-greeter.yml`
+You can disable it inside `/etc/lightdm/web-greeter.yml` (disabled by default)
 
 ## Debugging
 You can run the greeter from within your desktop session if you add the following line to the desktop file for your session located in `/usr/share/xsessions/`: `X-LightDM-Allow-Greeter=true`.
