@@ -41,10 +41,10 @@ from typing import (
 # 3rd-Party Libs
 
 # This Application
-from utils import config
+from utils import errorPrompt, keyboard
 
 import globals
-from globals import WebGreeter
+from globals import WebGreeter, logger
 
 def loadWhitherConf():
     global whither_yaml
@@ -101,7 +101,7 @@ def changeTheme(theme: str):
     if theme in dirlist:
         custom_config["theme"] = theme
     else:
-        globals.debugLog("Theme not found. Going with config theme", 4)
+        logger.error("Theme not found. Going with config theme")
     return
 
 def listThemes(quiet = False):

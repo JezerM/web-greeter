@@ -43,12 +43,13 @@ from PyQt5.QtCore import QTimer
 
 # This Application
 from . import (
+    Battery,
     language_to_dict,
     layout_to_dict,
     session_to_dict,
     user_to_dict,
     battery_to_dict,
-    debugLog
+    logger
 )
 
 LightDMGreeter = LightDM.Greeter()
@@ -63,7 +64,7 @@ def changeBrightness(self, method: str, quantity: int):
         if child.returncode == 1:
             raise ChildProcessError("xbacklight returned 1")
     except Exception as err:
-        debugLog("Brightness: {}".format(err), 4)
+        logger.error("Brightness: {}".format(err))
     else:
         self.brightness_update.emit()
     pass
@@ -75,7 +76,7 @@ def getBrightness(self):
         level = subprocess.run(["xbacklight", "-get"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
         return int(level.stdout)
     except Exception as err:
-        debugLog("Battery: {}".format(err), 4)
+        logger.error("Brightness: {}".format(err))
         return -1
 
 def updateBattery(self):
@@ -84,14 +85,9 @@ def updateBattery(self):
     try:
         acpi = subprocess.run(["acpi", "-b"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
 
-        battery = acpi.stdout.split(": ")
-        data = re.sub("%|,", "", battery[1])
-        level = data.split(" ")[1]
-
-        self._battery = int(level)
-        self._acpi = acpi.stdout
+        self._battery.update(acpi.stdout)
     except Exception as err:
-        debugLog("Battery: {}".format(err), 4)
+        logger.error("Battery: {}".format(err))
     else:
         self.property_changed.emit()
 
@@ -110,8 +106,7 @@ class Greeter(BridgeObject):
     noop_signal = bridge.signal()
     property_changed = bridge.signal()
 
-    _battery = -1
-    _acpi = ""
+    _battery = Battery()
 
     def __init__(self, config, *args, **kwargs):
         super().__init__(name='LightDMGreeter', *args, **kwargs)
@@ -175,7 +170,7 @@ class Greeter(BridgeObject):
 
     @bridge.prop(Variant, notify=property_changed)
     def batteryData(self):
-        return battery_to_dict(self._acpi)
+        return battery_to_dict(self._battery)
 
     @bridge.prop(int, notify=brightness_update)
     def brightness(self):

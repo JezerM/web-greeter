@@ -27,6 +27,8 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 import re
+import threading, time
+
 from logging import (
     getLogger,
     DEBUG,
@@ -37,7 +39,7 @@ from logging import (
 
 log_format = ''.join([
     '%(asctime)s [ %(levelname)s ] %(filename)s %(',
-    'lineno)d: %(message)s'
+    'lineno)d : %(funcName)s | %(message)s'
 ])
 formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
 logger = getLogger("greeter")
@@ -48,18 +50,45 @@ stream_handler.setFormatter(formatter)
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
-def debugLog(txt: str, level: int = 1):
-    if (level == 1):
-        logger.debug(txt)
-    elif (level == 2):
-        logger.info(txt)
-    elif (level == 3):
-        logger.warn(txt)
-    elif (level == 4):
-        logger.error(txt)
-    else:
-        logger.debug(txt)
+class setInterval:
+    def __init__(self, interval, action):
+        self.interval = interval
+        self.action = action
+        self.stopEvent = threading.Event()
+        thread = threading.Thread(target=self.__setInterval)
+        thread.start()
 
+    def __setInterval(self):
+        nextTime = time.time() + self.interval
+        while not self.stopEvent.wait(nextTime - time.time()):
+            nextTime += self.interval
+            self.action()
+
+class Battery:
+    _name = ""
+    _level = -1
+    _state = ""
+
+    def __init__(self):
+        pass
+
+    def update(self, acpi: str):
+        formatted = re.sub("%|,|\n", "", acpi)
+        colon = formatted.split(": ")
+        splitted = colon[1].split(" ")
+
+        self._name = colon[0]
+        self._level = int(splitted[1])
+        self._state = splitted[0]
+
+    def get_name(self):
+        return self._name
+
+    def get_level(self):
+        return self._level
+
+    def get_state(self):
+        return self._state
 
 def language_to_dict(lang):
     return dict(code=lang.get_code(), name=lang.get_name(), territory=lang.get_territory())
@@ -94,16 +123,11 @@ def user_to_dict(user):
         username=user.get_name(),
     )
 
-def battery_to_dict(batt):
-    if batt == "":
-        return dict()
-    formatted = re.sub("%|,|\n", "", batt)
-    colon = formatted.split(": ")
-    splitted = colon[1].split(" ")
+def battery_to_dict(battery):
     return dict(
-        name = colon[0],
-        level = int(splitted[1]),
-        state = splitted[0]
+        name = battery.get_name(),
+        level = battery.get_level(),
+        state = battery.get_state()
     )
 
 

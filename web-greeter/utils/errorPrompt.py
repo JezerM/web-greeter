@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#  config.py
+#  errorPrompt.py
 #
 #  Copyright © 2021 JezerM
 #
@@ -25,11 +25,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from whither.toolkits.bootstrap import WebPage, MainWindow
+from whither.toolkits.bootstrap import WebPage
 
-from PyQt5.QtCore import QUrl, pyqtSignal, Qt
-from PyQt5.QtWidgets import QDialogButtonBox, QDialog, QVBoxLayout, QLabel, QPushButton, QAbstractButton
-from PyQt5.QtGui import QKeyEvent
+from PyQt5.QtWidgets import QDialogButtonBox, QDialog, QVBoxLayout, QLabel, QPushButton
 
 from logging import (
     getLogger,
@@ -138,15 +136,4 @@ def errorPrompt(err):
 
     return
 
-def keyPressEvent(self, keyEvent: QKeyEvent):
-    super(MainWindow, self).keyPressEvent(keyEvent)
-    if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):
-        globals.greeter.greeter.brightnessIncrease(globals.greeter.config.features.backlight["value"])
-    if (keyEvent.key() == Qt.Key.Key_MonBrightnessDown):
-        globals.greeter.greeter.brightnessDecrease(globals.greeter.config.features.backlight["value"])
-
-
-MainWindow.keyPressEvent = keyPressEvent
-
-WebPage.javaScriptConsoleMessage = javaScriptConsoleMessage # Yep, you can override functions like this!!!
-
+WebPage.javaScriptConsoleMessage = javaScriptConsoleMessage

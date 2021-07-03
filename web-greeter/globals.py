@@ -78,18 +78,6 @@ logger.propagate = False
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
-def debugLog(txt: str, level: int = 1):
-    if (level == 1):
-        logger.debug(txt)
-    elif (level == 2):
-        logger.info(txt)
-    elif (level == 3):
-        logger.warn(txt)
-    elif (level == 4):
-        logger.error(txt)
-    else:
-        logger.debug(txt)
-
 initial_timeout = 0
 
 def setScreenSaver(timeout: int):
@@ -104,17 +92,17 @@ def setScreenSaver(timeout: int):
         subprocess.run(["xset", "s", str(timeout)], check=True)
 
     except Exception as err:
-        debugLog("Screensaver timeout couldn't be set", 4)
+        logger.error("Screensaver timeout couldn't be set")
     else:
-        debugLog("Screensaver timeout set")
+        logger.debug("Screensaver timeout set")
 
 def resetScreenSaver():
     try:
         subprocess.run(["xset", "s", str(initial_timeout)])
     except Exception as err:
-        debugLog("Screensaver reset failed", 4)
+        logger.error("Screensaver reset failed")
     else:
-        debugLog("Screensaver reset")
+        logger.debug("Screensaver reset")
 
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
