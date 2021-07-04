@@ -765,6 +765,7 @@ class ThemeUtils {
 
 		localized_invalid_date = moment('today', '!@#');
 
+		window.theme_utils = this
 	}
 
 	/**
