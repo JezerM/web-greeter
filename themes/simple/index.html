@@ -8,7 +8,7 @@
 			overflow: hidden;
 			opacity: 1;
 			margin: 0;
-			background-color: #ffffff;
+			background-color: #000;
 			transition: opacity 2s, background-color 2s, background-position 2s;
 			transition-timing-function: ease-in;
 		}
@@ -157,11 +157,12 @@
 		if (lightdm.is_authenticated) {
 			// Start default session
 			// let body = document.getElementById('body');
-			document.documentElement.addEventListener('transitionend', lightdm.start_session_sync);
+			let session = lightdm.default_session
+			document.documentElement.addEventListener('transitionend', () => {lightdm.start_session(session)});
 			document.documentElement.className = 'session_starting';
 		} else {
 			show_message("Authentication Failed", "error");
-			setTimeout(start_authentication, 3000);
+			setTimeout(start_authentication, 2000);
 		}
 	};
 
@@ -191,7 +192,7 @@
 	window.start_authentication = function() {
 		clear_messages();
 		// start without providing "user" to make the greeter prompt for "user"
-		lightdm.authenticate();
+		lightdm.authenticate("");
 	};
 
 	/**
@@ -202,10 +203,16 @@
 		lightdm.respond(entry.value);
 	};
 
+	window.addEventListener("GreeterReady", () => {
+		lightdm.show_message.connect(show_message)
+		lightdm.show_prompt.connect(show_prompt)
+		lightdm.authentication_complete.connect(authentication_complete)
+		lightdm.autologin_timer_expired.connect(autologin_timer_expired)
+
+		start_authentication()
+	});
+
 </script>
 <!--<script src="../_vendor/js/mock.js"></script>-->
-<script>
-	start_authentication();
-</script>
 </body>
 </html>

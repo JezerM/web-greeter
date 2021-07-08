@@ -24,13 +24,9 @@ async function initGreeter() {
     debug = new Debug()
   }
 
-  if (lightdm.authentication_complete) {
-    lightdm.authentication_complete.connect(() => authentication_done())
-  }
+  lightdm.authentication_complete?.connect(() => authentication_done())
 
-  if (lightdm.brightness_update) {
-    lightdm.brightness_update.connect(() => brightness._updateData())
-  }
+  lightdm.brightness_update?.connect(() => brightness._updateData())
 
   accounts = new Accounts()
 

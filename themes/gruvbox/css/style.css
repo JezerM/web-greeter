@@ -284,8 +284,14 @@ input:focus, input:focus-visible {
   right: 0;
 }
 #system-power > * {
+  background: transparent;
   font-size: 2em;
 }
+#system-power > *:hover, #system-power > *:focus {
+  background: #3c3836aa;
+  backdrop-filter: blur(10px);
+}
+
 
 #sessions-list {
   position: absolute;

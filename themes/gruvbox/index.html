@@ -5,10 +5,9 @@
   <meta name="viewport" content="width=device-width, viewport-fit=cover, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <link rel="stylesheet" href="css/style.css" class="style">
-  <link rel="stylesheet" href="fonts/material/css/materialdesignicons.css" class="style">
+  <link rel="stylesheet" href="../../_vendor/material-icons/css/materialdesignicons.min.css" onerror="this.href='../_vendor/material-icons/css/materialdesignicons.min.css'" class="style">
 
-  <script src="../_vendor/js/moment-with-locales.min.js"></script>
-  <script src="../_vendor/js/mocky.js"></script>
+  <script src="../_vendor/js/mock.js"></script>
 
   <title>Gruvbox greeter</title>
 </head>
@@ -71,18 +70,18 @@
       <div id="battery-label"></div>
     </div>
     <div id="system-power" class="label-bar">
-      <div id="shutdown-btn" class="hide">
+      <button id="shutdown-btn" class="hide">
         <span class="mdi mdi-power"></span>
-      </div>
-      <div id="restart-btn" class="hide">
+      </button>
+      <button id="restart-btn" class="hide">
         <span class="mdi mdi-restart"></span>
-      </div>
-      <div id="suspend-btn" class="hide">
+      </button>
+      <button id="suspend-btn" class="hide">
         <span class="mdi mdi-power-sleep"></span>
-      </div>
-      <div id="hibernate-btn" class="hide">
+      </button>
+      <button id="hibernate-btn" class="hide">
         <span class="mdi mdi-power-cycle"></span>
-      </div>
+      </button>
     </div>
   </div>
 
