@@ -18,7 +18,7 @@ class Authenticate {
 		})
 	}
 
-	_respond() {
+	async _respond() {
 		let inputUser = document.querySelector("#input-username")
 		let inputPass = document.querySelector("#input-password")
 		inputUser.blur(); inputUser.disabled = true;
@@ -26,6 +26,7 @@ class Authenticate {
 
 		lightdm.cancel_authentication()
 		lightdm.authenticate(String(this._username))
+		await wait(1000)
 		lightdm.respond(this._password)
 	}
 
