@@ -26,9 +26,7 @@
  */
 
 
-let localized_invalid_date = null,
-	time_language = null,
-	time_format = null,
+let time_language = null,
 	_ThemeUtils = null;
 
 
@@ -46,9 +44,6 @@ class ThemeUtils {
 			return _ThemeUtils;
 		}
 
-		moment.locale( window.navigator.languages );
-
-		localized_invalid_date = moment('today', '!@#');
 		_ThemeUtils = instance;
 	}
 
@@ -122,36 +117,60 @@ class ThemeUtils {
 	}
 
 	/**
-	 * Get the current time in a localized format. Time format and language are auto-detected
-	 * by default, but can be set manually in the greeter config file.
-	 *   * `language` defaults to the system's language, but can be set manually in the config file.
-	 *   * When `time_format` config file option has a valid value, time will be formatted
-	 *     according to that value.
-	 *   * When `time_format` does not have a valid value, the time format will be `LT`
-	 *     which is `1:00 PM` or `13:00` depending on the system's locale.
-	 *
-	 * @return {string} The current localized time.
+	 * Get the current date in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
+	 * 	 * `language` defaults to the system's language, but can be set manually in the config file.
+	 * 
+	 * @returns {Object} The current date.
+	 */
+	get_current_localized_date() {
+		let config = greeter_config.greeter
+
+		var locale = []
+
+		if (time_language === null) {
+			time_language = config.time_language
+		}
+
+		if (time_language != "") {
+			locale.push(time_language)
+		}
+
+		let optionsDate = { day: "2-digit", month: "2-digit", year: "2-digit" }
+
+		let fmtDate = Intl.DateTimeFormat(locale, optionsDate)
+
+		let now = new Date()
+		var date = fmtDate.format(now)
+
+		return date
+	}
+
+	/**
+	 * Get the current time in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
+	 * 	 * `language` defaults to the system's language, but can be set manually in the config file.
+	 * 
+	 * @returns {Object} The current time.
 	 */
 	get_current_localized_time() {
-		if ( null === time_language ) {
-			let config = greeter_config.greeter,
-				manual_language = ( '' !== config.time_language && 'auto' !== config.time_language ),
-				manual_time_format = ( '' !== config.time_format && 'auto' !== config.time_format );
+		let config = greeter_config.greeter
 
-			time_language =  manual_language ? config.time_language : window.navigator.language;
-			time_format = manual_time_format ? config.time_format : 'LT';
+		var locale = []
 
-			if ( manual_language ) {
-				moment.locale( time_language );
-			}
+		if (time_language === null) {
+			time_language = config.time_language
 		}
 
-		let local_time = moment().format( time_format );
-
-		if ( local_time === localized_invalid_date ) {
-			local_time = moment().format( 'LT' );
+		if (time_language != "") {
+			locale.push(time_language)
 		}
 
-		return local_time;
+		let optionsTime = { hour: "2-digit", minute: "2-digit" }
+
+		let fmtTime = Intl.DateTimeFormat(locale, optionsTime)
+
+		let now = new Date()
+		var time = fmtTime.format(now)
+
+		return time
 	}
 }

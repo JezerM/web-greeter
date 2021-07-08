@@ -14,8 +14,7 @@ clean_build_dir() {
 
 combine_javascript_sources() {
 	cd "${BUILD_DIR}/${PKGNAME}/resources/js"
-	cat _vendor/moment-with-locales.min.js \
-		ThemeUtils.js \
+	cat ThemeUtils.js \
 		bootstrap.js > bundle.js
 }
 

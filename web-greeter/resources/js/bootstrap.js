@@ -36,7 +36,7 @@
 	 * @type Event
 	 * @memberOf window
 	 */
-	const _ready_event = new Event( 'GreeterReady' );
+	window._ready_event = new Event( 'GreeterReady' );
 
 	function channel_ready_cb( channel ) {
 		_channel = channel;
