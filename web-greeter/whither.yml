@@ -38,8 +38,7 @@ WebGreeter:
             secure_mode: True
             theme: default
             icon_theme: Adwaita
-            time_format: LT
-            time_language: auto
+            time_language: ""
         features:
             battery: False
             backlight:

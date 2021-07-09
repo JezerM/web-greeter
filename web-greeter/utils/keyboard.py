@@ -30,6 +30,8 @@ from whither.toolkits.bootstrap import WebPage, MainWindow
 from PyQt5.QtCore import QUrl, pyqtSignal, Qt
 from PyQt5.QtGui import QKeyEvent
 
+import globals
+
 def keyPressEvent(self, keyEvent: QKeyEvent):
     super(MainWindow, self).keyPressEvent(keyEvent)
     if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):

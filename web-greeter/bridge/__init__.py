@@ -91,10 +91,14 @@ class Battery:
         return self._state
 
 def language_to_dict(lang):
+    if (not lang):
+        return dict()
     return dict(code=lang.get_code(), name=lang.get_name(), territory=lang.get_territory())
 
 
 def layout_to_dict(layout):
+    if (not layout):
+        return dict()
     return dict(
         description=layout.get_description(),
         name=layout.get_name(),
@@ -103,6 +107,8 @@ def layout_to_dict(layout):
 
 
 def session_to_dict(session):
+    if (not session):
+        return dict()
     return dict(
         comment=session.get_comment(),
         key=session.get_key(),
@@ -112,6 +118,8 @@ def session_to_dict(session):
 
 
 def user_to_dict(user):
+    if (not user):
+        return dict()
     return dict(
         display_name=user.get_display_name(),
         home_directory=user.get_home_directory(),
@@ -124,6 +132,8 @@ def user_to_dict(user):
     )
 
 def battery_to_dict(battery):
+    if (not battery):
+        return dict()
     return dict(
         name = battery.get_name(),
         level = battery.get_level(),
