@@ -77,7 +77,6 @@ body {
 
 .info {
   position: absolute;
-  bottom: 0;
   margin: 10px;
   font-size: 2em;
   padding: 8px;
@@ -247,6 +246,11 @@ input:focus, input:focus-visible {
 #session-label {
   bottom: 0;
   left: 0;
+}
+#lock-label {
+  top: 0;
+  left: 0;
+  font-weight: bold;
 }
 
 .label-bar {

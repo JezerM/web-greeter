@@ -40,6 +40,10 @@ async function initGreeter() {
   
   brightness = new Brightness()
 
+  var lock = lightdm.lock_hint
+  if (lock) {
+    document.querySelector("#lock-label").classList.remove("hide")
+  }
 }
 
 const notGreeter = false
