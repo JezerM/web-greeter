@@ -9,7 +9,7 @@ WebGreeter:
             enabled: '@at_spi_service@'
             command: /usr/lib/at-spi2-core/at-spi-bus-launcher
             arg: --launch-immediately
-        app_id: com.antergos.web-greeter
+        app_id: web-greeter
         context_menu:
             enabled: False
         debug_mode: '@debug_mode@'
@@ -36,7 +36,7 @@ WebGreeter:
             detect_theme_errors: True
             screensaver_timeout: 300
             secure_mode: True
-            theme: default
+            theme: gruvbox
             icon_theme: Adwaita
             time_language: ""
         features:
@@ -49,10 +49,10 @@ WebGreeter:
         locale_dir: '@locale_dir@'
         themes_dir: '@themes_dir@'
         version:
-            full: '3.0.0rc4'
+            full: '3.0.0rc5'
             major: 3
             minor: 0
             micro: 0
             alpha: False
             beta: False
-            rc: 4
+            rc: 5

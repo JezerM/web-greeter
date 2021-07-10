@@ -26,7 +26,6 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-import yaml
 import pkg_resources
 import os
 from typing import (
@@ -159,7 +158,7 @@ class WebGreeter(App):
         greeter_config = ConfigLoader('greeter', config_file).config
         features_config = ConfigLoader('features', config_file).config
 
-        greeter_config.update(custom_config)
+        greeter_config.update(custom_config["app"]["greeter"])
 
         self.config.branding.update(branding_config)
         self.config.greeter.update(greeter_config)
@@ -169,6 +168,8 @@ class WebGreeter(App):
 
         self._config.debug_mode = greeter_config['debug_mode']
         self._config.allow_remote_urls = not greeter_config['secure_mode']
+        self._config.context_menu.enabled = greeter_config['debug_mode']
+        self._config.window.update(custom_config["whither"]["window"])
 
     def load_theme(self):
         self.logger.debug('Loading theme...')
@@ -177,5 +178,12 @@ class WebGreeter(App):
 
 global custom_config
 global greeter
-custom_config = {}
+custom_config = {
+    "whither": {
+        "window": {}
+    },
+    "app": {
+        "greeter": {}
+    }
+}
 

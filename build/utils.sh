@@ -46,6 +46,7 @@ do_install_dev() {
 	cp -RH "${REPO_DIR}/whither/whither" /usr/lib/python3.6/site-packages
 }
 
+# Not used
 generate_pot_file() {
 	REPO_ROOT="$(dirname "${REPO_DIR}")"
 	xgettext --from-code UTF-8 -o "${REPO_ROOT}/po/web-greeter.pot" -d web-greeter "${REPO_ROOT}"/src/*.c
@@ -79,7 +80,7 @@ prepare_install() {
 	cp "${BUILD_DIR}/dist/${PKGNAME}.yml" "${INSTALL_ROOT}/etc/lightdm"
 
 	# AppData File
-	cp "${BUILD_DIR}/dist/com.antergos.${PKGNAME}.appdata.xml" "${INSTALL_ROOT}${PREFIX}/share/metainfo"
+	cp "${BUILD_DIR}/dist/${PKGNAME}.appdata.xml" "${INSTALL_ROOT}${PREFIX}/share/metainfo"
 
 	# Desktop File
 	cp "${BUILD_DIR}/dist/${PKGNAME}.desktop" "${INSTALL_ROOT}${PREFIX}/share/xgreeters"

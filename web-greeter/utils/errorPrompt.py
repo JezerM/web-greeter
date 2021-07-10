@@ -126,7 +126,7 @@ def errorPrompt(err):
     if result == 0: # Cancel
         return
     elif result == 1: # Default theme
-        globals.custom_config["theme"] = "default"
+        globals.custom_config["app"]["greeter"]["theme"] = "gruvbox"
         globals.greeter.get_and_apply_user_config()
         globals.greeter.load_theme()
         return

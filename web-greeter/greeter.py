@@ -28,7 +28,7 @@
 
 # Standard Lib
 import sys
-import yaml
+import ruamel.yaml as yaml
 import pkg_resources
 import os
 from typing import (
@@ -85,21 +85,25 @@ def changeConfig(option: str, value):
     return
 
 def debugMode(value: bool):
+    window = {}
+    greeter = {}
     if value:
-        custom_config["debug_mode"] = True
-        custom_config["decorated"] = True
-        custom_config["stays_on_top"] = False
+        greeter["debug_mode"] = True
+        window["decorated"] = True
+        window["stays_on_top"] = False
+        window["initial_state"] = "normal"
     else:
-        custom_config["debug_mode"] = False
-        custom_config["decorated"] = False
-        custom_config["stays_on_top"] = True
-    pass
+        greeter["debug_mode"] = False
+        window["decorated"] = False
+        window["stays_on_top"] = True
+    custom_config["whither"]["window"] = window
+    custom_config["app"]["greeter"] = greeter
 
 def changeTheme(theme: str):
     dirlist = listThemes(True)
 
     if theme in dirlist:
-        custom_config["theme"] = theme
+        custom_config["app"]["greeter"]["theme"] = theme
     else:
         logger.error("Theme not found. Going with config theme")
     return
@@ -136,11 +140,11 @@ def yargs(args: List[str]):
         used+=1
         exit()
     elif args[0] == "--debug":
-        changeConfig("debug_mode", True)
+        debugMode(True)
         used+=1
         pass
     elif args[0] == "--normal":
-        changeConfig("debug_mode", False)
+        debugMode(False)
         used+=1
         pass
     elif args[0] == "--theme":
