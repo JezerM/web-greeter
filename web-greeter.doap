@@ -8,17 +8,16 @@
   <shortdesc xml:lang="en">Web Greeter for LightDM</shortdesc>
   <programming-language>Python</programming-language>
   <programming-language>JavaScript</programming-language>
-  <homepage rdf:resource="https://github.com/Antergos/web-greeter" />
-  <download-page rdf:resource="https://github.com/Antergos/web-greeter/release" />
-  <bug-database rdf:resource="https://github.com/Antergos/web-greeter/issues" />
+  <homepage rdf:resource="https://github.com/JezerM/web-greeter" />
+  <download-page rdf:resource="https://github.com/JezerM/web-greeter/release" />
+  <bug-database rdf:resource="https://github.com/JezerM/web-greeter/issues" />
   <category rdf:resource="http://api.gnome.org/doap-extensions#desktop" />
-  <screenshots rdf:resource="https://github.com/Antergos/web-greeter/raw/master/themes/antergos/img/screenshot1.jpg" />
+  <screenshots rdf:resource="https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-1.png" />
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Dustin Falgout</foaf:name>
-      <foaf:mbox rdf:resource="mailto:dustin@antergos.com" />
-      <gnome:userid>lots0logs</gnome:userid>
+      <foaf:name>Jezer Mejía</foaf:name>
+      <foaf:mbox rdf:resource="mailto:amyuki4@gmail.com" />
     </foaf:Person>
   </maintainer>
 </Project>

@@ -1,4 +1,4 @@
-.TH "web-greeter" "1" "2020.6.14" GNU
+.TH "web-greeter" "1" "2020.7.6" GNU
 .nh
 .ad l
 .SH "NAME"
@@ -40,6 +40,8 @@ functions in new works and should update any existing works which make use of
 deprecated properties and/or functions to ensure continued proper functionality\&.
 .PP
 The following functions \fBmust\fR be provided by the greeter theme and callable on the global "window" object\&.
+.PP
+See full documentation on https://jezerm\&.github\&.io/web-greeter/
 .PP
 \fBshow_prompt(text, type)\fR
 .RS 4
@@ -96,11 +98,6 @@ Cancels the authentication of the autologin user\&.  The older function
 lightdm\&.cancel_timed_login() has been deprecated.
 .RE
 .PP
-\fBlightdm\&.get_hint(hint_name)\fR
-.RS 4
-Returns the value of a named hint provided by LightDM\&.
-.RE
-.PP
 \fBlightdm\&.suspend()\fR
 .RS 4
 Suspends the system, if the greeter has the authority to do so\&.
@@ -123,9 +120,7 @@ deprecated\&.
 \fBlightdm\&.respond(text)\fR
 .RS 4
 When LightDM has prompted for input, provide the response to LightDM\&.
-The deprecated function was "provide_secret"\&.  This is still available for
-backwards compatibility, but authors of greeters should move to using
-lightdm.respond()\&.
+The deprecated function was "provide_secret"\&.
 .RE
 .PP
 \fBlightdm\&.restart()\fR
@@ -199,7 +194,7 @@ String\&. The name of the default session (as configured in lightdm.conf)\&.
 Boolean\&. A guest account is available for login\&.
 .RE
 .PP
-\fBlightdm\&.hide_users\fR
+\fBlightdm\&.hide_users_hint\fR
 .RS 4
 Boolean\&. The whole list of users should not be displayed\&.
 .RE
@@ -265,24 +260,6 @@ Array\&. The users that are able to log in\&. Returns an Array of LightDMUser
 objects\&.
 .RE
 .PP
-The following calls can be made to read configuration keys out of the
-web-greeter configuration file\&.
-.PP
-\fBgreeter_config\&.get_str(section, key)\fR
-.RS 4
-Returns the string value associated with key under the "section" in the configuration file\&.
-.RE
-.PP
-\fBgreeter_config\&.get_num(section, key)\fR
-.RS 4
-Returns the numeric value associated with key under the "section" in the configuration file\&.
-.RE
-.PP
-\fBgreeter_config\&.get_bool(section, key)\fR
-.RS 4
-Returns the boolean value associated with key under the "section" in the configuration file\&.
-.RE
-.PP
 The theme_utils object has some utility functions associated with it which
 are intended to make a theme author's work easier\&.
 .PP
@@ -299,12 +276,17 @@ Binds this to class, context, for all of the class's methods\&.
 .PP
 \fBtheme_utils\&.get_current_localized_time()\fR
 .RS 4
-Get the current time in a localized format\&. Time format and language are
-auto-detected by default, but can be set manually in the greeter config file\&.
+Get the current time in a localized format\&. Language is auto-detected by default,
+but can be set manually in the greeter config file\&.
+.RE
+\fBtheme_utils\&.get_current_localized_date()\fR
+.RS 4
+Get the current date in a localized format\&. Language is auto-detected by default,
+but can be set manually in the greeter config file\&.
 .RE
 .PP
 Please see the LightDM API documentation for the complete list of calls
-available\&.  The web-greeter implements all of the LightDM API\&.
+available\&. The web-greeter implements all of the LightDM API\&.
 .PP
 .SH "CONFIGURATION"
 .PP
@@ -321,7 +303,7 @@ Directory where themes should be stored\&.
 .RE
 .SH "EXAMPLES"
 .PP
-Please see the "default" and "simple" themes that are shipped with web-greeter\&.
+Please see the "dracula", "gruvbox" and "simple" themes that are shipped with web-greeter\&.
 .TP
 \fBCommand Line\fR
 .RS 4
@@ -331,9 +313,12 @@ web-greeter --normal
 .SH "SEE ALSO"
 .PP
 http://people\&.ubuntu\&.com/~robert-ancell/lightdm/reference/
+.PP
 https://lazka\&.github\&.io/pgi-docs/#LightDM-1
+.PP
+https://jezerm\&.github\&.io/web-greeter/
 .SH "AUTHOR"
 .PP
 The legacy lightdm-webkit-greeter was written by Robert Ancell <robert\&.ancell\&@canonical\&.com\&>\&.
 It was ported to webkit2 by the Antergos Developers <dev@antergos\&.com>\&. Also includes code improvements
-contributed by Scott Balneaves <sbalneav@ltsp\&.org>\&.
+contributed by Scott Balneaves <sbalneav@ltsp\&.org>\&. Mantained by JezerM <amyuki4@gmail\&.com>\&.

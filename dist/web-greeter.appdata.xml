@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!-- Copyright 2017 Dustin Falgout <dustin@antergos.com> -->
 <component type="desktop">
-	<id>com.antergos.web-greeter</id>
+	<id>web-greeter</id>
 	<metadata_license>CC0-1.0</metadata_license>
 	<project_license>GPL-3.0+</project_license>
 	<name>Web Greeter</name>
-	<summary>A modern, visually appealing greeter for LightDM.</summary>
+	<summary>A modern, visually appealing greeter for LightDM</summary>
 	<description>
 		<p>
 			Web Greeter for LightDM utilizes themes built with HTML/CSS/JavaScript for it's login screen.
 		</p>
 		<p>
 			Web Greeter themes provide modern, visually appealing, and feature-rich
-			login screens. Two themes are included by default. There is also a growing number of
+			login screens. Three themes are included by default. There is also a growing number of
 			3rd-Party themes available online.
 		</p>
 	</description>
 	<screenshots>
-		<screenshot height="412" width="800" type="default">
-			<image>https://github.com/Antergos/web-greeter/raw/master/themes/default/img/screenshot1.jpg</image>
-			<caption>Login screen (default theme)</caption>
+		<screenshot height="768" width="1366" type="default">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-1.png</image>
+			<caption>Login screen (gruvbox theme)</caption>
 		</screenshot>
-		<screenshot height="412" width="800">
-			<image>https://github.com/Antergos/web-greeter/raw/master/themes/default/img/screenshot2.jpg</image>
-			<caption>Login screen background switcher (default theme)</caption>
-		</screenshot>
-		<screenshot height="412" width="800">
-			<image>https://github.com/Antergos/web-greeter/raw/master/themes/default/img/screenshot3.jpg</image>
-			<caption>Login screen user selection (default theme)</caption>
+		<screenshot height="768" width="1366" type="default">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-2.png</image>
+			<caption>Login screen shutting down (gruvbox theme)</caption>
 		</screenshot>
 	</screenshots>
 
@@ -104,22 +100,17 @@
 			</description>
 		</release>
 	</releases>
-	<kudos>
-		<kudo>ModernToolkit</kudo>
-	</kudos>
-	<url type="bugtracker">https://github.com/Antergos/web-greeter/issues</url>
-	<url type="donation">https://antergos.com/donate</url>
-	<url type="help"/>
-	<url type="homepage">https://github.com/Antergos/web-greeter</url>
-	<url type="translate">https://www.transifex.com/faidoc/antergos/lightdm-webkit2-greeter</url>
+	<url type="bugtracker">https://github.com/JezerM/web-greeter/issues</url>
+	<url type="help">https://jezerm.github.io/web-greeter/</url>
+	<url type="homepage">https://github.com/JezerM/web-greeter</url>
 	<suggests>
 		<id>apps.light-locker</id>
 	</suggests>
 	<provides>
 		<binary>web-greeter</binary>
 	</provides>
-	<update_contact>dustin_at_antergos.com</update_contact>
+	<update_contact>amyuki4@gmail.com</update_contact>
 	<translation type="gettext">web-greeter</translation>
-	<developer_name>Antergos Linux Project</developer_name>
+	<developer_name>JezerM</developer_name>
 </component>
 
