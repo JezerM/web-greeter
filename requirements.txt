@@ -1,3 +1,2 @@
-# This is for automated dependency tracking. See the README for dependency information.
-whither
-pgi
+PyGObject
+whither @ https://github.com/JezerM/whither/tarball/master

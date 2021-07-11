@@ -24,15 +24,18 @@ As this is based on the [master release](https://github.com/Antergos/web-greeter
 > ***NOTE*** Be sure to have [whither][whither] installed from this source
 
 ### PIP
-You can install the above dependencies with pip. **liblightdm-gobject** should be accesible if you have installed lightdm.
+Above dependencies can be installed with pip as well.
 ```sh
-pip install PyGObject
+pip install -r requirements.txt
 ```
+
+> **NOTE** Be sure to install pip libraries as root too
 
 ## Download & Install
 ```sh
 git clone https://github.com/JezerM/web-greeter.git
 cd web-greeter
+sudo pip install -r requirements.txt
 sudo make install
 ```
 
