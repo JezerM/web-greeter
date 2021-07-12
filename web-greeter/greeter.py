@@ -85,8 +85,8 @@ def changeConfig(option: str, value):
     return
 
 def debugMode(value: bool):
-    window = {}
-    greeter = {}
+    window = dict(custom_config["whither"]["window"])
+    greeter = dict(custom_config["app"]["greeter"])
     if value:
         greeter["debug_mode"] = True
         window["decorated"] = True

@@ -10,6 +10,7 @@ WebGreeter:
             command: /usr/lib/at-spi2-core/at-spi-bus-launcher
             arg: --launch-immediately
         app_id: web-greeter
+        url_scheme: web-greeter
         context_menu:
             enabled: False
         debug_mode: '@debug_mode@'

@@ -133,7 +133,7 @@ class WebGreeter(App):
     def __pre_init__(cls):
         ConfigLoader.add_filter(cls.validate_greeter_config_data)
 
-    def _before_web_container_init(self):
+    def _before_main_window_init(self):
         self.get_and_apply_user_config()
 
     def _before_exit(self):
