@@ -81,19 +81,19 @@
         </div>
 
         <div id="bottom-right" class="button-group">
-          <button id="shutdown-button">
+          <button id="shutdown-button" class="hide">
             <span class="mdi mdi-power"></span>
           </button>
 
-          <button id="restart-button">
+          <button id="restart-button" class="hide">
             <span class="mdi mdi-restart"></span>
           </button>
 
-          <button id="suspend-button">
+          <button id="suspend-button" class="hide">
             <span class="mdi mdi-power-sleep"></span>
           </button>
 
-          <button id="hibernate-button">
+          <button id="hibernate-button" class="hide">
             <span class="mdi mdi-power-cycle"></span>
           </button>
         </div>
@@ -112,17 +112,18 @@
         <span class="mdi mdi-close-thick mdi-24px"></span>
       </button>
 
-      <button class="image" tabindex="0">
-        <img src="./assets/dracula.png" alt="">
-      </button>
-      <button class="image" tabindex="0">
-        <img src="./assets/dracula.png" alt="">
-      </button>
-      <button class="image" tabindex="0">
-        <img src="./assets/dracula.png" alt="">
-      </button>
+      <div id="background-selector">
+        <button class="image" tabindex="0">
+          <img src="./assets/dracula.png" alt="">
+        </button>
+        <button class="image" tabindex="0">
+          <img src="./assets/dracula.png" alt="">
+        </button>
+        <button class="image" tabindex="0">
+          <img src="./assets/dracula.png" alt="">
+        </button>
+      </div>
     </div>
-
   </div>
 
   <script src="js/debug.js"></script>
@@ -130,6 +131,9 @@
   <script src="js/sessions.js"></script>
   <script src="js/authenticate.js"></script>
   <script src="js/sidebar.js"></script>
+  <script src="js/backgrounds.js"></script>
+  <script src="js/time-date.js"></script>
+  <script src="js/power.js"></script>
   <script src="js/index.js"></script>
 </body>
 </html>

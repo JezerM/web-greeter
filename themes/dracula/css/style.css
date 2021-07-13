@@ -38,6 +38,8 @@ html {
   width: 100vw;
   background-color: black;
   font-size: 16px;
+  text-rendering: optimizeSpeed;
+  image-rendering: pixelated;
 }
 html * {
   font-family: system-ui;
@@ -137,11 +139,10 @@ body {
   width: 30em;
   box-sizing: border-box;
   transition: var(--animation-duration);
-
-  /*display: flex;*/
-  /*justify-content: center;*/
-  /*align-items: flex-start;*/
 }
+/*#login-wrapper:hover, #login-wrapper:focus, #login-wrapper:focus-within {*/
+  /*filter: drop-shadow(2px 4px 6px black);*/
+/*}*/
 body.success #login-wrapper {
   background-color: #79d28f;
 }
@@ -448,10 +449,20 @@ button {
   max-height: 100vh;
 }
 
-.panel .image {
+#background-selector {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: -webkit-fill-available;
+  height: auto;
+}
+
+#background-selector .image {
   display: flex;
   flex-direction: column;
   width: 48%;
+  max-height: 100px;
   background-color: transparent;
   margin-top: 1em;
   padding: 0;
@@ -462,17 +473,17 @@ button {
   border-radius: 0;
 }
 
-.panel .image > img {
+#background-selector .image > img {
   background-color: var(--alt1);
   width: -webkit-fill-available;
-  max-height: 200px;
+  height: 100%;
   object-fit: cover;
   filter: brightness(0.8);
 }
-.panel .image:hover, .panel .image:focus {
+#background-selector .image:hover, #background-selector .image:focus {
   filter: drop-shadow(2px 2px 6px black);
 }
-.panel .image:hover > img, .panel .image:focus > img {
+#background-selector .image:hover > img, #background-selector .image:focus > img {
   filter: brightness(1);
 }
 
