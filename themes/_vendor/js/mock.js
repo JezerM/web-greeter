@@ -793,8 +793,8 @@ class ThemeUtils {
 		return context;
 	}
 
-	dirlist() {
-		return []
+	dirlist(path, noDir, callback) {
+		callback([])
 	}
 
 	/**
@@ -861,8 +861,8 @@ new ThemeUtils();
 new GreeterConfig();
 new Greeter();
 
-const GreeterReady = new Event("GreeterReady")
+window._ready_event = new Event("GreeterReady")
 
 setTimeout(() => {
-	window.dispatchEvent(GreeterReady)
+	window.dispatchEvent(_ready_event)
 }, 1000)
