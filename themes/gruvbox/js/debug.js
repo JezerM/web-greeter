@@ -7,15 +7,23 @@ class Debug {
   _init() {
     console.log("DEBUG")
 
-    window.theme_utils = {}
-    window.theme_utils.dirlist = function(path) {
-      return false
+		if (!window.theme_utils) {
+      window.theme_utils = {}
+      window.theme_utils.dirlist = function(path, mode, callback) {
+        callback([])
+      }
+      window.theme_utils.bind_this = function(context) {return context}
     }
 
-    window.greeter_config = {
-      greeter: {
-        debug_mode: true,
-      }
+		if (!window.greeter_config) {
+			window.greeter_config = {
+				greeter: {
+					debug_mode: true,
+				},
+				branding: {
+					background_images_dir: "",
+				}
+			}
     }
 
     if (!window.lightdm) {

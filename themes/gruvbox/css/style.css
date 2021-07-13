@@ -253,6 +253,19 @@ input:focus, input:focus-visible {
   font-weight: bold;
 }
 
+#time-date {
+  top: 0;
+  font-weight: bold;
+  font-size: calc(1em + 2px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#time-date span {
+  display: block;
+}
+
 .label-bar {
   position: absolute;
   display: flex;

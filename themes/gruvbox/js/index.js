@@ -34,6 +34,8 @@ async function initGreeter() {
 
   authenticate = new Authenticate()
 
+  time_date = new TimeDate()
+
   power = new Power()
 
   battery = new Battery()
@@ -48,9 +50,9 @@ async function initGreeter() {
 
 const notGreeter = false
 
-if (notGreeter) {
-  debug = new Debug()
-  initGreeter()
-} else {
-  window.addEventListener("GreeterReady", initGreeter)
+if (window._ready_event === undefined) {
+  _ready_event = new Event("GreeterReady")
+  window.dispatchEvent(_ready_event)
 }
+
+window.addEventListener("GreeterReady", initGreeter)
