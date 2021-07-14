@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 #
-#  greeter.py
+#  main.py
 #
-#  Copyright © 2017 Antergos
+#  Copyright © 2021 JezerM
 #
 #  This file is part of Web Greeter.
 #

@@ -28,7 +28,7 @@ do_build() {
 
 	# Create "Zip Application"
 	(cd "${PKGNAME}" \
-		&& mv greeter.py __main__.py \
+		&& mv main.py __main__.py \
 		&& zip -rq ../"${PKGNAME}.zip" . -x '**__pycache__**' 'resources/*' \
 		&& cd - >/dev/null \
 		&& mkdir -p "${INSTALL_ROOT}${PREFIX}"/{bin,share} \
