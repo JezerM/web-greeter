@@ -33,6 +33,49 @@ import os
 # This Application
 from .pkg_json import PackageJSON
 
+from logging import (
+    getLogger,
+    DEBUG,
+    Formatter,
+    StreamHandler,
+)
+
+log_format = ''.join([
+    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
+    'lineno)d: %(message)s'
+])
+formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+logger = getLogger("theme")
+logger.propagate = False
+stream_handler = StreamHandler()
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)
+
+def checkTheme(self):
+    themes = listThemes(self)
+    config_theme = self.config.greeter.theme
+    default = "gruvbox"
+    if self.config.greeter.theme in themes:
+        pass
+    else:
+        logger.error("Config theme not valid: \"{0}\". Going with \"{1}\" theme".format(config_theme, default))
+        self.config.greeter.theme = default
+
+
+def listThemes(self):
+    themes_dir = self.config.themes_dir
+    themes_dir = themes_dir if os.path.exists(themes_dir) else "/usr/share/web-greeter/themes"
+    filenames = os.listdir(themes_dir)
+
+    dirlist = []
+    for file in filenames:
+        if os.path.isdir(os.path.join(themes_dir, file)):
+            dirlist.append(file)
+
+    return dirlist
+
 
 class Theme:
     """
