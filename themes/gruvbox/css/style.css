@@ -68,7 +68,7 @@ body {
 .button {
   background: var(--bg4);
   border: 0;
-  padding: 0.8em;
+  padding: 0.5em;
   font-size: inherit;
   cursor: pointer;
   border-radius: 5px;
@@ -380,6 +380,12 @@ li {
 }
 #sessions-button:hover, #sessions-button:focus {
   background: var(--light_blue);
+}
+.button:hover span::before, .button:focus span::before {
+  transform: rotate(180deg);
+}
+.button span::before {
+  transition: var(--animation-duration);
 }
 
 ::-webkit-scrollbar {
