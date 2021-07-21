@@ -105,6 +105,15 @@ def resetScreenSaver():
     else:
         logger.debug("Screensaver reset")
 
+def getDefaultCursor():
+    cursor_theme = ""
+    try:
+        child = subprocess.Popen(["cat", "/usr/share/icons/default/index.theme"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        awk = subprocess.run(["awk", "-F=", "/Inherits/ {print $2}"], stdout=subprocess.PIPE, stdin=child.stdout, text=True)
+        cursor_theme = awk.stdout.replace("\n", "")
+    except Exception as err:
+        logger.error("Default cursor couldn't be get")
+    return cursor_theme
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILE = os.path.join(BASE_DIR, 'whither.yml')
@@ -166,7 +175,8 @@ class WebGreeter(App):
         self.config.greeter.update(greeter_config)
         self.config.features.update(features_config)
 
-        os.environ["XCURSOR_THEME"] = greeter_config["icon_theme"]
+        cursor_theme = greeter_config["icon_theme"]
+        os.environ["XCURSOR_THEME"] = cursor_theme if cursor_theme != None else getDefaultCursor()
 
         self._config.debug_mode = greeter_config['debug_mode']
         self._config.allow_remote_urls = not greeter_config['secure_mode']

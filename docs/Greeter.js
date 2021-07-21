@@ -193,6 +193,7 @@ class Greeter {
 	 * @type {Layout}
 	 */
 	get layout() {}
+	set layout(layout) {}
 
 	/**
 	 * A list of keyboard layouts to present to the user.
@@ -345,7 +346,6 @@ class Greeter {
 	 */
 	suspend() {}
 
-
 	/**
 	 * Gets emitted when the greeter has completed authentication.
 	 * @type {Signal}
@@ -390,31 +390,6 @@ class Greeter {
 	show_prompt;
 
 }
-
-/**
- * Moment.js instance - Loaded and instantiated automatically by the greeter.
- * @name moment
- * @type {object}
- * @version 2.17.0
- * @memberOf window
- * @see [Moment.js Documentation](http://momentjs.com/docs)
- */
-
-/**
- * jQuery instance - Themes must manually load the included vendor script in order to use this object.
- * @name jQuery
- * @type {object}
- * @version 3.1.1
- * @memberOf window
- * @see [jQuery Documentation](http://api.jquery.com)
- */
-
-/**
- * jQuery instance
- * @name $
- * @memberOf window
- * @see {@link window.jQuery}
- */
 
 /**
  * JS-Cookie instance - Themes must manually load the included vendor script in order to use this object.

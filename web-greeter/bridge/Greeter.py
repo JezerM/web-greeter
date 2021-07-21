@@ -242,6 +242,17 @@ class Greeter(BridgeObject):
     def layout(self):
         return layout_to_dict(LightDM.get_layout())
 
+    @layout.setter
+    def layout(self, layout):
+        if type(layout) != dict:
+            return False
+        lay = dict(
+            name = layout.get("name") or "",
+            description = layout.get("description") or "",
+            short_description = layout.get("short_description") or ""
+        )
+        return LightDM.set_layout(LightDM.Layout(**lay))
+
     @bridge.prop(Variant, notify=noop_signal)
     def layouts(self):
         return [layout_to_dict(layout) for layout in LightDM.get_layouts()]

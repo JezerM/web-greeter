@@ -899,7 +899,7 @@ class ThemeUtils {
 		var locale = []
 
 		if (time_language === null) {
-			time_language = config.time_language
+			time_language = config.time_language || ""
 		}
 
 		if (time_language != "") {
@@ -928,7 +928,7 @@ class ThemeUtils {
 		var locale = []
 
 		if (time_language === null) {
-			time_language = config.time_language
+			time_language = config.time_language || ""
 		}
 
 		if (time_language != "") {

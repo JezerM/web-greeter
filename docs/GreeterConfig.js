@@ -38,11 +38,11 @@ class GreeterConfig  {
 	/**
 	 * Holds keys/values from the `branding` section of the config file.
 	 *
-	 * @type {object}
-	 * @property {string} background_images_dir Path to directory that contains background images
+	 * @type {Object}
+	 * @property {String} background_images_dir Path to directory that contains background images
 	 *                                      for use in greeter themes.
-	 * @property {string} logo                  Path to distro logo image for use in greeter themes.
-	 * @property {string} user_image            Default user image/avatar. This is used by greeter themes
+	 * @property {String} logo                  Path to distro logo image for use in greeter themes.
+	 * @property {String} user_image            Default user image/avatar. This is used by greeter themes
 	 *                                      for users that have not configured a `.face` image.
 	 * @readonly
 	 */
@@ -51,17 +51,15 @@ class GreeterConfig  {
 	/**
 	 * Holds keys/values from the `greeter` section of the config file.
 	 *
-	 * @type {object}
-	 * @property {boolean} debug_mode          Greeter theme debug mode.
-	 * @property {boolean} detect_theme_errors Provide an option to load a fallback theme when theme
+	 * @type {Object}
+	 * @property {Boolean} debug_mode          Greeter theme debug mode.
+	 * @property {Boolean} detect_theme_errors Provide an option to load a fallback theme when theme
 	 *                                     errors are detected.
-	 * @property {number}  screensaver_timeout Blank the screen after this many seconds of inactivity.
-	 * @property {boolean} secure_mode         Don't allow themes to make remote http requests.
-	 * @property {string}  time_format         A moment.js format string to be used by the greeter to
-	 *                                     generate localized time for display.
-	 * @property {string}  time_language       Language to use when displaying the time or `auto`
-	 *                                     to use the system's language.
-	 * @property {string}  theme               The name of the theme to be used by the greeter.
+	 * @property {Number}  screensaver_timeout Blank the screen after this many seconds of inactivity.
+	 * @property {Boolean} secure_mode         Don't allow themes to make remote http requests.
+	 * @property {String}  theme               The name of the theme to be used by the greeter.
+	 * @property {String|Null}  icon_theme		 Icon/cursor theme to use, located in /usr/share/icons, i.e "Adwaita". Set to Null to use default icon theme.
+	 * @property {String|Null}  time_language  Language to use when displaying the date or time, i.e "en-us", "es-419", "ko", "ja". Set to Null to use system's language.
 	 * @readonly
 	 */
 	get greeter() {}

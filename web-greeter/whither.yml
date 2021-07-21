@@ -38,8 +38,8 @@ WebGreeter:
             screensaver_timeout: 300
             secure_mode: True
             theme: gruvbox
-            icon_theme: Adwaita
-            time_language: ""
+            icon_theme:
+            time_language:
         features:
             battery: False
             backlight:
