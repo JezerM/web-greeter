@@ -12,7 +12,7 @@ function generateFiles(file) {
   })
 
   let selectedData = templateData.reduce( (selectedData, identifier) => {
-    if (identifier.kind == 'class' || identifier.kind == 'namespace') {
+    if (identifier.kind == 'class' || identifier.name == 'window' || identifier.kind == 'namespace') {
       selectedData.push(identifier)
     }
     return selectedData
@@ -23,17 +23,22 @@ function generateFiles(file) {
     let name = identifier.name
     if (identifier.kind == 'class') {
       template = `{{#class name="${name}"}}{{>docs}}{{/class}}`
+    } else if (identifier.name == 'window') {
+      template = `{{#namespace name="${name}"}}{{>docs}}{{/namespace}}`
     } else {
-      template = `{{#namespace name="${name}"}}{{>header~}}{{>body}}{{/namespace}}`
+      template = `{{#namespace name="${name}"}}{{>header~}}{{>body}}{{>member-index~}}{{/namespace}}`
     }
     console.log(`rendering ${name}, template: ${template}`)
 
     const output = jsdoc2md.renderSync({
       data: templateData,
       template: template,
+      "no-gfm": true,
       partial: ["templates/partials/**/*.hbs"],
-      "global-index-format": "none",
-      "module-index-format": "none"
+      helper: ["templates/helpers/**/*.js"],
+      "global-index-format": "dl",
+      "module-index-format": "dl",
+      "member-index-format": "list"
     })
 
     fs.writeFileSync(path.resolve(outputDir, `${name}.md`), output)

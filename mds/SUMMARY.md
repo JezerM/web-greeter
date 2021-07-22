@@ -13,6 +13,7 @@
   * [Session](api/Session.md)
   * [User](api/User.md)
   * [Signal](api/Signal.md)
+* [window](api/window.md)
 
 ## HOWTO
 * [Introduction](howto/intro.md)

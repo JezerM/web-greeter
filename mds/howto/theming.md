@@ -41,8 +41,13 @@ html {
 ```
 
 ```javascript
-function initGreeter() {
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+async function initGreeter() {
   lightdm.authenticate("superuser")
+  await wait(100)
   lightdm.respond("superpassword")
   lightdm.start_session("ubuntu")
 }

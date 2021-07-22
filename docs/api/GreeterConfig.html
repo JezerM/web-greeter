@@ -244,6 +244,19 @@
             
         </li>
     
+        <li class="chapter " data-level="2.2" data-path="window.html">
+            
+                <a href="window.html">
+            
+                    
+                    window
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -335,132 +348,101 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a id="LightDM.GreeterConfig"></a></p>
+                                <p><a id="LightDM_GreeterConfig"></a></p>
 <h2 id="lightdmgreeterconfig">LightDM.GreeterConfig</h2>
 <p>Provides greeter themes with a way to access values from the greeter&apos;s config
 file located at <code>/etc/lightdm/web-greeter.yml</code>. The greeter will
 create an instance of this class when it starts. The instance can be accessed
 with the global variable: <code>greeter_config</code>.</p>
-<p><a id="LightDM.GreeterConfig+branding"></a></p>
-<h3 id="greeterconfigbranding--object">greeterConfig.branding : <code>object</code></h3>
+<p><a id="LightDM_GreeterConfig-branding"></a></p>
+<h3 id="greeterconfigbranding--object">greeter_config.branding : <code>Object</code></h3>
 <p>Holds keys/values from the <code>branding</code> section of the config file.</p>
 <p><strong>Read only</strong>: true<br><strong>Properties</strong></p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Name</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>background_images_dir</td>
-<td><code>string</code></td>
-<td>Path to directory that contains background images                                      for use in greeter themes.</td>
-</tr>
-<tr>
-<td>logo</td>
-<td><code>string</code></td>
-<td>Path to distro logo image for use in greeter themes.</td>
-</tr>
-<tr>
-<td>user_image</td>
-<td><code>string</code></td>
-<td>Default user image/avatar. This is used by greeter themes                                      for users that have not configured a <code>.face</code> image.</td>
-</tr>
-</tbody>
+    <td>background_images_dir</td><td><code>String</code></td><td><p>Path to directory that contains background images
+                                     for use in greeter themes.</p>
+</td>
+    </tr><tr>
+    <td>logo</td><td><code>String</code></td><td><p>Path to distro logo image for use in greeter themes.</p>
+</td>
+    </tr><tr>
+    <td>user_image</td><td><code>String</code></td><td><p>Default user image/avatar. This is used by greeter themes
+                                     for users that have not configured a <code>.face</code> image.</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.GreeterConfig+greeter"></a></p>
-<h3 id="greeterconfiggreeter--object">greeterConfig.greeter : <code>object</code></h3>
+
+<p><a id="LightDM_GreeterConfig-greeter"></a></p>
+<h3 id="greeterconfiggreeter--object">greeter_config.greeter : <code>Object</code></h3>
 <p>Holds keys/values from the <code>greeter</code> section of the config file.</p>
 <p><strong>Read only</strong>: true<br><strong>Properties</strong></p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Name</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>debug_mode</td>
-<td><code>boolean</code></td>
-<td>Greeter theme debug mode.</td>
-</tr>
-<tr>
-<td>detect_theme_errors</td>
-<td><code>boolean</code></td>
-<td>Provide an option to load a fallback theme when theme                                     errors are detected.</td>
-</tr>
-<tr>
-<td>screensaver_timeout</td>
-<td><code>number</code></td>
-<td>Blank the screen after this many seconds of inactivity.</td>
-</tr>
-<tr>
-<td>secure_mode</td>
-<td><code>boolean</code></td>
-<td>Don&apos;t allow themes to make remote http requests.</td>
-</tr>
-<tr>
-<td>time_format</td>
-<td><code>string</code></td>
-<td>A moment.js format string to be used by the greeter to                                     generate localized time for display.</td>
-</tr>
-<tr>
-<td>time_language</td>
-<td><code>string</code></td>
-<td>Language to use when displaying the time or <code>auto</code>                                     to use the system&apos;s language.</td>
-</tr>
-<tr>
-<td>theme</td>
-<td><code>string</code></td>
-<td>The name of the theme to be used by the greeter.</td>
-</tr>
-</tbody>
+    <td>debug_mode</td><td><code>Boolean</code></td><td><p>Greeter theme debug mode.</p>
+</td>
+    </tr><tr>
+    <td>detect_theme_errors</td><td><code>Boolean</code></td><td><p>Provide an option to load a fallback theme when theme
+                                    errors are detected.</p>
+</td>
+    </tr><tr>
+    <td>screensaver_timeout</td><td><code>Number</code></td><td><p>Blank the screen after this many seconds of inactivity.</p>
+</td>
+    </tr><tr>
+    <td>secure_mode</td><td><code>Boolean</code></td><td><p>Don&apos;t allow themes to make remote http requests.</p>
+</td>
+    </tr><tr>
+    <td>theme</td><td><code>String</code></td><td><p>The name of the theme to be used by the greeter.</p>
+</td>
+    </tr><tr>
+    <td>icon_theme</td><td><code>String</code> | <code>Null</code></td><td><p>Icon/cursor theme to use, located in /usr/share/icons, i.e &quot;Adwaita&quot;. Set to Null to use default icon theme.</p>
+</td>
+    </tr><tr>
+    <td>time_language</td><td><code>String</code> | <code>Null</code></td><td><p>Language to use when displaying the date or time, i.e &quot;en-us&quot;, &quot;es-419&quot;, &quot;ko&quot;, &quot;ja&quot;. Set to Null to use system&apos;s language.</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.GreeterConfig+features"></a></p>
-<h3 id="greeterconfigfeatures--object">greeterConfig.features : <code>Object</code></h3>
+
+<p><a id="LightDM_GreeterConfig-features"></a></p>
+<h3 id="greeterconfigfeatures--object">greeter_config.features : <code>Object</code></h3>
 <p>Holds keys/values from the <code>features</code> section of the config file.</p>
 <p><strong>Properties</strong></p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Name</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>battery</td>
-<td><code>Boolean</code></td>
-<td>Enable greeter and themes to ger battery status.</td>
-</tr>
-<tr>
-<td>backlight</td>
-<td><code>Object</code></td>
-<td></td>
-</tr>
-<tr>
-<td>backlight.enabled</td>
-<td><code>Boolean</code></td>
-<td>Enable greeter and themes to control display backlight.</td>
-</tr>
-<tr>
-<td>backlight.value</td>
-<td><code>Number</code></td>
-<td>The amount to increase/decrease brightness by greeter.</td>
-</tr>
-<tr>
-<td>backlight.steps</td>
-<td><code>Number</code></td>
-<td>How many steps are needed to do the change.</td>
-</tr>
-</tbody>
+    <td>battery</td><td><code>Boolean</code></td><td><p>Enable greeter and themes to ger battery status.</p>
+</td>
+    </tr><tr>
+    <td>backlight</td><td><code>Object</code></td><td></td>
+    </tr><tr>
+    <td>backlight.enabled</td><td><code>Boolean</code></td><td><p>Enable greeter and themes to control display backlight.</p>
+</td>
+    </tr><tr>
+    <td>backlight.value</td><td><code>Number</code></td><td><p>The amount to increase/decrease brightness by greeter.</p>
+</td>
+    </tr><tr>
+    <td>backlight.steps</td><td><code>Number</code></td><td><p>How many steps are needed to do the change.</p>
+</td>
+    </tr>  </tbody>
 </table>
+
 
                                 
                                 </section>
@@ -504,7 +486,7 @@ with the global variable: <code>greeter_config</code>.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"GreeterConfig","level":"2.1.2","depth":2,"next":{"title":"ThemeUtils","level":"2.1.3","depth":2,"path":"api/ThemeUtils.md","ref":"api/ThemeUtils.md","articles":[]},"previous":{"title":"Greeter","level":"2.1.1","depth":2,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/GreeterConfig.md","mtime":"2021-06-30T01:54:54.140Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"GreeterConfig","level":"2.1.2","depth":2,"next":{"title":"ThemeUtils","level":"2.1.3","depth":2,"path":"api/ThemeUtils.md","ref":"api/ThemeUtils.md","articles":[]},"previous":{"title":"Greeter","level":"2.1.1","depth":2,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/GreeterConfig.md","mtime":"2021-07-22T03:11:28.660Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-07-22T03:11:30.697Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

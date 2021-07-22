@@ -244,6 +244,19 @@
             
         </li>
     
+        <li class="chapter " data-level="2.2" data-path="window.html">
+            
+                <a href="window.html">
+            
+                    
+                    window
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -335,284 +348,265 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a id="LightDM.Greeter"></a></p>
+                                <p><a id="LightDM_Greeter"></a></p>
 <h2 id="lightdmgreeter">LightDM.Greeter</h2>
 <p>Base class for the greeter&apos;s Theme JavaScript API. Greeter themes will interact
 directly with an object derived from this class to facilitate the user log-in process.
 The greeter will automatically create an instance when it starts.
 The instance can be accessed using the global variable: <code>lightdm</code>.</p>
-<p><a id="LightDM.Greeter+authentication_user"></a></p>
-<h3 id="greeterauthenticationuser--string--null">greeter.authentication_user : <code>String</code> | <code>Null</code></h3>
-<p>The username of the user being authenticated or <a href="null">null</a>
+<p><a id="LightDM_Greeter-authentication_user"></a></p>
+<h3 id="lightdmauthenticationuser--string--null">lightdm.authentication_user : <code>String</code> | <code>Null</code></h3>
+<p>The username of the user being authenticated or <code>null</code>
 if no authentication is in progress</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+autologin_guest"></a></p>
-<h3 id="greeterautologinguest--boolean">greeter.autologin_guest : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-autologin_guest"></a></p>
+<h3 id="lightdmautologinguest--boolean">lightdm.autologin_guest : <code>Boolean</code></h3>
 <p>Whether or not the guest account should be automatically logged
 into when the timer expires.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+autologin_timeout"></a></p>
-<h3 id="greeterautologintimeout--number">greeter.autologin_timeout : <code>Number</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-autologin_timeout"></a></p>
+<h3 id="lightdmautologintimeout--number">lightdm.autologin_timeout : <code>Number</code></h3>
 <p>The number of seconds to wait before automatically logging in.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+autologin_user"></a></p>
-<h3 id="greeterautologinuser--string">greeter.autologin_user : <code>String</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-autologin_user"></a></p>
+<h3 id="lightdmautologinuser--string">lightdm.autologin_user : <code>String</code></h3>
 <p>The username with which to automattically log in when the timer expires.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+batteryData"></a></p>
-<h3 id="greeterbatterydata--battery">greeter.batteryData : <code>Battery</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-batteryData"></a></p>
+<h3 id="lightdmbatterydata--battery">lightdm.batteryData : <a href="Battery"><code>Battery</code></a></h3>
 <p>The battery data</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+brightness"></a></p>
-<h3 id="greeterbrightness--number">greeter.brightness : <code>Number</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-brightness"></a></p>
+<h3 id="lightdmbrightness--number">lightdm.brightness : <code>Number</code></h3>
 <p>The display brightness</p>
-<p><a id="LightDM.Greeter+can_access_battery"></a></p>
-<h3 id="greetercanaccessbattery--boolean">greeter.can_access_battery : <code>boolean</code></h3>
+<p><a id="LightDM_Greeter-can_access_battery"></a></p>
+<h3 id="lightdmcanaccessbattery--boolean">lightdm.can_access_battery : <code>boolean</code></h3>
 <p>Whether or not the greeter can access to battery data.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+can_access_brightness"></a></p>
-<h3 id="greetercanaccessbrightness--boolean">greeter.can_access_brightness : <code>boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-can_access_brightness"></a></p>
+<h3 id="lightdmcanaccessbrightness--boolean">lightdm.can_access_brightness : <code>boolean</code></h3>
 <p>Whether or not the greeter can control display brightness.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+can_hibernate"></a></p>
-<h3 id="greetercanhibernate--boolean">greeter.can_hibernate : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-can_hibernate"></a></p>
+<h3 id="lightdmcanhibernate--boolean">lightdm.can_hibernate : <code>Boolean</code></h3>
 <p>Whether or not the greeter can make the system hibernate.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+can_restart"></a></p>
-<h3 id="greetercanrestart--boolean">greeter.can_restart : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-can_restart"></a></p>
+<h3 id="lightdmcanrestart--boolean">lightdm.can_restart : <code>Boolean</code></h3>
 <p>Whether or not the greeter can make the system restart.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+can_shutdown"></a></p>
-<h3 id="greetercanshutdown--boolean">greeter.can_shutdown : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-can_shutdown"></a></p>
+<h3 id="lightdmcanshutdown--boolean">lightdm.can_shutdown : <code>Boolean</code></h3>
 <p>Whether or not the greeter can make the system shutdown.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+can_suspend"></a></p>
-<h3 id="greetercansuspend--boolean">greeter.can_suspend : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-can_suspend"></a></p>
+<h3 id="lightdmcansuspend--boolean">lightdm.can_suspend : <code>Boolean</code></h3>
 <p>Whether or not the greeter can make the system suspend/sleep.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+default_session"></a></p>
-<h3 id="greeterdefaultsession--string">greeter.default_session : <code>String</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-default_session"></a></p>
+<h3 id="lightdmdefaultsession--string">lightdm.default_session : <code>String</code></h3>
 <p>The name of the default session.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+has_guest_account"></a></p>
-<h3 id="greeterhasguestaccount--boolean">greeter.has_guest_account : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-has_guest_account"></a></p>
+<h3 id="lightdmhasguestaccount--boolean">lightdm.has_guest_account : <code>Boolean</code></h3>
 <p>Whether or not guest sessions are supported.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+hide_users_hint"></a></p>
-<h3 id="greeterhideusershint--boolean">greeter.hide_users_hint : <code>boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-hide_users_hint"></a></p>
+<h3 id="lightdmhideusershint--boolean">lightdm.hide_users_hint : <code>boolean</code></h3>
 <p>Whether or not user accounts should be hidden.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+hostname"></a></p>
-<h3 id="greeterhostname--string">greeter.hostname : <code>String</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-hostname"></a></p>
+<h3 id="lightdmhostname--string">lightdm.hostname : <code>String</code></h3>
 <p>The system&apos;s hostname.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+in_authentication"></a></p>
-<h3 id="greeterinauthentication--boolean">greeter.in_authentication : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-in_authentication"></a></p>
+<h3 id="lightdminauthentication--boolean">lightdm.in_authentication : <code>Boolean</code></h3>
 <p>Whether or not the greeter is in the process of authenticating.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+is_authenticated"></a></p>
-<h3 id="greeterisauthenticated--boolean">greeter.is_authenticated : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-is_authenticated"></a></p>
+<h3 id="lightdmisauthenticated--boolean">lightdm.is_authenticated : <code>Boolean</code></h3>
 <p>Whether or not the greeter has successfully authenticated.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+language"></a></p>
-<h3 id="greeterlanguage--language--null">greeter.language : <code>Language</code> | <code>Null</code></h3>
-<p>The current language or <a href="null">null</a> if no language.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+languages"></a></p>
-<h3 id="greeterlanguages--arraylanguage">greeter.languages : <code>Array.&lt;Language&gt;</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-language"></a></p>
+<h3 id="lightdmlanguage--language--null">lightdm.language : <a href="Language"><code>Language</code></a> | <code>Null</code></h3>
+<p>The current language or <code>null</code> if no language.</p>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-languages"></a></p>
+<h3 id="lightdmlanguages--arraylanguage">lightdm.languages : <a href="Language"><code>Array.&lt;Language&gt;</code></a></h3>
 <p>A list of languages to present to the user.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+layout"></a></p>
-<h3 id="greeterlayout--layout">greeter.layout : <code>Layout</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-layout"></a></p>
+<h3 id="lightdmlayout--layout">lightdm.layout : <a href="Layout"><code>Layout</code></a></h3>
 <p>The currently active layout for the selected user.</p>
-<p><a id="LightDM.Greeter+layouts"></a></p>
-<h3 id="greeterlayouts--arraylayout">greeter.layouts : <code>Array.&lt;Layout&gt;</code></h3>
+<p><a id="LightDM_Greeter-layouts"></a></p>
+<h3 id="lightdmlayouts--arraylayout">lightdm.layouts : <a href="Layout"><code>Array.&lt;Layout&gt;</code></a></h3>
 <p>A list of keyboard layouts to present to the user.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+lock_hint"></a></p>
-<h3 id="greeterlockhint--boolean">greeter.lock_hint : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-lock_hint"></a></p>
+<h3 id="lightdmlockhint--boolean">lightdm.lock_hint : <code>Boolean</code></h3>
 <p>Whether or not the greeter was started as a lock screen.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+select_guest_hint"></a></p>
-<h3 id="greeterselectguesthint--boolean">greeter.select_guest_hint : <code>Boolean</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-select_guest_hint"></a></p>
+<h3 id="lightdmselectguesthint--boolean">lightdm.select_guest_hint : <code>Boolean</code></h3>
 <p>Whether or not the guest account should be selected by default.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+select_user_hint"></a></p>
-<h3 id="greeterselectuserhint--string">greeter.select_user_hint : <code>String</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-select_user_hint"></a></p>
+<h3 id="lightdmselectuserhint--string">lightdm.select_user_hint : <code>String</code></h3>
 <p>The username to select by default.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+sessions"></a></p>
-<h3 id="greetersessions--arraysession">greeter.sessions : <code>Array.&lt;Session&gt;</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-sessions"></a></p>
+<h3 id="lightdmsessions--arraysession">lightdm.sessions : <a href="Session"><code>Array.&lt;Session&gt;</code></a></h3>
 <p>List of available sessions.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+show_manual_login_hint"></a></p>
-<h3 id="greetershowmanualloginhint--boolean">greeter.show_manual_login_hint : <code>Boolean</code></h3>
-<p>Check if a manual login option should be shown. If <a href="true">true</a>, the theme should
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-show_manual_login_hint"></a></p>
+<h3 id="lightdmshowmanualloginhint--boolean">lightdm.show_manual_login_hint : <code>Boolean</code></h3>
+<p>Check if a manual login option should be shown. If <code>null</code>, the theme should
 provide a way for a username to be entered manually. Otherwise, themes that show
 a user list may limit logins to only those users.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+show_remote_login_hint"></a></p>
-<h3 id="greetershowremoteloginhint--boolean">greeter.show_remote_login_hint : <code>Boolean</code></h3>
-<p>Check if a remote login option should be shown. If <a href="true">true</a>, the theme should provide
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-show_remote_login_hint"></a></p>
+<h3 id="lightdmshowremoteloginhint--boolean">lightdm.show_remote_login_hint : <code>Boolean</code></h3>
+<p>Check if a remote login option should be shown. If <code>true</code>, the theme should provide
 a way for a user to log into a remote desktop server.</p>
-<p><strong>Read only</strong>: true<br><strong>Internal</strong>:<br><a id="LightDM.Greeter+users"></a></p>
-<h3 id="greeterusers--arrayuser">greeter.users : <code>Array.&lt;User&gt;</code></h3>
+<p><strong>Read only</strong>: true<br><strong>Internal</strong>:<br><a id="LightDM_Greeter-users"></a></p>
+<h3 id="lightdmusers--arrayuser">lightdm.users : <a href="User"><code>Array.&lt;User&gt;</code></a></h3>
 <p>List of available users.</p>
-<p><strong>Read only</strong>: true<br><a id="LightDM.Greeter+authentication_complete"></a></p>
-<h3 id="greeterauthenticationcomplete--signal">greeter.authentication_complete : <code>Signal</code></h3>
+<p><strong>Read only</strong>: true<br><a id="LightDM_Greeter-authentication_complete"></a></p>
+<h3 id="lightdmauthenticationcomplete--signal">lightdm.authentication_complete : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when the greeter has completed authentication.</p>
-<p><a id="LightDM.Greeter+autologin_timer_expired"></a></p>
-<h3 id="greeterautologintimerexpired--signal">greeter.autologin_timer_expired : <code>Signal</code></h3>
+<p><a id="LightDM_Greeter-autologin_timer_expired"></a></p>
+<h3 id="lightdmautologintimerexpired--signal">lightdm.autologin_timer_expired : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when the automatic login timer has expired.</p>
-<p><a id="LightDM.Greeter+brightness_update"></a></p>
-<h3 id="greeterbrightnessupdate--signal">greeter.brightness_update : <code>Signal</code></h3>
+<p><a id="LightDM_Greeter-brightness_update"></a></p>
+<h3 id="lightdmbrightnessupdate--signal">lightdm.brightness_update : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when brightness is updated</p>
-<p><a id="LightDM.Greeter+idle"></a></p>
-<h3 id="greeteridle--signal">greeter.idle : <code>Signal</code></h3>
+<p><a id="LightDM_Greeter-idle"></a></p>
+<h3 id="lightdmidle--signal">lightdm.idle : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when the user has logged in and the greeter is no longer needed.</p>
-<p><a id="LightDM.Greeter+reset"></a></p>
-<h3 id="greeterreset--signal">greeter.reset : <code>Signal</code></h3>
+<p><a id="LightDM_Greeter-reset"></a></p>
+<h3 id="lightdmreset--signal">lightdm.reset : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when the user is returning to a greeter that
 was previously marked idle.</p>
-<p><a id="LightDM.Greeter+show_message"></a></p>
-<h3 id="greetershowmessage--signal">greeter.show_message : <code>Signal</code></h3>
+<p><a id="LightDM_Greeter-show_message"></a></p>
+<h3 id="lightdmshowmessage--signal">lightdm.show_message : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when the greeter should show a message to the user.</p>
-<p><a id="LightDM.Greeter+show_prompt"></a></p>
-<h3 id="greetershowprompt--signal">greeter.show_prompt : <code>Signal</code></h3>
+<p><a id="LightDM_Greeter-show_prompt"></a></p>
+<h3 id="lightdmshowprompt--signal">lightdm.show_prompt : <a href="Signal"><code>Signal</code></a></h3>
 <p>Gets emitted when the greeter should show a prompt to the user.</p>
-<p><a id="LightDM.Greeter+authenticate"></a></p>
-<h3 id="greeterauthenticateusername">greeter.authenticate(username)</h3>
+<p><a id="LightDM_Greeter-authenticate"></a></p>
+<h3 id="lightdmauthenticateusername">lightdm.authenticate(username)</h3>
 <p>Starts the authentication procedure for a user.</p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>username</td>
-<td><code>String</code> | <code>Null</code></td>
-<td>A username or <a href="null">null</a> to prompt for a username.</td>
-</tr>
-</tbody>
+    <td>username</td><td><code>String</code> | <code>Null</code></td><td><p>A username or <code>null</code> to prompt for a username.</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+authenticate_as_guest"></a></p>
-<h3 id="greeterauthenticateasguest">greeter.authenticate_as_guest()</h3>
+
+<p><a id="LightDM_Greeter-authenticate_as_guest"></a></p>
+<h3 id="lightdmauthenticateasguest">lightdm.authenticate_as_guest()</h3>
 <p>Starts the authentication procedure for the guest user.</p>
-<p><a id="LightDM.Greeter+batteryUpdate"></a></p>
-<h3 id="greeterbatteryupdate">greeter.batteryUpdate()</h3>
+<p><a id="LightDM_Greeter-batteryUpdate"></a></p>
+<h3 id="lightdmbatteryupdate">lightdm.batteryUpdate()</h3>
 <p>Updates the battery data</p>
-<p><a id="LightDM.Greeter+brightnessSet"></a></p>
-<h3 id="greeterbrightnesssetquantity">greeter.brightnessSet(quantity)</h3>
+<p><a id="LightDM_Greeter-brightnessSet"></a></p>
+<h3 id="lightdmbrightnesssetquantity">lightdm.brightnessSet(quantity)</h3>
 <p>Set the brightness to quantity</p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>quantity</td>
-<td><code>Number</code></td>
-<td>The quantity to set</td>
-</tr>
-</tbody>
+    <td>quantity</td><td><code>Number</code></td><td><p>The quantity to set</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+brightnessIncrease"></a></p>
-<h3 id="greeterbrightnessincreasequantity">greeter.brightnessIncrease(quantity)</h3>
+
+<p><a id="LightDM_Greeter-brightnessIncrease"></a></p>
+<h3 id="lightdmbrightnessincreasequantity">lightdm.brightnessIncrease(quantity)</h3>
 <p>Increase the brightness by quantity</p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>quantity</td>
-<td><code>Number</code></td>
-<td>The quantity to increase</td>
-</tr>
-</tbody>
+    <td>quantity</td><td><code>Number</code></td><td><p>The quantity to increase</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+brightnessDecrease"></a></p>
-<h3 id="greeterbrightnessdecreasequantity">greeter.brightnessDecrease(quantity)</h3>
+
+<p><a id="LightDM_Greeter-brightnessDecrease"></a></p>
+<h3 id="lightdmbrightnessdecreasequantity">lightdm.brightnessDecrease(quantity)</h3>
 <p>Decrease the brightness by quantity</p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>quantity</td>
-<td><code>Number</code></td>
-<td>The quantity to decrease</td>
-</tr>
-</tbody>
+    <td>quantity</td><td><code>Number</code></td><td><p>The quantity to decrease</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+cancel_authentication"></a></p>
-<h3 id="greetercancelauthentication">greeter.cancel_authentication()</h3>
+
+<p><a id="LightDM_Greeter-cancel_authentication"></a></p>
+<h3 id="lightdmcancelauthentication">lightdm.cancel_authentication()</h3>
 <p>Cancel user authentication that is currently in progress.</p>
-<p><a id="LightDM.Greeter+cancel_autologin"></a></p>
-<h3 id="greetercancelautologin">greeter.cancel_autologin()</h3>
+<p><a id="LightDM_Greeter-cancel_autologin"></a></p>
+<h3 id="lightdmcancelautologin">lightdm.cancel_autologin()</h3>
 <p>Cancel the automatic login.</p>
-<p><a id="LightDM.Greeter+hibernate"></a></p>
-<h3 id="greeterhibernate-⇒-boolean">greeter.hibernate() ⇒ <code>Boolean</code></h3>
+<p><a id="LightDM_Greeter-hibernate"></a></p>
+<h3 id="lightdmhibernate-⇒-boolean">lightdm.hibernate() ⇒ <code>Boolean</code></h3>
 <p>Triggers the system to hibernate.</p>
-<p><strong>Returns</strong>: <code>Boolean</code> - <a href="true">true</a> if hibernation initiated, otherwise <a href="false">false</a><br><a id="LightDM.Greeter+respond"></a></p>
-<h3 id="greeterrespondresponse">greeter.respond(response)</h3>
+<p><strong>Returns</strong>: <code>Boolean</code> - <code>true</code> if hibernation initiated, otherwise <code>false</code><br><a id="LightDM_Greeter-respond"></a></p>
+<h3 id="lightdmrespondresponse">lightdm.respond(response)</h3>
 <p>Provide a response to a prompt.</p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>response</td>
-<td><code>*</code></td>
-</tr>
-</tbody>
+    <td>response</td><td><code>*</code></td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+restart"></a></p>
-<h3 id="greeterrestart-⇒-boolean">greeter.restart() ⇒ <code>Boolean</code></h3>
+
+<p><a id="LightDM_Greeter-restart"></a></p>
+<h3 id="lightdmrestart-⇒-boolean">lightdm.restart() ⇒ <code>Boolean</code></h3>
 <p>Triggers the system to restart.</p>
-<p><strong>Returns</strong>: <code>Boolean</code> - <a href="true">true</a> if restart initiated, otherwise <a href="false">false</a><br><a id="LightDM.Greeter+set_language"></a></p>
-<h3 id="greetersetlanguagelanguage-⇒-boolean">greeter.set_language(language) ⇒ <code>Boolean</code></h3>
+<p><strong>Returns</strong>: <code>Boolean</code> - <code>true</code> if restart initiated, otherwise <code>false</code><br><a id="LightDM_Greeter-set_language"></a></p>
+<h3 id="lightdmsetlanguagelanguage-⇒-boolean">lightdm.set_language(language) ⇒ <code>Boolean</code></h3>
 <p>Set the language for the currently authenticated user.</p>
-<p><strong>Returns</strong>: <code>Boolean</code> - <a href="true">true</a> if successful, otherwise <a href="false">false</a>  </p>
+<p><strong>Returns</strong>: <code>Boolean</code> - <code>true</code> if successful, otherwise <code>false</code>  </p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>language</td>
-<td><code>String</code></td>
-<td>The language in the form of a locale specification (e.g.     &apos;de_DE.UTF-8&apos;)</td>
-</tr>
-</tbody>
+    <td>language</td><td><code>String</code></td><td><p>The language in the form of a locale specification (e.g.
+    &apos;de_DE.UTF-8&apos;)</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+shutdown"></a></p>
-<h3 id="greetershutdown-⇒-boolean">greeter.shutdown() ⇒ <code>Boolean</code></h3>
+
+<p><a id="LightDM_Greeter-shutdown"></a></p>
+<h3 id="lightdmshutdown-⇒-boolean">lightdm.shutdown() ⇒ <code>Boolean</code></h3>
 <p>Triggers the system to shutdown.</p>
-<p><strong>Returns</strong>: <code>Boolean</code> - <a href="true">true</a> if shutdown initiated, otherwise <a href="false">false</a><br><a id="LightDM.Greeter+start_session"></a></p>
-<h3 id="greeterstartsessionsession-⇒-boolean">greeter.start_session(session) ⇒ <code>Boolean</code></h3>
+<p><strong>Returns</strong>: <code>Boolean</code> - <code>true</code> if shutdown initiated, otherwise <code>false</code><br><a id="LightDM_Greeter-start_session"></a></p>
+<h3 id="lightdmstartsessionsession-⇒-boolean">lightdm.start_session(session) ⇒ <code>Boolean</code></h3>
 <p>Start a session for the authenticated user.</p>
-<p><strong>Returns</strong>: <code>Boolean</code> - <a href="true">true</a> if successful, otherwise <a href="false">false</a>  </p>
+<p><strong>Returns</strong>: <code>Boolean</code> - <code>true</code> if successful, otherwise <code>false</code>  </p>
 <table>
-<thead>
+  <thead>
+    <tr>
+      <th>Param</th><th>Type</th><th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
 <tr>
-<th>Param</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>session</td>
-<td><code>String</code> | <code>null</code></td>
-<td>The session to log into or <a href="null">null</a> to use the default.</td>
-</tr>
-</tbody>
+    <td>session</td><td><code>String</code> | <code>null</code></td><td><p>The session to log into or <code>null</code> to use the default.</p>
+</td>
+    </tr>  </tbody>
 </table>
-<p><a id="LightDM.Greeter+suspend"></a></p>
-<h3 id="greetersuspend-⇒-boolean">greeter.suspend() ⇒ <code>Boolean</code></h3>
+
+<p><a id="LightDM_Greeter-suspend"></a></p>
+<h3 id="lightdmsuspend-⇒-boolean">lightdm.suspend() ⇒ <code>Boolean</code></h3>
 <p>Triggers the system to suspend/sleep.</p>
-<p><strong>Returns</strong>: <code>Boolean</code> - <a href="true">true</a> if suspend/sleep initiated, otherwise <a href="false">false</a>  </p>
+<p><strong>Returns</strong>: <code>Boolean</code> - <code>true</code> if suspend/sleep initiated, otherwise <code>false</code>  </p>
 
                                 
                                 </section>
@@ -656,7 +650,7 @@ was previously marked idle.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Greeter","level":"2.1.1","depth":2,"next":{"title":"GreeterConfig","level":"2.1.2","depth":2,"path":"api/GreeterConfig.md","ref":"api/GreeterConfig.md","articles":[]},"previous":{"title":"LightDM","level":"2.1","depth":1,"path":"api/LightDM.md","ref":"api/LightDM.md","articles":[{"title":"Greeter","level":"2.1.1","depth":2,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},{"title":"GreeterConfig","level":"2.1.2","depth":2,"path":"api/GreeterConfig.md","ref":"api/GreeterConfig.md","articles":[]},{"title":"ThemeUtils","level":"2.1.3","depth":2,"path":"api/ThemeUtils.md","ref":"api/ThemeUtils.md","articles":[]},{"title":"Battery","level":"2.1.4","depth":2,"path":"api/Battery.md","ref":"api/Battery.md","articles":[]},{"title":"Language","level":"2.1.5","depth":2,"path":"api/Language.md","ref":"api/Language.md","articles":[]},{"title":"Layout","level":"2.1.6","depth":2,"path":"api/Layout.md","ref":"api/Layout.md","articles":[]},{"title":"Session","level":"2.1.7","depth":2,"path":"api/Session.md","ref":"api/Session.md","articles":[]},{"title":"User","level":"2.1.8","depth":2,"path":"api/User.md","ref":"api/User.md","articles":[]},{"title":"Signal","level":"2.1.9","depth":2,"path":"api/Signal.md","ref":"api/Signal.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/Greeter.md","mtime":"2021-06-30T01:54:53.916Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Greeter","level":"2.1.1","depth":2,"next":{"title":"GreeterConfig","level":"2.1.2","depth":2,"path":"api/GreeterConfig.md","ref":"api/GreeterConfig.md","articles":[]},"previous":{"title":"LightDM","level":"2.1","depth":1,"path":"api/LightDM.md","ref":"api/LightDM.md","articles":[{"title":"Greeter","level":"2.1.1","depth":2,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},{"title":"GreeterConfig","level":"2.1.2","depth":2,"path":"api/GreeterConfig.md","ref":"api/GreeterConfig.md","articles":[]},{"title":"ThemeUtils","level":"2.1.3","depth":2,"path":"api/ThemeUtils.md","ref":"api/ThemeUtils.md","articles":[]},{"title":"Battery","level":"2.1.4","depth":2,"path":"api/Battery.md","ref":"api/Battery.md","articles":[]},{"title":"Language","level":"2.1.5","depth":2,"path":"api/Language.md","ref":"api/Language.md","articles":[]},{"title":"Layout","level":"2.1.6","depth":2,"path":"api/Layout.md","ref":"api/Layout.md","articles":[]},{"title":"Session","level":"2.1.7","depth":2,"path":"api/Session.md","ref":"api/Session.md","articles":[]},{"title":"User","level":"2.1.8","depth":2,"path":"api/User.md","ref":"api/User.md","articles":[]},{"title":"Signal","level":"2.1.9","depth":2,"path":"api/Signal.md","ref":"api/Signal.md","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/Greeter.md","mtime":"2021-07-22T03:11:28.484Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-07-22T03:11:30.697Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

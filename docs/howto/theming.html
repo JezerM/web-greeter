@@ -244,6 +244,19 @@
             
         </li>
     
+        <li class="chapter " data-level="2.2" data-path="../api/window.html">
+            
+                <a href="../api/window.html">
+            
+                    
+                    window
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -372,8 +385,13 @@
   <span class="hljs-attribute">background</span>: <span class="hljs-built_in">var</span>(--bg);
 }
 </code></pre>
-<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initGreeter</span>(<span class="hljs-params"></span>) </span>{
+<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wait</span>(<span class="hljs-params">ms</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, ms))
+}
+
+<span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initGreeter</span>(<span class="hljs-params"></span>) </span>{
   lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
+  <span class="hljs-keyword">await</span> wait(<span class="hljs-number">100</span>)
   lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
   lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
 }
@@ -423,7 +441,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Theming","level":"3.2","depth":1,"next":{"title":"Authentication","level":"3.3","depth":1,"path":"howto/auth.md","ref":"howto/auth.md","articles":[]},"previous":{"title":"Introduction","level":"3.1","depth":1,"path":"howto/intro.md","ref":"howto/intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/theming.md","mtime":"2021-06-29T21:41:09.976Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Theming","level":"3.2","depth":1,"next":{"title":"Authentication","level":"3.3","depth":1,"path":"howto/auth.md","ref":"howto/auth.md","articles":[]},"previous":{"title":"Introduction","level":"3.1","depth":1,"path":"howto/intro.md","ref":"howto/intro.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/theming.md","mtime":"2021-07-21T02:16:39.742Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-07-22T03:11:30.697Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

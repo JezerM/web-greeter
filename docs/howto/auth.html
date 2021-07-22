@@ -242,6 +242,19 @@
             
         </li>
     
+        <li class="chapter " data-level="2.2" data-path="../api/window.html">
+            
+                <a href="../api/window.html">
+            
+                    
+                    window
+            
+                </a>
+            
+
+            
+        </li>
+    
 
     
         
@@ -357,7 +370,11 @@
   <span class="hljs-keyword">return</span> data
 }
 
-form.addEventListener(<span class="hljs-string">&quot;submit&quot;</span>, <span class="hljs-function"><span class="hljs-params">event</span> =&gt;</span> {
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wait</span>(<span class="hljs-params">ms</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> <span class="hljs-built_in">setTimeout</span>(resolve, ms))
+}
+
+form.addEventListener(<span class="hljs-string">&quot;submit&quot;</span>, <span class="hljs-keyword">async</span> (event) =&gt; {
   event.preventDefault()
   <span class="hljs-keyword">var</span> inputs = form.querySelectorAll(<span class="hljs-string">&quot;input&quot;</span>)
   <span class="hljs-keyword">var</span> data = getArrayForm(inputs)
@@ -365,14 +382,13 @@ form.addEventListener(<span class="hljs-string">&quot;submit&quot;</span>, <span
 
   lightdm.cancel_authentication()
   lightdm.authenticate(data.user)
+  <span class="hljs-keyword">await</span> wait(<span class="hljs-number">100</span>)
   lightdm.respond(data.password)
   lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
 })
 </code></pre>
 <p>Add an event listener on &quot;submit&quot; event, which gets the form inputs and transform them to a simple <code>{name: value}</code> object. And so, lightdm authenticates with the username in <code>data.user</code> (the user input) and responds with the password in <code>data.password</code> (the password input). Then, starts the Ubuntu session.</p>
-<blockquote>
-<p>NOTE: <code>lightdm.cancel_authentication()</code> allows to start another authentication procedure. If this isn&apos;t called, <code>lightdm.authenticate</code> could cause problems.</p>
-</blockquote>
+<p>If we want to approach this way, it is needed to add a delay of 100ms or more to avoid problems, because LightDM has a little delay when the user authentication starts and when LightDM prompts for a response. Doing a <code>lightdm.respond</code> inmediately after <code>lightdm.authenticate</code> provokes a failed authentication.</p>
 <h2 id="select-user">Select user</h2>
 <p>The greeter provides a way to get a list of available users with the member <a href="../api/Greeter.html#LightDM.Greeter+users"><code>lightdm.users</code></a>, which returns an array of <a href="../api/User.html">User</a>.</p>
 <p>Creating a user selection is a bit more complex, requiring to create a button for every user that starts the authentication for the selected user.</p>
@@ -397,6 +413,9 @@ form.addEventListener(<span class="hljs-string">&quot;submit&quot;</span>, <span
 </code></pre>
 <p>For every user, creates a button with the <code>display_name</code> as text. Then, adds an event listener on &quot;click&quot; event, which updates the user. Inside <code>updateUser</code>, theme could update visual things, such as a label containing the actual user, the image, or things like that; then, cancels the current authentication procedure (if any) and starts a new authentication with the selected user.</p>
 <p>You could add these buttons wherever you want. Or, in another way, you could create whatever element you want as long as every element starts a new authentication procedure.</p>
+<blockquote>
+<p><strong>NOTE</strong>: As the user is selected manually and there could be a big gap between <code>lightdm.authenticate</code> and <code>lightdm.respond</code>, there is no need to add a delay before doing a response.</p>
+</blockquote>
 <h2 id="both">Both</h2>
 <p>The greeter offers a way to know if user wanted to show a manual login with <a href="../api/Greeter.html#LightDM.Greeter+show_manual_login_hint"><code>lightdm.show_manual_login_hint</code></a>, an option inside the lightdm config (<code>/etc/lightdm/lightdm.conf</code>).</p>
 <p>Anyway, you could implement this option no matter if user decided to <code>show_manual_login</code>. But, it&apos;s always a good choice to implement every case.</p>
@@ -439,7 +458,7 @@ form.addEventListener(<span class="hljs-string">&quot;submit&quot;</span>, <span
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"3.3","depth":1,"previous":{"title":"Theming","level":"3.2","depth":1,"path":"howto/theming.md","ref":"howto/theming.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/auth.md","mtime":"2021-06-30T01:34:54.371Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-06-30T01:55:16.404Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Authentication","level":"3.3","depth":1,"previous":{"title":"Theming","level":"3.2","depth":1,"path":"howto/theming.md","ref":"howto/theming.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/auth.md","mtime":"2021-07-21T02:14:47.545Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-07-22T03:11:30.697Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

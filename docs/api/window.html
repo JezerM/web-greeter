@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>ThemeUtils · Web Greeter Documentation</title>
+        <title>window · Web Greeter Documentation</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.6.20">
@@ -56,10 +56,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="Battery.html" />
+    <link rel="next" href="../howto/intro.html" />
     
     
-    <link rel="prev" href="GreeterConfig.html" />
+    <link rel="prev" href="Signal.html" />
     
 
     </head>
@@ -148,7 +148,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="2.1.3" data-path="ThemeUtils.html">
+        <li class="chapter " data-level="2.1.3" data-path="ThemeUtils.html">
             
                 <a href="ThemeUtils.html">
             
@@ -244,7 +244,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2" data-path="window.html">
+        <li class="chapter active" data-level="2.2" data-path="window.html">
             
                 <a href="window.html">
             
@@ -333,7 +333,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >ThemeUtils</a>
+        <a href=".." >window</a>
     </h1>
 </div>
 
@@ -348,66 +348,25 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <p><a id="LightDM_ThemeUtils"></a></p>
-<h2 id="lightdmthemeutils">LightDM.ThemeUtils</h2>
-<p>Provides various utility methods for use in greeter themes. The greeter will automatically
-create an instance of this class when it starts. The instance can be accessed
-with the global variable: <code>theme_utils</code></p>
-<p><a id="LightDM_ThemeUtils-bind_this"></a></p>
-<h3 id="themeutilsbindthiscontext-⇒-object">theme_utils.bind_this(context) ⇒ <code>object</code></h3>
-<p>Binds <code>this</code> to class, <code>context</code>, for all of the class&apos;s methods.</p>
-<p><strong>Returns</strong>: <code>object</code> - <code>context</code> with <code>this</code> bound to it for all of its methods.  </p>
-<table>
-  <thead>
-    <tr>
-      <th>Param</th><th>Type</th><th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-    <td>context</td><td><code>object</code></td><td><p>An ES6 class instance with at least one method.</p>
-</td>
-    </tr>  </tbody>
-</table>
-
-<p><a id="LightDM_ThemeUtils-dirlist"></a></p>
-<h3 id="themeutilsdirlistpath-onlyimages-callback">theme_utils.dirlist(path, only_images, callback)</h3>
-<p>Returns the contents of directory found at <code>path</code> provided that the (normalized) <code>path</code>
-meets at least one of the following conditions:</p>
-<ul>
-<li>Is located within the greeter themes&apos; root directory.</li>
-<li>Has been explicitly allowed in the greeter&apos;s config file.</li>
-<li>Is located within the greeter&apos;s shared data directory (<code>/var/lib/lightdm-data</code>).</li>
-<li>Is located in <code>/tmp</code>.</li>
-</ul>
-<table>
-  <thead>
-    <tr>
-      <th>Param</th><th>Type</th><th>Default</th><th>Description</th>
-    </tr>
-  </thead>
-  <tbody>
-<tr>
-    <td>path</td><td><code>string</code></td><td></td><td><p>The abs path to desired directory.</p>
-</td>
-    </tr><tr>
-    <td>only_images</td><td><code>boolean</code></td><td><code>true</code></td><td><p>Include only images in the results. Default <code>true</code>.</p>
-</td>
-    </tr><tr>
-    <td>callback</td><td><code>function</code></td><td></td><td><p>Callback function to be called with the result.</p>
-</td>
-    </tr>  </tbody>
-</table>
-
-<p><a id="LightDM_ThemeUtils-get_current_localized_date"></a></p>
-<h3 id="themeutilsgetcurrentlocalizeddate-⇒-string">theme_utils.get_current_localized_date() ⇒ <code>String</code></h3>
-<p>Get the current date in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.</p>
-<pre><code> * `language` defaults to the system&apos;s language, but can be set manually in the config file.
-</code></pre><p><strong>Returns</strong>: <code>String</code> - The current date.<br><a id="LightDM_ThemeUtils-get_current_localized_time"></a></p>
-<h3 id="themeutilsgetcurrentlocalizedtime-⇒-string">theme_utils.get_current_localized_time() ⇒ <code>String</code></h3>
-<p>Get the current time in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.</p>
-<pre><code> * `language` defaults to the system&apos;s language, but can be set manually in the config file.
-</code></pre><p><strong>Returns</strong>: <code>String</code> - The current time.  </p>
+                                <p><a id="window"></a></p>
+<h2 id="window--object">window : <code>object</code></h2>
+<p>The global window object.</p>
+<p><a id="window_lightdm"></a></p>
+<h3 id="windowlightdm--greeter">window.lightdm : <a href="Greeter"><code>Greeter</code></a></h3>
+<p>Greeter Instance</p>
+<p><a id="window_greeter_config"></a></p>
+<h3 id="windowgreeterconfig--greeterconfig">window.greeter_config : <a href="GreeterConfig"><code>GreeterConfig</code></a></h3>
+<p>Greeter Config - Access values from the greeter&apos;s config file.</p>
+<p><a id="window_theme_utils"></a></p>
+<h3 id="windowthemeutils--themeutils">window.theme_utils : <a href="ThemeUtils"><code>ThemeUtils</code></a></h3>
+<p>Theme Utils - various utility methods for use in greeter themes.</p>
+<p><a id="window_Cookies"></a></p>
+<h3 id="windowcookies--object">window.Cookies : <code>object</code></h3>
+<p>JS-Cookie instance - Themes must manually load the included vendor script in order to use this object.</p>
+<p><strong>See</strong>: <a href="https://github.com/js-cookie/js-cookie/tree/latest#readme" target="_blank">JS Cookie Documentation</a><br><strong>Version</strong>: 2.1.3<br><a id="window_event_GreeterReady"></a></p>
+<h3 id="greeterready">&quot;GreeterReady&quot;</h3>
+<p>Greeter Ready Event. Themes should not initialize until this event has fired.
+Event accesible through <code>window._ready_event</code></p>
 
                                 
                                 </section>
@@ -435,12 +394,12 @@ meets at least one of the following conditions:</p>
 
             
                 
-                <a href="GreeterConfig.html" class="navigation navigation-prev " aria-label="Previous page: GreeterConfig">
+                <a href="Signal.html" class="navigation navigation-prev " aria-label="Previous page: Signal">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="Battery.html" class="navigation navigation-next " aria-label="Next page: Battery">
+                <a href="../howto/intro.html" class="navigation navigation-next " aria-label="Next page: Introduction">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -451,7 +410,7 @@ meets at least one of the following conditions:</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"ThemeUtils","level":"2.1.3","depth":2,"next":{"title":"Battery","level":"2.1.4","depth":2,"path":"api/Battery.md","ref":"api/Battery.md","articles":[]},"previous":{"title":"GreeterConfig","level":"2.1.2","depth":2,"path":"api/GreeterConfig.md","ref":"api/GreeterConfig.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/ThemeUtils.md","mtime":"2021-07-22T03:11:29.416Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-07-22T03:11:30.697Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"window","level":"2.2","depth":1,"next":{"title":"Introduction","level":"3.1","depth":1,"path":"howto/intro.md","ref":"howto/intro.md","articles":[]},"previous":{"title":"Signal","level":"2.1.9","depth":2,"path":"api/Signal.md","ref":"api/Signal.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/window.md","mtime":"2021-07-22T03:11:28.056Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-07-22T03:11:30.697Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

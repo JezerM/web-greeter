@@ -32,6 +32,7 @@
  * The greeter will automatically create an instance when it starts.
  * The instance can be accessed using the global variable: `lightdm`.
  *
+ * @typicalname lightdm
  * @memberOf LightDM
  */
 class Greeter {
@@ -47,7 +48,7 @@ class Greeter {
 	}
 
 	/**
-	 * The username of the user being authenticated or {@link null}
+	 * The username of the user being authenticated or `null`
 	 * if no authentication is in progress
 	 * @type {String|Null}
 	 * @readonly
@@ -78,7 +79,7 @@ class Greeter {
 
 	/**
 	 * The battery data
-	 * @type {Battery}
+	 * @type {LightDM.Battery}
 	 * @readonly
 	 */
 	get batteryData() {}
@@ -175,28 +176,29 @@ class Greeter {
 	get is_authenticated() {}
 
 	/**
-	 * The current language or {@link null} if no language.
-	 * @type {Language|Null}
+	 * The current language or `null` if no language.
+	 * @type {LightDM.Language|Null}
 	 * @readonly
 	 */
 	get language() {}
 
 	/**
 	 * A list of languages to present to the user.
-	 * @type {Language[]}
+	 * @type {LightDM.Language[]}
 	 * @readonly
 	 */
 	get languages() {}
 
 	/**
 	 * The currently active layout for the selected user.
-	 * @type {Layout}
+	 * @type {LightDM.Layout}
 	 */
 	get layout() {}
+	set layout(layout) {}
 
 	/**
 	 * A list of keyboard layouts to present to the user.
-	 * @type {Layout[]}
+	 * @type {LightDM.Layout[]}
 	 * @readonly
 	 */
 	get layouts() {}
@@ -224,13 +226,13 @@ class Greeter {
 
 	/**
 	 * List of available sessions.
-	 * @type {Session[]}
+	 * @type {LightDM.Session[]}
 	 * @readonly
 	 */
 	get sessions() {}
 
 	/**
-	 * Check if a manual login option should be shown. If {@link true}, the theme should
+	 * Check if a manual login option should be shown. If `null`, the theme should
 	 * provide a way for a username to be entered manually. Otherwise, themes that show
 	 * a user list may limit logins to only those users.
 	 * @type {Boolean}
@@ -239,7 +241,7 @@ class Greeter {
 	get show_manual_login_hint() {}
 
 	/**
-	 * Check if a remote login option should be shown. If {@link true}, the theme should provide
+	 * Check if a remote login option should be shown. If `true`, the theme should provide
 	 * a way for a user to log into a remote desktop server.
 	 * @type {Boolean}
 	 * @readonly
@@ -249,7 +251,7 @@ class Greeter {
 
 	/**
 	 * List of available users.
-	 * @type {User[]}
+	 * @type {LightDM.User[]}
 	 * @readonly
 	 */
 	get users() {}
@@ -258,7 +260,7 @@ class Greeter {
 	/**
 	 * Starts the authentication procedure for a user.
 	 *
-	 * @param {String|Null} username A username or {@link null} to prompt for a username.
+	 * @param {String|Null} username A username or `null` to prompt for a username.
 	 */
 	authenticate( username ) {}
 
@@ -302,7 +304,7 @@ class Greeter {
 
 	/**
 	 * Triggers the system to hibernate.
-	 * @returns {Boolean} {@link true} if hibernation initiated, otherwise {@link false}
+	 * @returns {Boolean} `true` if hibernation initiated, otherwise `false`
 	 */
 	hibernate() {}
 
@@ -314,7 +316,7 @@ class Greeter {
 
 	/**
 	 * Triggers the system to restart.
-	 * @returns {Boolean} {@link true} if restart initiated, otherwise {@link false}
+	 * @returns {Boolean} `true` if restart initiated, otherwise `false`
 	 */
 	restart() {}
 
@@ -322,99 +324,73 @@ class Greeter {
 	 * Set the language for the currently authenticated user.
 	 * @param {String} language The language in the form of a locale specification (e.g.
 	 *     'de_DE.UTF-8')
-	 * @returns {Boolean} {@link true} if successful, otherwise {@link false}
+	 * @returns {Boolean} `true` if successful, otherwise `false`
 	 */
 	set_language( language ) {}
 
 	/**
 	 * Triggers the system to shutdown.
-	 * @returns {Boolean} {@link true} if shutdown initiated, otherwise {@link false}
+	 * @returns {Boolean} `true` if shutdown initiated, otherwise `false`
 	 */
 	shutdown() {}
 
 	/**
 	 * Start a session for the authenticated user.
-	 * @param {String|null} session The session to log into or {@link null} to use the default.
-	 * @returns {Boolean} {@link true} if successful, otherwise {@link false}
+	 * @param {String|null} session The session to log into or `null` to use the default.
+	 * @returns {Boolean} `true` if successful, otherwise `false`
 	 */
 	start_session( session ) {}
 
 	/**
 	 * Triggers the system to suspend/sleep.
-	 * @returns {Boolean} {@link true} if suspend/sleep initiated, otherwise {@link false}
+	 * @returns {Boolean} `true` if suspend/sleep initiated, otherwise `false`
 	 */
 	suspend() {}
 
-
 	/**
 	 * Gets emitted when the greeter has completed authentication.
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	authentication_complete;
 
 	/**
 	 * Gets emitted when the automatic login timer has expired.
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	autologin_timer_expired;
 
 	/**
 	 * Gets emitted when brightness is updated
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	brightness_update;
 
 	/**
 	 * Gets emitted when the user has logged in and the greeter is no longer needed.
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	idle;
 
 	/**
 	 * Gets emitted when the user is returning to a greeter that
 	 * was previously marked idle.
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	reset;
 
 	/**
 	 * Gets emitted when the greeter should show a message to the user.
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	show_message;
 
 	/**
 	 * Gets emitted when the greeter should show a prompt to the user.
-	 * @type {Signal}
+	 * @type {LightDM.Signal}
 	 */
 	show_prompt;
 
 }
-
-/**
- * Moment.js instance - Loaded and instantiated automatically by the greeter.
- * @name moment
- * @type {object}
- * @version 2.17.0
- * @memberOf window
- * @see [Moment.js Documentation](http://momentjs.com/docs)
- */
-
-/**
- * jQuery instance - Themes must manually load the included vendor script in order to use this object.
- * @name jQuery
- * @type {object}
- * @version 3.1.1
- * @memberOf window
- * @see [jQuery Documentation](http://api.jquery.com)
- */
-
-/**
- * jQuery instance
- * @name $
- * @memberOf window
- * @see {@link window.jQuery}
- */
 
 /**
  * JS-Cookie instance - Themes must manually load the included vendor script in order to use this object.

@@ -3,23 +3,23 @@
 {{~#if html~}}
 <code>
 
-{{~#link to~}}
+{{~#custom_link to~}}
 {{#if url~}}
 <a href="{{{url}}}">{{#if ../../caption}}{{../../../caption}}{{else}}{{name}}{{/if}}</a>
 {{~else~}}
 {{#if ../../caption}}{{../../../caption}}{{else}}{{name}}{{/if~}}
 {{/if~}}
-{{/link~}}
+{{/custom_link~}}
 
 </code>
 {{~else~}}
 
-{{#link to~}}
+{{#custom_link to~}}
 {{#if url~}}
 [<code>{{#if ../../caption}}{{escape ../../../caption}}{{else}}{{escape name}}{{/if}}</code>]({{{url}}})
 {{~else~}}
 <code>{{#if ../../caption}}{{escape ../../../caption}}{{else}}{{escape name}}{{/if~}}</code>
 {{~/if~}}
-{{/link~}}
+{{/custom_link~}}
 
 {{/if~}}

@@ -12,15 +12,15 @@ lightdm.respond(response)
 lightdm.start_session(session)
 ```
 
-### [lightdm.authenticate(username)](/api/Greeter.md#LightDM.Greeter+authenticate)
+### [lightdm.authenticate(username)](/api/Greeter#LightDM_Greeter-authenticate)
 This method starts the authentication procedure for a user, allowing to start the user session.
 
-### [lightdm.respond(response)](/api/Greeter.md#LightDM.Greeter+respond)
+### [lightdm.respond(response)](/api/Greeter#LightDM_Greeter-respond)
 Provide a response to a prompt. Basically, this acts like a password provider. After the authentication is initiated, you need to provide the user password with this method. It could be "12345", "password", "strongpassword", y'know, a password.
 
 > NOTE: If authentication is not initiated, this will cause an error.
 
-### [lightdm.start_session(session)](/api/Greeter.md#LightDM.Greeter+start_session)
+### [lightdm.start_session(session)](/api/Greeter#LightDM_Greeter-start_session)
 Starts a session for the authenticated user. After the user is authenticated, you will need to start the session with this method.
 
 > NOTE: If user is not authenticated, this won't work.

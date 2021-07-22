@@ -31,7 +31,11 @@ function getArrayForm(inputs) {
   return data
 }
 
-form.addEventListener("submit", event => {
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms))
+}
+
+form.addEventListener("submit", async (event) => {
   event.preventDefault()
   var inputs = form.querySelectorAll("input")
   var data = getArrayForm(inputs)
@@ -39,6 +43,7 @@ form.addEventListener("submit", event => {
 
   lightdm.cancel_authentication()
   lightdm.authenticate(data.user)
+  await wait(100)
   lightdm.respond(data.password)
   lightdm.start_session("ubuntu")
 })
@@ -46,7 +51,7 @@ form.addEventListener("submit", event => {
 
 Add an event listener on "submit" event, which gets the form inputs and transform them to a simple `{name: value}` object. And so, lightdm authenticates with the username in `data.user` (the user input) and responds with the password in `data.password` (the password input). Then, starts the Ubuntu session.
 
-> NOTE: `lightdm.cancel_authentication()` allows to start another authentication procedure. If this isn't called, `lightdm.authenticate` could cause problems.
+If we want to approach this way, it is needed to add a delay of 100ms or more to avoid problems, because LightDM has a little delay when the user authentication starts and when LightDM prompts for a response. Doing a `lightdm.respond` inmediately after `lightdm.authenticate` provokes a failed authentication.
 
 ## Select user
 The greeter provides a way to get a list of available users with the member [`lightdm.users`](/api/Greeter.md#LightDM.Greeter+users), which returns an array of [User](/api/User.md).
@@ -77,6 +82,8 @@ for (let i = 0; i < users.length; i++) {
 For every user, creates a button with the `display_name` as text. Then, adds an event listener on "click" event, which updates the user. Inside `updateUser`, theme could update visual things, such as a label containing the actual user, the image, or things like that; then, cancels the current authentication procedure (if any) and starts a new authentication with the selected user.
 
 You could add these buttons wherever you want. Or, in another way, you could create whatever element you want as long as every element starts a new authentication procedure.
+
+> **NOTE**: As the user is selected manually and there could be a big gap between `lightdm.authenticate` and `lightdm.respond`, there is no need to add a delay before doing a response.
 
 ## Both
 The greeter offers a way to know if user wanted to show a manual login with [`lightdm.show_manual_login_hint`](/api/Greeter.md#LightDM.Greeter+show_manual_login_hint), an option inside the lightdm config (`/etc/lightdm/lightdm.conf`).
