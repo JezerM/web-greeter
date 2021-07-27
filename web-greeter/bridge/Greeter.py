@@ -55,6 +55,7 @@ from . import (
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
 
+
 def changeBrightness(self, method: str, quantity: int):
     if self._config.features.backlight["enabled"] != True:
         return
@@ -67,29 +68,33 @@ def changeBrightness(self, method: str, quantity: int):
         logger.error("Brightness: {}".format(err))
     else:
         self.brightness_update.emit()
-    pass
+
 
 def getBrightness(self):
     if self._config.features.backlight["enabled"] != True:
         return -1
     try:
-        level = subprocess.run(["xbacklight", "-get"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        level = subprocess.run(["xbacklight", "-get"], stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE, text=True, check=True)
         return int(level.stdout)
     except Exception as err:
         logger.error("Brightness: {}".format(err))
         return -1
 
+
 def updateBattery(self):
     if self._config.features.battery != True:
         return
     try:
-        acpi = subprocess.run(["acpi", "-b"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        acpi = subprocess.run(["acpi", "-b"], stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE, text=True, check=True)
 
         self._battery.update(acpi.stdout)
     except Exception as err:
         logger.error("Battery: {}".format(err))
     else:
         self.property_changed.emit()
+
 
 class Greeter(BridgeObject):
 
@@ -146,7 +151,6 @@ class Greeter(BridgeObject):
             'show-prompt',
             lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype)
         )
-
 
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
@@ -371,4 +375,3 @@ class Greeter(BridgeObject):
     @bridge.method(result=bool)
     def suspend(self):
         return LightDM.suspend()
-

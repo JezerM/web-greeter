@@ -32,14 +32,15 @@ from PyQt5.QtGui import QKeyEvent
 
 import globals
 
+
 def keyPressEvent(self, keyEvent: QKeyEvent):
     super(MainWindow, self).keyPressEvent(keyEvent)
     if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):
-        globals.greeter.greeter.brightnessIncrease(globals.greeter.config.features.backlight["value"])
+        globals.greeter.greeter.brightnessIncrease(
+            globals.greeter.config.features.backlight["value"])
     if (keyEvent.key() == Qt.Key.Key_MonBrightnessDown):
-        globals.greeter.greeter.brightnessDecrease(globals.greeter.config.features.backlight["value"])
+        globals.greeter.greeter.brightnessDecrease(
+            globals.greeter.config.features.backlight["value"])
 
 
 MainWindow.keyPressEvent = keyPressEvent
-
-

@@ -52,6 +52,7 @@ stream_handler.setFormatter(formatter)
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
+
 def javaScriptConsoleMessage(self, level: WebPage.JavaScriptConsoleMessageLevel, message: str, lineNumber: int, sourceID: str):
     if sourceID == "":
         sourceID = "console"
@@ -79,8 +80,10 @@ def javaScriptConsoleMessage(self, level: WebPage.JavaScriptConsoleMessageLevel,
     logger.handle(record)
 
     if logLevel == 40:
-        errorMessage = "{source} {line}: {msg}".format(source = sourceID, line = lineNumber, msg = message)
+        errorMessage = "{source} {line}: {msg}".format(
+            source=sourceID, line=lineNumber, msg=message)
         errorPrompt(errorMessage)
+
 
 class ErrorDialog(QDialog):
     def __init__(self, parent=None, err=""):
@@ -113,6 +116,7 @@ class ErrorDialog(QDialog):
     def handle_reload(self, value: bool):
         self.done(2)
 
+
 def errorPrompt(err):
 
     if not globals.greeter.config.greeter.detect_theme_errors:
@@ -123,17 +127,18 @@ def errorPrompt(err):
     dia.exec()
     result = dia.result()
 
-    if result == 0: # Cancel
+    if result == 0:  # Cancel
         return
-    elif result == 1: # Default theme
+    elif result == 1:  # Default theme
         globals.custom_config["app"]["greeter"]["theme"] = "gruvbox"
         globals.greeter.get_and_apply_user_config()
         globals.greeter.load_theme()
         return
-    elif result == 2: # Reload
+    elif result == 2:  # Reload
         globals.greeter.load_theme()
         return
 
     return
+
 
 WebPage.javaScriptConsoleMessage = javaScriptConsoleMessage

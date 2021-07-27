@@ -50,6 +50,7 @@ stream_handler.setFormatter(formatter)
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
+
 class setInterval:
     def __init__(self, interval, action):
         self.interval = interval
@@ -63,6 +64,7 @@ class setInterval:
         while not self.stopEvent.wait(nextTime - time.time()):
             nextTime += self.interval
             self.action()
+
 
 class Battery:
     _name = ""
@@ -89,6 +91,7 @@ class Battery:
 
     def get_state(self):
         return self._state
+
 
 def language_to_dict(lang):
     if (not lang):
@@ -130,6 +133,7 @@ def user_to_dict(user):
         session=user.get_session(),
         username=user.get_name(),
     )
+
 
 def battery_to_dict(battery):
     if (not battery):

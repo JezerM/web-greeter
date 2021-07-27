@@ -46,6 +46,7 @@ from utils import errorPrompt, keyboard
 import globals
 from globals import WebGreeter, logger
 
+
 def loadWhitherConf():
     global whither_yaml
     global webGreeter_conf
@@ -57,6 +58,7 @@ def loadWhitherConf():
 
     whither_yaml = yaml.safe_load(file_test)
     webGreeter_conf = whither_yaml["WebGreeter"]
+
 
 def show_help():
     version = webGreeter_conf["app"]["version"]["full"]
@@ -84,6 +86,7 @@ def changeConfig(option: str, value):
     custom_config[option] = value
     return
 
+
 def debugMode(value: bool):
     window = dict(custom_config["whither"]["window"])
     greeter = dict(custom_config["app"]["greeter"])
@@ -99,6 +102,7 @@ def debugMode(value: bool):
     custom_config["whither"]["window"] = window
     custom_config["app"]["greeter"] = greeter
 
+
 def changeTheme(theme: str):
     dirlist = listThemes(True)
 
@@ -107,6 +111,7 @@ def changeTheme(theme: str):
     else:
         logger.error("Theme not found. Going with config theme")
     return
+
 
 def listThemes(quiet = False):
     themes_dir = webGreeter_conf["app"]["themes_dir"]
@@ -125,7 +130,9 @@ def listThemes(quiet = False):
 
     return dirlist
 
+
 args_lenght = sys.argv.__len__()
+
 
 def yargs(args: List[str]):
     loadWhitherConf()
@@ -133,41 +140,39 @@ def yargs(args: List[str]):
 
     if args[0] == "--help" or args[0] == "-h":
         show_help()
-        used+=1
+        used += 1
         exit()
     elif args[0] == "--version" or args[0] == "-v":
         show_version()
-        used+=1
+        used += 1
         exit()
     elif args[0] == "--debug":
         debugMode(True)
-        used+=1
-        pass
+        used += 1
     elif args[0] == "--normal":
         debugMode(False)
-        used+=1
-        pass
+        used += 1
     elif args[0] == "--theme":
-        if args.__len__() > 1 :
+        if args.__len__() > 1:
             changeTheme(args[1])
-            used+=2
+            used += 2
         else:
             print("No theme provided")
-            used+=1
+            used += 1
             exit(1)
     elif args[0] == "--list":
         listThemes()
-        used+=1
+        used += 1
         exit()
     else:
         show_help()
-        used+=1
+        used += 1
         exit(1)
     for x in range(used):
         args.pop(0)
     if args.__len__() != 0:
         yargs(args)
-    pass
+
 
 if __name__ == '__main__':
     custom_config = globals.custom_config

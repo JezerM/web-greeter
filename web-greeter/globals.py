@@ -57,6 +57,7 @@ from logging import (
 
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QColor
+from PyQt5.QtCore import QResource
 import subprocess
 
 from utils import theme
@@ -81,12 +82,15 @@ logger.addHandler(stream_handler)
 
 initial_timeout = 0
 
+
 def setScreenSaver(timeout: int):
     global initial_timeout
     timeout = timeout if timeout >= 0 else 300
     try:
-        child = subprocess.Popen(["xset", "q"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        awk = subprocess.run(["awk", "/^  timeout: / {print $2}"], stdout=subprocess.PIPE, stdin=child.stdout, text=True)
+        child = subprocess.Popen(["xset", "q"], stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, text=True)
+        awk = subprocess.run(
+            ["awk", "/^  timeout: / {print $2}"], stdout=subprocess.PIPE, stdin=child.stdout, text=True)
 
         initial_timeout = int(awk.stdout.replace("\n", ""))
 
@@ -97,6 +101,7 @@ def setScreenSaver(timeout: int):
     else:
         logger.debug("Screensaver timeout set")
 
+
 def resetScreenSaver():
     try:
         subprocess.run(["xset", "s", str(initial_timeout)])
@@ -105,18 +110,30 @@ def resetScreenSaver():
     else:
         logger.debug("Screensaver reset")
 
+
 def getDefaultCursor():
     cursor_theme = ""
     try:
-        child = subprocess.Popen(["cat", "/usr/share/icons/default/index.theme"], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-        awk = subprocess.run(["awk", "-F=", "/Inherits/ {print $2}"], stdout=subprocess.PIPE, stdin=child.stdout, text=True)
+        child = subprocess.Popen(["cat", "/usr/share/icons/default/index.theme"],
+                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        awk = subprocess.run(
+            ["awk", "-F=", "/Inherits/ {print $2}"], stdout=subprocess.PIPE, stdin=child.stdout, text=True)
         cursor_theme = awk.stdout.replace("\n", "")
     except Exception as err:
         logger.error("Default cursor couldn't be get")
     return cursor_theme
 
+
+def loadStyle(path):
+    file = QResource(path)
+    file = file.uncompressedData()
+    file = str(file.data(), encoding='utf-8')
+    return file
+
+
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 CONFIG_FILE = os.path.join(BASE_DIR, 'whither.yml')
+
 
 class WebGreeter(App):
     greeter = None         # type: ClassVar[BridgeObj] | None
@@ -131,8 +148,10 @@ class WebGreeter(App):
         self.theme_utils = ThemeUtils(self.greeter, self.config)
         self._web_container.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
 
+        style = loadStyle(":/_greeter/css/style.css")
+        self._main_window.widget.setStyleSheet(style)
         page = self._main_window.widget.centralWidget().page()
-        page.setBackgroundColor(QColor(0,0,0))
+        page.setBackgroundColor(QColor(0, 0, 0))
 
         setScreenSaver(self.config.greeter["screensaver_timeout"])
 
@@ -189,6 +208,7 @@ class WebGreeter(App):
         theme_url = '/{0}/{1}/index.html'.format(self.config.themes_dir, self.config.greeter.theme)
         self._web_container.load(theme_url)
 
+
 global custom_config
 global greeter
 custom_config = {
@@ -199,4 +219,3 @@ custom_config = {
         "greeter": {}
     }
 }
-

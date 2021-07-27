@@ -53,6 +53,7 @@ stream_handler.setFormatter(formatter)
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
+
 def checkTheme(self):
     themes = listThemes(self)
     config_theme = self.config.greeter.theme
@@ -60,7 +61,8 @@ def checkTheme(self):
     if self.config.greeter.theme in themes:
         pass
     else:
-        logger.error("Config theme not valid: \"{0}\". Going with \"{1}\" theme".format(config_theme, default))
+        logger.error("Config theme not valid: \"{0}\". Going with \"{1}\" theme".format(
+            config_theme, default))
         self.config.greeter.theme = default
 
 
@@ -87,6 +89,7 @@ class Theme:
     Attributes:
         data (PackageJSON): The theme's data sourced from its `package.json` file.
     """
+
     def __init__(self, path: str) -> None:
         self.path = path
 
