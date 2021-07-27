@@ -54,22 +54,31 @@ class Accounts {
     }
   }
 
+	_setKeydown() {
+		var dropdown = this._accountsList.querySelector(".dropdown")
+		dropdown.addEventListener("keydown", (ev) => {
+			if (ev.keyCode == 27) {
+				dropdown.classList.add("hide")
+				this._accountsButton.focus()
+			}
+		})
+	}
+
   _setButton() {
-    var dropdown = this._accountsList.querySelector(".dropdown")
-    this._accountsButton.addEventListener("click", (ev) => {
-      ev.stopPropagation()
-      if (dropdown.classList.contains("hide")) {
-        dropdown.classList.remove("hide")
-      } else {
-        dropdown.classList.add("hide")
-      }
-    })
-    var screen = document.querySelector("#screen")
-    screen.addEventListener("click", (ev) => {
-      if (ev.target != dropdown) {
-        dropdown.classList.add("hide")
-      }
-    })
+		var dropdown = this._accountsList.querySelector(".dropdown")
+		document.querySelector("#screen").addEventListener("click", (ev) => {
+			if (ev.target == this._accountsButton || ev.target.parentElement == this._accountsButton) {
+				dropdown.classList.toggle("hide")
+			} else
+			if (ev.target != this._accountsList && ev.target.closest(".dropdown") == null) {
+				dropdown.classList.add("hide")
+			}
+		})
+		document.querySelector("#screen").addEventListener("focusin", (ev) => {
+			if (!dropdown.contains(document.activeElement) && document.activeElement != this._accountsButton) {
+				dropdown.classList.add("hide")
+			}
+		})
   }
 
   _updateDefaults(userObject) {
@@ -86,6 +95,7 @@ class Accounts {
     this._updateOnStartup()
     this._setAccountList()
     this._setButton()
+		this._setKeydown()
   }
 
 }

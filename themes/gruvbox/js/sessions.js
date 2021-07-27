@@ -50,22 +50,31 @@ class Sessions {
     }
   }
 
+	_setKeydown() {
+		var dropdown = this._sessionList.querySelector(".dropdown")
+		dropdown.addEventListener("keydown", (ev) => {
+			if (ev.keyCode == 27) {
+				dropdown.classList.add("hide")
+				this._sessionsButton.focus()
+			}
+		})
+	}
+
   _setButton() {
     var dropdown = this._sessionList.querySelector(".dropdown")
-    this._sessionsButton.addEventListener("click", (ev) => {
-      ev.stopPropagation()
-      if (dropdown.classList.contains("hide")) {
-        dropdown.classList.remove("hide")
-      } else {
-        dropdown.classList.add("hide")
-      }
-    })
-    var screen = document.querySelector("#screen")
-    screen.addEventListener("click", (ev) => {
-      if (ev.target != dropdown) {
-        dropdown.classList.add("hide")
-      }
-    })
+		document.querySelector("#screen").addEventListener("click", (ev) => {
+			if (ev.target == this._sessionsButton || ev.target.parentElement == this._sessionsButton) {
+				dropdown.classList.toggle("hide")
+			} else
+			if (ev.target != dropdown && ev.target.closest(".dropdown") == null) {
+				dropdown.classList.add("hide")
+			}
+		})
+		document.querySelector("#screen").addEventListener("focusin", (ev) => {
+			if (!dropdown.contains(document.activeElement) && document.activeElement != this._sessionsButton) {
+				dropdown.classList.add("hide")
+			}
+		})
 
   }
 
@@ -80,5 +89,6 @@ class Sessions {
     this._updateOnStartup()
     this._setSessionList()
     this._setButton()
+		this._setKeydown()
   }
 }
