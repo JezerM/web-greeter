@@ -1,0 +1,22 @@
+#compdef web-greeter
+
+_webgreeter() {
+    integer ret=1
+    local -a args
+		local themes=$(ls -1d /usr/share/web-greeter/themes/*/ | cut -c 1- |
+				rev | cut -c 2- | rev | sort | sed 's/\/usr\/share\/web-greeter\/themes\///')
+    args+=(
+        '--debug[Runs the greeter in debug mode]'
+        '--normal[Runs in non-debug mode]'
+        '--list[Lists available themes]'
+        "--theme[Sets the theme to use]:theme:(${themes})"
+        '--help[Show help]'
+        '-h[Show help]'
+        '--version[Print program version]'
+        '-v[Print program version]'
+    )
+    _arguments $args[@] && ret=0
+    return ret
+}
+
+_webgreeter

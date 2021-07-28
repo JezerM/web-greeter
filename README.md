@@ -1,69 +1,86 @@
-# lightdm-webkit2-greeter
-[![Latest Release](https://img.shields.io/github/release/Antergos/web-greeter.svg?style=flat-square)](https://github.com/Antergos/web-greeter/releases)  &nbsp;[![CircleCI](https://img.shields.io/circleci/project/Antergos/web-greeter/stable.svg?style=flat-square)](https://circleci.com/gh/Antergos/web-greeter) &nbsp;[![Coverity Scan Build Status](https://img.shields.io/coverity/scan/6871.svg?style=flat-square)](https://scan.coverity.com/projects/antergos-lightdm-webkit2-greeter) &nbsp;[![Theme API Docs](https://img.shields.io/badge/API--Doc-ready-brightgreen.svg?style=flat-square)](https://doclets.io/Antergos/web-greeter/stable) &nbsp;[![AUR Votes](https://img.shields.io/aur/votes/lightdm-webkit2-greeter.svg?maxAge=2592000&style=flat-square)](https://aur.archlinux.org/packages/lightdm-webkit2-greeter)
+# Web Greeter for LightDM
 
-## Install It
+A modern, visually appealing greeter for LightDM, that allows to create web based themes with HTML, CSS and JavaScript.
 
-#### Official Distro Packages
-|Distro|Install Command/Links|
-|:---:|:---:|
-|![antergos][antergos]|`sudo pacman -S lightdm-webkit2-greeter`|
+This is a try to update the [Antergos web-greeter](https://github.com/Antergos/web-greeter), following what they left.
 
-#### Unofficial Distro Packages
-|Distro|Install Command/Links|
-|:---:|:---:|
-|![arch][arch]|`yaourt -S lightdm-webkit2-greeter`|
-|![fedora][fedora] |[copr](https://copr.fedorainfracloud.org/coprs/antergos/lightdm-webkit2-greeter/) &nbsp;\|&nbsp; [OBS Repo](https://software.opensuse.org/download.html?project=home:antergos&package=lightdm-webkit2-greeter)|
-|![openSUSE][openSUSE]|[1 Click Install](https://software.opensuse.org/ymp/home:antergos/openSUSE_Leap_42.1/lightdm-webkit2-greeter.ymp?base=openSUSE%3ALeap%3A42.1&query=lightdm-webkit2-greeter) &nbsp;\|&nbsp; [OBS Repo](https://software.opensuse.org/download.html?project=home:antergos&package=lightdm-webkit2-greeter)|
-|![ubuntu][ubuntu]|[OBS Repo](https://software.opensuse.org/download.html?project=home:antergos&package=lightdm-webkit2-greeter)|
+As this is based on the [master release](https://github.com/Antergos/web-greeter/tree/master), which does some API changes, actual themes would need to do changes to work correctly.
 
-## Build It
+## [See Live Demo][live_demo]
 
-### Dependencies
-|                       | ![antergos][antergos] &nbsp;&nbsp; ![arch][arch] | ![debian][debian] &nbsp;&nbsp; ![ubuntu][ubuntu] | ![fedora][fedora]     | ![opensuse][opensuse]  | 
-|-----------------------|--------------------------------------------------|--------------------------------------------------|-----------------------|------------------------|
-|**liblightdm-gobject-1** |lightdm                                         |liblightdm-gobject-dev                            | lightdm-gobject-devel | liblightdm-gobject-1-0 |
-|**gtk+ 3**               |gtk3                                            |libgtk-3-0                                        | gtk3                  | gtk3                   |
-|**webkit2gtk-4.0**       |webkit2gtk                                      |libwebkit2gtk-4.0-dev                             | webkitgtk4            | libwebkit2gtk-4_0-37   |
-|**dbus-glib-1**          |dbus-glib                                       |libdbus-glib-1-dev                                | dbus-glib             | dbus-1-glib            |
+Gruvbox and Dracula themes!
 
-#### Build Deps
-|                   | ![antergos][antergos] &nbsp;&nbsp; ![arch][arch] &nbsp;&nbsp; ![debian][debian] &nbsp;&nbsp; ![ubuntu][ubuntu] &nbsp;&nbsp; ![fedora][fedora] &nbsp;&nbsp; ![opensuse][opensuse] |
-|-------------------|--------------------------------------------------|
-|**Meson Build System**|meson v0.37+|
+## Features
 
-### How To Build
+- Create themes with HTML, CSS and JavaScript!
+- Should work everywhere.
+- JavaScript error handling, allowing to load the default theme.
+- Themes could be simple, or very complex.
+- Battery and brightness control.
+- Tab completion for zsh and bash.
+
+## Dependencies
+|                       |     arch      |        ubuntu        |       fedora        |       openSUSE        | 
+|-----------------------|---------------|----------------------|---------------------|-----------------------|
+|**[whither][whither]** | \*install it from source\*
+|**liblightdm-gobject** |lightdm        |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0 |
+|**pygobject**          |python-gobject |python3-gi            |pygobject3           |python3-gobject        |
+
+> ***NOTE*** Be sure to have [whither][whither] installed from this source
+
+### PIP
+Above dependencies can be installed with pip as well.
 ```sh
-git clone https://github.com/Antergos/lightdm-webkit2-greeter.git /tmp/greeter
-cd /tmp/greeter/build
-git checkout ${LATEST_RELEASE_TAG} # eg. git checkout 2.2
-meson --prefix=/usr --libdir=lib ..
-ninja
+pip install -r requirements.txt
 ```
 
-### How To Install
+> ***NOTE*** Be sure to install pip libraries as root too
+
+## Download & Install
 ```sh
-sudo ninja install
+git clone https://github.com/JezerM/web-greeter.git
+cd web-greeter
+sudo pip install -r requirements.txt
+sudo make install
 ```
 
-## Theme JavaScript API:
-The greeter exposes a JavaScript API to themes which they must use to interact with the greeter (in order to facilitate the user login process). For more details, check out the [API Documentation](https://doclets.io/Antergos/lightdm-webkit2-greeter/stable). 
+See [latest release][releases].
 
+## Theme JavaScript API
+[Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Actual documentation is available in [gh-pages][gh-pages].
 
-## Translations
-Translations are managed through [Transifex](https://www.transifex.com/faidoc/antergos/lightdm-webkit2-greeter/).
+You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
 
+## Enable features
+### Brightness control
+To control the brightness inside the greeter, I recommend to use [acpilight][acpilight] replacement for `xbacklight`.
 
-[antergos]: https://antergos.com/distro-logos/logo-square26x26.png "antergos"
-[arch]: https://antergos.com/distro-logos/archlogo26x26.png "arch"
-[fedora]: https://antergos.com/distro-logos/fedora-logo.png "fedora"
-[openSUSE]: https://antergos.com/distro-logos/Geeko-button-bling7.png "openSUSE"
-[ubuntu]: https://antergos.com/distro-logos/ubuntu_orange_hex.png "ubuntu"
-[debian]: https://antergos.com/distro-logos/openlogo-nd-25.png "debian"
+udev rules are needed to be applied before using it. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
 
-[release]: https://img.shields.io/github/release/Antergos/web-greeter.svg?style=flat-square "Latest Release"
-[codacy]: https://img.shields.io/codacy/grade/43c95c8c0e3749b8afa3bfd2b6edf541.svg?style=flat-square "Codacy Grade"
-[circleci]: https://img.shields.io/circleci/project/Antergos/web-greeter/master.svg?style=flat-square "CI Status"
-[api]: https://img.shields.io/badge/API--Docs-ready-brightgreen.svg?style=flat-square "Theme API Docs"
-[aur]: https://img.shields.io/aur/votes/lightdm-webkit2-greeter.svg?maxAge=604800&style=flat-square "AUR Votes"
+If you don't want to or don't have a compatible device, disable it inside `/etc/lightdm/web-greeter.yml` (disabled by default)
 
-[whither]: https://github.com/Antergos/whither "Whither"
+### Battery status
+`acpi` is the only tool you need (and a battery).
+
+You can disable it inside `/etc/lightdm/web-greeter.yml` (disabled by default)
+
+## Debugging
+You can run the greeter from within your desktop session if you add the following line to the desktop file for your session located in `/usr/share/xsessions/`: `X-LightDM-Allow-Greeter=true`.
+
+You have to log out and log back in after adding that line. Then you can run the greeter from command line.
+
+Themes can be opened with a debug console if you set `debug_mode` as `true` inside `/etc/lightdm/web-greeter.yml`. Or, you could run the `web-greeter` with the parameter `--debug`. I recommend to use the last one, as it is easier and handy.
+
+```sh
+web-greeter --debug
+```
+
+> ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
+
+[antergos]: https://github.com/Antergos "Antergos"
+[whither]: https://github.com/JezerM/whither "Whither"
+[acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
+[WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
+[gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"
+[live_demo]: https://jezerm.github.io/web-greeter-themes/ "Live Demo"
+[releases]: https://github.com/JezerM/web-greeter/releases "Releases"

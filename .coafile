@@ -14,10 +14,12 @@ cpplint_ignore = whitespace/tab
 [JavaScript]
 bears = JSHintBear
 files = **/*.js
+ignore = node_modules/
 
 [Python]
 bears=PEP8Bear,PyCommentedCodeBear,PyImportSortBear,PyLintBear,PyUnusedCodeBear
 files = **/*.py
+ignore = build/**/*.py
 
 [Docker]
 bears= DockerfileLintBear
@@ -30,3 +32,4 @@ files = **/*.md
 [JSON]
 bears = JSONFormatBear
 files = **/*.json
+ignore = node_modules/**/*.json

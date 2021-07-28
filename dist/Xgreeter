@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+# LightDM wrapper to run around greeter X sessions.
+
+xsetroot -cursor_name left_ptr
+
+exec $@

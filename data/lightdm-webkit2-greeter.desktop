@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=LightDM WebKit2 Greeter
-Comment=LightDM Greeter
-Exec=lightdm-webkit2-greeter
-Type=Application
-X-Ubuntu-Gettext-Domain=lightdm-webkit2-greeter

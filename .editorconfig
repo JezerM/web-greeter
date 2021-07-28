@@ -1,22 +1,21 @@
 # Top-most EditorConfig file
 root = true
 
-# Unix-style newlines with a newline ending every file
 [*]
-end_of_line = lf
-insert_final_newline = true
+charset                  = utf-8
+continuation_indent_size = 4
+curly_bracket_next_line  = false
+end_of_line              = lf
+indent_brace_style       = 1TBS
+indent_size              = 4
+indent_style             = tab
+insert_final_newline     = true
+max_line_length          = 99
+tab_width                = 4
 trim_trailing_whitespace = true
 
-# Indent With Tabs
-indent_style = tab
-indent_size = tab
-tab_width = 4
+[*.py]
+indent_style = space
 
-# UTF-8
-charset = utf-8
-
-
-max_line_length = 99
-continuation_indent_size = 4
-indent_brace_style = 1TBS
-curly_bracket_next_line = false
+[*.yml]
+indent_style = space

@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- Copyright 2017 Dustin Falgout <dustin@antergos.com> -->
+<component type="desktop">
+	<id>web-greeter</id>
+	<metadata_license>CC0-1.0</metadata_license>
+	<project_license>GPL-3.0+</project_license>
+	<name>Web Greeter</name>
+	<summary>A modern, visually appealing greeter for LightDM</summary>
+	<description>
+		<p>
+			Web Greeter for LightDM utilizes themes built with HTML/CSS/JavaScript for it's login screen.
+		</p>
+		<p>
+			Web Greeter themes provide modern, visually appealing, and feature-rich
+			login screens. Three themes are included by default. There is also a growing number of
+			3rd-Party themes available online.
+		</p>
+	</description>
+	<screenshots>
+		<screenshot height="768" width="1366" type="default">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-1.png</image>
+			<caption>Login screen (gruvbox theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-2.png</image>
+			<caption>Login screen shutting down (gruvbox theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-1.png</image>
+			<caption>Login screen (dracula theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-2.png</image>
+			<caption>Login screen background selector (dracula theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-3.png</image>
+			<caption>Login screen success message (dracula theme)</caption>
+		</screenshot>
+	</screenshots>
+
+	<!--
+	 Validate with `appstream-util validate *.appdata.xml`
+	-->
+
+	<releases>
+		<release date="2021-07-28" version="3.0.0">
+			<description>
+				<p>Finally, Web Greeter 3.0.0 is ready!</p>
+				<p>Added:</p>
+				<ul>
+					<li>New themes: gruvbox and dracula</li>
+					<li>Added newer documentation: https://jezerm.github.io/web-greeter/</li>
+					<li>Support for brightness control</li>
+					<li>Support for battery status</li>
+					<li>Support for ES2020, as using Chrome 83</li>
+					<li>Improved mock.js system</li>
+					<li>Better debug logging</li>
+					<li>Custom cursor theme option as "icon_theme"</li>
+					<li>Vendors added:
+						<ul>
+							<li>material-icons added</li>
+						</ul>
+					</li>
+					<li>Tab completion for "web-greeter" command</li>
+				</ul>
+				<p>Changed:</p>
+				<ul>
+					<li>"lightdm-webkit2-greeter" name changed to "web-greeter"</li>
+					<li>"webkit2Gtk" replaced with "PyQtWebEngine"
+						<ul>
+							<li>Migrated from "C" to "Python"</li>
+						</ul>
+					</li>
+					<li>Man-pages updated</li>
+					<li>Updated API usage for LightDM 1.26.0</li>
+					<li>"greeterutil" renamed to "theme_utils"</li>
+					<li>"config" renamed to "greeter_config"</li>
+					<li>"lightdm-webkit2-greeter.conf" renamed to "web-greeter.yml"</li>
+					<li>Themes are now installed inside "/usr/share/web-greeter/themes"</li>
+					<li>Vendors updated:
+						<ul>
+							<li>"js-cookie" updated</li>
+							<li>"fontawesome" updated, now in "_vendor/fontawesome"</li>
+						</ul>
+					</li>
+					<li>Previous deprecated methods and properties were removed</li>
+				</ul>
+				<p>Removed:</p>
+				<ul>
+					<li>Antergos theme removed</li>
+					<li>Vendors removed:
+						<ul>
+							<li>"jQuery" removed, as now we are in 2021</li>
+							<li>"moment.js" removed. Use "Intl"</li>
+							<li>"Bootstrap" removed. Include it in theme if needed.</li>
+						</ul>
+					</li>
+					<li>"time_format" config option removed</li>
+					<li>Transifex removed, sadly</li>
+				</ul>
+			</description>
+		</release>
+		<release date="2021-07-12" version="3.0.0rc5">
+			<description>
+				<p>This is the last release candidate for the 3.0 series.</p>
+			</description>
+		</release>
+		<release date="2018-01-07" version="3.0.0rc1">
+			<description>
+				<p>This is the first release candidate for the 3.0 series.</p>
+			</description>
+		</release>
+		<release date="2017-02-13" version="3.0.0alpha5">
+			<description>
+				<p>This is a pre-release of what will soon be the 3.0 series.</p>
+			</description>
+		</release>
+		<release date="2017-01-18" version="2.2.2">
+			<description>
+				<p>This is a hotfix release in the 2.2 series, with the following improvements:</p>
+				<ul>
+					<li>Implement workaround to prevent the web process from crashing in webkit2gtk 2.14.3. (GH #107)</li>
+				</ul>
+			</description>
+		</release>
+		<release date="2016-12-26" version="2.2.1">
+			<description>
+				<p>This is a maintenance release in the 2.2 series, with the following improvements:</p>
+				<ul>
+					<li>Increased the timeout for the "theme loaded" check to ensure themes are given enough time to load (when running on less powerful systems). (GH #98)</li>
+					<li>Fixed issue where users' custom .face image failed to load. (GH #98)</li>
+				</ul>
+			</description>
+		</release>
+		<release date="2016-12-18" version="2.2">
+			<description>
+				<p>This is a milestone release with the following improvements:</p>
+				<ul>
+					<li>The JavaScript API for themes is now fully documented: https://goo.gl/0iPzA4</li>
+					<li>New Theme Error Recovery System that will alert the user when errors are detected during JavaScript execution and give them the option to to load a fallback theme.</li>
+					<li>New config option: secure_mode (enabled by default). When enabled, only local http requests are allowed in themes. All non-local requests will be blocked.</li>
+					<li>It is now possible to override the language and format used by the greeter when displaying the current time. See the greeter config file for details.</li>
+					<li>A new utility method for getting the current localized time is available to themes.</li>
+					<li>Simple theme now has a fade out exit animation.</li>
+				</ul>
+				<ul>
+					<li>Switched build systems from Autotools to Meson.</li>
+					<li>Updated API usage for LightDM 1.19.2+.</li>
+					<li>Updated bundled JS &amp; CSS vendor libs to their latest versions.</li>
+					<li>Updated translations with latest changes contributed by the Antergos Community on Transifex.</li>
+					<li>Default theme:
+						<ul>
+							<li>Buttons and user list-box items received some minor style enhancements.</li>
+							<li>Theme is now compatible with the latest jQuery.</li>
+						</ul>
+					</li>
+					<li>Simple theme:
+						<ul>
+							<li>Removed deprecated HTML4 tags.</li>
+							<li>Improved styles for the input field.</li>
+						</ul>
+					</li>
+				</ul>
+				<ul>
+					<li>The ugly default X cursor will no longer be shown after the greeter exits.</li>
+					<li>Default theme:
+						<ul>
+						<li>The error messages container will now appear correctly (size and position).</li>
+						<li>It is now once again possible to skip straight to password entry by pressing either the spacebar or the enter key.</li>
+						</ul>
+					</li>
+				</ul>
+			</description>
+		</release>
+	</releases>
+	<url type="bugtracker">https://github.com/JezerM/web-greeter/issues</url>
+	<url type="help">https://jezerm.github.io/web-greeter/</url>
+	<url type="homepage">https://github.com/JezerM/web-greeter</url>
+	<suggests>
+		<id>apps.light-locker</id>
+	</suggests>
+	<provides>
+		<binary>web-greeter</binary>
+	</provides>
+	<update_contact>amyuki4@gmail.com</update_contact>
+	<translation type="gettext">web-greeter</translation>
+	<developer_name>JezerM</developer_name>
+</component>
+

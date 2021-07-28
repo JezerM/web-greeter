@@ -7,10 +7,10 @@ dependencies:
   cache_directories:
     - ~/docker
   override:
-    - '[[ -e ~/docker/image.tar ]] && docker load -i ~/docker/image.tar || true'
-    - '[[ -e ~/docker/image.tar ]] || docker build --rm=false -t antergos/ci-ubuntu build/ci'
-    - '[[ -e ~/docker/image.tar ]] || mkdir -p ~/docker; docker save antergos/ci-ubuntu > ~/docker/image.tar'
+    - '[[ -e ~/docker/image2.tar ]] && docker load -i ~/docker/image2.tar || true'
+    - '[[ -e ~/docker/image2.tar ]] || docker build --rm=false -t antergos/ci-ubuntu build/ci'
+    - '[[ -e ~/docker/image2.tar ]] || mkdir -p ~/docker; docker save antergos/ci-ubuntu > ~/docker/image2.tar'
 
 test:
   override:
-    - docker run -v ${PWD}:/build:rw antergos/ci-ubuntu /bin/bash -c "cd build && meson --prefix=/usr .. && ninja && ninja install"
+    - docker run -v ${PWD}:/build:rw antergos/ci-ubuntu /bin/bash -c "make -j1 install"

@@ -1,9 +1,0 @@
-[main]
-host = https://www.transifex.com
-
-[antergos.lightdm-webkit2-greeter]
-file_filter = po/<lang>.po
-source_lang = en
-source_file = po/lightdm-webkit2-greeter.pot
-type = PO
-

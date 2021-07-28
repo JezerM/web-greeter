@@ -1,9 +1,0 @@
-window,
-GtkWindow {
-	background: #000000;
-}
-
-dialog .dialog-vbox > label,
-GtkDialog .dialog-vbox > GtkLabel {
-	margin: 20px 15px;
-}

@@ -1,0 +1,50 @@
+#
+# branding:
+#     background_images_dir: Path to directory that contains background images for use by themes.
+#     logo_image:            Path to logo image for use by greeter themes.
+#     user_image:            Default user image/avatar. This is used by themes when user has no .face image.
+#
+# NOTE: Paths must be accessible to the lightdm system user account (so they cannot be anywhere in /home)
+#
+branding:
+    background_images_dir: '@background_images_dir@'
+    logo_image: '@logo_image@'
+    user_image: '@user_image@'
+
+#
+# greeter:
+#     debug_mode:          Enable debug mode for the greeter as well as greeter themes.
+#     detect_theme_errors: Provide an option to load a fallback theme when theme errors are detected.
+#     screensaver_timeout: Blank the screen after this many seconds of inactivity.
+#     secure_mode:         Don't allow themes to make remote http requests.
+#     theme:               Greeter theme to use.
+#     icon_theme:          Icon/cursor theme to use, located in /usr/share/icons/, i.e. "Adwaita". Set to None to use default icon theme.
+#     time_language:       Language to use when displaying the date or time, i.e. "en-us", "es-419", "ko", "ja". Set to None to use system's language.
+#
+# NOTE: See IANA subtags registry for time_language options: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+#
+greeter:
+    debug_mode: '@debug_mode@'
+    detect_theme_errors: True
+    screensaver_timeout: 300
+    secure_mode: True
+    theme: gruvbox
+    icon_theme:
+    time_language:
+
+#
+# features:
+#     battery:             Enable greeter and themes to get battery status.
+#     backlight:
+#         enabled:         Enable greeter and themes to control display backlight.
+#         value:           The amount to increase/decrease brightness by greeter.
+#         steps:           How many steps are needed to do the change. 0 for instant change.
+#
+# NOTE: Backlight feature uses 'acpilight' or 'xbacklight' as brightness controller
+#
+features:
+    battery: '@battery_enabled@'
+    backlight:
+        enabled: '@backlight_enabled@'
+        value: 10
+        steps: 0

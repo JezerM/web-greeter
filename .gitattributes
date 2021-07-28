@@ -1,0 +1,6 @@
+**/_vendor/** linguist-vendored
+**/docs/** linguist-vendored
+**/i18n/** linguist-vendored
+**/.tx/** linguist-vendored
+**/translations.js linguist-vendored
+**/themes/** linguist-vendored

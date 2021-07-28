@@ -1,0 +1,2 @@
+PyGObject
+whither @ https://github.com/JezerM/whither/tarball/master

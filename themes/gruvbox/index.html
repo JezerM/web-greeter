@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, viewport-fit=cover, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+  <link rel="stylesheet" href="css/style.css" class="style">
+  <link rel="stylesheet" href="../../_vendor/material-icons/css/materialdesignicons.min.css" onerror="this.href='../_vendor/material-icons/css/materialdesignicons.min.css'" class="style">
+
+  <script src="../_vendor/js/mock.js"></script>
+
+  <title>Gruvbox theme</title>
+</head>
+<body>
+  <div id="background"></div>
+  <div id="cover" class="hide">
+    <div id="message"></div>
+  </div>
+  <div id="screen">
+    <div id="login-form">
+      <div id="login-form-box">
+        <div id="user-image">
+          <div id="background-image">
+            <i class="mdi mdi-account"></i>
+          </div>
+          <img src="" alt="">
+        </div>
+        <div id="user-label">
+          <b>User</b>
+        </div>
+
+        <div id="pass-form">
+          <form action="POST">
+            <div id="input">
+              <input id="input-password" name="password" type="password" autocomplete="off" autofocus="true" placeholder="Enter your password">
+            </div>
+            <div>
+              <button id="submit-button" type="submit" class="button">
+                <i class="mdi mdi-chevron-right mdi-24px"></i>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="sessions-list">
+          <button id="sessions-button" class="button">
+            <span class="mdi mdi-chevron-down mdi-24px"></span>
+          </button>
+          <ul id="sessions-dropdown" class="dropdown hide">
+            <li><button>Awesome</button></li>
+            <li><button>Ubuntu</button></li>
+          </div>
+        </ul>
+        <div id="users-list">
+          <button id="users-button" class="button">
+            <span class="mdi mdi-chevron-down mdi-24px"></span>
+          </button>
+          <ul id="users-dropdown" class="dropdown hide">
+            <li><button>Normal sheer</button></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+    <div id="session-label" class="info">
+    </div>
+    <div id="lock-label" class="info hide">
+      Lock
+    </div>
+    <div id="time-date" class="info">
+      <span id="time-label">20:00</span>
+      <span id="date-label">12-07-21</span>
+    </div>
+
+    <div id="system-status" class="label-bar">
+      <div id="brightness-label"></div>
+      <div id="battery-label"></div>
+    </div>
+    <div id="system-power" class="label-bar">
+      <button id="shutdown-btn" class="hide">
+        <span class="mdi mdi-power"></span>
+      </button>
+      <button id="restart-btn" class="hide">
+        <span class="mdi mdi-restart"></span>
+      </button>
+      <button id="suspend-btn" class="hide">
+        <span class="mdi mdi-power-sleep"></span>
+      </button>
+      <button id="hibernate-btn" class="hide">
+        <span class="mdi mdi-power-cycle"></span>
+      </button>
+    </div>
+  </div>
+
+  <script src="js/debug.js"></script>
+  <script src="js/authenticate.js"></script>
+  <script src="js/accounts.js"></script>
+  <script src="js/sessions.js"></script>
+  <script src="js/time-date.js"></script>
+  <script src="js/power.js"></script>
+  <script src="js/battery.js"></script>
+  <script src="js/brightness.js"></script>
+  <script src="js/index.js"></script>
+</body>
+</html>

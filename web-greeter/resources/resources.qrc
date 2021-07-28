@@ -1,0 +1,9 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+	<qresource prefix="/_greeter">
+		<file>css/style.css</file>
+		<file>js/bundle.js</file>
+	</qresource>
+</RCC>
+
+

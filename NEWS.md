@@ -1,5 +1,51 @@
 # Change Log
 
+## [3.0.0](https://github.com/JezerM/web-greeter/tree/3.0.0) ~ 07-28-2021
+
+**Added:**
+
+  * New themes: gruvbox (default) and dracula
+  * Added newer [documentation](https://jezerm.github.io/web-greeter/)
+  * Support for brightness control
+  * Support for battery status
+  * Support for ES2020, as using Chrome 83
+  * Improved mock.js system
+  * Better debug logging
+  * Custom cursor theme option as `icon_theme`
+  * Vendors added:
+    - **material-icons** added
+  * Tab completion for `web-greeter` command
+
+**Changed:**
+
+  * **lightdm-webkit2-greeter** name changed to **web-greeter**
+  * **Webkit2Gtk** replaced with **PyQtWebEngine**
+    - Migrated from **C** to **Python**
+  * Man-pages updated
+  * Updated API usage for LightDM 1.26.0
+  * `lightdm.start_session_sync` replaced with `lightdm.start_session` method
+  * `greeterutil` renamed to `theme_utils`
+  * `config` renamed to `greeter_config`
+  * `lightdm-webkit2-greeter.conf` renamed to `web-greeter.yml`
+  * Themes are now installed inside `/usr/share/web-greeter/themes`
+  * Vendors updated:
+    - **js-cookie** updated
+    - **fontawesome** updated, now in `_vendor/fontawesome/`
+  * Previous deprecated methods and properties were removed.
+
+**Removed:**
+
+  * Antergos theme removed
+  * Vendors removed:
+    - **jQuery** removed, as now we are in 2021
+    - **moment.js** removed. Use **Intl**
+    - **Bootstrap** removed. Include it in theme if needed.
+  * `time_format` config option removed
+  * Transifex removed, sadly
+
+[Full Changelog](https://github.com/JezerM/web-greeter/compare/2.2.4...3.0.0)
+
+
 ## [2.2.5](https://github.com/antergos/web-greeter/tree/2.2.5) ~ 04-24-2017
 
 **Fixed:**

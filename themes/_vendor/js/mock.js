@@ -1,18 +1,18 @@
 /*
- * Copyright © 2015-2016 Antergos
+ * ThemeUtils.js
  *
- * mock.js
+ * Copyright © 2021 JezerM
  *
- * This file is part of lightdm-webkit2-greeter
+ * This file is part of Web Greeter.
  *
- * lightdm-webkit2-greeter is free software: you can redistribute it and/or modify
+ * Web Greeter is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License,
- * or any later version.
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
  *
- * lightdm-webkit2-greeter is distributed in the hope that it will be useful,
+ * Web Greeter is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
  *
  * The following additional terms are in effect as per Section 7 of the license:
@@ -22,403 +22,231 @@
  * by works containing it is required.
  *
  * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-
-/** @ignore */
-String.prototype.capitalize = function() {
-	return this.charAt(0).toUpperCase() + this.slice(1);
-};
-
-
-/**
- * @namespace window
- */
-
-/**
- * @memberOf window
- * @type {LightDM.LightDMGreeter}
- */
-let lightdm = null;
-
-/**
- * @memberOf window
- * @type {LightDM.GreeterUtil}
- */
-let greeter_util = null;
-
-/**
- * @memberOf window
- * @type {LightDM.ConfigFile}
- */
-let config = null;
-
-
-/**
- * @namespace LightDM
- */
-
-/**
- * Interface for object that holds info about a session. Session objects are not
- * created by the theme's code, but rather by the {@link LightDMGreeter} class.
- * @memberOf LightDM
- */
-class LightDMSession  {
-	constructor(  { comment, key, name } ) {
-		/**
-		 * The comment for the session.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.comment = comment;
-
-		/**
-		 * The key for the session.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.key = key;
-
-		/**
-		 * The name for the session.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.name = name;
-	}
-}
-
-
-/**
- * Interface for object that holds info about a language on this system. Language objects are not
- * created by the theme's code, but rather by the {@link LightDMGreeter} class.
- * @memberOf LightDM
+ * along with web-greeter; If not, see <http://www.gnu.org/licenses/>.
  */
 class LightDMLanguage {
-	constructor(  { code, name, territory } ) {
-		/**
-		 * The code for the language.
-		 * @type {String}
-		 * @readonly
-		 */
+	constructor( {code, name, territory} ) {
 		this.code = code;
-
-		/**
-		 * The name for the language.
-		 * @type {String}
-		 * @readonly
-		 */
 		this.name = name;
-
-		/**
-		 * The territory for the language.
-		 * @type {String}
-		 * @readonly
-		 */
 		this.territory = territory;
 	}
 }
 
-
-/**
- * Interface for object that holds info about a keyboard layout on this system. Language
- * objects are not created by the theme's code, but rather by the {@link LightDMGreeter} class.
- * @memberOf LightDM
- */
 class LightDMLayout {
-	constructor(  { description, name, short_description } ) {
-		/**
-		 * The description for the layout.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.description = description;
-
-		/**
-		 * The name for the layout.
-		 * @type {String}
-		 * @readonly
-		 */
+	constructor( {name, description, short_description} ) {
 		this.name = name;
-
-		/**
-		 * The territory for the layout.
-		 * @type {String}
-		 * @readonly
-		 */
+		this.description = description;
 		this.short_description = short_description;
 	}
 }
 
+class LightDMSession {
+	constructor( {key, name, comment} ) {
+		this.key = key;
+		this.name = name;
+		this.comment = comment;
+	}
+}
 
-/**
- * Interface for object that holds info about a user account on this system. User
- * objects are not created by the theme's code, but rather by the {@link LightDMGreeter} class.
- * @memberOf LightDM
- */
 class LightDMUser {
-	constructor( user_info ) {
-		/**
-		 * The display name for the user.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.display_name = user_info.display_name;
-
-		/**
-		 * The language for the user.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.language = user_info.language;
-
-		/**
-		 * The keyboard layout for the user.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.layout = user_info.layout;
-
-		/**
-		 * The image for the user.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.image = user_info.image;
-
-		/**
-		 * The home_directory for the user.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.home_directory = user_info.home_directory;
-
-		/**
-		 * The username for the user.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.username = user_info.username;
-
-		/**
-		 * Whether or not the user is currently logged in.
-		 * @type {Boolean}
-		 * @readonly
-		 */
-		this.logged_in = user_info.logged_in;
-
-		/**
-		 * The last session that the user logged into.
-		 * @type {String|null}
-		 * @readonly
-		 */
-		this.session = user_info.session;
-
-		/**
-		 * DEPRECATED!
-		 * @deprecated See {@link LightDMUser.username}.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.name = user_info.name;
-
-		/**
-		 * DEPRECATED!
-		 * @deprecated See {@link LightDMUser.display_name}.
-		 * @type {String}
-		 * @readonly
-		 */
-		this.real_name = user_info.real_name;
+	constructor( {display_name, username, language, layout, image, home_directory, session, logged_in} ) {
+		this.display_name = display_name;
+		this.username = username;
+		this.language = language;
+		this.layout = layout;
+		this.image = image;
+		this.home_directory = home_directory;
+		this.session = session;
+		this.logged_in = logged_in;
 	}
 }
 
-
-/**
- * Provides various utility methods for use by theme authors. The greeter will automatically
- * create an instance of this class when it starts. The instance can be accessed
- * with the global variable: `greeter_util`.
- * @memberOf LightDM
- */
-class GreeterUtil {
-
-	constructor() {
-		if ( null !== greeter_util ) {
-			return greeter_util;
-		}
-
-		greeter_util = this;
-		this._mock_data = MockData();
-	}
-
-	/**
-	 * Returns the contents of directory at `path`.
-	 *
-	 * @param path
-	 * @returns {String[]} List of abs paths for the files and directories found in `path`.
-	 */
-	dirlist( path ) {
-		return this._mock_data.dirlist;
-	}
-
-	/**
-	 * Escape HTML entities in a string.
-	 *
-	 * @param {String} text
-	 * @returns {String}
-	 */
-	txt2html( text ) {
-		let entities_map = {
-			'"': '&quot;',
-			'&': '&amp;',
-			'<': '&lt;',
-			'>': '&gt;'
-		};
-
-		return text.replace(/[\"&<>]/g, a => entities_map[a]);
+class LightDMBattery {
+	constructor( {name, level, status}) {
+		this.name = name;
+		this.level = level;
+		this.status = status;
 	}
 }
 
+let allSignals = [];
 
-/**
- * Provides theme authors with a way to retrieve values from the greeter's config
- * file located at `/etc/lightdm/lightdm-webkit2-greeter.conf`. The greeter will
- * create an instance of this class when it starts. The instance can be accessed
- * with the global variable: `config`.
- * @memberOf LightDM
- */
-class ConfigFile {
-
-	constructor() {
-		if ( null !== config ) {
-			return config;
-		}
-
-		config = this;
-		this._mock_data = MockData();
+class Signal {
+	constructor(name) {
+		this._name = name;
+		this._callbacks = [];
+		allSignals.push(this);
 	}
 
 	/**
-	 * Returns the value of `key` from the greeter's config file.
-	 *
-	 * @arg {String} key
-	 * @returns {Boolean} Config value for `key`.
+	 * Connects a callback to the signal.
+	 * @param {Function} callback The callback to attach.
 	 */
-	get_bool( key ) {
-		return ( key in this._mock_data.config ) ? Boolean(this._mock_data.config[key]) : false;
+	connect(callback) {
+		if (typeof callback !== 'function') return;
+		this._callbacks.push(callback);
+	}
+	/**
+	 * Disconnects a callback to the signal.
+	 * @param {Function} callback The callback to disattach.
+	 */
+	disconnect(callback) {
+		var ind = this._callbacks.findIndex( (cb) => {return cb === callback});
+		if (ind == -1) return;
+		this._callbacks.splice(ind, 1);
 	}
 
-	/**
-	 * Returns the value of `key` from the greeter's config file.
-	 *
-	 * @arg {String} key
-	 * @returns {Number} Config value for `key`.
-	 */
-	get_num( key ) {
-		return ( key in this._mock_data.config ) ? parseInt(this._mock_data.config[key]) : 0;
-	}
-
-	/**
-	 * Returns the value of `key` from the greeter's config file.
-	 *
-	 * @arg {String} key
-	 * @returns {String} Config value for `key`.
-	 */
-	get_str( key ) {
-		return ( key in this._mock_data.config ) ? this._mock_data.config[key] : '';
+	_run() {
+		this._callbacks.forEach( (cb) => {
+			if (typeof cb !== 'function') return;
+			cb()
+		})
 	}
 }
 
-
 /**
- * @ignore
+ * Emits a signal.
+ * @param {String} name The signal's name.
  */
-let MockObjects = {
-	LightDMLanguage( obj ) { return new LightDMLanguage( obj ); },
-	LightDMLayout( obj ) { return new LightDMLayout( obj ); },
-	LightDMSession( obj ) { return new LightDMSession( obj ); },
-	LightDMUser( obj ) { return new LightDMUser( obj ); }
-};
+function emitSignal(name) {
+	var signal = allSignals.find( (s) => {
+		return s._name === name;
+	})
+	signal._run()
+}
+
+_mockData = {
+	languages: [
+		new LightDMLanguage({
+			name: 'English',
+			code: 'en_US.utf8',
+			territory: 'USA'
+		}),
+		new LightDMLanguage({
+			name: 'Catalan',
+			code: 'ca_ES.utf8',
+			territory: 'Spain'
+		}),
+		new LightDMLanguage({
+			name: 'French',
+			code: 'fr_FR.utf8',
+			territory: 'France'
+		})
+	],
+	layouts: [
+		new LightDMLayout({
+			name: 'us',
+			short_description: 'en',
+			description: 'English (US)'
+		}),
+		new LightDMLayout({
+			name: 'at',
+			short_description: 'de',
+			description: 'German (Austria)'
+		}),
+		new LightDMLayout({
+			name: 'us rus',
+			short_description: 'ru',
+			description: 'Russian (US, phonetic)'
+		})
+	],
+	sessions: [
+		new LightDMSession({
+			key: 'gnome',
+			name: 'GNOME',
+			comment: 'This session logs you into GNOME'
+		}),
+		new LightDMSession({
+			key: 'cinnamon',
+			name: 'Cinnamon',
+			comment: 'This session logs you into Cinnamon'
+		}),
+		new LightDMSession({
+			key: 'plasma',
+			name: 'Plasma',
+			comment: 'Plasma by KDE'
+		}),
+		new LightDMSession({
+			key: 'awesome',
+			name: 'Awesome wm',
+			comment: 'An Awesome WM'
+		}),
+		new LightDMSession({
+			key: 'mate',
+			name: 'MATE',
+			comment: 'This session logs you into MATE'
+		}),
+		new LightDMSession({
+			key: 'openbox',
+			name: 'Openbox',
+			comment: 'This session logs you into Openbox'
+		})
+	],
+	users: [
+		new LightDMUser({
+			display_name: 'Clark Kent',
+			username: 'superman',
+			language: null,
+			layout: null,
+			image: '/usr/share/web-greeter/themes/default/img/antergos-logo-user',
+			home_directory: '/home/superman',
+			session: 'gnome',
+			logged_in: false,
+		}),
+		new LightDMUser({
+			display_name: 'Bruce Wayne',
+			username: 'batman',
+			language: null,
+			layout: null,
+			image: '/usr/share/web-greeter/themes/default/img/antergos-logo-user',
+			home_directory: '/home/batman',
+			session: 'cinnamon',
+			logged_in: false,
+		}),
+		new LightDMUser({
+			display_name: 'Peter Parker',
+			username: 'spiderman',
+			language: null,
+			layout: null,
+			image: '/usr/share/web-greeter/themes/default/img/antergos-logo-user',
+			home_directory: '/home/spiderman',
+			session: 'MATE',
+			logged_in: false,
+		})
+	],
+	battery: new LightDMBattery({
+		name: "Battery 0",
+		level: 85,
+		state: "Discharging"
+	}),
+}
 
 
-/**
- * Singleton class which implements the LightDMGreeter Interface. Greeter themes will
- * interact directly with this class to facilitate the user log in processes.
- * The greeter will automatically create an instance of this class when it starts.
- * The instance can be accessed with the global variable: `lightdm`.
- * @memberOf LightDM
- */
-class LightDMGreeter {
-
+class Greeter {
 	constructor() {
-		if ( null !== lightdm ) {
-			return lightdm;
+		if ('lightdm' in window) {
+			return window.lightdm;
 		}
 
-		lightdm = this;
-		this._mock_data = MockData();
+		window.lightdm = this;
 
-		this._initialize();
+		return window.lightdm;
 	}
 
-	/**
-	 * @private
-	 */
-	_do_mocked_system_action( action ) {
-		alert(`System ${action} triggered.`);
-		document.location.reload(true);
-		return true;
-	}
+	mock = true;
 
-	/**
-	 * @private
-	 */
-	_initialize() {
-		this._set_default_property_values();
-	}
-
-	/**
-	 * @private
-	 */
-	_populate_ldm_object_arrays() {
-		for ( let object_type of ['sessions', 'users', 'languages', 'layouts'] ) {
-			let object_name = object_type.slice(0, -1).capitalize(),
-					ObjectClass = `LightDM${object_name}`;
-
-			for ( let object_info of this._mock_data[object_type] ) {
-				this[object_type].push(MockObjects[ObjectClass](object_info));
-			}
-		}
-	}
-
-	/**
-	 * @private
-	 */
-	_set_default_property_values() {
-		for ( let property_type of Object.keys(this._mock_data.greeter.properties) ) {
-			for ( let property of this._mock_data.greeter.properties[property_type] ) {
-				if ( property.indexOf('can_') > -1 ) {
-					// System Power Actions
-					this[`_${property}`] = true;
-				} else {
-					this[`_${property}`] = this._mock_data.greeter.default_values[property_type]();
-				}
-			}
-		}
-
-		this._populate_ldm_object_arrays();
-	}
-
+	_authentication_user = null;
 	/**
 	 * The username of the user being authenticated or {@link null}
-	 * if no authentication is in progress.
-	 * @type {String|null}
+	 * if no authentication is in progress
+	 * @type {String|Null}
 	 * @readonly
 	 */
 	get authentication_user() {
 		return this._authentication_user;
 	}
 
+	_autologin_guest = false;
 	/**
 	 * Whether or not the guest account should be automatically logged
 	 * into when the timer expires.
@@ -429,6 +257,7 @@ class LightDMGreeter {
 		return this._autologin_guest;
 	}
 
+	_autologin_timeout = 100;
 	/**
 	 * The number of seconds to wait before automatically logging in.
 	 * @type {Number}
@@ -438,8 +267,9 @@ class LightDMGreeter {
 		return this._autologin_timeout;
 	}
 
+	_autologin_user = false;
 	/**
-	 * The username with which to automatically log in when the timer expires.
+	 * The username with which to automattically log in when the timer expires.
 	 * @type {String}
 	 * @readonly
 	 */
@@ -447,6 +277,56 @@ class LightDMGreeter {
 		return this._autologin_user;
 	}
 
+	_batteryData = _mockData.battery;
+	/**
+	 * Gets the battery data.
+	 * @type {LightDMBattery}
+	 * @readonly
+	 */
+	get batteryData() {
+		return this._batteryData;
+	}
+
+	_brightness = 50;
+	/**
+	 * Gets the brightness
+	 * @type {Number}
+	 */
+	get brightness() {
+		return this._brightness;
+	}
+	/**
+	 * Sets the brightness
+	 * @param {Number} quantity The quantity to set
+	 */
+	set brightness( quantity ) {
+		if (quantity > 100) quantity = 100;
+		if (quantity < 0) quantity = 0;
+		this._brightness = quantity;
+		emitSignal("brightness_update");
+	}
+
+	_can_access_battery = true;
+	/**
+	 * Whether or not the greeter can access to battery data.
+	 * @type {boolean}
+	 * @readonly
+	 */
+	get can_access_battery() {
+		return this._can_access_battery;
+	}
+
+	_can_access_brightness = true;
+	/**
+	 * Whether or not the greeter can control display brightness.
+	 * @type {boolean}
+	 * @readonly
+	 */
+	get can_access_brightness() {
+		return this._can_access_brightness;
+	}
+
+	_can_hibernate = true;
 	/**
 	 * Whether or not the greeter can make the system hibernate.
 	 * @type {Boolean}
@@ -456,6 +336,7 @@ class LightDMGreeter {
 		return this._can_hibernate;
 	}
 
+	_can_restart = true;
 	/**
 	 * Whether or not the greeter can make the system restart.
 	 * @type {Boolean}
@@ -465,6 +346,7 @@ class LightDMGreeter {
 		return this._can_restart;
 	}
 
+	_can_shutdown = true;
 	/**
 	 * Whether or not the greeter can make the system shutdown.
 	 * @type {Boolean}
@@ -474,6 +356,7 @@ class LightDMGreeter {
 		return this._can_shutdown;
 	}
 
+	_can_suspend = true;
 	/**
 	 * Whether or not the greeter can make the system suspend/sleep.
 	 * @type {Boolean}
@@ -483,6 +366,7 @@ class LightDMGreeter {
 		return this._can_suspend;
 	}
 
+	_default_session = "awesome";
 	/**
 	 * The name of the default session.
 	 * @type {String}
@@ -492,6 +376,7 @@ class LightDMGreeter {
 		return this._default_session;
 	}
 
+	_has_guest_account = false;
 	/**
 	 * Whether or not guest sessions are supported.
 	 * @type {Boolean}
@@ -501,15 +386,17 @@ class LightDMGreeter {
 		return this._has_guest_account;
 	}
 
+	_hide_users_hint = false;
 	/**
 	 * Whether or not user accounts should be hidden.
 	 * @type {Boolean}
 	 * @readonly
 	 */
-	get hide_users() {
-		return this._hide_users;
+	get hide_users_hint() {
+		return this._hide_users_hint;
 	}
 
+	_hostname = "Web browser";
 	/**
 	 * The system's hostname.
 	 * @type {String}
@@ -519,6 +406,7 @@ class LightDMGreeter {
 		return this._hostname;
 	}
 
+	_in_authentication = false;
 	/**
 	 * Whether or not the greeter is in the process of authenticating.
 	 * @type {Boolean}
@@ -528,6 +416,7 @@ class LightDMGreeter {
 		return this._in_authentication;
 	}
 
+	_is_authenticated = true;
 	/**
 	 * Whether or not the greeter has successfully authenticated.
 	 * @type {Boolean}
@@ -537,6 +426,7 @@ class LightDMGreeter {
 		return this._is_authenticated;
 	}
 
+	_language = null;
 	/**
 	 * The current language or {@link null} if no language.
 	 * @type {LightDMLanguage|null}
@@ -546,6 +436,7 @@ class LightDMGreeter {
 		return this._language;
 	}
 
+	_languages = _mockData.languages;
 	/**
 	 * A list of languages to present to the user.
 	 * @type {LightDMLanguage[]}
@@ -555,6 +446,7 @@ class LightDMGreeter {
 		return this._languages;
 	}
 
+	_layout = _mockData.layouts[0];
 	/**
 	 * The currently active layout for the selected user.
 	 * @type {LightDMLayout}
@@ -563,14 +455,7 @@ class LightDMGreeter {
 		return this._layout;
 	}
 
-	/**
-	 * Set the active layout for the selected user.
-	 * @param {LightDMLayout} value
-	 */
-	set layout( value ) {
-		this._layout = value;
-	}
-
+	_layouts = _mockData.layouts;
 	/**
 	 * A list of keyboard layouts to present to the user.
 	 * @type {LightDMLayout[]}
@@ -580,6 +465,7 @@ class LightDMGreeter {
 		return this._layouts;
 	}
 
+	_lock_hint = false;
 	/**
 	 * Whether or not the greeter was started as a lock screen.
 	 * @type {Boolean}
@@ -589,33 +475,27 @@ class LightDMGreeter {
 		return this._lock_hint;
 	}
 
-	/**
-	 * The number of users able to log in.
-	 * @type {Number}
-	 * @readonly
-	 */
-	get num_users() {
-		return this.users.length;
-	}
-
+	_select_guest_hint = false;
 	/**
 	 * Whether or not the guest account should be selected by default.
 	 * @type {Boolean}
 	 * @readonly
 	 */
 	get select_guest_hint() {
-		return this._select_guest_hint;
+		return this.select_guest_hint;
 	}
 
+	_select_user_hint = "";
 	/**
 	 * The username to select by default.
 	 * @type {String}
 	 * @readonly
 	 */
 	get select_user_hint() {
-		return this._select_user_hint;
+		return this.select_user_hint;
 	}
 
+	_sessions = _mockData.sessions;
 	/**
 	 * List of available sessions.
 	 * @type {LightDMSession[]}
@@ -625,6 +505,31 @@ class LightDMGreeter {
 		return this._sessions;
 	}
 
+	_show_manual_login_hint = false;
+	/**
+	 * Check if a manual login option should be shown. If {@link true}, the theme should
+	 * provide a way for a username to be entered manually. Otherwise, themes that show
+	 * a user list may limit logins to only those users.
+	 * @type {Boolean}
+	 * @readonly
+	 */
+	get show_manual_login_hint() {
+		return this._show_manual_login_hint;
+	}
+
+	_show_remote_login_hint = false;
+	/**
+	 * Check if a remote login option should be shown. If {@link true}, the theme should provide
+	 * a way for a user to log into a remote desktop server.
+	 * @type {Boolean}
+	 * @readonly
+	 * @internal
+	 */
+	get show_remote_login_hint() {
+		return this._show_remote_login_hint;
+	}
+
+	_users = _mockData.users;
 	/**
 	 * List of available users.
 	 * @type {LightDMUser[]}
@@ -634,366 +539,420 @@ class LightDMGreeter {
 		return this._users;
 	}
 
-
 	/**
 	 * Starts the authentication procedure for a user.
 	 *
-	 * @arg {String|null} username A username or {@link null} to prompt for a username.
+	 * @param {String|null} username A username or {@link null} to prompt for a username.
 	 */
-	authenticate( username = null ) {}
+	authenticate( username ) {
+		this._in_authentication = true;
+		this._authentication_user = username;
+	}
 
 	/**
 	 * Starts the authentication procedure for the guest user.
 	 */
-	authenticate_as_guest() {}
+	authenticate_as_guest() {
+		this._in_authentication = true;
+		this._authentication_user = "guest";
+	}
+
+	/**
+	 * Updates the battery data
+	 */
+	batteryUpdate() {
+		console.log("Battery updated")
+	}
+
+	/**
+	 * Set the brightness to quantity
+	 * @param {Number} quantity The quantity to set
+	 */
+	brightnessSet( quantity ) {
+		this.brightness = quantity;
+	}
+
+	/**
+	 * Increase the brightness by quantity
+	 * @param {Number} quantity The quantity to increase
+	 */
+	brightnessIncrease( quantity ) {
+		this.brightness += quantity;
+	}
+
+	/**
+	 * Decrease the brightness by quantity
+	 * @param {Number} quantity The quantity to decrease
+	 */
+	brightnessDecrease( quantity ) {
+		this.brightness -= quantity;
+	}
 
 	/**
 	 * Cancel user authentication that is currently in progress.
 	 */
-	cancel_authentication() {}
+	cancel_authentication() {
+		this._in_authentication = false;
+		this._authentication_user = "";
+	}
 
 	/**
 	 * Cancel the automatic login.
 	 */
-	cancel_autologin() {}
-
-	/**
-	 * Get the value of a hint.
-	 * @arg {String} name The name of the hint to get.
-	 * @returns {String|Boolean|Number|null}
-	 */
-	get_hint( name ) {}
+	cancel_autologin() {
+	}
 
 	/**
 	 * Triggers the system to hibernate.
 	 * @returns {Boolean} {@link true} if hibernation initiated, otherwise {@link false}
 	 */
 	hibernate() {
-		return this._do_mocked_system_action('hibernate');
+		alert("Hibernating system");
+		location.reload();
 	}
 
+	_default_password = "justice";
 	/**
 	 * Provide a response to a prompt.
-	 * @arg {*} response
+	 * @param {*} response
 	 */
-	respond( response ) {}
+	respond( response ) {
+		console.log("Response:", response);
+		if (response === this._default_password) {
+			this._is_authenticated = true;
+			emitSignal("authentication_complete")
+		} else {
+			this._is_authenticated = false;
+			setTimeout(() => {
+				emitSignal("authentication_complete")
+			}, 2000)
+		}
+	}
 
 	/**
 	 * Triggers the system to restart.
 	 * @returns {Boolean} {@link true} if restart initiated, otherwise {@link false}
 	 */
 	restart() {
-		return this._do_mocked_system_action('restart');
+		alert("Restarting system");
+		location.reload();
 	}
 
 	/**
 	 * Set the language for the currently authenticated user.
-	 * @arg {String} language The language in the form of a locale specification (e.g.
+	 * @param {String} language The language in the form of a locale specification (e.g.
 	 *     'de_DE.UTF-8')
 	 * @returns {Boolean} {@link true} if successful, otherwise {@link false}
 	 */
-	set_language( language ) {}
+	set_language( language ) {
+	}
 
 	/**
 	 * Triggers the system to shutdown.
 	 * @returns {Boolean} {@link true} if shutdown initiated, otherwise {@link false}
 	 */
 	shutdown() {
-		return this._do_mocked_system_action('shutdown');
+		alert("Shutting down system");
+		location.reload();
 	}
 
 	/**
 	 * Start a session for the authenticated user.
-	 * @arg {String|null} session The session to log into or {@link null} to use the default.
+	 * @param {String|null} session The session to log into or {@link null} to use the default.
 	 * @returns {Boolean} {@link true} if successful, otherwise {@link false}
 	 */
-	start_session( session ) {}
+	start_session( session ) {
+		if (!this._is_authenticated) return;
+		alert(`Session started with: "${session}"`);
+		location.reload();
+	}
 
 	/**
 	 * Triggers the system to suspend/sleep.
 	 * @returns {Boolean} {@link true} if suspend/sleep initiated, otherwise {@link false}
 	 */
 	suspend() {
-		return this._do_mocked_system_action('suspend');
+		alert("Suspending system");
+		location.reload();
+	}
+
+	authentication_complete = new Signal("authentication_complete");
+
+	autologin_timer_expired = new Signal("autologin_timer_expired");
+
+	brightness_update = new Signal("brightness_update");
+
+	idle = new Signal("idle");
+
+	reset = new Signal("reset");
+
+	show_message = new Signal("show_message");
+
+	show_prompt = new Signal("show_prompt");
+
+}
+
+class GreeterConfig {
+	constructor() {
+		if ('greeter_config' in window) {
+			return window.greeter_config;
+		}
+
+		window.greeter_config = this;
+	}
+
+	_branding = {
+		background_images_dir: "/usr/share/backgrounds",
+		logo_image: "/usr/share/web-greeter/themes/default/img/antergos-logo-user.png",
+		user_image: "/usr/share/web-greeter/themes/default/img/antergos.png"
+	}
+
+	_greeter = {
+		debug_mode: true,
+		detect_theme_errors: true,
+		screensaver_timeout: 300,
+		secure_mode: true,
+		time_language: "",
+		theme: "none"
+	}
+
+	_features = {
+		battery: true,
+		backlight: {
+			enabled: true,
+			value: 10,
+			steps: 0
+		}
+	}
+
+	/**
+	 * Holds keys/values from the `branding` section of the config file.
+	 *
+	 * @type {object} branding
+	 * @property {string} background_images_dir Path to directory that contains background images
+	 *                                      for use in greeter themes.
+	 * @property {string} logo                  Path to distro logo image for use in greeter themes.
+	 * @property {string} user_image            Default user image/avatar. This is used by greeter themes
+	 *                                      for users that have not configured a `.face` image.
+	 * @readonly
+	 */
+	get branding() {
+		return this._branding;
+	}
+
+	/**
+	 * Holds keys/values from the `greeter` section of the config file.
+	 *
+	 * @type {object}  greeter
+	 * @property {boolean} debug_mode          Greeter theme debug mode.
+	 * @property {boolean} detect_theme_errors Provide an option to load a fallback theme when theme
+	 *                                     errors are detected.
+	 * @property {number}  screensaver_timeout Blank the screen after this many seconds of inactivity.
+	 * @property {boolean} secure_mode         Don't allow themes to make remote http requests.
+	 *                                     generate localized time for display.
+	 * @property {string}  time_language       Language to use when displaying the time or ""
+	 *                                     to use the system's language.
+	 * @property {string}  theme               The name of the theme to be used by the greeter.
+	 * @readonly
+	 */
+	get greeter() {
+		return this._greeter;
+	}
+
+	/**
+	 * Holds keys/values from the `features` section of the config file.
+	 *
+	 * @type {Object}      features
+	 * @property {Boolean} battery				 Enable greeter and themes to ger battery status.
+	 * @property {Object}  backlight
+	 * @property {Boolean} enabled				 Enable greeter and themes to control display backlight.
+	 * @property {Number}  value					 The amount to increase/decrease brightness by greeter.
+	 * @property {Number}  steps					 How many steps are needed to do the change.
+	 */
+	get features() {
+		return this._features;
 	}
 
 }
 
-/**
- * Mock data to simulate the greeter's API in any web browser.
- * @ignore
- */
-let MockData = () => ({
-	greeter: {
-		default_values: {
-			string: () => '',
-			int: () => 0,
-			bool: () => false,
-			list: () => [],
-			'null': () => null
-		},
-		hostname: 'Mock Greeter',
-		properties: {
-			string: ['authentication_user', 'autologin_user', 'default_session', 'hostname', 'num_users'],
-			int: ['autologin_timeout'],
-			bool: [
-				'autologin_guest', 'can_hibernate', 'can_restart', 'can_shutdown', 'can_suspend',
-				'has_guest_account', 'hide_users', 'in_authentication', 'is_authenticated',
-				'lock_hint', 'select_guest_hint', 'select_user_hint'
-			],
-			list: ['languages', 'layouts', 'sessions', 'users'],
-			'null': ['language', 'layout']
+let time_language = null
+
+class ThemeUtils {
+	constructor() {
+		if ("theme_utils" in window) {
+			return window.theme_utils;
 		}
-	},
-	languages: [
-		{
-			name: 'English',
-			code: 'en_US.utf8',
-			territory: 'USA'
-		},
-		{
-			name: 'Catalan',
-			code: 'ca_ES.utf8',
-			territory: 'Spain'
-		},
-		{
-			name: 'French',
-			code: 'fr_FR.utf8',
-			territory: 'France'
+
+		window.theme_utils = this
+	}
+
+	/**
+	 * Binds `this` to class, `context`, for all of the class's methods.
+	 *
+	 * @arg {object} context An ES6 class instance with at least one method.
+	 *
+	 * @return {object} `context` with `this` bound to it for all of its methods.
+	 */
+	bind_this( context ) {
+		let excluded_methods = ['constructor'];
+
+		function not_excluded( _method, _context ) {
+			let is_excluded = excluded_methods.findIndex( excluded_method => _method === excluded_method ) > -1,
+				is_method = 'function' === typeof _context[_method];
+
+			return is_method && !is_excluded;
 		}
-	],
-	layouts: [
-		{
-			name: 'us',
-			short_description: 'en',
-			description: 'English (US)'
-		},
-		{
-			name: 'at',
-			short_description: 'de',
-			description: 'German (Austria)'
-		},
-		{
-			name: 'us rus',
-			short_description: 'ru',
-			description: 'Russian (US, phonetic)'
+
+		for ( let obj = context; obj; obj = Object.getPrototypeOf( obj ) ) {
+			// Stop once we have traveled all the way up the inheritance chain
+			if ( 'Object' === obj.constructor.name ) {
+				break;
+			}
+
+			for ( let method of Object.getOwnPropertyNames( obj ) ) {
+				if ( not_excluded( method, context ) ) {
+					context[method] = context[method].bind( context );
+				}
+			}
 		}
-	],
-	sessions: [
-		{
-			key: 'gnome',
-			name: 'GNOME',
-			comment: 'This session logs you into GNOME'
-		},
-		{
-			key: 'cinnamon',
-			name: 'Cinnamon',
-			comment: 'This session logs you into Cinnamon'
-		},
-		{
-			key: 'plasma',
-			name: 'Plasma',
-			comment: 'Plasma by KDE'
-		},
-		{
-			key: 'mate',
-			name: 'MATE',
-			comment: 'This session logs you into MATE'
-		},
-		{
-			key: 'openbox',
-			name: 'Openbox',
-			comment: 'This session logs you into Openbox'
+
+		return context;
+	}
+
+	/**
+	 * Returns the contents of directory found at `path` provided that the (normalized) `path`
+	 * meets at least one of the following conditions:
+	 *   * Is located within the greeter themes' root directory.
+	 *   * Has been explicitly allowed in the greeter's config file.
+	 *   * Is located within the greeter's shared data directory (`/var/lib/lightdm-data`).
+	 *   * Is located in `/tmp`.
+	 *
+	 * @param {String}              path        The abs path to desired directory.
+	 * @param {Boolean}             only_images Include only images in the results. Default `true`.
+	 * @param {function(String[])}  callback    Callback function to be called with the result.
+	 */
+	dirlist( path, only_images = true, callback ) {
+		if ( '' === path || 'string' !== typeof path ) {
+			console.error(`theme_utils.dirlist(): path must be a non-empty string!`);
+			return callback([]);
+
+		} else if ( null !== path.match(/^[^/].+/) ) {
+			console.error(`theme_utils.dirlist(): path must be absolute!`);
+			return callback([]);
 		}
-	],
-	users: [
-		{
-			display_name: 'Clark Kent',
-			language: null,
-			layout: null,
-			image: '/usr/share/lightdm-webkit/themes/antergos/img/antergos-logo-user',
-			home_directory: '/home/superman',
-			username: 'superman',
-			logged_in: false,
-			session: 'gnome',
 
-			name: 'superman',
-			real_name: 'Clark Kent'
-		},
-		{
-			display_name: 'Bruce Wayne',
-			language: null,
-			layout: null,
-			image: '/usr/share/lightdm-webkit/themes/antergos/img/antergos-logo-user',
-			home_directory: '/home/batman',
-			username: 'batman',
-			logged_in: false,
-			session: 'cinnamon',
-
-			name: 'batman',
-			real_name: 'Bruce Wayne'
-		},
-		{
-			display_name: 'Peter Parker',
-			language: null,
-			layout: null,
-			image: '/usr/share/lightdm-webkit/themes/antergos/img/antergos-logo-user',
-			home_directory: '/home/spiderman',
-			username: 'spiderman',
-			logged_in: false,
-			session: 'MATE',
-
-			name: 'spiderman',
-			real_name: 'Peter Parker'
+		if ( null !== path.match(/\/\.+(?=\/)/) ) {
+			// No special directory names allowed (eg ../../)
+			path = path.replace(/\/\.+(?=\/)/g, '' );
 		}
-	]
-});
 
+		try {
+			return callback([])
+		} catch( err ) {
+			console.error(`theme_utils.dirlist(): ${err}`);
+			return callback([]);
+		}
+	}
 
-new ConfigFile();
-new GreeterUtil();
-new LightDMGreeter();
+	/**
+	 * Binds `this` to class, `context`, for all of the class's methods.
+	 *
+	 * @param {Object} context An ES6 class instance with at least one method.
+	 *
+	 * @return {Object} `context` with `this` bound to it for all of its methods.
+	 */
+	bind_this( context ) {
+		let excluded_methods = ['constructor'];
 
+		function not_excluded( _method, _context ) {
+			let is_excluded = excluded_methods.findIndex( excluded_method => _method === excluded_method ) > -1,
+				is_method = 'function' === typeof _context[_method];
 
-// mock lighdm for testing
-/*
+			return is_method && !is_excluded;
+		}
 
- lightdm.provide_secret = function (secret) {
- if (typeof lightdm._username == 'undefined' || !lightdm._username) {
- throw "must call start_authentication first"
- }
- _lightdm_mock_check_argument_length(arguments, 1);
- var user = _lightdm_mock_get_user(lightdm.username);
+		for ( let obj = context; obj; obj = Object.getPrototypeOf( obj ) ) {
+			// Stop once we have traveled all the way up the inheritance chain
+			if ( 'Object' === obj.constructor.name ) {
+				break;
+			}
 
- if (!user && secret == lightdm._username) {
- lightdm.is_authenticated = true;
- lightdm.authentication_user = user;
- } else {
- lightdm.is_authenticated = false;
- lightdm.authentication_user = null;
- lightdm._username = null;
- }
- authentication_complete();
- };
+			for ( let method of Object.getOwnPropertyNames( obj ) ) {
+				if ( not_excluded( method, context ) ) {
+					context[method] = context[method].bind( context );
+				}
+			}
+		}
 
- lightdm.start_authentication = function (username) {
- if ('undefined' === typeof username) {
- show_prompt("Username?", 'text');
- lightdm.awaiting_username = true;
- return;
- }
- _lightdm_mock_check_argument_length(arguments, 1);
- if (lightdm._username) {
- throw "Already authenticating!";
- }
- var user = _lightdm_mock_get_user(username);
- if (!user) {
- show_error(username + " is an invalid user");
- }
- show_prompt("Password: ");
- lightdm._username = username;
- };
+		return context;
+	}
 
- lightdm.cancel_authentication = function () {
- _lightdm_mock_check_argument_length(arguments, 0);
- if (!lightdm._username) {
- console.log("we are not authenticating");
- }
- lightdm._username = null;
- };
+	/**
+	 * Get the current date in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
+	 * 	 * `language` defaults to the system's language, but can be set manually in the config file.
+	 * 
+	 * @returns {Object} The current date.
+	 */
+	get_current_localized_date() {
+		let config = greeter_config.greeter
 
- lightdm.suspend = function () {
- alert("System Suspended. Bye Bye");
- document.location.reload(true);
- };
+		var locale = []
 
- lightdm.hibernate = function () {
- alert("System Hibernated. Bye Bye");
- document.location.reload(true);
- };
+		if (time_language === null) {
+			time_language = config.time_language || ""
+		}
 
- lightdm.restart = function () {
- alert("System restart. Bye Bye");
- document.location.reload(true);
- };
+		if (time_language != "") {
+			locale.push(time_language)
+		}
 
- lightdm.shutdown = function () {
- alert("System Shutdown. Bye Bye");
- document.location.reload(true);
- };
+		let optionsDate = { day: "2-digit", month: "2-digit", year: "2-digit" }
 
- lightdm.login = function (user, session) {
- _lightdm_mock_check_argument_length(arguments, 2);
- if (!lightdm.is_authenticated) {
- throw "The system is not authenticated";
- }
- if (user !== lightdm.authentication_user) {
- throw "this user is not authenticated";
- }
- alert("logged in successfully!!");
- document.location.reload(true);
- };
- lightdm.authenticate = function (session) {
- lightdm.login(null, session);
- };
- lightdm.respond = function (response) {
- if (true === lightdm.awaiting_username) {
- lightdm.awaiting_username = false;
- lightdm.start_authentication(response);
- } else {
- lightdm.provide_secret(response);
- }
- };
- lightdm.start_session_sync = function () {
- lightdm.login(null, null);
- };
+		let fmtDate = Intl.DateTimeFormat(locale, optionsDate)
 
- if (lightdm.timed_login_delay > 0) {
- setTimeout(function () {
- if (!lightdm._timed_login_cancelled()) {
- timed_login();
- }
- }, lightdm.timed_login_delay);
- }
+		let now = new Date()
+		var date = fmtDate.format(now)
 
- var config = {}, greeterutil = {};
+		return date
+	}
 
- config.get_str = function (section, key) {
- var branding = {
- logo: 'img/antergos.png',
- user_logo: 'ing/antergos-logo-user.png',
- background_images: '/usr/share/antergos/wallpapers'
- };
- if ('branding' === section) {
- return branding[key];
- }
- };
- config.get_bool = function (section, key) {
- return true;
- };
+	/**
+	 * Get the current time in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
+	 * 	 * `language` defaults to the system's language, but can be set manually in the config file.
+	 * 
+	 * @returns {Object} The current time.
+	 */
+	get_current_localized_time() {
+		let config = greeter_config.greeter
 
+		var locale = []
 
- greeterutil.dirlist = function (directory) {
- if ('/usr/share/antergos/wallpapers' === directory) {
- return ['/usr/share/antergos/wallpapers/83II_by_bo0xVn.jpg', '/usr/share/antergos/wallpapers/antergos-wallpaper.png', '/usr/share/antergos/wallpapers/as_time_goes_by____by_moskanon-d5dgvt8.jpg', '/usr/share/antergos/wallpapers/autumn_hike___plant_details_by_aoiban-d5l7y83.jpg', '/usr/share/antergos/wallpapers/blossom_by_snipes2.jpg', '/usr/share/antergos/wallpapers/c65sk3mshowxrtlljbvh.jpg', '/usr/share/antergos/wallpapers/early_morning_by_kylekc.jpg', '/usr/share/antergos/wallpapers/extinction_by_signcropstealer-d5j4y84.jpg', '/usr/share/antergos/wallpapers/field_by_stevenfields-d59ap2i.jpg', '/usr/share/antergos/wallpapers/Grass_by_masha_darkelf666.jpg', '/usr/share/antergos/wallpapers/Grass_Fullscreen.jpg', '/usr/share/antergos/wallpapers/humble_by_splendidofsun-d5g47hb.jpg', '/usr/share/antergos/wallpapers/In_the_Grass.jpg', '/usr/share/antergos/wallpapers/morning_light.jpg', '/usr/share/antergos/wallpapers/Nautilus_Fullscreen.jpg', '/usr/share/antergos/wallpapers/nikon_d40.jpg', '/usr/share/antergos/wallpapers/sky_full_of_stars.jpg', '/usr/share/antergos/wallpapers/solely_by_stevenfields.jpg', '/usr/share/antergos/wallpapers/the_world_inside_my_lens__by_moskanon-d5fsiqs.jpg', '/usr/share/antergos/wallpapers/white_line_by_snipes2.jpg']
- }
- }
- }
+		if (time_language === null) {
+			time_language = config.time_language || ""
+		}
 
- function _lightdm_mock_check_argument_length(args, length) {
- if (args.length != length) {
- throw "incorrect number of arguments in function call";
- }
- }
+		if (time_language != "") {
+			locale.push(time_language)
+		}
 
- function _lightdm_mock_get_user(username) {
- var user = null;
- for (var i = 0; i < lightdm.users.length; ++i) {
- if (lightdm.users[i].name == username) {
- user = lightdm.users[i];
- break;
- }
- }
- return user;
- }
- */
+		let optionsTime = { hour: "2-digit", minute: "2-digit" }
+
+		let fmtTime = Intl.DateTimeFormat(locale, optionsTime)
+
+		let now = new Date()
+		var time = fmtTime.format(now)
+
+		return time
+	}
+
+}
+
+new ThemeUtils();
+new GreeterConfig();
+new Greeter();
+
+window._ready_event = new Event("GreeterReady")
+
+setTimeout(() => {
+	window.dispatchEvent(_ready_event)
+}, 1000)

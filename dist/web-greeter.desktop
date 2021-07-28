@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Web Greeter
+Comment=Greeter for LightDM
+Exec=web-greeter
+Type=Application
+X-Ubuntu-Gettext-Domain=web-greeter

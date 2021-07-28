@@ -1,6 +1,0 @@
-[theme]
-name=Simple
-description=Simple Theme
-engine=lightdm-webkit-greeter
-url=index.html
-session=gnome

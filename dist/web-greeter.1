@@ -1,0 +1,324 @@
+.TH "web-greeter" "1" "2020.7.6" GNU
+.nh
+.ad l
+.SH "NAME"
+web-greeter
+.SH "SYNOPSIS"
+.PP
+LightDM greeter that uses chromium for theming via HTML/JavaScript\&.
+.PP
+.SH "DESCRIPTION"
+.PP
+web-greeter is a LightDM greeter that uses chromium for theming\&.  Themes can be written
+using a combination of HTML and Javascript\&.
+.PP
+.SH "OPTIONS"
+.TP
+\fB\-h, \-\-help\fR
+Shows the help
+.TP
+\fB\-v, \-\-version\fR
+Print program version
+.TP
+\fB\-\-debug\fR
+Forces the greeter to run in debug mode
+.TP
+\fB\-\-normal\fR
+Forces the greeter to run in normal mode
+.TP
+\fB\-\-list\fR
+Shows the available themes
+.TP
+\fB\-\-theme\ \fITHEME\fR
+Sets the theme to use
+.PP
+.SH "THEME JAVASCRIPT API"
+Please note that all properties and functions which are marked as "deprecated" are
+only available for backwards compatibility and will be removed in a future version of
+web-greeter\&.  Theme authors should not use any deprecated properties or
+functions in new works and should update any existing works which make use of
+deprecated properties and/or functions to ensure continued proper functionality\&.
+.PP
+The following functions \fBmust\fR be provided by the greeter theme and callable on the global "window" object\&.
+.PP
+See full documentation on https://jezerm\&.github\&.io/web-greeter/
+.PP
+\fBshow_prompt(text, type)\fR
+.RS 4
+This will be called when LightDM needs to prompt the user for some reason, such
+as asking for a password\&.  The "text" parameter will be the text of the
+prompt, and the "type" parameter will either be "text" for a visible prompt, or
+"password" for a prompt that the input should be hidden\&.
+.RE
+.PP
+\fBshow_message(text, type)\fR
+.RS 4
+This will be called when LightDM needs to display some info for the user\&.
+The "text" parameter will be the text of the
+message, and the "type" parameter will either be "info" for an information
+message, or "error" for an error message that LightDM has encountered\&.
+.RE
+.PP
+\fBauthentication_complete()\fR
+.RS 4
+This function is called by LightDM when authentication has completed\&.
+.RE
+.PP
+\fBautologin_timer_expired()\fR
+.RS 4
+This function is called by LightDM when an autologin user's login timer has
+expired\&.  The greeter should reset the authentication process\&.
+.RE
+.PP
+The following functions are available for the greeter to call to execute
+actions within LightDM\&.
+.PP
+\fBlightdm\&.authenticate(username)\fR
+.RS 4
+Specifies the username of the user we'd like to start authenticating as\&.  Note that
+if you call lightdm.authenticate with no argument, LightDM (via PAM) will issue
+a show_prompt() call to ask for the username\&. The older function
+lightdm\&.start_authentication() has been deprecated\&.
+.RE
+.PP
+\fBlightdm\&.authenticate_as_guest()\fR
+.RS 4
+Authenticates as the guest user\&.
+.RE
+.PP
+\fBlightdm\&.cancel_authentication()\fR
+.RS 4
+Cancels the authentication of any user currently in the process of
+authenticating\&.
+.RE
+.PP
+\fBlightdm\&.cancel_autologin()\fR
+.RS 4
+Cancels the authentication of the autologin user\&.  The older function
+lightdm\&.cancel_timed_login() has been deprecated.
+.RE
+.PP
+\fBlightdm\&.suspend()\fR
+.RS 4
+Suspends the system, if the greeter has the authority to do so\&.
+.RE
+.PP
+\fBlightdm\&.hibernate()\fR
+.RS 4
+Hibernates the system, if the greeter has the authority to do so\&.
+.RE
+.PP
+\fBlightdm\&.start_session(session)\fR
+.RS 4
+Once LightDM has successfully authenticated the user, start the user's session
+by calling this function\&.  "session" is the authenticated user's session\&.
+If no session is passed, start the authenticated user with the system default
+session. The older function lightdm\&.login(user, session) has been
+deprecated\&.
+.RE
+.PP
+\fBlightdm\&.respond(text)\fR
+.RS 4
+When LightDM has prompted for input, provide the response to LightDM\&.
+The deprecated function was "provide_secret"\&.
+.RE
+.PP
+\fBlightdm\&.restart()\fR
+.RS 4
+Restarts the system, if the greeter has the authority to do so\&.
+.RE
+.PP
+\fBlightdm\&.set_language(lang)\fR
+.RS 4
+Will set the language for the current LightDM session\&.
+.RE
+.PP
+\fBlightdm\&.shutdown()\fR
+.RS 4
+Shuts down the system, if the greeter has the authority to do so\&.
+.RE
+.PP
+Variables available within the greeter are:
+.PP
+\fBlightdm\&.authentication_user\fR
+.RS 4
+String\&. The username of the authentication user being authenticated or null if no
+authentication is in progress\&.
+.RE
+.PP
+\fBlightdm\&.autologin_guest\fR
+.RS 4
+Boolean\&. Indicates the guest user should be used for autologin\&.
+.RE
+.PP
+\fBlightdm\&.autologin_timeout\fR
+.RS 4
+Number\&. The number of seconds to wait before automatically logging in\&. The
+older variable lightdm\&.timed_user_delay has been deprecated\&.
+.RE
+.PP
+\fBlightdm\&.autologin_user\fR
+.RS 4
+String\&. The name of the user account that should be logged into
+automatically after timed login delay has passed\&. The older variable
+lightdm\&.timed_login_user has been deprecated\&.
+.RE
+.PP
+\fBlightdm\&.can_hibernate\fR
+.RS 4
+Boolean\&. Whether or not the system can be made to hibernate by the greeter\&.
+.RE
+.PP
+\fBlightdm\&.can_restart\fR
+.RS 4
+Boolean\&. Whether or not the system can be restarted by the greeter\&.
+.RE
+.PP
+\fBlightdm\&.can_shutdown\fR
+.RS 4
+Boolean\&. Whether or not the system can be shutdown by the greeter\&.
+.RE
+.PP
+\fBlightdm\&.can_suspend\fR
+.RS 4
+Boolean\&. Whether or not the system can be suspended by the greeter\&.
+.RE
+.PP
+\fBlightdm\&.default_session\fR
+.RS 4
+String\&. The name of the default session (as configured in lightdm.conf)\&.
+.RE
+.PP
+\fBlightdm\&.has_guest_account\fR
+.RS 4
+Boolean\&. A guest account is available for login\&.
+.RE
+.PP
+\fBlightdm\&.hide_users_hint\fR
+.RS 4
+Boolean\&. The whole list of users should not be displayed\&.
+.RE
+.PP
+\fBlightdm\&.hostname\fR
+.RS 4
+String\&. The hostname of the system\&.
+.RE
+.PP
+\fBlightdm\&.is_authenticated\fR
+.RS 4
+Boolean\&. Indicates if the user has successfully authenticated\&.
+.RE
+.PP
+\fBlightdm\&.in_authentication\fR
+.RS 4
+Boolean\&. Indicates if lightdm is currently in the authentication phase\&.
+.RE
+.PP
+\fBlightdm\&.language\fR
+.RS 4
+String\&. The currently selected language\&. The older variable name
+lightdm\&.default_language is deprecated\&.
+.RE
+.PP
+\fBlightdm\&.layout\fR
+.RS 4
+String\&. The name of the currently active keyboard layout\&. To change the
+layout, assign a valid layout name to this variable\&. The older variable name
+lightdm\&.default_layout is deprecated\&.
+.RE
+.PP
+\fBlightdm\&.layouts\fR
+.RS 4
+Array\&. The keyboard layouts that are available on the system\&. Returns an Array
+of LightDMLayout objects\&.
+.RE
+.PP
+\fBlightdm\&.num_users\fR
+.RS 4
+Number\&. The number of users able to log in\&.
+.RE
+.PP
+\fBlightdm\&.select_guest\fR
+.RS 4
+Boolean\&. The guest user should be selected by default for login\&.
+.RE
+.PP
+\fBlightdm\&.select_user\fR
+.RS 4
+String\&. The username that should be selected by default for login\&.
+.RE
+.PP
+\fBlightdm\&.sessions\fR
+.RS 4
+Array\&. The sessions that are available on the system\&. Returns an Array of
+LightDMSession objects\&.
+.RE
+.PP
+\fBlightdm\&.users\fR
+.RS 4
+Array\&. The users that are able to log in\&. Returns an Array of LightDMUser
+objects\&.
+.RE
+.PP
+The theme_utils object has some utility functions associated with it which
+are intended to make a theme author's work easier\&.
+.PP
+\fBtheme_utils\&.dirlist(path)\fR
+.RS 4
+Returns an array of strings of filenames present at "path", or Null if the
+path does not exist\&.
+.RE
+.PP
+\fBtheme_utils\&.bind_this(context)\fR
+.RS 4
+Binds this to class, context, for all of the class's methods\&.
+.RE
+.PP
+\fBtheme_utils\&.get_current_localized_time()\fR
+.RS 4
+Get the current time in a localized format\&. Language is auto-detected by default,
+but can be set manually in the greeter config file\&.
+.RE
+\fBtheme_utils\&.get_current_localized_date()\fR
+.RS 4
+Get the current date in a localized format\&. Language is auto-detected by default,
+but can be set manually in the greeter config file\&.
+.RE
+.PP
+Please see the LightDM API documentation for the complete list of calls
+available\&. The web-greeter implements all of the LightDM API\&.
+.PP
+.SH "CONFIGURATION"
+.PP
+\fB/etc/lightdm/web-greeter\&.yml\fR
+.RS 4
+Keyfile that contains one key: theme\&.  This should point to which
+theme the greeter should use\&.
+.RE
+.SH "FILES"
+.PP
+\fB/usr/share/web-greeter/themes\fR
+.RS 4
+Directory where themes should be stored\&.
+.RE
+.SH "EXAMPLES"
+.PP
+Please see the "dracula", "gruvbox" and "simple" themes that are shipped with web-greeter\&.
+.TP
+\fBCommand Line\fR
+.RS 4
+web-greeter --theme simple --debug
+.TP
+web-greeter --normal
+.SH "SEE ALSO"
+.PP
+http://people\&.ubuntu\&.com/~robert-ancell/lightdm/reference/
+.PP
+https://lazka\&.github\&.io/pgi-docs/#LightDM-1
+.PP
+https://jezerm\&.github\&.io/web-greeter/
+.SH "AUTHOR"
+.PP
+The legacy lightdm-webkit-greeter was written by Robert Ancell <robert\&.ancell\&@canonical\&.com\&>\&.
+It was ported to webkit2 by the Antergos Developers <dev@antergos\&.com>\&. Also includes code improvements
+contributed by Scott Balneaves <sbalneav@ltsp\&.org>\&. Mantained by JezerM <amyuki4@gmail\&.com>\&.
