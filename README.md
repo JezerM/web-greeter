@@ -6,6 +6,10 @@ This is a try to update the [Antergos web-greeter](https://github.com/Antergos/w
 
 As this is based on the [master release](https://github.com/Antergos/web-greeter/tree/master), which does some API changes, actual themes would need to do changes to work correctly.
 
+## [See Live Demo][live_demo]
+
+Gruvbox and Dracula themes!
+
 ## Features
 
 - Create themes with HTML, CSS and JavaScript!
@@ -75,3 +79,4 @@ web-greeter --debug
 [acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
 [gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"
+[live_demo]: https://jezerm.github.io/web-greeter-themes/ "Live Demo"
