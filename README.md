@@ -25,6 +25,7 @@ Gruvbox and Dracula themes!
 |**[whither][whither]** | \*install it from source\*
 |**liblightdm-gobject** |lightdm        |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0 |
 |**pygobject**          |python-gobject |python3-gi            |pygobject3           |python3-gobject        |
+
 > ***NOTE*** Be sure to have [whither][whither] installed from this source
 
 ### PIP
@@ -33,7 +34,7 @@ Above dependencies can be installed with pip as well.
 pip install -r requirements.txt
 ```
 
-> **NOTE** Be sure to install pip libraries as root too
+> ***NOTE*** Be sure to install pip libraries as root too
 
 ## Download & Install
 ```sh
@@ -42,6 +43,8 @@ cd web-greeter
 sudo pip install -r requirements.txt
 sudo make install
 ```
+
+See [latest release][releases].
 
 ## Theme JavaScript API
 [Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Actual documentation is available in [gh-pages][gh-pages].
@@ -80,3 +83,4 @@ web-greeter --debug
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
 [gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"
 [live_demo]: https://jezerm.github.io/web-greeter-themes/ "Live Demo"
+[releases]: https://github.com/JezerM/web-greeter/releases "Releases"

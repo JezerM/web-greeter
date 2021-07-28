@@ -21,9 +21,21 @@
 			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-1.png</image>
 			<caption>Login screen (gruvbox theme)</caption>
 		</screenshot>
-		<screenshot height="768" width="1366" type="default">
+		<screenshot height="768" width="1366">
 			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-2.png</image>
 			<caption>Login screen shutting down (gruvbox theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-1.png</image>
+			<caption>Login screen (dracula theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-2.png</image>
+			<caption>Login screen background selector (dracula theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-3.png</image>
+			<caption>Login screen success message (dracula theme)</caption>
 		</screenshot>
 	</screenshots>
 
@@ -32,6 +44,68 @@
 	-->
 
 	<releases>
+		<release date="2021-07-28" version="3.0.0">
+			<description>
+				<p>Finally, Web Greeter 3.0.0 is ready!</p>
+				<p>Added:</p>
+				<ul>
+					<li>New themes: gruvbox and dracula</li>
+					<li>Added newer documentation: https://jezerm.github.io/web-greeter/</li>
+					<li>Support for brightness control</li>
+					<li>Support for battery status</li>
+					<li>Support for ES2020, as using Chrome 83</li>
+					<li>Improved mock.js system</li>
+					<li>Better debug logging</li>
+					<li>Custom cursor theme option as "icon_theme"</li>
+					<li>Vendors added:
+						<ul>
+							<li>material-icons added</li>
+						</ul>
+					</li>
+					<li>Tab completion for "web-greeter" command</li>
+				</ul>
+				<p>Changed:</p>
+				<ul>
+					<li>"lightdm-webkit2-greeter" name changed to "web-greeter"</li>
+					<li>"webkit2Gtk" replaced with "PyQtWebEngine"
+						<ul>
+							<li>Migrated from "C" to "Python"</li>
+						</ul>
+					</li>
+					<li>Man-pages updated</li>
+					<li>Updated API usage for LightDM 1.26.0</li>
+					<li>"greeterutil" renamed to "theme_utils"</li>
+					<li>"config" renamed to "greeter_config"</li>
+					<li>"lightdm-webkit2-greeter.conf" renamed to "web-greeter.yml"</li>
+					<li>Themes are now installed inside "/usr/share/web-greeter/themes"</li>
+					<li>Vendors updated:
+						<ul>
+							<li>"js-cookie" updated</li>
+							<li>"fontawesome" updated, now in "_vendor/fontawesome"</li>
+						</ul>
+					</li>
+					<li>Previous deprecated methods and properties were removed</li>
+				</ul>
+				<p>Removed:</p>
+				<ul>
+					<li>Antergos theme removed</li>
+					<li>Vendors removed:
+						<ul>
+							<li>"jQuery" removed, as now we are in 2021</li>
+							<li>"moment.js" removed. Use "Intl"</li>
+							<li>"Bootstrap" removed. Include it in theme if needed.</li>
+						</ul>
+					</li>
+					<li>"time_format" config option removed</li>
+					<li>Transifex removed, sadly</li>
+				</ul>
+			</description>
+		</release>
+		<release date="2021-07-12" version="3.0.0rc5">
+			<description>
+				<p>This is the last release candidate for the 3.0 series.</p>
+			</description>
+		</release>
 		<release date="2018-01-07" version="3.0.0rc1">
 			<description>
 				<p>This is the first release candidate for the 3.0 series.</p>
