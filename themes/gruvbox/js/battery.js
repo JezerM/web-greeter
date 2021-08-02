@@ -6,7 +6,6 @@ class Battery {
   }
 
   _updateData() {
-    lightdm.batteryUpdate()
     this._info = lightdm.batteryData
     var level = this._info.level
     var state = this._info.state

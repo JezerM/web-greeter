@@ -43,7 +43,6 @@ from PyQt5.QtCore import QTimer
 
 # This Application
 from . import (
-    Battery,
     language_to_dict,
     layout_to_dict,
     session_to_dict,
@@ -51,6 +50,8 @@ from . import (
     battery_to_dict,
     logger
 )
+
+import utils.battery as battery
 
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
@@ -81,21 +82,6 @@ def getBrightness(self):
         logger.error("Brightness: {}".format(err))
         return -1
 
-
-def updateBattery(self):
-    if self._config.features.battery != True:
-        return
-    try:
-        acpi = subprocess.run(["acpi", "-b"], stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE, text=True, check=True)
-
-        self._battery.update(acpi.stdout)
-    except Exception as err:
-        logger.error("Battery: {}".format(err))
-    else:
-        self.property_changed.emit()
-
-
 class Greeter(BridgeObject):
 
     # LightDM.Greeter Signals
@@ -107,11 +93,12 @@ class Greeter(BridgeObject):
     show_prompt = bridge.signal(str, LightDM.PromptType, arguments=('text', 'type'))
 
     brightness_update = bridge.signal()
+    battery_update = bridge.signal()
 
     noop_signal = bridge.signal()
     property_changed = bridge.signal()
 
-    _battery = Battery()
+    _battery = None
 
     def __init__(self, config, *args, **kwargs):
         super().__init__(name='LightDMGreeter', *args, **kwargs)
@@ -119,6 +106,9 @@ class Greeter(BridgeObject):
         self._config = config
         self._shared_data_directory = ''
         self._themes_directory = config.themes_dir
+
+        if self._config.features.battery == True:
+            self._battery = battery.Battery()
 
         LightDMGreeter.connect_to_daemon_sync()
 
@@ -152,6 +142,9 @@ class Greeter(BridgeObject):
             lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype)
         )
 
+        if self._battery:
+            self._battery.connect(lambda: self.battery_update.emit())
+
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
         QTimer().singleShot(300, lambda: _signal.emit(*args))
@@ -172,7 +165,7 @@ class Greeter(BridgeObject):
     def autologin_user(self):
         return LightDMGreeter.get_autologin_user_hint()
 
-    @bridge.prop(Variant, notify=property_changed)
+    @bridge.prop(Variant, notify=battery_update)
     def batteryData(self):
         return battery_to_dict(self._battery)
 
@@ -310,10 +303,6 @@ class Greeter(BridgeObject):
     def authenticate_as_guest(self):
         LightDMGreeter.authenticate_as_guest()
         self.property_changed.emit()
-
-    @bridge.method()
-    def batteryUpdate(self):
-        return updateBattery(self)
 
     @bridge.method(int)
     def brightnessSet(self, quantity):

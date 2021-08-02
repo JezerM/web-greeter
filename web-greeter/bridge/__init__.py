@@ -66,33 +66,6 @@ class setInterval:
             self.action()
 
 
-class Battery:
-    _name = ""
-    _level = -1
-    _state = ""
-
-    def __init__(self):
-        pass
-
-    def update(self, acpi: str):
-        formatted = re.sub("%|,|\n", "", acpi)
-        colon = formatted.split(": ")
-        splitted = colon[1].split(" ")
-
-        self._name = colon[0]
-        self._level = int(splitted[1])
-        self._state = splitted[0]
-
-    def get_name(self):
-        return self._name
-
-    def get_level(self):
-        return self._level
-
-    def get_state(self):
-        return self._state
-
-
 def language_to_dict(lang):
     if (not lang):
         return dict()
@@ -141,7 +114,10 @@ def battery_to_dict(battery):
     return dict(
         name = battery.get_name(),
         level = battery.get_level(),
-        state = battery.get_state()
+        state = battery.get_state(),
+        capacity = battery.get_capacity(),
+        time = battery.get_time(),
+        watt = battery.get_watt()
     )
 
 
