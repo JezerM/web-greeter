@@ -41,26 +41,38 @@
 
   color-scheme: light dark;
   --animation-duration: 300ms;
+
+  --base-font-size: 16px;
 }
 
+/* High DPI */
+
+@media screen and (min-width: 3000px) and (min-height: 1200px) {
+  #screen {
+    zoom: 2.0;
+  }
+}
 
 html {
-  height: 100vh;
-  width: 100vw;
   color: var(--fg);
-  background: black;
+  background-color: var(--bg0);
+  min-height: 100%;
+  position: relative;
+
   font-family: system-ui;
-  font-size: 16px;
+  font-size: var(--base-font-size);
+  text-rendering: optimizeSpeed;
+  image-rendering: pixelated;
 }
 
 html > * {
   font-family: system-ui;
-  font-size: 16px;
+  font-size: inherit;
 }
 
 body {
-  height: 100vh;
-  width: 100vw;
+  display: flex;
+  min-height:  100vh;
   margin: 0;
   transition: var(--animation-duration);
 }
@@ -128,8 +140,7 @@ button {
 }
 
 #screen {
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
   position: relative;
   display: flex;
   align-items: center;

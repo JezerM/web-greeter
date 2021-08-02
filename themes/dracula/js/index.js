@@ -27,6 +27,8 @@ async function initGreeter() {
 
   lightdm.brightness_update?.connect(() => brightness._updateData())
 
+  lightdm.battery_update?.connect(() => battery._updateData())
+
   accounts = new Accounts()
 
   sessions = new Sessions()
@@ -42,9 +44,9 @@ async function initGreeter() {
 
   power = new Power()
 
-  //battery = new Battery()
+  battery = new Battery()
 
-  //brightness = new Brightness()
+  brightness = new Brightness()
 
 }
 

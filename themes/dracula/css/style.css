@@ -21,12 +21,14 @@
   --yellow: #F1FA8C;
 
   --animation-duration: 300ms;
+
+  --base-font-size: 16px;
 }
 
 /* High DPI */
 
 @media screen and (min-width: 3000px) and (min-height: 1200px) {
-  html {
+  #screen {
     zoom: 2.0;
   }
 }
@@ -34,23 +36,27 @@
 /* Basic */
 
 html {
-  height: 100vh;
-  width: 100vw;
-  background-color: black;
-  font-size: 16px;
+  color: var(--fg0);
+  background-color:  var(--bg0);
+  font-family: system-ui;
+
+  min-height: 100%;
+  position: relative;
+
+  font-size: var(--base-font-size);
   text-rendering: optimizeSpeed;
   image-rendering: pixelated;
 }
 html * {
   font-family: system-ui;
-  font-size: 16px;
+  font-size: inherit;
   transition: var(--animation-duration);
   color: var(--fg0);
 }
 
 body {
-  height: 100vh;
-  width: 100vw;
+  display: flex;
+  min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
   background-color: var(--bg0);
@@ -101,8 +107,7 @@ body {
 }
 
 #screen {
-  height: 100vh;
-  width: 100vw;
+  width: 100%;
   position: relative;
   display: flex;
   align-items: center;
@@ -537,6 +542,26 @@ button {
   display: block;
   max-height: 0 !important;
   overflow-y: hidden;
+}
+
+/* system-bar */
+#system-bar {
+  display: flex;
+  position: fixed;
+  bottom: 0;
+  width: -webkit-fill-available;
+  height: 1.5em;
+  padding: 5px;
+
+  justify-content: flex-end;
+  align-items: center;
+
+  background-color: var(--bg1);
+}
+#system-bar > * {
+  font-weight: bold;
+  margin: 2px;
+  cursor: default;
 }
 
 /* Animations */
