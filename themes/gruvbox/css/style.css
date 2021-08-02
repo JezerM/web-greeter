@@ -55,7 +55,7 @@
 
 html {
   color: var(--fg);
-  background-color: var(--bg0);
+  background-color: black;
   min-height: 100%;
   position: relative;
 

@@ -37,7 +37,7 @@
 
 html {
   color: var(--fg0);
-  background-color:  var(--bg0);
+  background-color:  black;
   font-family: system-ui;
 
   min-height: 100%;
