@@ -111,6 +111,8 @@ def user_to_dict(user):
 def battery_to_dict(battery):
     if (not battery):
         return dict()
+    if (len(battery._batteries) == 0):
+        return dict()
     return dict(
         name = battery.get_name(),
         level = battery.get_level(),

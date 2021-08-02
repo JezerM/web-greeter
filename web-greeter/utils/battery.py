@@ -6,6 +6,26 @@ import math
 from threading import Thread
 import time
 
+from logging import (
+    getLogger,
+    DEBUG,
+    Formatter,
+    StreamHandler,
+)
+
+log_format = ''.join([
+    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
+    'lineno)d: %(message)s'
+])
+formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+logger = getLogger("battery")
+logger.propagate = False
+stream_handler = StreamHandler()
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)
+
 running = False
 
 class Battery:
@@ -24,7 +44,7 @@ class Battery:
     def __init__(self):
         if self._batteries.__len__() == 0:
             scandir_line(self.pspath, self._update_batteries)
-        start_timer(self.full_update)
+        start_timer(self.full_update, self.onerror)
         self.full_update()
 
     def connect(self, callback):
@@ -32,6 +52,11 @@ class Battery:
 
     def disconnect(self, callback):
         self.callbacks.remove(callback)
+
+    def onerror(self):
+        self._batteries = []
+        for cb in self.callbacks:
+            cb()
 
     def _update_batteries(self, line):
         bstr = re.match(r"BAT\w+", line)
@@ -163,18 +188,31 @@ class Battery:
     def get_watt(self):
         return self.watt
 
-def acpi_listen(callback):
-    main = subprocess.Popen(shlex.split("acpi_listen"), stdout=subprocess.PIPE, text=True)
-    awky = subprocess.Popen(shlex.split("grep --line-buffered -E 'battery|ac_adapter'"),
-                            stdout=subprocess.PIPE, stdin=main.stdout, text=True)
-    while True:
-        output = awky.stdout.readline()
-        if output == "" and awky.poll() != None:
-            break
-        if output:
-            callback()
-    rc = main.poll()
-    return rc
+acpi_tries = 0
+
+def acpi_listen(callback, onerror):
+    global acpi_tries
+    try:
+        main = subprocess.Popen(shlex.split("acpi_listen"),
+                                stdout=subprocess.PIPE, text=True)
+        awky = subprocess.Popen(shlex.split("grep --line-buffered -E 'battery|ac_adapter'"),
+                                stdout=subprocess.PIPE, stdin=main.stdout, text=True)
+        while True:
+            output = awky.stdout.readline()
+            if output == "" and awky.poll() != None:
+                break
+            if output:
+                callback()
+        logger.warning("acpi_listen terminated")
+        if acpi_tries < 5:
+            acpi_tries += 1
+            logger.debug("Restarting acpi_listen")
+            return acpi_listen(callback, onerror)
+        else:
+            raise Exception("acpi_listen exceeded 5 restarts")
+    except Exception as err:
+        logger.error("Battery error: " + err.__str__())
+        onerror()
 
 def scandir_line(path, callback):
     main = subprocess.Popen(shlex.split("ls -1 {}".format(path)),
@@ -204,7 +242,7 @@ def tonumber(asa):
     except Exception:
         return None
 
-def start_timer(callback):
-    thread = Thread(target = acpi_listen, args=(callback,))
+def start_timer(callback, onerror):
+    thread = Thread(target = acpi_listen, args=(callback, onerror,))
     thread.daemon = True
     thread.start()
