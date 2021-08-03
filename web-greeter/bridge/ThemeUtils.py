@@ -45,7 +45,9 @@ class ThemeUtils(BridgeObject):
 
         self._config = config
         self._greeter = greeter
+        self.after_init()
 
+    def after_init(self):
         self._allowed_dirs = (
             self._config.themes_dir,
             self._config.branding.background_images_dir,

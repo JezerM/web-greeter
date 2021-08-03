@@ -26,6 +26,8 @@ async function initGreeter() {
 
   lightdm.authentication_complete?.connect(() => authentication_done())
 
+  lightdm.reset?.connect(() => reset_greeter())
+
   lightdm.brightness_update?.connect(() => brightness._updateData())
 
   lightdm.battery_update?.connect(() => battery._updateData())

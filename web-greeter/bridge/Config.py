@@ -40,18 +40,16 @@ class Config(BridgeObject):
     def __init__(self, config, *args, **kwargs):
         super().__init__(name='Config', *args, **kwargs)
 
-        self._branding = config.branding.as_dict()
-        self._greeter = config.greeter.as_dict()
-        self._features = config.features.as_dict()
+        self._config = config
 
     @bridge.prop(Variant, notify=noop_signal)
     def branding(self):
-        return self._branding
+        return self._config.branding.as_dict()
 
     @bridge.prop(Variant, notify=noop_signal)
     def greeter(self):
-        return self._greeter
+        return self._config.branding.as_dict()
 
     @bridge.prop(Variant, notify=noop_signal)
     def features(self):
-        return self._features
+        return self._config.features.as_dict()

@@ -189,9 +189,14 @@ class Battery:
         return self.watt
 
 acpi_tries = 0
+acpi_running = False
 
 def acpi_listen(callback, onerror):
+    global acpi_running
     global acpi_tries
+    if acpi_running: return
+    acpi_running = True
+
     try:
         main = subprocess.Popen(shlex.split("acpi_listen"),
                                 stdout=subprocess.PIPE, text=True)
@@ -199,11 +204,16 @@ def acpi_listen(callback, onerror):
                                 stdout=subprocess.PIPE, stdin=main.stdout, text=True)
         while True:
             output = awky.stdout.readline()
+            if acpi_running == False:
+                main.terminate()
+                awky.terminate()
+                return
             if output == "" and awky.poll() != None:
                 break
             if output:
                 callback()
         logger.warning("acpi_listen terminated")
+
         if acpi_tries < 5:
             acpi_tries += 1
             logger.debug("Restarting acpi_listen")
@@ -213,6 +223,7 @@ def acpi_listen(callback, onerror):
     except Exception as err:
         logger.error("Battery error: " + err.__str__())
         onerror()
+        acpi_running = False
 
 def scandir_line(path, callback):
     main = subprocess.Popen(shlex.split("ls -1 {}".format(path)),
@@ -246,3 +257,7 @@ def start_timer(callback, onerror):
     thread = Thread(target = acpi_listen, args=(callback, onerror,))
     thread.daemon = True
     thread.start()
+
+def stop_timer():
+    global acpi_running
+    acpi_running = False

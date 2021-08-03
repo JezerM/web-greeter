@@ -106,8 +106,34 @@ class Authenticate {
 		}
 	}
 
+  _setReset_Greeter() {
+    window.reset_greeter = () => {
+			let body = document.querySelector("body")
+			let form = document.querySelector("#pass-form")
+			let topbar = document.querySelector("#top-bar")
+			let bottombar = document.querySelector("#bottom-bar")
+
+			this._hideMessage()
+			form.style.transition = ""
+			form.classList.remove("hide")
+			topbar.classList.remove("hide")
+			bottombar.classList.remove("hide")
+
+			let inputUser = document.querySelector("#input-username")
+			let inputPass = document.querySelector("#input-password")
+			inputUser.blur(); inputUser.disabled = false;
+			inputPass.blur(); inputPass.disabled = false;
+			inputPass.value = ""
+
+			body.classList.remove("success")
+			body.style.opacity = 1
+			lightdm.cancel_authentication()
+    }
+  }
+
 	_init() {
 		this._setForm()
 		this._setAuthentication_done()
+    this._setReset_Greeter()
 	}
 }

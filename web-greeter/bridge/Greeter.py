@@ -53,6 +53,8 @@ from . import (
 
 import utils.battery as battery
 
+import globals
+
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
 
@@ -82,6 +84,14 @@ def getBrightness(self):
         logger.error("Brightness: {}".format(err))
         return -1
 
+def resetGreeter():
+    logger.debug("RESET")
+    globals.greeter.reset()
+
+def idleGreeter():
+    logger.debug("IDLE")
+    globals.resetScreenSaver()
+
 class Greeter(BridgeObject):
 
     # LightDM.Greeter Signals
@@ -104,15 +114,28 @@ class Greeter(BridgeObject):
         super().__init__(name='LightDMGreeter', *args, **kwargs)
 
         self._config = config
-        self._shared_data_directory = ''
-        self._themes_directory = config.themes_dir
 
-        if self._config.features.battery == True:
-            self._battery = battery.Battery()
+        logger.debug("Starting connection to LightDM")
+
+        LightDMGreeter.set_resettable(True)
 
         LightDMGreeter.connect_to_daemon_sync()
 
         self._connect_signals()
+
+        self.after_init()
+
+    def after_init(self):
+        self._shared_data_directory = ""
+        self._themes_directory = self._config.themes_dir
+
+        if self._config.features.battery == True and self._battery == None:
+            self._battery = battery.Battery()
+            self._battery.connect(lambda: self.battery_update.emit())
+        elif self._config.features.battery == False:
+            self._battery = None
+            battery.stop_timer()
+
         self._determine_shared_data_directory_path()
 
     def _determine_shared_data_directory_path(self):
@@ -142,8 +165,9 @@ class Greeter(BridgeObject):
             lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype)
         )
 
-        if self._battery:
-            self._battery.connect(lambda: self.battery_update.emit())
+        self.reset.connect(resetGreeter)
+
+        self.idle.connect(idleGreeter)
 
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
@@ -355,11 +379,13 @@ class Greeter(BridgeObject):
     def shutdown(self):
         return LightDM.shutdown()
 
-    @bridge.method(str, result=bool)
+    @bridge.method(str)
     def start_session(self, session):
         if not session.strip():
             return
-        return LightDMGreeter.start_session_sync(session)
+        LightDMGreeter.start_session_sync(session)
+        logger.debug("Session started")
+        # globals.greeter.widget.exit(0)
 
     @bridge.method(result=bool)
     def suspend(self):

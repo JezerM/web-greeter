@@ -26,6 +26,20 @@ class Authenticate {
     }
   }
 
+  _setReset_Greeter() {
+    window.reset_greeter = () => {
+      var form = document.querySelector("#login-form")
+      var input = document.querySelector("#input-password")
+      var body = document.querySelector("body")
+
+      form.classList.remove("success")
+      input.value = ""
+      input.disabled = false
+      body.style.opacity = 1
+      this.startAuthentication()
+    }
+  }
+
   _respond() {
     var input = document.querySelector("#input-password")
     input.blur()
@@ -68,6 +82,7 @@ class Authenticate {
   _init() {
     this._setForm()
     this._setAuthentication_done()
+    this._setReset_Greeter()
     console.log("Start authentication")
     this.startAuthentication()
   }

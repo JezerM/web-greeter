@@ -28,6 +28,7 @@
 import sys
 import pkg_resources
 import os
+import copy
 from typing import (
     ClassVar,
     Type,
@@ -207,6 +208,29 @@ class WebGreeter(App):
         theme.checkTheme(self)
         theme_url = '/{0}/{1}/index.html'.format(self.config.themes_dir, self.config.greeter.theme)
         self._web_container.load(theme_url)
+
+    def reset(self):
+        old_theme = self.config.greeter.theme
+        self.get_and_apply_user_config()
+
+        self.greeter._config = self.config
+        self.greeter.after_init()
+
+        self.greeter_config._config = self.config
+
+        self.theme_utils._config = self.config
+        self.theme_utils._greeter = self.greeter
+        self.theme_utils.after_init()
+
+        setScreenSaver(self.config.greeter["screensaver_timeout"])
+
+        logger.debug("Old: " + old_theme + " New: " + self.config.greeter.theme)
+
+        if old_theme != self.config.greeter.theme:
+            self.load_theme()
+
+        page = self._main_window.widget.centralWidget().page()
+        page.setBackgroundColor(QColor(0, 0, 0))
 
 
 global custom_config
