@@ -35,6 +35,17 @@ class Accounts {
     this._setAccountDefault()
   }
 
+  _setGuestAccount() {
+    if (lightdm.has_guest_account) {
+      this._guestAccount = `guest-account-${Math.floor(Math.random() * 1000)}`
+      this._usersObject.push({
+        username: this._guestAccount,
+        display_name: "Guest",
+        image: ""
+      })
+    }
+  }
+
   _setAccountList() {
     var dropdown = this._accountsList.querySelector(".dropdown")
     dropdown.innerHTML = ""

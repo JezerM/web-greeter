@@ -28,19 +28,25 @@ class Authenticate {
 
   _respond() {
     var input = document.querySelector("#input-password")
+    let username = accounts.getDefaultUserName()
     input.blur()
     input.disabled = true
-    lightdm.respond(this._password)
+    if (username == accounts._guestAccount && lightdm.has_guest_account) {
+      lightdm.authenticate_as_guest()
+    } else {
+      lightdm.respond(this._password)
+    }
   }
 
   startAuthentication() {
     lightdm.cancel_authentication()
+    let username = accounts.getDefaultUserName()
+    if (username == accounts._guestAccount && lightdm.has_guest_account) return
     lightdm.authenticate(String(accounts.getDefaultUserName()))
   }
 
   async _authentication_done() {
     var form = document.querySelector("#login-form")
-    var input = document.querySelector("#input-password")
     form.classList.add("success")
 
     await wait(500)
