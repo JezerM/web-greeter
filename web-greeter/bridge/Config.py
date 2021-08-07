@@ -32,6 +32,25 @@ from whither.bridge import (
     Variant,
 )
 
+import gi
+gi.require_version('LightDM', '1')
+from gi.repository import LightDM
+
+from . import (
+    layout_to_dict
+)
+
+def get_layouts(config_layouts: list[str]):
+    layouts = LightDM.get_layouts()
+    final_layouts: list[LightDM.Layout] = []
+    for ldm_lay in layouts:
+        for conf_lay in config_layouts:
+            if type(conf_lay) != str: return
+            conf_lay = conf_lay.replace(" ", "\t")
+            if ldm_lay.get_name() == conf_lay:
+                final_layouts.append(layout_to_dict(ldm_lay))
+    return final_layouts
+
 
 class Config(BridgeObject):
 
@@ -43,6 +62,7 @@ class Config(BridgeObject):
         self._branding = config.branding.as_dict()
         self._greeter = config.greeter.as_dict()
         self._features = config.features.as_dict()
+        self._layouts = get_layouts(config.layouts)
 
     @bridge.prop(Variant, notify=noop_signal)
     def branding(self):
@@ -55,3 +75,7 @@ class Config(BridgeObject):
     @bridge.prop(Variant, notify=noop_signal)
     def features(self):
         return self._features
+
+    @bridge.prop(Variant, notify=noop_signal)
+    def layouts(self):
+        return self._layouts

@@ -187,12 +187,14 @@ class WebGreeter(App):
         branding_config = ConfigLoader('branding', config_file).config
         greeter_config = ConfigLoader('greeter', config_file).config
         features_config = ConfigLoader('features', config_file).config
+        layouts_config = ConfigLoader('layouts', config_file).config
 
         greeter_config.update(custom_config["app"]["greeter"])
 
         self.config.branding.update(branding_config)
         self.config.greeter.update(greeter_config)
         self.config.features.update(features_config)
+        self.config.layouts = layouts_config
 
         cursor_theme = greeter_config["icon_theme"]
         os.environ["XCURSOR_THEME"] = cursor_theme if cursor_theme != None else getDefaultCursor()

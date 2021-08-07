@@ -40,6 +40,9 @@ WebGreeter:
             theme: gruvbox
             icon_theme:
             time_language:
+        layouts:
+            - us
+            - latam
         features:
             battery: False
             backlight:
