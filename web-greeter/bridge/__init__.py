@@ -97,11 +97,13 @@ def user_to_dict(user):
     if (not user):
         return dict()
     return dict(
+        background=user.get_background(),
         display_name=user.get_display_name(),
         home_directory=user.get_home_directory(),
         image=user.get_image(),
         language=user.get_language(),
         layout=user.get_layout(),
+        layouts=user.get_layouts(),
         logged_in=user.get_logged_in(),
         session=user.get_session(),
         username=user.get_name(),

@@ -33,6 +33,20 @@ greeter:
     time_language:
 
 #
+# layouts                  A list of preferred layouts to use
+#   - us                   "en_us" xkb layout
+#   - latam                "es_latam" xkb layout
+#   - gb dvorak            "en_gb_dvorak" xkb layout
+#
+# NOTE: See "man xkeyboard-config" for posible layout values. Also, see posible layouts here: https://web.archive.org/web/20161203032703/http://pastebin.com/v2vCPHjs
+# A layout value is composed in the main layout, like "us" or "latam", and its variant, like "dvorak", "colemak", "mac" or "mac_intl".
+# Separate the name and the variant with a space, like "gb dvorak"
+#
+layouts:
+    - us
+    - latam
+
+#
 # features:
 #     battery:             Enable greeter and themes to get battery status.
 #     backlight:
