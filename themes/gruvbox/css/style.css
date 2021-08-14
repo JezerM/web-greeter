@@ -62,7 +62,7 @@ html {
   font-family: system-ui;
   font-size: var(--base-font-size);
   text-rendering: optimizeSpeed;
-  image-rendering: pixelated;
+  /*image-rendering: pixelated;*/
 }
 
 html > * {
@@ -128,6 +128,7 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   background-color: #282828aa;
   backdrop-filter: blur(5px);
@@ -137,6 +138,9 @@ button {
   font-size: 4em;
   font-weight: bold;
   cursor: default;
+}
+#cover:focus {
+  outline: 0 !important;
 }
 
 #screen {
@@ -286,6 +290,7 @@ input:focus, input:focus-visible {
 }
 
 .label-bar > * {
+  background-color: transparent;
   padding: 8px;
   transition: var(--animation-duration);
   border-radius: 5px;
@@ -297,10 +302,24 @@ input:focus, input:focus-visible {
   display: none;
 }
 
-.label-bar > *:hover {
+.label-bar > *:hover, .label-bar > *:focus-within {
   background: #3c3836aa;
   backdrop-filter: blur(10px);
 }
+
+#layouts-list {
+  padding: 0;
+}
+#layouts-button {
+  all: unset;
+  cursor: pointer;
+  padding: 8px;
+}
+#layouts-dropdown {
+  position: absolute;
+  margin: 2px;
+}
+
 
 #system-status {
   top: 0;
@@ -314,6 +333,7 @@ input:focus, input:focus-visible {
 #system-power > * {
   background: transparent;
   font-size: 2em;
+  cursor: pointer;
 }
 #system-power > *:hover, #system-power > *:focus {
   background: #3c3836aa;

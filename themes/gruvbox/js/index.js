@@ -21,7 +21,7 @@ async function wait(ms) {
 async function initGreeter() {
 
   if (greeter_config.greeter.debug_mode) {
-    debug = new Debug()
+    //debug = new Debug()
   }
 
   lightdm.authentication_complete?.connect(() => authentication_done())
@@ -37,6 +37,8 @@ async function initGreeter() {
   authenticate = new Authenticate()
 
   time_date = new TimeDate()
+
+  layouts = new Layouts()
 
   power = new Power()
 

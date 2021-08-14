@@ -12,6 +12,9 @@ class Power {
   _show_message(text) {
     this._covermsg.innerHTML = text
     this._cover.classList.remove("hide")
+    wait(500).then(() => {
+      this._cover.focus()
+    })
   }
 
   async _do_shutdown() {

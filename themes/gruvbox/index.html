@@ -7,15 +7,15 @@
   <link rel="stylesheet" href="css/style.css" class="style">
   <link rel="stylesheet" href="../../_vendor/material-icons/css/materialdesignicons.min.css" onerror="this.href='../_vendor/material-icons/css/materialdesignicons.min.css'" class="style">
 
-  <script src="../_vendor/js/mock.js"></script>
+  <!--<script src="../_vendor/js/mock.js"></script>-->
 
   <title>Gruvbox theme</title>
 </head>
 <body>
   <div id="background"></div>
-  <div id="cover" class="hide">
+  <button id="cover" class="hide">
     <div id="message"></div>
-  </div>
+  </button>
   <div id="screen">
     <div id="login-form">
       <div id="login-form-box">
@@ -49,8 +49,8 @@
           <ul id="sessions-dropdown" class="dropdown hide">
             <li><button>Awesome</button></li>
             <li><button>Ubuntu</button></li>
-          </div>
-        </ul>
+          </ul>
+        </div>
         <div id="users-list">
           <button id="users-button" class="button">
             <span class="mdi mdi-chevron-down mdi-24px"></span>
@@ -73,6 +73,16 @@
     </div>
 
     <div id="system-status" class="label-bar">
+      <div id="layouts-list">
+        <button id="layouts-button" class="">
+          LATAM
+        </button>
+        <ul id="layouts-dropdown" class="dropdown hide">
+          <li><button>Latam</button></li>
+          <li><button>English</button></li>
+        </ul>
+      </div>
+
       <div id="brightness-label"></div>
       <div id="battery-label"></div>
     </div>
@@ -97,6 +107,7 @@
   <script src="js/accounts.js"></script>
   <script src="js/sessions.js"></script>
   <script src="js/time-date.js"></script>
+  <script src="js/layouts.js"></script>
   <script src="js/power.js"></script>
   <script src="js/battery.js"></script>
   <script src="js/brightness.js"></script>
