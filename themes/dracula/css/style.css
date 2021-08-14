@@ -45,7 +45,7 @@ html {
 
   font-size: var(--base-font-size);
   text-rendering: optimizeSpeed;
-  image-rendering: pixelated;
+  /*image-rendering: pixelated;*/
 }
 html * {
   font-family: system-ui;
@@ -65,9 +65,6 @@ body {
 .hide {
   opacity: 0;
   visibility: hidden;
-  max-height: 0;
-  max-width: 0;
-  display: none;
 }
 
 /* Scrollbar */
@@ -556,12 +553,18 @@ button {
   justify-content: flex-end;
   align-items: center;
 
-  background-color: var(--bg1);
+  background-color: transparent;
 }
 #system-bar > * {
   font-weight: bold;
   margin: 2px;
+  padding: 5px;
   cursor: default;
+  backdrop-filter: blur(20px);
+  border-radius: 2px;
+}
+#system-bar > *:hover {
+  background-color: #2828280e;
 }
 
 /* Animations */
