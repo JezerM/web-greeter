@@ -36,11 +36,13 @@ import gi
 gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 
+from typing import List
+
 from . import (
     layout_to_dict
 )
 
-def get_layouts(config_layouts: list[str]):
+def get_layouts(config_layouts: List[str]):
     layouts = LightDM.get_layouts()
     final_layouts: list[LightDM.Layout] = []
     for ldm_lay in layouts:
