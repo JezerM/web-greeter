@@ -6,6 +6,8 @@ This is a try to update the [Antergos web-greeter](https://github.com/Antergos/w
 
 As this is based on the [master release](https://github.com/Antergos/web-greeter/tree/master), which does some API changes, actual themes would need to do changes to work correctly.
 
+Checkout [nody-greeter][nody-greeter], a greeter made in **Node.js** with **Electron**! (Actually, faster than Web Greeter)
+
 ## [See Live Demo][live_demo]
 
 Gruvbox and Dracula themes!
@@ -79,6 +81,7 @@ web-greeter --debug
 
 [antergos]: https://github.com/Antergos "Antergos"
 [whither]: https://github.com/JezerM/whither "Whither"
+[nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
 [acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
 [gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"
