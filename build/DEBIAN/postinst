@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+pip3 install https://github.com/JezerM/whither/tarball/master

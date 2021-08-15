@@ -4,6 +4,7 @@ build/**
 !build/.gitignore
 !build/ci/Dockerfile
 !build/utils.sh
+!build/DEBIAN/
 whither/
 
 ### JetBrains template

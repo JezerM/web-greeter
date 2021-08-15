@@ -8,7 +8,7 @@ DESTDIR=''
 PREFIX=''
 
 clean_build_dir() {
-	find "${BUILD_DIR}" -type f ! -path '**/ci/**' ! -name '*.yml' ! -name utils.sh -delete
+	find "${BUILD_DIR}" -type f ! -path '**/ci/**' ! -name '*.yml' ! -path "**/DEBIAN/**" ! -name utils.sh -delete
 	find "${BUILD_DIR}" -type d ! -name build ! -path '**/ci' -delete 2>/dev/null || true
 }
 
