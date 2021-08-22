@@ -130,6 +130,9 @@ body {
   font-weight: bold;
   cursor: default;
 }
+#cover:focus {
+  outline: 0 !important;
+}
 
 /* Login form */
 

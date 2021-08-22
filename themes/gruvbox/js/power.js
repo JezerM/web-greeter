@@ -70,6 +70,9 @@ class Power {
     this._cover.addEventListener("click", () => {
       this._cover.classList.add("hide")
     })
+    this._cover.addEventListener("keydown", () => {
+      this._cover.classList.add("hide")
+    })
   }
 
   _setButtons() {
