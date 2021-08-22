@@ -143,23 +143,27 @@ class Battery:
                 self.watt = 0
             elif self.status != "Full":
                 rate_time = 0
-            if (sum_rate_power > 0 or sum_rate_current > 0):
-                div = (sum_rate_power > 0 and sum_rate_power) or sum_rate_current
+                if (sum_rate_power > 0 or sum_rate_current > 0):
+                    div = (sum_rate_power > 0 and sum_rate_power) or sum_rate_current
 
-                if self.status == "Charging":
-                    rate_time = (sum_energy_full - sum_energy_now) / div
-                else:
-                    rate_time = sum_energy_now / div
+                    if self.status == "Charging":
+                        rate_time = (sum_energy_full - sum_energy_now) / div
+                    else:
+                        rate_time = sum_energy_now / div
 
-                if 0 < rate_time and rate_time < 0.01:
-                    rate_time_magnitude = tonumber(abs(math.floor(math.log10(rate_time))))
-                    rate_time = rate_time * 10 ^ (rate_time_magnitude - 2)
+                    if 0 < rate_time and rate_time < 0.01:
+                        rate_time_magnitude = tonumber(abs(math.floor(math.log10(rate_time))))
+                        rate_time = rate_time * 10 ^ (rate_time_magnitude - 2)
 
-                hours   = math.floor(rate_time)
-                minutes = math.floor((rate_time - hours) * 60)
-                self.perc  = math.floor(min(100, (sum_energy_now / sum_energy_full) * 100) + 0.5)
-                self.time = "{:02d}:{:02d}".format(hours, minutes)
-                self.watt = "{:.2f}".format(sum_rate_energy / 1e6)
+                    hours   = math.floor(rate_time)
+                    minutes = math.floor((rate_time - hours) * 60)
+                    self.perc  = math.floor(min(100, (sum_energy_now / sum_energy_full) * 100) + 0.5)
+                    self.time = "{:02d}:{:02d}".format(hours, minutes)
+                    self.watt = "{:.2f}".format(sum_rate_energy / 1e6)
+            elif self.status == "Full":
+                self.perc = 100
+                self.time = "00:00"
+                self.watt = 0
 
         self.perc = self.perc == None and 0 or self.perc
 

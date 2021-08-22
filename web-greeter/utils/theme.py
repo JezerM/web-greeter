@@ -29,6 +29,7 @@
 
 # Standard Lib
 import os
+from os.path import abspath
 
 # This Application
 from .pkg_json import PackageJSON
@@ -55,15 +56,23 @@ logger.addHandler(stream_handler)
 
 
 def checkTheme(self):
-    themes = listThemes(self)
-    config_theme = self.config.greeter.theme
-    default = "gruvbox"
-    if self.config.greeter.theme in themes:
-        pass
-    else:
-        logger.error("Config theme not valid: \"{0}\". Going with \"{1}\" theme".format(
-            config_theme, default))
-        self.config.greeter.theme = default
+    theme: str = self.config.greeter.theme
+    dir = self.config.themes_dir
+    path_to_theme: str = os.path.join(dir, theme, "index.html")
+    def_theme = "gruvbox"
+
+    if theme.startswith("/"): path_to_theme = theme;
+    elif "." in theme or "/" in theme:
+        path_to_theme = os.path.abspath(theme)
+
+    if not path_to_theme.endswith(".html"):
+        path_to_theme = os.path.join(path_to_theme, "index.html")
+
+    if not os.path.exists(path_to_theme):
+        logger.error("\"{0}\" theme does not exists. Using \"{1}\"".format(theme, def_theme))
+        path_to_theme = os.path.join(dir, def_theme, "index.html")
+
+    return path_to_theme
 
 
 def listThemes(self):

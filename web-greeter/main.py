@@ -31,12 +31,7 @@ import sys
 import ruamel.yaml as yaml
 import pkg_resources
 import os
-from typing import (
-    ClassVar,
-    Type,
-    List,
-    Tuple,
-)
+from typing import ( List )
 
 # 3rd-Party Libs
 
@@ -104,13 +99,7 @@ def debugMode(value: bool):
 
 
 def changeTheme(theme: str):
-    dirlist = listThemes(True)
-
-    if theme in dirlist:
-        custom_config["app"]["greeter"]["theme"] = theme
-    else:
-        logger.error("Theme not found. Going with config theme")
-    return
+    custom_config["app"]["greeter"]["theme"] = theme
 
 
 def listThemes(quiet = False):
