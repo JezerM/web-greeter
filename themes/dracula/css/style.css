@@ -332,6 +332,10 @@ button {
   background-color: var(--orange);
 }
 
+.button-group .hide {
+  display: none;
+}
+
 /* Auth message */
 
 #auth-message {
@@ -566,8 +570,25 @@ button {
   backdrop-filter: blur(20px);
   border-radius: 2px;
 }
-#system-bar > *:hover {
+#system-bar > *:hover, #system-bar > *:focus {
   background-color: #2828280e;
+  backdrop-filter: blur(50px);
+}
+
+#layouts-list {
+  padding: 0;
+}
+#layouts-button {
+  all: unset;
+  cursor: pointer;
+  padding: 8px;
+}
+#layouts-dropdown {
+  position: absolute;
+  margin: 2px;
+  bottom: 100%;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 /* Animations */

@@ -35,6 +35,10 @@ class Backgrounds {
 
 	_updateBackgroundImages() {
 		let img = this._background.querySelector("img")
+		if (!img) {
+			img = document.createElement("img")
+			this._background.appendChild(img)
+		}
 		img.src = this._backgroundPath
 		this._localStorage.setItem("defaultBackgroundImage", String(this._backgroundPath))
 	}
