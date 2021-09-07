@@ -3,6 +3,7 @@
 #  ThemeUtils.py
 #
 #  Copyright © 2017 Antergos
+#  Copyright © 2021 JezerM
 #
 #  This file is part of Web Greeter.
 #
@@ -31,29 +32,27 @@ from glob import glob
 import tempfile
 
 # 3rd-Party Libs
-from whither.bridge import (
-    BridgeObject,
-    bridge,
-    Variant,
-)
+from browser.bridge import Bridge, BridgeObject
+from PyQt5.QtCore import QVariant
 
+from config import web_greeter_config
 
 class ThemeUtils(BridgeObject):
 
-    def __init__(self, greeter, config, *args, **kwargs):
+    def __init__(self, greeter, *args, **kwargs):
         super().__init__(name='ThemeUtils', *args, **kwargs)
 
-        self._config = config
+        self._config = web_greeter_config
         self._greeter = greeter
 
         self._allowed_dirs = (
-            self._config.themes_dir,
-            self._config.branding.background_images_dir,
+            self._config["app"]["theme_dir"],
+            self._config["config"]["branding"]["background_images_dir"],
             self._greeter.shared_data_directory,
             tempfile.gettempdir(),
         )
 
-    @bridge.method(str, bool, result=Variant)
+    @Bridge.method(str, bool, result=QVariant)
     def dirlist(self, dir_path, only_images=True):
         if not dir_path or not isinstance(dir_path, str) or '/' == dir_path:
             return []
