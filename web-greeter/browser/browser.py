@@ -28,6 +28,7 @@
 
 # Standard lib
 
+from browser.window import MainWindow
 from bridge.devtools import DevTools
 import os
 from typing import (
@@ -93,7 +94,7 @@ class Application:
         QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
         self.app = QApplication([])
-        self.window = QMainWindow()
+        self.window = MainWindow()
         self.desktop = self.app.desktop()
 
         self.window.setAttribute(Qt.WA_DeleteOnClose)

@@ -1,30 +1,10 @@
-import os
 import subprocess
 import shlex
 import re
 import math
 from threading import Thread
 import time
-
-from logging import (
-    getLogger,
-    DEBUG,
-    Formatter,
-    StreamHandler,
-)
-
-log_format = ''.join([
-    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
-    'lineno)d: %(message)s'
-])
-formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
-logger = getLogger("battery")
-logger.propagate = False
-stream_handler = StreamHandler()
-stream_handler.setLevel(DEBUG)
-stream_handler.setFormatter(formatter)
-logger.setLevel(DEBUG)
-logger.addHandler(stream_handler)
+from logger import logger
 
 running = False
 

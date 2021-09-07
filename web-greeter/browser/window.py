@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#  keyboard.py
+#  window.py
 #
 #  Copyright © 2021 JezerM
 #
@@ -25,22 +25,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from whither.toolkits.bootstrap import WebPage, MainWindow
-
-from PyQt5.QtCore import QUrl, pyqtSignal, Qt
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QKeyEvent
 
-import globals
-
-
-def keyPressEvent(self, keyEvent: QKeyEvent):
-    super(MainWindow, self).keyPressEvent(keyEvent)
-    if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):
-        globals.greeter.greeter.brightnessIncrease(
-            globals.greeter.config.features.backlight["value"])
-    if (keyEvent.key() == Qt.Key.Key_MonBrightnessDown):
-        globals.greeter.greeter.brightnessDecrease(
-            globals.greeter.config.features.backlight["value"])
-
-
-MainWindow.keyPressEvent = keyPressEvent
+class MainWindow(QMainWindow):
+    def keyPressEvent(self, keyEvent: QKeyEvent) -> None:
+        super().keyPressEvent(keyEvent)
+        if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):
+            pass
+        elif (keyEvent.key() == Qt.Key.Key_MonBrightnessDown):
+            pass
