@@ -24,14 +24,18 @@ Gruvbox and Dracula themes!
 ## Dependencies
 |                       |     arch      |        ubuntu        |       fedora        |       openSUSE        | 
 |-----------------------|---------------|----------------------|---------------------|-----------------------|
-|**[whither][whither]** | \*install it from source\*
 |**liblightdm-gobject** |lightdm        |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0 |
 |**pygobject**          |python-gobject |python3-gi            |pygobject3           |python3-gobject        |
-
-> ***NOTE*** Be sure to have [whither][whither] installed from this source
+|**pyqt5**              |python-pyqt5   |python3-pyqt5         |python3-qt5          |python3-qt5            |
+|**qt5-webengine**      |qt5-webengine  |libqt5webengine5      |qt5-qtwebengine      |libqt5-qtwebengine     |
 
 ### PIP
-Above dependencies can be installed with pip as well.
+- PyGObject
+- PyQt5
+- PyQtWebEngine
+- ruamel.yaml
+
+Install PIP dependencies with:
 ```sh
 pip install -r requirements.txt
 ```
@@ -80,7 +84,6 @@ web-greeter --debug
 > ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
 
 [antergos]: https://github.com/Antergos "Antergos"
-[whither]: https://github.com/JezerM/whither "Whither"
 [nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
 [acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"

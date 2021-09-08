@@ -1,2 +1,4 @@
 PyGObject
-whither @ https://github.com/JezerM/whither/tarball/master
+PyQt5
+PyQtWebEngine
+ruamel.yaml

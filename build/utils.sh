@@ -41,10 +41,6 @@ do_install() {
 	cp -R "${INSTALL_ROOT}"/* "${DESTDIR}"
 }
 
-do_install_dev() {
-	cp -RH "${REPO_DIR}/whither/whither" /usr/lib/python3.6/site-packages
-}
-
 # Not used
 generate_pot_file() {
 	REPO_ROOT="$(dirname "${REPO_DIR}")"
@@ -114,7 +110,6 @@ set_config() {
 	[[ -z "$1" || -z "$2" ]] && return 1
 
 	sed -i "s|'@$1@'|$2|g" \
-		"${BUILD_DIR}/web-greeter/whither.yml" \
 		"${BUILD_DIR}/dist/web-greeter.yml"
 }
 
@@ -149,10 +144,6 @@ case "$1" in
 		PREFIX="$3"
 		do_install
 		clean_build_dir
-	;;
-
-	install-dev)
-		do_install_dev
 	;;
 
 	prepare-install)
