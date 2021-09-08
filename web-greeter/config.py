@@ -66,7 +66,13 @@ web_greeter_config = {
         "fullscreen": True,
         "frame": False,
         "debug_mode": False,
-        "theme_dir": "/usr/share/web-greeter/themes/"
+        "theme_dir": "/usr/share/web-greeter/themes/",
+        "version": {
+            "full": "3.0.0",
+            "major": 3,
+            "minor": 3,
+            "micro": 0,
+        },
     }
 }
 

@@ -32,6 +32,8 @@ from PyQt5.QtWebEngineWidgets import (
     QWebEnginePage,
 )
 
+from logger import logger
+
 class DevTools:
 
     def __init__(self):
@@ -42,4 +44,5 @@ class DevTools:
 
         self.view.load(QUrl('http://127.0.0.1:12345'))
         self.view.show()
+        logger.debug("DevTools initialized")
 

@@ -29,7 +29,7 @@
 # Standard lib
 
 from browser.window import MainWindow
-from bridge.devtools import DevTools
+from browser.devtools import DevTools
 import os
 from typing import (
     Dict,
@@ -138,7 +138,6 @@ class Browser(Application):
 
     def init(self):
         logger.debug("Initializing Browser Window")
-        web_greeter_config["config"]["greeter"]["debug_mode"] = True
 
         if web_greeter_config["config"]["greeter"]["debug_mode"]:
             os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = '12345'
