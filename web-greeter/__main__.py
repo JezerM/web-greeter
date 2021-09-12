@@ -61,7 +61,7 @@ def set_debug(value: bool):
     conf = config.web_greeter_config["config"]
     app = config.web_greeter_config["app"]
     conf["greeter"]["debug_mode"] = value
-    app["decorated"] = value
+    app["frame"] = value
     app["fullscreen"] = not value
 
 def parse(argv):

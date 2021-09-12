@@ -28,8 +28,9 @@
 # Standard lib
 
 # 3rd-Party Libs
+from typing import List
 from PyQt5.QtWebEngineWidgets import QWebEnginePage
-from PyQt5.QtWidgets import QDialogButtonBox, QDialog, QVBoxLayout, QLabel, QPushButton
+from PyQt5.QtWidgets import QAbstractButton, QDialogButtonBox, QDialog, QVBoxLayout, QLabel, QPushButton
 from config import web_greeter_config
 
 import globals
@@ -86,54 +87,49 @@ class WebPage(QWebEnginePage):
                 source=sourceID, line=lineNumber, msg=message)
             errorPrompt(errorMessage)
 
-class ErrorDialog(QDialog):
-    def __init__(self, parent=None, err=""):
+class Dialog(QDialog):
+    def __init__(self, parent=None, title:str = "Dialog", message:str = "Message", detail:str = "", buttons: List[str] = []):
         super().__init__(parent)
-
-        self.setWindowTitle("Error")
+        self.setWindowTitle(title)
 
         self.buttonBox = QDialogButtonBox()
-        cancelBtn = QPushButton("Cancel")
-        defaultBtn = QPushButton("Set default theme")
-        reloadBtn = QPushButton("Reload theme")
+        for i in range(0, len(buttons)):
+            button = QPushButton(buttons[i])
+            button.role = i
+            self.buttonBox.addButton(button, QDialogButtonBox.ButtonRole.NoRole)
 
-        reloadBtn.clicked.connect(self.handle_reload)
-
-        self.buttonBox.addButton(defaultBtn, QDialogButtonBox.ButtonRole.AcceptRole)
-        self.buttonBox.addButton(reloadBtn, QDialogButtonBox.ButtonRole.ResetRole)
-        self.buttonBox.addButton(cancelBtn, QDialogButtonBox.ButtonRole.RejectRole)
-
-        self.buttonBox.accepted.connect(self.accept)
-        self.buttonBox.rejected.connect(self.reject)
+        self.buttonBox.clicked.connect(self.handle_click)
 
         self.layout = QVBoxLayout()
-        message = QLabel("An error ocurred. Do you want to change to default theme?")
-        err = QLabel(err)
-        self.layout.addWidget(message)
-        self.layout.addWidget(err)
+        self.layout.addWidget(QLabel(message))
+        self.layout.addWidget(QLabel(detail))
         self.layout.addWidget(self.buttonBox)
+
         self.setLayout(self.layout)
 
-    def handle_reload(self, value: bool):
-        self.done(2)
-
+    def handle_click(self, button: QAbstractButton):
+        self.done(button.role)
 
 def errorPrompt(err):
     if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
         return
 
-    dia = ErrorDialog(globals.greeter.window, err)
+    dia = Dialog(parent=globals.greeter.window, title="Error",
+                 message="An error ocurred. Do you want to change to default theme?",
+                 detail=err,
+                 buttons=["Reload theme", "Set default theme", "Cancel"],
+                 )
 
     dia.exec()
     result = dia.result()
 
-    if result == 0:  # Cancel
+    if result == 2:  # Cancel
         return
     elif result == 1:  # Default theme
         web_greeter_config["config"]["greeter"]["theme"] = "gruvbox"
         globals.greeter.load_theme()
         return
-    elif result == 2:  # Reload
+    elif result == 0:  # Reload
         globals.greeter.load_theme()
         return
 

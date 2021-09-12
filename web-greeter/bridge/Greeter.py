@@ -27,6 +27,7 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 # Standard Lib
+from browser.error_prompt import Dialog
 import subprocess
 import threading
 
@@ -36,9 +37,11 @@ gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 
 from browser.bridge import Bridge, BridgeObject
-from PyQt5.QtCore import QVariant, QTimer
+from PyQt5.QtCore import QFileSystemWatcher, QVariant, QTimer
 
 from config import web_greeter_config
+from utils.battery import Battery
+import globals
 
 # This Application
 from . import (
@@ -56,19 +59,52 @@ LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
 
 
-def changeBrightness(self, method: str, quantity: int):
-    if self._config["features"]["backlight"]["enabled"] != True:
+def changeBrightness(method: str, quantity: int = None):
+    backlight = web_greeter_config["config"]["features"]["backlight"]
+    if not backlight["enabled"]:
         return
+    if not quantity:
+        quantity = backlight["value"]
     try:
-        steps = self._config["features"]["backlight"]["steps"]
+        steps = backlight["steps"]
         child = subprocess.run(["xbacklight", method, str(quantity), "-steps", str(steps)])
         if child.returncode == 1:
             raise ChildProcessError("xbacklight returned 1")
     except Exception as err:
         logger.error("Brightness: {}".format(err))
     else:
-        self.brightness_update.emit()
+        if globals.greeter:
+            globals.greeter.greeter.brightness_update.emit()
 
+def increaseBrightness(quantity: int = None):
+    backlight = web_greeter_config["config"]["features"]["backlight"]
+    if not backlight["enabled"]:
+        return
+    if not quantity:
+        quantity = backlight["value"]
+    thread = threading.Thread(target=changeBrightness,
+                              args=("-inc", quantity))
+    thread.start()
+
+def decreaseBrightness(quantity: int = None):
+    backlight = web_greeter_config["config"]["features"]["backlight"]
+    if not backlight["enabled"]:
+        return
+    if not quantity:
+        quantity = backlight["value"]
+    thread = threading.Thread(target=changeBrightness,
+                              args=("-dec", quantity))
+    thread.start()
+
+def setBrightness(quantity: int = None):
+    backlight = web_greeter_config["config"]["features"]["backlight"]
+    if not backlight["enabled"]:
+        return
+    if not quantity:
+        quantity = backlight["value"]
+    thread = threading.Thread(target=changeBrightness,
+                              args=("-set", quantity))
+    thread.start()
 
 def getBrightness(self):
     if self._config["features"]["backlight"]["enabled"] != True:
@@ -106,13 +142,23 @@ class Greeter(BridgeObject):
         self._shared_data_directory = ''
         self._themes_directory = web_greeter_config["app"]["theme_dir"]
 
-        # if self._config.features.battery == True:
-            # self._battery = battery.Battery()
+        if self._config["features"]["battery"]:
+            self._battery = Battery()
 
-        LightDMGreeter.connect_to_daemon_sync()
+        try:
+            LightDMGreeter.connect_to_daemon_sync()
+        except Exception as err:
+            logger.error(err)
+            dia = Dialog(title="An error ocurred",
+                         message="Detected a problem that could interfere with the system login process",
+                         detail="LightDM: {0}\nYou can continue without major problems, but you won't be able to log in".format(err),
+                         buttons=["Okay"])
+            dia.exec()
+            pass
 
         self._connect_signals()
         self._determine_shared_data_directory_path()
+        logger.debug("LightDM API connected")
 
     def _determine_shared_data_directory_path(self):
         user = LightDMUsers.get_users()[0]
@@ -174,9 +220,7 @@ class Greeter(BridgeObject):
 
     @brightness.setter
     def brightness(self, quantity):
-        thread = threading.Thread(target=changeBrightness,
-                                  args=(self, "-set", quantity))
-        thread.start()
+        setBrightness(quantity)
 
     @Bridge.prop(bool, notify=noop_signal)
     def can_hibernate(self):
@@ -305,21 +349,15 @@ class Greeter(BridgeObject):
 
     @Bridge.method(int)
     def brightnessSet(self, quantity):
-        thread = threading.Thread(target=changeBrightness,
-                                  args=(self, "-set", quantity))
-        thread.start()
+        setBrightness(quantity)
 
     @Bridge.method(int)
     def brightnessIncrease(self, quantity):
-        thread = threading.Thread(target=changeBrightness,
-                                  args=(self, "-inc", quantity))
-        thread.start()
+        increaseBrightness(quantity)
 
     @Bridge.method(int)
     def brightnessDecrease(self, quantity):
-        thread = threading.Thread(target=changeBrightness,
-                                  args=(self, "-dec", quantity))
-        thread.start()
+        decreaseBrightness(quantity)
 
     @Bridge.method()
     def cancel_authentication(self):

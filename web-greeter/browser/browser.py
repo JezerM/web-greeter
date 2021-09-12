@@ -29,7 +29,6 @@
 # Standard lib
 
 from browser.window import MainWindow
-from browser.devtools import DevTools
 import os
 from typing import (
     Dict,
@@ -39,10 +38,10 @@ from typing import (
 
 # 3rd-Party Libs
 from PyQt5.QtCore import QUrl, Qt, QCoreApplication, QFile
-from PyQt5.QtWidgets import QApplication, QDesktopWidget, QDockWidget, QMainWindow
+from PyQt5.QtWidgets import QAction, QApplication, QDesktopWidget, QDockWidget, QMainWindow, qApp
 from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
 from PyQt5.QtWebEngineWidgets import QWebEngineScript, QWebEngineProfile, QWebEngineSettings, QWebEngineView, QWebEnginePage
-from PyQt5.QtGui import QColor
+from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWebChannel import QWebChannel
 
 from browser.error_prompt import WebPage
@@ -106,7 +105,13 @@ class Application:
             self.window.windowFlags() | Qt.WindowType.MaximizeUsingFullscreenGeometryHint
         )
 
+        if web_greeter_config["app"]["frame"]:
+            self._init_menu_bar()
+
         state = self.states['NORMAL']
+        if web_greeter_config["app"]["fullscreen"]:
+            state = self.states["FULLSCREEN"]
+
         try:
             self.window.windowHandle().setWindowState(state)
         except Exception:
@@ -126,6 +131,27 @@ class Application:
     def run(self) -> int:
         logger.debug("Web Greeter started")
         return self.app.exec_()
+
+    def _init_menu_bar(self):
+        exit_action = QAction(QIcon('exit.png'), '&Exit', self.window)
+        exit_action.setShortcut('Ctrl+Q')
+        exit_action.setStatusTip('Exit application')
+        exit_action.triggered.connect(qApp.quit)
+
+        menu_bar = self.window.menuBar()
+
+        file_menu = menu_bar.addMenu('&File')
+        file_menu.addAction(exit_action)
+
+        edit_menu = menu_bar.addMenu('&Edit')
+        edit_menu.addAction(exit_action)
+
+        view_menu = menu_bar.addMenu('&View')
+        view_menu.addAction(exit_action)
+
+        about_menu = menu_bar.addMenu('&About')
+        about_menu.addAction(exit_action)
+
 
 
 class Browser(Application):
@@ -211,8 +237,10 @@ class Browser(Application):
             return
         if self.qdock.isVisible():
             self.qdock.hide()
+            self.view.setFocus()
         else:
             self.qdock.show()
+            self.dev_view.setFocus()
 
     def _initialize_page(self):
         page_settings = self.page.settings().globalSettings()

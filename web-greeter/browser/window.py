@@ -25,22 +25,49 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QMainWindow
+from bridge.Greeter import changeBrightness, decreaseBrightness, increaseBrightness
+from PyQt5.QtCore import QFileSystemWatcher, Qt
+from PyQt5.QtWidgets import QAction, QMainWindow
 from PyQt5.QtGui import QKeyEvent
+from config import web_greeter_config
 
 import globals
 
 class MainWindow(QMainWindow):
-    def keyPressEvent(self, keyEvent: QKeyEvent) -> None:
-        super().keyPressEvent(keyEvent)
-        key = keyEvent.key()
-        mod = keyEvent.modifiers() # type: Qt.KeyboardModifiers
-        if (key == Qt.Key.Key_MonBrightnessUp):
-            pass
-        elif (key == Qt.Key.Key_MonBrightnessDown):
-            pass
-        elif (key == Qt.Key.Key_I
-            and mod & Qt.KeyboardModifier.ControlModifier
-            and mod & Qt.KeyboardModifier.ShiftModifier):
-            globals.greeter.toggle_devtools()
+    def __init__(self):
+        super().__init__()
+        self.init_actions()
+        # self.watchBrightness()
+
+    def init_actions(self):
+        devAct = QAction(text="&Toggle Devtools", parent=self)
+        devAct.setShortcut("Shift+Ctrl+I")
+        devAct.triggered.connect(self.toggle_devtools)
+
+        monBUp = QAction(text="&Increase brightness", parent=self)
+        monBDo = QAction(text="&Decrease brightness", parent=self)
+        monBUp.setShortcut(Qt.Key.Key_MonBrightnessUp)
+        monBDo.setShortcut(Qt.Key.Key_MonBrightnessDown)
+        monBUp.triggered.connect(self.inc_brightness)
+        monBDo.triggered.connect(self.dec_brightness)
+
+        self.addAction(devAct)
+        self.addAction(monBUp)
+        self.addAction(monBDo)
+
+    def toggle_devtools(self):
+        globals.greeter.toggle_devtools()
+
+    def inc_brightness(self):
+        increaseBrightness()
+    def dec_brightness(self):
+        decreaseBrightness()
+
+    def watchBrightness(self):
+        self.watcher = QFileSystemWatcher(parent=self)
+        self.watcher.addPath("/sys/class/backlight/intel_backlight/brightness")
+        self.watcher.fileChanged.connect(self.updateBrightness)
+
+    def updateBrightness(self):
+        if globals.greeter:
+            globals.greeter.greeter.brightness_update.emit()
