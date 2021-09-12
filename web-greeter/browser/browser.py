@@ -39,13 +39,13 @@ from typing import (
 
 # 3rd-Party Libs
 from PyQt5.QtCore import QUrl, Qt, QCoreApplication, QFile
-from PyQt5.QtWidgets import QApplication, QDesktopWidget, QMainWindow
+from PyQt5.QtWidgets import QApplication, QDesktopWidget, QDockWidget, QMainWindow
 from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
-from PyQt5.QtWebEngineWidgets import QWebEngineScript, QWebEngineProfile, QWebEngineSettings, QWebEngineView
+from PyQt5.QtWebEngineWidgets import QWebEngineScript, QWebEngineProfile, QWebEngineSettings, QWebEngineView, QWebEnginePage
 from PyQt5.QtGui import QColor
 from PyQt5.QtWebChannel import QWebChannel
 
-from browser.error_prompt import WebPage, errorPrompt
+from browser.error_prompt import WebPage
 from browser.url_scheme import QtUrlSchemeHandler
 from browser.interceptor import QtUrlRequestInterceptor
 
@@ -64,10 +64,10 @@ os.environ["QT_SCREEN_SCALE_FACTORS"] = "1"
 os.environ["QT_SCALE_FACTOR"] = "1"
 
 WINDOW_STATES = {
-    'NORMAL': Qt.WindowNoState,
-    'MINIMIZED': Qt.WindowMinimized,
-    'MAXIMIZED': Qt.WindowMaximized,
-    'FULLSCREEN': Qt.WindowFullScreen,
+    'NORMAL': Qt.WindowState.WindowNoState,
+    'MINIMIZED': Qt.WindowState.WindowMinimized,
+    'MAXIMIZED': Qt.WindowState.WindowMaximized,
+    'FULLSCREEN': Qt.WindowState.WindowFullScreen,
 }  # type: Dict[str, Qt.WindowState]
 
 DISABLED_SETTINGS = [
@@ -90,20 +90,20 @@ class Application:
     states = WINDOW_STATES
 
     def __init__(self):
-        QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QCoreApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
 
         self.app = QApplication([])
         self.window = MainWindow()
         self.desktop = self.app.desktop()
 
-        self.window.setAttribute(Qt.WA_DeleteOnClose)
+        self.window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.window.setWindowTitle("Web Greeter")
 
-        self.window.setWindowFlags(self.window.windowFlags() | Qt.FramelessWindowHint)
+        self.window.setWindowFlags(self.window.windowFlags() | Qt.WindowType.FramelessWindowHint)
 
         self.window.setWindowFlags(
-            self.window.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
+            self.window.windowFlags() | Qt.WindowType.MaximizeUsingFullscreenGeometryHint
         )
 
         state = self.states['NORMAL']
@@ -112,7 +112,7 @@ class Application:
         except Exception:
             self.window.setWindowState(state)
 
-        self.window.setCursor(Qt.ArrowCursor)
+        self.window.setCursor(Qt.CursorShape.ArrowCursor)
 
         self.app.aboutToQuit.connect(self._before_exit)
 
@@ -166,14 +166,16 @@ class Browser(Application):
         self._initialize_page()
 
         if web_greeter_config["config"]["greeter"]["debug_mode"]:
-            self.devtools = DevTools()
+            self._initialize_devtools()
 
         if web_greeter_config["config"]["greeter"]["secure_mode"]:
             self.profile.setUrlRequestInterceptor(self.interceptor)
 
         self.page.setBackgroundColor(QColor(0, 0, 0))
+        self.window.setStyleSheet("""QMainWindow, QWebEngineView {
+	                                background: #000000;
+                                 }""")
 
-        self.view.show()
         self.window.setCentralWidget(self.view)
 
         logger.debug("Browser Window created")
@@ -189,6 +191,28 @@ class Browser(Application):
         self.initialize_bridge_objects()
         self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
         self.load_theme()
+
+    def _initialize_devtools(self):
+        self.dev_view = QWebEngineView(parent=self.window)
+        self.dev_page = QWebEnginePage()
+        self.dev_view.setPage(self.dev_page)
+        self.page.setDevToolsPage(self.dev_page)
+
+        self.qdock = QDockWidget()
+        self.qdock.setWidget(self.dev_view)
+        self.qdock.setMinimumWidth(int(self.window.width() / 2))
+
+        self.window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.qdock)
+        self.qdock.hide()
+        logger.debug("DevTools initialized")
+
+    def toggle_devtools(self):
+        if not web_greeter_config["config"]["greeter"]["debug_mode"]:
+            return
+        if self.qdock.isVisible():
+            self.qdock.hide()
+        else:
+            self.qdock.show()
 
     def _initialize_page(self):
         page_settings = self.page.settings().globalSettings()
@@ -241,7 +265,7 @@ class Browser(Application):
 
         # print(script_file, path)
 
-        if script_file.open(QFile.ReadOnly):
+        if script_file.open(QFile.OpenModeFlag.ReadOnly):
             script_string = str(script_file.readAll(), 'utf-8')
 
             script.setInjectionPoint(QWebEngineScript.DocumentCreation)

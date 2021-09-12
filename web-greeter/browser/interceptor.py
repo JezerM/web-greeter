@@ -44,6 +44,7 @@ class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
 
         not_devtools = (
             not url.startswith('http://127.0.0.1') and not url.startswith('ws://127.0.0.1')
+            and not url.startswith('devtools')
         )
 
         block_request = not_devtools and not_data_uri and not_webg_uri and not_local_file

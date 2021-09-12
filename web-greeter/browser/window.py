@@ -29,10 +29,18 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QMainWindow
 from PyQt5.QtGui import QKeyEvent
 
+import globals
+
 class MainWindow(QMainWindow):
     def keyPressEvent(self, keyEvent: QKeyEvent) -> None:
         super().keyPressEvent(keyEvent)
-        if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):
+        key = keyEvent.key()
+        mod = keyEvent.modifiers() # type: Qt.KeyboardModifiers
+        if (key == Qt.Key.Key_MonBrightnessUp):
             pass
-        elif (keyEvent.key() == Qt.Key.Key_MonBrightnessDown):
+        elif (key == Qt.Key.Key_MonBrightnessDown):
             pass
+        elif (key == Qt.Key.Key_I
+            and mod & Qt.KeyboardModifier.ControlModifier
+            and mod & Qt.KeyboardModifier.ShiftModifier):
+            globals.greeter.toggle_devtools()
