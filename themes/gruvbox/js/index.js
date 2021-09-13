@@ -1,62 +1,60 @@
-
-form = document.querySelector("#form > form")
+form = document.querySelector("#form > form");
 
 function getArrayForm(inputs) {
-	if (!inputs) return false
-	var data = {}
-	inputs.forEach((x) => {
-		data[x.name] = x.value
-	})
-	return data
+  if (!inputs) return false;
+  var data = {};
+  inputs.forEach((x) => {
+    data[x.name] = x.value;
+  });
+  return data;
 }
 
 async function wait(ms) {
-  return new Promise( resolve => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      resolve()
-    }, ms)
-  })
+      resolve();
+    }, ms);
+  });
 }
 
 async function initGreeter() {
-
   if (greeter_config.greeter.debug_mode) {
     //debug = new Debug()
   }
 
-  lightdm.authentication_complete?.connect(() => authentication_done())
+  lightdm.authentication_complete?.connect(() => authentication_done());
 
-  lightdm.brightness_update?.connect(() => brightness._updateData())
+  lightdm.brightness_update?.connect(() => brightness._updateData());
 
-  lightdm.battery_update?.connect(() => battery._updateData())
+  lightdm.battery_update?.connect(() => battery._updateData());
 
-  accounts = new Accounts()
+  accounts = new Accounts();
 
-  sessions = new Sessions()
+  sessions = new Sessions();
 
-  authenticate = new Authenticate()
+  authenticate = new Authenticate();
 
-  time_date = new TimeDate()
+  time_date = new TimeDate();
 
-  layouts = new Layouts()
+  layouts = new Layouts();
 
-  power = new Power()
+  power = new Power();
 
-  battery = new Battery()
-  
-  brightness = new Brightness()
+  battery = new Battery();
 
-  var lock = lightdm.lock_hint
+  brightness = new Brightness();
+
+  var lock = lightdm.lock_hint;
   if (lock) {
-    document.querySelector("#lock-label").classList.remove("hide")
+    document.querySelector("#lock-label").classList.remove("hide");
   }
 }
 
-const notGreeter = false
+const notGreeter = false;
 
 if (window._ready_event === undefined) {
-  _ready_event = new Event("GreeterReady")
-  window.dispatchEvent(_ready_event)
+  _ready_event = new Event("GreeterReady");
+  window.dispatchEvent(_ready_event);
 }
 
-window.addEventListener("GreeterReady", initGreeter)
+window.addEventListener("GreeterReady", initGreeter);

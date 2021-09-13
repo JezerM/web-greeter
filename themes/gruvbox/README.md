@@ -1,6 +1,7 @@
 # Web Greeter gruvbox theme
 
 ## Overview
+
 This is a web-greeter theme with gruvbox color scheme, included with [web-greeter][web-greeter].
 
 Based on [glorious-theme][glorious] by manilarome.
@@ -20,9 +21,11 @@ Based on [glorious-theme][glorious] by manilarome.
 </center>
 
 ## Installation
+
 This theme is shipped with `web-greeter`. To use it, set the `theme` as `gruvbox` inside `/etc/lightdm/web-greeter.yml`
 
 ## TODO
+
 - Background selector
 - Translations support
 
