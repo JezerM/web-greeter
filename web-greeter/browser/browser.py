@@ -52,7 +52,7 @@ from browser.interceptor import QtUrlRequestInterceptor
 from logger import logger
 from config import web_greeter_config
 from bridge import Greeter, Config, ThemeUtils
-from utils.screensaver import reset_screensaver, set_screensaver
+from utils.screensaver import reset_screensaver, set_screensaver, init_display
 import resources
 
 # Typing Helpers
@@ -121,6 +121,11 @@ class Application:
         if web_greeter_config["app"]["frame"]:
             self._init_menu_bar()
 
+        screen_size = self.desktop.screen().size()
+
+        self.window.setBaseSize(screen_size)
+        self.window.resize(screen_size)
+
         state = self.states['NORMAL']
         if web_greeter_config["app"]["fullscreen"]:
             state = self.states["FULLSCREEN"]
@@ -131,6 +136,8 @@ class Application:
             self.window.setWindowState(state)
 
         self.window.setCursor(Qt.CursorShape.ArrowCursor)
+
+        init_display()
 
         timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
         set_screensaver(timeout or 300)
