@@ -51,6 +51,7 @@ from browser.interceptor import QtUrlRequestInterceptor
 from logger import logger
 from config import web_greeter_config
 from bridge import Greeter, Config, ThemeUtils
+from utils.screensaver import reset_screensaver, set_screensaver
 import resources
 
 # Typing Helpers
@@ -119,10 +120,13 @@ class Application:
 
         self.window.setCursor(Qt.CursorShape.ArrowCursor)
 
+        timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
+        set_screensaver(timeout or 300)
+
         self.app.aboutToQuit.connect(self._before_exit)
 
     def _before_exit(self):
-        pass
+        reset_screensaver()
 
     def show(self):
         self.window.show()

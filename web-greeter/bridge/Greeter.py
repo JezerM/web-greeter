@@ -41,6 +41,7 @@ from PyQt5.QtCore import QFileSystemWatcher, QVariant, QTimer
 
 from config import web_greeter_config
 from utils.battery import Battery
+from utils.screensaver import reset_screensaver
 import globals
 
 # This Application
@@ -396,7 +397,10 @@ class Greeter(BridgeObject):
     def start_session(self, session):
         if not session.strip():
             return
-        return LightDMGreeter.start_session_sync(session)
+        started = LightDMGreeter.start_session_sync(session)
+        if started or self.is_authenticated():
+            reset_screensaver()
+        return started
 
     @Bridge.method(result=bool)
     def suspend(self):

@@ -34,6 +34,7 @@ Gruvbox and Dracula themes!
 - PyQt5
 - PyQtWebEngine
 - ruamel.yaml
+- python-xlib
 
 Install PIP dependencies with:
 ```sh
