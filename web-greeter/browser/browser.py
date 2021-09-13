@@ -38,8 +38,8 @@ from typing import (
 )
 
 # 3rd-Party Libs
-from PyQt5.QtCore import QUrl, Qt, QCoreApplication, QFile
-from PyQt5.QtWidgets import QAction, QApplication, QDesktopWidget, QDockWidget, QMainWindow, qApp
+from PyQt5.QtCore import QRect, QUrl, Qt, QCoreApplication, QFile, QSize
+from PyQt5.QtWidgets import QAction, QApplication, QDesktopWidget, QDockWidget, QMainWindow, QLayout, qApp, QWidget
 from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
 from PyQt5.QtWebEngineWidgets import QWebEngineScript, QWebEngineProfile, QWebEngineSettings, QWebEngineView, QWebEnginePage
 from PyQt5.QtGui import QColor, QIcon
@@ -112,7 +112,6 @@ class Application:
         self.window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
         self.window.setWindowTitle("Web Greeter")
 
-        self.window.setWindowFlags(self.window.windowFlags() | Qt.WindowType.FramelessWindowHint)
 
         self.window.setWindowFlags(
             self.window.windowFlags() | Qt.WindowType.MaximizeUsingFullscreenGeometryHint
@@ -120,8 +119,10 @@ class Application:
 
         if web_greeter_config["app"]["frame"]:
             self._init_menu_bar()
+        else:
+            self.window.setWindowFlags(self.window.windowFlags() | Qt.WindowType.FramelessWindowHint)
 
-        screen_size = self.desktop.screen().size()
+        screen_size = self.desktop.availableGeometry().size()
 
         self.window.setBaseSize(screen_size)
         self.window.resize(screen_size)
@@ -178,6 +179,17 @@ class Application:
         about_menu = menu_bar.addMenu('&About')
         about_menu.addAction(exit_action)
 
+class NoneLayout(QLayout):
+    def __init__(self):
+        super().__init__()
+
+    def sizeHint(self) -> QSize:
+        size = QSize(0, 0)
+        return size
+
+    def minimumSizeHint(self) -> QSize:
+        size = QSize(0, 0)
+        return size
 
 
 class Browser(Application):
@@ -252,7 +264,10 @@ class Browser(Application):
 
         self.qdock = QDockWidget()
         self.qdock.setWidget(self.dev_view)
-        self.qdock.setMinimumWidth(int(self.window.width() / 2))
+        titlebar = QWidget(self.qdock)
+        layout = NoneLayout()
+        titlebar.setLayout(layout)
+        self.qdock.setTitleBarWidget(titlebar)
 
         self.window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.qdock)
         self.qdock.hide()
@@ -261,6 +276,11 @@ class Browser(Application):
     def toggle_devtools(self):
         if not web_greeter_config["config"]["greeter"]["debug_mode"]:
             return
+        win_size = self.window.size()
+        # dev_size = self.qdock.size()
+
+        self.qdock.resize(int(win_size.width() / 2), int(win_size.height()))
+
         if self.qdock.isVisible():
             self.qdock.hide()
             self.view.setFocus()

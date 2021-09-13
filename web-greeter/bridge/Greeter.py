@@ -164,6 +164,8 @@ class Greeter(BridgeObject):
     def _determine_shared_data_directory_path(self):
         user = LightDMUsers.get_users()[0]
         user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(user.get_name())
+        if user_data_dir == None:
+            return
         self._shared_data_directory = user_data_dir.rpartition('/')[0]
 
     def _connect_signals(self):
@@ -320,7 +322,7 @@ class Greeter(BridgeObject):
 
     @Bridge.prop(str, notify=noop_signal)
     def shared_data_directory(self):
-        return self._shared_data_directory
+        return self._shared_data_directory or ''
 
     @Bridge.prop(bool, notify=noop_signal)
     def show_manual_login_hint(self):
