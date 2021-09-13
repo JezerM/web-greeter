@@ -9,12 +9,13 @@ _web-greeter() {
 
 	case "${last}" in
 		--theme)
+			_filedir
 			options=$(ls -1d /usr/share/web-greeter/themes/*/ | cut -c 1- |
 				rev | cut -c 2- | rev | sort | sed 's/\/usr\/share\/web-greeter\/themes\///')
 			;;
 	esac
 
-	COMPREPLY=( $(compgen -W "${options}" -- "${cur}") )
+	COMPREPLY+=( $(compgen -W "${options}" -- "${cur}") )
 }
 
 complete -F _web-greeter web-greeter
