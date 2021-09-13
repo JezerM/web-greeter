@@ -28,6 +28,7 @@
 
 # Standard lib
 
+import re
 from browser.window import MainWindow
 import os
 from typing import (
@@ -83,6 +84,17 @@ ENABLED_SETTINGS = [
     'FocusOnNavigationEnabled',      # Qt 5.11+
 ]
 
+def getDefaultCursor():
+    cursor_theme = ""
+    file = open("/usr/share/icons/default/index.theme")
+    matched = re.search(r"Inherits=.*", file.read())
+    file.close()
+    if not matched:
+        logger.error("Default cursor couldn't be get")
+        return ""
+    cursor_theme = matched.group().replace("Inherits=", "")
+    return cursor_theme
+
 class Application:
     app: QApplication
     desktop: QDesktopWidget
@@ -122,6 +134,9 @@ class Application:
 
         timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
         set_screensaver(timeout or 300)
+
+        cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
+        os.environ["XCURSOR_THEME"] = cursor_theme if cursor_theme != None else getDefaultCursor()
 
         self.app.aboutToQuit.connect(self._before_exit)
 
