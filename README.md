@@ -41,7 +41,7 @@ Install PIP dependencies with:
 pip install -r requirements.txt
 ```
 
-> ***NOTE*** Be sure to install pip libraries as root too
+> ***NOTE*** Be sure to install pip libraries as root too, or use a venv to install these dependencies
 
 ## Download & Install
 ```sh
@@ -50,6 +50,8 @@ cd web-greeter
 sudo pip install -r requirements.txt
 sudo make install
 ```
+
+This will build and install **web-greeter** with [cx_freeze][cx_freeze]. Either `sudo make install_old`, which will use the old zippy way to install **web-greeter**; it's strongly recommended to not use the last one, as it depends on the actual python interpreter and its libraries. Update python or delete a library, and **web-greeter** won't work.
 
 See [latest release][releases].
 
@@ -86,6 +88,7 @@ web-greeter --debug
 
 [antergos]: https://github.com/Antergos "Antergos"
 [nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
+[cx_freeze]: https://github.com/marcelotduarte/cx_Freeze "cx_Freeze"
 [acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
 [gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"

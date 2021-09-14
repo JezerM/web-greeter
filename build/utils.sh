@@ -18,13 +18,12 @@ combine_javascript_sources() {
 		bootstrap.js > bundle.js
 }
 
-do_build() {
+do_old_build() {
 	cd "${BUILD_DIR}"
 
 	# Compile Resources
 	(combine_javascript_sources \
-		&& pyrcc5 -o "${BUILD_DIR}/${PKGNAME}/resources.py" ../resources.qrc \
-		&& cp "${BUILD_DIR}/${PKGNAME}/resources.py" "${REPO_DIR}/web-greeter")
+		&& pyrcc5 -o "${BUILD_DIR}/${PKGNAME}/resources.py" ../resources.qrc)
 
 	# Create "Zip Application"
 	(cd "${PKGNAME}" \
@@ -36,21 +35,29 @@ do_build() {
 		&& chmod +x "${INSTALL_ROOT}${PREFIX}/bin/web-greeter")
 }
 
+do_build() {
+	cd "${BUILD_DIR}"
+
+	echo "Building web-greeter with cx_freeze..."
+	python3 "${BUILD_DIR}/${PKGNAME}/setup.py" build >& setup_log
+	echo "setup.py log inside ${BUILD_DIR}/setup_log"
+
+	mkdir -p "${INSTALL_ROOT}"/opt/web-greeter
+	mv "${BUILD_DIR}/${PKGNAME}"/dist/* "${INSTALL_ROOT}"/opt/web-greeter/
+}
+
 do_install() {
 	[[ -e "${DESTDIR}" ]] || mkdir -p "${DESTDIR}"
 	cp -R "${INSTALL_ROOT}"/* "${DESTDIR}"
-}
-
-# Not used
-generate_pot_file() {
-	REPO_ROOT="$(dirname "${REPO_DIR}")"
-	xgettext --from-code UTF-8 -o "${REPO_ROOT}/po/web-greeter.pot" -d web-greeter "${REPO_ROOT}"/src/*.c
+	ln -sf "${DESTDIR}"/opt/web-greeter/web-greeter "${DESTDIR}"/usr/bin/web-greeter
 }
 
 init_build_dir() {
 	[[ -e "${BUILD_DIR}/web-greeter" ]] && rm -rf "${BUILD_DIR}/web-greeter"
 	[[ -e "${BUILD_DIR}/dist" ]] && rm -rf "${BUILD_DIR}/dist"
-	cp -R -t "${BUILD_DIR}" "${REPO_DIR}/web-greeter" "${REPO_DIR}/dist"
+	rsync -a "${REPO_DIR}/web-greeter" "${BUILD_DIR}" --exclude "dist" --exclude "__pycache__"
+	rsync -a "${REPO_DIR}/dist" "${BUILD_DIR}"
+	cp "${REPO_DIR}/README.md" "${BUILD_DIR}/web-greeter"
 }
 
 prepare_install() {
@@ -68,8 +75,12 @@ prepare_install() {
 	cp "${BUILD_DIR}/dist/${PKGNAME}.1" "${INSTALL_ROOT}${PREFIX}/share/man/man1"
 
 	# Command line completions
-	cp "${BUILD_DIR}/dist/${PKGNAME}-bash" "${INSTALL_ROOT}${PREFIX}/share/bash-completion/completions/${PKGNAME}"
-	cp "${BUILD_DIR}/dist/${PKGNAME}-zsh" "${INSTALL_ROOT}${PREFIX}/share/zsh/vendor-completions/_${PKGNAME}"
+	if [[ -f /usr/bin/bash ]]; then
+		cp "${BUILD_DIR}/dist/${PKGNAME}-bash" "${INSTALL_ROOT}${PREFIX}/share/bash-completion/completions/${PKGNAME}"
+	fi
+	if [[ -f /usr/bin/zsh ]]; then
+		cp "${BUILD_DIR}/dist/${PKGNAME}-zsh" "${INSTALL_ROOT}${PREFIX}/share/zsh/vendor-completions/_${PKGNAME}"
+	fi
 
 	# Greeter Config
 	cp "${BUILD_DIR}/dist/${PKGNAME}.yml" "${INSTALL_ROOT}/etc/lightdm"
@@ -129,6 +140,11 @@ case "$1" in
 	build)
 		PREFIX="$2"
 		do_build
+	;;
+
+	build_old)
+		PREFIX="$2"
+		do_old_build
 	;;
 
 	build-init)

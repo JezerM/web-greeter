@@ -65,6 +65,10 @@ build: _build_init _apply_config
 	$(DO) build $(PREFIX)
 	$(DO) prepare-install $(PREFIX)
 
+build_old: _build_init _apply_config
+	$(DO) build_old $(PREFIX)
+	$(DO) prepare-install $(PREFIX)
+
 build_dev: build
 	$(call colorecho, Built for dev)
 
@@ -72,6 +76,10 @@ clean:
 	$(DO) clean
 
 install: build
+	$(MAYBE_SUDO_DO) install $(DESTDIR) $(PREFIX)
+	$(call colorecho, SUCCESS!)
+
+install_old: build_old
 	$(MAYBE_SUDO_DO) install $(DESTDIR) $(PREFIX)
 	$(call colorecho, SUCCESS!)
 
