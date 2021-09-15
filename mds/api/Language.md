@@ -6,19 +6,19 @@ created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter) clas
 
 <a id="LightDM_Language-code"></a>
 
-### language.code : <code>String</code>
+### language.code : <code>string</code>
 The code for the language.
 
 **Read only**: true  
 <a id="LightDM_Language-name"></a>
 
-### language.name : <code>String</code>
+### language.name : <code>string</code>
 The name for the layout.
 
 **Read only**: true  
 <a id="LightDM_Language-territory"></a>
 
-### language.territory : <code>String</code>
+### language.territory : <code>string</code>
 The territory for the language.
 
 **Read only**: true  

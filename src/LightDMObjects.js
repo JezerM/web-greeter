@@ -39,48 +39,39 @@
  * @namespace LightDM
  */
 
-
 /**
  * Interface for object that holds info about a session. Session objects are not
  * created by the theme's code, but rather by the [`LightDM.Greeter`](Greeter) class.
  *
  * @memberOf LightDM
  */
-class Session  {
-	constructor( { comment, key, name } ) {
-		this._comment = comment;
-		this._key = key;
-		this._name = name;
-	}
-
-	/**
-	 * The name for the session.
-	 * @type {String}
-	 * @readonly
-	 */
-	get name() {
-		return this._name;
-	}
-
-	/**
-	 * The key for the session.
-	 * @type {String}
-	 * @readonly
-	 */
-	get key() {
-		return this._key;
-	}
-
-	/**
-	 * The comment for the session.
-	 * @type {String}
-	 * @readonly
-	 */
-	get comment() {
-		return this._comment;
-	}
+class Session {
+  constructor({ comment, key, name }) {}
+  /**
+   * The name for the session.
+   * @type {string}
+   * @readonly
+   */
+  get name() {}
+  /**
+   * The key for the session.
+   * @type {string}
+   * @readonly
+   */
+  get key() {}
+  /**
+   * The comment for the session.
+   * @type {string}
+   * @readonly
+   */
+  get comment() {}
+  /**
+   * The session type (X11 or Wayland)
+   * @type {string}
+   * @readonly
+   */
+  get type() {}
 }
-
 
 /**
  * Interface for object that holds info about a language on the system. Language objects are not
@@ -89,40 +80,26 @@ class Session  {
  * @memberOf LightDM
  */
 class Language {
-	constructor( { code, name, territory } ) {
-		this._code = code;
-		this._name = name;
-		this._territory = territory;
-	}
-
-	/**
-	 * The code for the language.
-	 * @type {String}
-	 * @readonly
-	 */
-	get code() {
-		return this._code;
-	}
-
-	/**
-	 * The name for the layout.
-	 * @type {String}
-	 * @readonly
-	 */
-	get name() {
-		return this._name;
-	}
-
-	/**
-	 * The territory for the language.
-	 * @type {String}
-	 * @readonly
-	 */
-	get territory() {
-		return this._territory;
-	}
+  constructor({ code, name, territory }) {}
+  /**
+   * The code for the language.
+   * @type {string}
+   * @readonly
+   */
+  get code() {}
+  /**
+   * The name for the layout.
+   * @type {string}
+   * @readonly
+   */
+  get name() {}
+  /**
+   * The territory for the language.
+   * @type {string}
+   * @readonly
+   */
+  get territory() {}
 }
-
 
 /**
  * Interface for object that holds info about a keyboard layout on the system. Language
@@ -131,40 +108,26 @@ class Language {
  * @memberOf LightDM
  */
 class Layout {
-	constructor( { description, name, short_description } ) {
-		this._description = description;
-		this._name = name;
-		this._short_description = short_description;
-	}
-
-	/**
-	 * The description for the layout.
-	 * @type {String}
-	 * @readonly
-	 */
-	get description() {
-		return this._description;
-	}
-
-	/**
-	 * The name for the layout.
-	 * @type {String}
-	 * @readonly
-	 */
-	get name() {
-		return this._name;
-	}
-
-	/**
-	 * The territory for the layout.
-	 * @type {String}
-	 * @readonly
-	 */
-	get short_description() {
-		return this._short_description;
-	}
+  constructor({ description, name, short_description }) {}
+  /**
+   * The description for the layout.
+   * @type {string}
+   * @readonly
+   */
+  get description() {}
+  /**
+   * The name for the layout.
+   * @type {string}
+   * @readonly
+   */
+  get name() {}
+  /**
+   * The territory for the layout.
+   * @type {string}
+   * @readonly
+   */
+  get short_description() {}
 }
-
 
 /**
  * Interface for object that holds info about a user account on the system. User
@@ -173,83 +136,67 @@ class Layout {
  * @memberOf LightDM
  */
 class User {
-	constructor( user_info ) {
-		Object.keys(user_info).forEach( key => {
-			this[`_${key}`] = user_info[key];
-		} );
-	}
-
-	/**
-	 * The display name for the user.
-	 * @type {String}
-	 * @readonly
-	 */
-	get display_name() {
-		return this._display_name;
-	}
-
-	/**
-	 * The language for the user.
-	 * @type {String}
-	 * @readonly
-	 */
-	get language() {
-		return this._language;
-	}
-
-	/**
-	 * The keyboard layout for the user.
-	 * @type {String}
-	 * @readonly
-	 */
-	get layout() {
-		return this._layout;
-	}
-
-	/**
-	 * The image for the user.
-	 * @type {String}
-	 * @readonly
-	 */
-	get image() {
-		return this._image;
-	}
-
-	/**
-	 * The home_directory for the user.
-	 * @type {String}
-	 * @readonly
-	 */
-	get home_directory() {
-		return this._home_directory;
-	}
-
-	/**
-	 * The username for the user.
-	 * @type {String}
-	 * @readonly
-	 */
-	get username() {
-		return this._username;
-	}
-
-	/**
-	 * Whether or not the user is currently logged in.
-	 * @type {Boolean}
-	 * @readonly
-	 */
-	get logged_in() {
-		return this._logged_in;
-	}
-
-	/**
-	 * The last session that the user logged into.
-	 * @type {String|Null}
-	 * @readonly
-	 */
-	get session() {
-		return this._session;
-	}
+  constructor(user_info) {}
+  /**
+   * The user background if any
+   * @type {string}
+   * @readonly
+   */
+  get background() {}
+  /**
+   * The display name for the user.
+   * @type {string}
+   * @readonly
+   */
+  get display_name() {}
+  /**
+   * The language for the user.
+   * @type {string}
+   * @readonly
+   */
+  get language() {}
+  /**
+   * The keyboard layout for the user.
+   * @type {string}
+   * @readonly
+   */
+  get layout() {}
+  /**
+   * The keyboard layouts the user have. You should not depend on this property, use [`greeter_config.layouts`](/api/GreeterConfig#LightDM_GreeterConfig-layouts) instead.
+   * @type {string[]}
+   * @readonly
+   */
+  get layouts() {}
+  /**
+   * The image for the user.
+   * @type {string}
+   * @readonly
+   */
+  get image() {}
+  /**
+   * The home_directory for the user.
+   * @type {string}
+   * @readonly
+   */
+  get home_directory() {}
+  /**
+   * The username for the user.
+   * @type {string}
+   * @readonly
+   */
+  get username() {}
+  /**
+   * Whether or not the user is currently logged in.
+   * @type {Boolean}
+   * @readonly
+   */
+  get logged_in() {}
+  /**
+   * The last session that the user logged into.
+   * @type {string}
+   * @readonly
+   */
+  get session() {}
 }
 
 /**
@@ -258,40 +205,50 @@ class User {
  * @memberOf LightDM
  */
 class Battery {
-	constructor( {level, name, state} ) {
-		this._level = level;
-		this._name = name;
-		this._state = state;
-	}
-
-	/**
-	 * The battery level.
-	 * @type {String|Null}
-	 * @readonly
-	 */
-	get level() {
-		return this._level;
-	}
-
-	/**
-	 * The battery's name.
-	 * @type {String|Null}
-	 * @readonly
-	 */
-	get name() {
-		return this._name;
-	}
-
-	/**
-	 * The state for the battery
-	 * @type {String|Null}
-	 * @readonly
-	 */
-	get state() {
-		return this._state;
-	}
+  constructor({ level, name, state }) {}
+  /**
+   * The battery's name.
+   * @type {string}
+   * @readonly
+   */
+  get name() {}
+  /**
+   * The battery level.
+   * @type {string}
+   * @readonly
+   */
+  get level() {}
+  /**
+   * The state for the battery
+   * @type {string}
+   * @readonly
+   */
+  get status() {}
+  /**
+   * Whether the AC adapter is connected
+   * @type {boolean}
+   * @readonly
+   */
+  get ac_status() {}
+  /**
+   * The battery total capacity
+   * @type {number}
+   * @readonly
+   */
+  get capacity() {}
+  /**
+   * The time until discharge
+   * @type {string}
+   * @readonly
+   */
+  get time() {}
+  /**
+   * The battery watts level
+   * @type {boolean}
+   * @readonly
+   */
+  get watt() {}
 }
-
 
 /**
  * Interface for signals connected to LightDM itself. This is not created by the theme's code, but rather by Web Greeter.
@@ -300,16 +257,15 @@ class Battery {
  * @memberOf LightDM
  */
 class Signal {
+  /**
+   * Connects a callback to the signal.
+   * @param {Function} callback The callback to attach.
+   */
+  connect(callback) {}
 
-	/**
-	 * Connects a callback to the signal.
-	 * @param {Function} callback The callback to attach.
-	 */
-	connect( callback ) {}
-
-	/**
-	 * Disconnects a callback to the signal.
-	 * @param {Function} callback The callback to disattach.
-	 */
-	disconnect( callback ) {}
+  /**
+   * Disconnects a callback to the signal.
+   * @param {Function} callback The callback to disattach.
+   */
+  disconnect(callback) {}
 }

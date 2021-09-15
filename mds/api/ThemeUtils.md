@@ -55,15 +55,15 @@ meets at least one of the following conditions:
 
 <a id="LightDM_ThemeUtils-get_current_localized_date"></a>
 
-### theme_utils.get\_current\_localized\_date() ⇒ <code>String</code>
+### theme_utils.get\_current\_localized\_date() ⇒ <code>string</code>
 Get the current date in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
 	 * `language` defaults to the system's language, but can be set manually in the config file.
 
-**Returns**: <code>String</code> - The current date.  
+**Returns**: <code>string</code> - The current date.  
 <a id="LightDM_ThemeUtils-get_current_localized_time"></a>
 
-### theme_utils.get\_current\_localized\_time() ⇒ <code>String</code>
+### theme_utils.get\_current\_localized\_time() ⇒ <code>string</code>
 Get the current time in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
 	 * `language` defaults to the system's language, but can be set manually in the config file.
 
-**Returns**: <code>String</code> - The current time.  
+**Returns**: <code>string</code> - The current time.  

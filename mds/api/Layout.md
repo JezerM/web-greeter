@@ -6,19 +6,19 @@ objects are not created by the theme's code, but rather by the [`LightDM.Greeter
 
 <a id="LightDM_Layout-description"></a>
 
-### layout.description : <code>String</code>
+### layout.description : <code>string</code>
 The description for the layout.
 
 **Read only**: true  
 <a id="LightDM_Layout-name"></a>
 
-### layout.name : <code>String</code>
+### layout.name : <code>string</code>
 The name for the layout.
 
 **Read only**: true  
 <a id="LightDM_Layout-short_description"></a>
 
-### layout.short\_description : <code>String</code>
+### layout.short\_description : <code>string</code>
 The territory for the layout.
 
 **Read only**: true  

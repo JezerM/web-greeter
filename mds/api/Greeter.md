@@ -8,40 +8,40 @@ The instance can be accessed using the global variable: `lightdm`.
 
 <a id="LightDM_Greeter-authentication_user"></a>
 
-### lightdm.authentication\_user : <code>String</code> \| <code>Null</code>
-The username of the user being authenticated or `null`
+### lightdm.authentication\_user : <code>string</code> \| <code>null</code>
+The username of the user being authenticated or "null"
 if no authentication is in progress
 
 **Read only**: true  
 <a id="LightDM_Greeter-autologin_guest"></a>
 
-### lightdm.autologin\_guest : <code>Boolean</code>
+### lightdm.autologin\_guest : <code>boolean</code>
 Whether or not the guest account should be automatically logged
 into when the timer expires.
 
 **Read only**: true  
 <a id="LightDM_Greeter-autologin_timeout"></a>
 
-### lightdm.autologin\_timeout : <code>Number</code>
+### lightdm.autologin\_timeout : <code>number</code>
 The number of seconds to wait before automatically logging in.
 
 **Read only**: true  
 <a id="LightDM_Greeter-autologin_user"></a>
 
-### lightdm.autologin\_user : <code>String</code>
+### lightdm.autologin\_user : <code>string</code>
 The username with which to automattically log in when the timer expires.
 
 **Read only**: true  
 <a id="LightDM_Greeter-batteryData"></a>
 
 ### lightdm.batteryData : [<code>Battery</code>](Battery)
-The battery data
+Gets the battery data.
 
 **Read only**: true  
 <a id="LightDM_Greeter-brightness"></a>
 
-### lightdm.brightness : <code>Number</code>
-The display brightness
+### lightdm.brightness : <code>number</code>
+The current brightness
 
 <a id="LightDM_Greeter-can_access_battery"></a>
 
@@ -57,37 +57,37 @@ Whether or not the greeter can control display brightness.
 **Read only**: true  
 <a id="LightDM_Greeter-can_hibernate"></a>
 
-### lightdm.can\_hibernate : <code>Boolean</code>
+### lightdm.can\_hibernate : <code>boolean</code>
 Whether or not the greeter can make the system hibernate.
 
 **Read only**: true  
 <a id="LightDM_Greeter-can_restart"></a>
 
-### lightdm.can\_restart : <code>Boolean</code>
+### lightdm.can\_restart : <code>boolean</code>
 Whether or not the greeter can make the system restart.
 
 **Read only**: true  
 <a id="LightDM_Greeter-can_shutdown"></a>
 
-### lightdm.can\_shutdown : <code>Boolean</code>
+### lightdm.can\_shutdown : <code>boolean</code>
 Whether or not the greeter can make the system shutdown.
 
 **Read only**: true  
 <a id="LightDM_Greeter-can_suspend"></a>
 
-### lightdm.can\_suspend : <code>Boolean</code>
+### lightdm.can\_suspend : <code>boolean</code>
 Whether or not the greeter can make the system suspend/sleep.
 
 **Read only**: true  
 <a id="LightDM_Greeter-default_session"></a>
 
-### lightdm.default\_session : <code>String</code>
+### lightdm.default\_session : <code>string</code>
 The name of the default session.
 
 **Read only**: true  
 <a id="LightDM_Greeter-has_guest_account"></a>
 
-### lightdm.has\_guest\_account : <code>Boolean</code>
+### lightdm.has\_guest\_account : <code>boolean</code>
 Whether or not guest sessions are supported.
 
 **Read only**: true  
@@ -99,26 +99,26 @@ Whether or not user accounts should be hidden.
 **Read only**: true  
 <a id="LightDM_Greeter-hostname"></a>
 
-### lightdm.hostname : <code>String</code>
+### lightdm.hostname : <code>string</code>
 The system's hostname.
 
 **Read only**: true  
 <a id="LightDM_Greeter-in_authentication"></a>
 
-### lightdm.in\_authentication : <code>Boolean</code>
+### lightdm.in\_authentication : <code>boolean</code>
 Whether or not the greeter is in the process of authenticating.
 
 **Read only**: true  
 <a id="LightDM_Greeter-is_authenticated"></a>
 
-### lightdm.is\_authenticated : <code>Boolean</code>
+### lightdm.is\_authenticated : <code>boolean</code>
 Whether or not the greeter has successfully authenticated.
 
 **Read only**: true  
 <a id="LightDM_Greeter-language"></a>
 
-### lightdm.language : [<code>Language</code>](Language) \| <code>Null</code>
-The current language or `null` if no language.
+### lightdm.language : [<code>Language</code>](Language) \| <code>null</code>
+The current language or "null" if no language.
 
 **Read only**: true  
 <a id="LightDM_Greeter-languages"></a>
@@ -140,19 +140,25 @@ A list of keyboard layouts to present to the user.
 **Read only**: true  
 <a id="LightDM_Greeter-lock_hint"></a>
 
-### lightdm.lock\_hint : <code>Boolean</code>
+### lightdm.lock\_hint : <code>boolean</code>
 Whether or not the greeter was started as a lock screen.
+
+**Read only**: true  
+<a id="LightDM_Greeter-remote_sessions"></a>
+
+### lightdm.remote\_sessions : [<code>Array.&lt;Session&gt;</code>](Session)
+A list of remote sessions.
 
 **Read only**: true  
 <a id="LightDM_Greeter-select_guest_hint"></a>
 
-### lightdm.select\_guest\_hint : <code>Boolean</code>
+### lightdm.select\_guest\_hint : <code>boolean</code>
 Whether or not the guest account should be selected by default.
 
 **Read only**: true  
 <a id="LightDM_Greeter-select_user_hint"></a>
 
-### lightdm.select\_user\_hint : <code>String</code>
+### lightdm.select\_user\_hint : <code>string</code>
 The username to select by default.
 
 **Read only**: true  
@@ -164,16 +170,16 @@ List of available sessions.
 **Read only**: true  
 <a id="LightDM_Greeter-show_manual_login_hint"></a>
 
-### lightdm.show\_manual\_login\_hint : <code>Boolean</code>
-Check if a manual login option should be shown. If `null`, the theme should
+### lightdm.show\_manual\_login\_hint : <code>boolean</code>
+Check if a manual login option should be shown. If "true", the theme should
 provide a way for a username to be entered manually. Otherwise, themes that show
 a user list may limit logins to only those users.
 
 **Read only**: true  
 <a id="LightDM_Greeter-show_remote_login_hint"></a>
 
-### lightdm.show\_remote\_login\_hint : <code>Boolean</code>
-Check if a remote login option should be shown. If `true`, the theme should provide
+### lightdm.show\_remote\_login\_hint : <code>boolean</code>
+Check if a remote login option should be shown. If "true", the theme should provide
 a way for a user to log into a remote desktop server.
 
 **Read only**: true  
@@ -198,6 +204,11 @@ Gets emitted when the automatic login timer has expired.
 
 ### lightdm.brightness\_update : [<code>Signal</code>](Signal)
 Gets emitted when brightness is updated
+
+<a id="LightDM_Greeter-battery_update"></a>
+
+### lightdm.battery\_update : [<code>Signal</code>](Signal)
+Gets emitted when battery is updated
 
 <a id="LightDM_Greeter-idle"></a>
 
@@ -233,7 +244,7 @@ Starts the authentication procedure for a user.
   </thead>
   <tbody>
 <tr>
-    <td>username</td><td><code>String</code> | <code>Null</code></td><td><p>A username or <code>null</code> to prompt for a username.</p>
+    <td>username</td><td><code>string</code> | <code>null</code></td><td><p>A username or &quot;null&quot; to prompt for a username.</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -242,11 +253,6 @@ Starts the authentication procedure for a user.
 
 ### lightdm.authenticate\_as\_guest()
 Starts the authentication procedure for the guest user.
-
-<a id="LightDM_Greeter-batteryUpdate"></a>
-
-### lightdm.batteryUpdate()
-Updates the battery data
 
 <a id="LightDM_Greeter-brightnessSet"></a>
 
@@ -261,7 +267,7 @@ Set the brightness to quantity
   </thead>
   <tbody>
 <tr>
-    <td>quantity</td><td><code>Number</code></td><td><p>The quantity to set</p>
+    <td>quantity</td><td><code>number</code></td><td><p>The quantity to set</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -279,7 +285,7 @@ Increase the brightness by quantity
   </thead>
   <tbody>
 <tr>
-    <td>quantity</td><td><code>Number</code></td><td><p>The quantity to increase</p>
+    <td>quantity</td><td><code>number</code></td><td><p>The quantity to increase</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -297,7 +303,7 @@ Decrease the brightness by quantity
   </thead>
   <tbody>
 <tr>
-    <td>quantity</td><td><code>Number</code></td><td><p>The quantity to decrease</p>
+    <td>quantity</td><td><code>number</code></td><td><p>The quantity to decrease</p>
 </td>
     </tr>  </tbody>
 </table>
@@ -314,10 +320,10 @@ Cancel the automatic login.
 
 <a id="LightDM_Greeter-hibernate"></a>
 
-### lightdm.hibernate() ⇒ <code>Boolean</code>
+### lightdm.hibernate() ⇒ <code>boolean</code>
 Triggers the system to hibernate.
 
-**Returns**: <code>Boolean</code> - `true` if hibernation initiated, otherwise `false`  
+**Returns**: <code>boolean</code> - "true" if hibernation initiated, otherwise "false"  
 <a id="LightDM_Greeter-respond"></a>
 
 ### lightdm.respond(response)
@@ -331,22 +337,22 @@ Provide a response to a prompt.
   </thead>
   <tbody>
 <tr>
-    <td>response</td><td><code>*</code></td>
+    <td>response</td><td><code>string</code></td>
     </tr>  </tbody>
 </table>
 
 <a id="LightDM_Greeter-restart"></a>
 
-### lightdm.restart() ⇒ <code>Boolean</code>
+### lightdm.restart() ⇒ <code>boolean</code>
 Triggers the system to restart.
 
-**Returns**: <code>Boolean</code> - `true` if restart initiated, otherwise `false`  
+**Returns**: <code>boolean</code> - "true" if restart initiated, otherwise "false"  
 <a id="LightDM_Greeter-set_language"></a>
 
-### lightdm.set\_language(language) ⇒ <code>Boolean</code>
+### lightdm.set\_language(language) ⇒ <code>boolean</code>
 Set the language for the currently authenticated user.
 
-**Returns**: <code>Boolean</code> - `true` if successful, otherwise `false`  
+**Returns**: <code>boolean</code> - "true" if successful, otherwise "false"  
 <table>
   <thead>
     <tr>
@@ -355,7 +361,7 @@ Set the language for the currently authenticated user.
   </thead>
   <tbody>
 <tr>
-    <td>language</td><td><code>String</code></td><td><p>The language in the form of a locale specification (e.g.
+    <td>language</td><td><code>string</code></td><td><p>The language in the form of a locale specification (e.g.
     &#39;de_DE.UTF-8&#39;)</p>
 </td>
     </tr>  </tbody>
@@ -363,16 +369,16 @@ Set the language for the currently authenticated user.
 
 <a id="LightDM_Greeter-shutdown"></a>
 
-### lightdm.shutdown() ⇒ <code>Boolean</code>
+### lightdm.shutdown() ⇒ <code>boolean</code>
 Triggers the system to shutdown.
 
-**Returns**: <code>Boolean</code> - `true` if shutdown initiated, otherwise `false`  
+**Returns**: <code>boolean</code> - "true" if shutdown initiated, otherwise "false"  
 <a id="LightDM_Greeter-start_session"></a>
 
-### lightdm.start\_session(session) ⇒ <code>Boolean</code>
+### lightdm.start\_session(session) ⇒ <code>boolean</code>
 Start a session for the authenticated user.
 
-**Returns**: <code>Boolean</code> - `true` if successful, otherwise `false`  
+**Returns**: <code>boolean</code> - "true" if successful, otherwise "false"  
 <table>
   <thead>
     <tr>
@@ -381,14 +387,14 @@ Start a session for the authenticated user.
   </thead>
   <tbody>
 <tr>
-    <td>session</td><td><code>String</code> | <code>null</code></td><td><p>The session to log into or <code>null</code> to use the default.</p>
+    <td>session</td><td><code>string</code> | <code>null</code></td><td><p>The session to log into or &quot;null&quot; to use the default.</p>
 </td>
     </tr>  </tbody>
 </table>
 
 <a id="LightDM_Greeter-suspend"></a>
 
-### lightdm.suspend() ⇒ <code>Boolean</code>
+### lightdm.suspend() ⇒ <code>boolean</code>
 Triggers the system to suspend/sleep.
 
-**Returns**: <code>Boolean</code> - `true` if suspend/sleep initiated, otherwise `false`  
+**Returns**: <code>boolean</code> - "true" if suspend/sleep initiated, otherwise "false"  

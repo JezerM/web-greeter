@@ -25,7 +25,6 @@
  * along with web-greeter; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
  * Provides greeter themes with a way to access values from the greeter's config
  * file located at `/etc/lightdm/web-greeter.yml`. The greeter will
@@ -35,47 +34,53 @@
  * @typicalname greeter_config
  * @memberOf LightDM
  */
-class GreeterConfig  {
-	/**
-	 * Holds keys/values from the `branding` section of the config file.
-	 *
-	 * @type {Object}
-	 * @property {String} background_images_dir Path to directory that contains background images
-	 *                                      for use in greeter themes.
-	 * @property {String} logo                  Path to distro logo image for use in greeter themes.
-	 * @property {String} user_image            Default user image/avatar. This is used by greeter themes
-	 *                                      for users that have not configured a `.face` image.
-	 * @readonly
-	 */
-	get branding() {}
-
-	/**
-	 * Holds keys/values from the `greeter` section of the config file.
-	 *
-	 * @type {Object}
-	 * @property {Boolean} debug_mode          Greeter theme debug mode.
-	 * @property {Boolean} detect_theme_errors Provide an option to load a fallback theme when theme
-	 *                                     errors are detected.
-	 * @property {Number}  screensaver_timeout Blank the screen after this many seconds of inactivity.
-	 * @property {Boolean} secure_mode         Don't allow themes to make remote http requests.
-	 * @property {String}  theme               The name of the theme to be used by the greeter.
-	 * @property {String|Null}  icon_theme		 Icon/cursor theme to use, located in /usr/share/icons, i.e "Adwaita". Set to Null to use default icon theme.
-	 * @property {String|Null}  time_language  Language to use when displaying the date or time, i.e "en-us", "es-419", "ko", "ja". Set to Null to use system's language.
-	 * @readonly
-	 */
-	get greeter() {}
-
-
-	/**
-	 * Holds keys/values from the `features` section of the config file.
-	 *
-	 * @type {Object}
-	 * @property {Boolean} battery				 Enable greeter and themes to ger battery status.
-	 * @property {Object}  backlight
-	 * @property {Boolean} backlight.enabled				 Enable greeter and themes to control display backlight.
-	 * @property {Number}  backlight.value					 The amount to increase/decrease brightness by greeter.
-	 * @property {Number}  backlight.steps					 How many steps are needed to do the change.
-	 */
-	get features() {}
+class GreeterConfig {
+  constructor() {}
+  /**
+   * Holds keys/values from the `branding` section of the config file.
+   *
+   * @type {object} branding
+   * @property {string} background_images_dir Path to directory that contains background images
+   *                                      for use in greeter themes.
+   * @property {string} logo                  Path to distro logo image for use in greeter themes.
+   * @property {string} user_image            Default user image/avatar. This is used by greeter themes
+   *                                      for users that have not configured a `.face` image.
+   * @readonly
+   */
+  get branding() {}
+  /**
+   * Holds keys/values from the `greeter` section of the config file.
+   *
+   * @type {object}  greeter
+   * @property {boolean} debug_mode          Greeter theme debug mode.
+   * @property {boolean} detect_theme_errors Provide an option to load a fallback theme when theme
+   *                                     errors are detected.
+   * @property {number}  screensaver_timeout Blank the screen after this many seconds of inactivity.
+   * @property {boolean} secure_mode         Don't allow themes to make remote http requests.
+   *                                     generate localized time for display.
+   * @property {string}  time_language       Language to use when displaying the time or ""
+   *                                     to use the system's language.
+   * @property {string}  theme               The name of the theme to be used by the greeter.
+   * @readonly
+   */
+  get greeter() {}
+  /**
+   * Holds keys/values from the `features` section of the config file.
+   *
+   * @type {Object}      features
+   * @property {boolean} battery				 Enable greeter and themes to ger battery status.
+   * @property {Object}  backlight
+   * @property {boolean} enabled				 Enable greeter and themes to control display backlight.
+   * @property {number}  value					 The amount to increase/decrease brightness by greeter.
+   * @property {number}  steps					 How many steps are needed to do the change.
+   * @readonly
+   */
+  get features() {}
+  /**
+   * Holds a list of preferred layouts from the `layouts` section of the config file.
+   *
+   * @type {LightDM.Layout[]}     layouts
+   * @readonly
+   */
+  get layouts() {}
 }
-
