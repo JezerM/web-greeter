@@ -23,6 +23,7 @@ setup(
     options = {"build_exe": {
                 "build_exe": "dist",
                 "packages": ["gi", "Xlib"],
+                "includes": ["gi"],
                 "silent_level": 0,
                 }},
     )

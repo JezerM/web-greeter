@@ -1,11 +1,11 @@
 from logger import logger
 from Xlib.display import Display
 
-saved_data: dict[str, int]
+saved_data: dict = {}
 saved = False
 available = False
 
-display = None
+display: Display
 
 def init_display():
     global display, available
@@ -19,6 +19,7 @@ def set_screensaver(timeout: int):
     global saved_data, saved, available, display
     if saved or not available:
         return
+    display.sync()
     display.sync()
     data: dict[str, int] = display.get_screen_saver()._data or {}
     saved_data = data
