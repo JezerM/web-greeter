@@ -1,6 +1,8 @@
 [Desktop Entry]
-Name=Web Greeter
-Comment=Greeter for LightDM
-Exec=web-greeter
+Name=web-greeter
+Exec=/opt/web-greeter/web-greeter %U
+Terminal=false
 Type=Application
-X-Ubuntu-Gettext-Domain=web-greeter
+StartupWMClass=web-greeter
+Comment=Web based greeter for lightdm
+Categories=system;

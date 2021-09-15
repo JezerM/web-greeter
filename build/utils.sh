@@ -63,7 +63,7 @@ init_build_dir() {
 prepare_install() {
 	cd "${BUILD_DIR}"
 	mkdir -p \
-		"${INSTALL_ROOT}${PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters,zsh/vendor-completions,bash-completion/completions} \
+		"${INSTALL_ROOT}${PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters,applications,zsh/vendor-completions,bash-completion/completions} \
 		"${INSTALL_ROOT}"/etc/{lightdm,xdg/lightdm/lightdm.conf.d}
 
 	# Themes
@@ -88,8 +88,11 @@ prepare_install() {
 	# AppData File
 	cp "${BUILD_DIR}/dist/${PKGNAME}.appdata.xml" "${INSTALL_ROOT}${PREFIX}/share/metainfo"
 
-	# Desktop File
-	cp "${BUILD_DIR}/dist/${PKGNAME}.desktop" "${INSTALL_ROOT}${PREFIX}/share/xgreeters"
+	# Greeter desktop File
+	cp "${BUILD_DIR}/dist/web-xgreeter.desktop" "${INSTALL_ROOT}${PREFIX}/share/xgreeters/web-greeter.desktop"
+
+	# Application desktop File
+	cp "${BUILD_DIR}/dist/web-greeter.desktop" "${INSTALL_ROOT}${PREFIX}/share/applications/web-greeter.desktop"
 
 	# Xgreeter wrapper
 	cp "${BUILD_DIR}/dist/90-greeter-wrapper.conf" \

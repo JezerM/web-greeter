@@ -68,9 +68,9 @@ web_greeter_config = {
         "debug_mode": False,
         "theme_dir": "/usr/share/web-greeter/themes/",
         "version": {
-            "full": "3.0.0",
+            "full": "3.1.0",
             "major": 3,
-            "minor": 3,
+            "minor": 1,
             "micro": 0,
         },
     }
