@@ -9,13 +9,19 @@ _webgreeter() {
         '--debug[Runs the greeter in debug mode]'
         '--normal[Runs in non-debug mode]'
         '--list[Lists available themes]'
-        "--theme[Sets the theme to use]:theme:(${themes})"
+        "--theme[Sets the theme to use]:theme:->themes"
         '--help[Show help]'
         '-h[Show help]'
         '--version[Print program version]'
         '-v[Print program version]'
     )
     _arguments $args[@] && ret=0
+    case "$state" in
+        themes)
+            _files
+            _values 'themes' "${(uonzf)${themes}}"
+            ;;
+    esac
     return ret
 }
 

@@ -24,19 +24,24 @@ Gruvbox and Dracula themes!
 ## Dependencies
 |                       |     arch      |        ubuntu        |       fedora        |       openSUSE        | 
 |-----------------------|---------------|----------------------|---------------------|-----------------------|
-|**[whither][whither]** | \*install it from source\*
 |**liblightdm-gobject** |lightdm        |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0 |
 |**pygobject**          |python-gobject |python3-gi            |pygobject3           |python3-gobject        |
-
-> ***NOTE*** Be sure to have [whither][whither] installed from this source
+|**pyqt5**              |python-pyqt5   |python3-pyqt5         |python3-qt5          |python3-qt5            |
+|**qt5-webengine**      |qt5-webengine  |libqt5webengine5      |qt5-qtwebengine      |libqt5-qtwebengine     |
 
 ### PIP
-Above dependencies can be installed with pip as well.
+- PyGObject
+- PyQt5
+- PyQtWebEngine
+- ruamel.yaml
+- python-xlib
+
+Install PIP dependencies with:
 ```sh
 pip install -r requirements.txt
 ```
 
-> ***NOTE*** Be sure to install pip libraries as root too
+> ***NOTE*** Be sure to install pip libraries as root too, or use a venv to install these dependencies
 
 ## Download & Install
 ```sh
@@ -45,6 +50,8 @@ cd web-greeter
 sudo pip install -r requirements.txt
 sudo make install
 ```
+
+This will build and install **web-greeter** with [cx_freeze][cx_freeze]. Either `sudo make install_old`, which will use the old zippy way to install **web-greeter**; it's strongly recommended to not use the last one, as it depends on the actual python interpreter and its libraries. Update python or delete a library, and **web-greeter** won't work.
 
 See [latest release][releases].
 
@@ -80,8 +87,8 @@ web-greeter --debug
 > ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
 
 [antergos]: https://github.com/Antergos "Antergos"
-[whither]: https://github.com/JezerM/whither "Whither"
 [nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
+[cx_freeze]: https://github.com/marcelotduarte/cx_Freeze "cx_Freeze"
 [acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
 [gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"

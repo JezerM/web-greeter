@@ -3,6 +3,7 @@
 #  Config.py
 #
 #  Copyright © 2017 Antergos
+#  Copyright © 2021 JezerM
 #
 #  This file is part of Web Greeter.
 #
@@ -26,17 +27,15 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 # 3rd-Party Libs
-from whither.bridge import (
-    BridgeObject,
-    bridge,
-    Variant,
-)
+from browser.bridge import Bridge, BridgeObject
+from PyQt5.QtCore import QVariant
 
 import gi
 gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 
 from typing import List
+from config import web_greeter_config
 
 from . import (
     layout_to_dict
@@ -56,28 +55,29 @@ def get_layouts(config_layouts: List[str]):
 
 class Config(BridgeObject):
 
-    noop_signal = bridge.signal()
+    noop_signal = Bridge.signal()
 
-    def __init__(self, config, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(name='Config', *args, **kwargs)
 
-        self._branding = config.branding.as_dict()
-        self._greeter = config.greeter.as_dict()
-        self._features = config.features.as_dict()
-        self._layouts = get_layouts(config.layouts)
+        config = web_greeter_config["config"]
+        self._branding = config["branding"]
+        self._greeter = config["greeter"]
+        self._features = config["features"]
+        self._layouts = get_layouts(config["layouts"])
 
-    @bridge.prop(Variant, notify=noop_signal)
+    @Bridge.prop(QVariant, notify=noop_signal)
     def branding(self):
         return self._branding
 
-    @bridge.prop(Variant, notify=noop_signal)
+    @Bridge.prop(QVariant, notify=noop_signal)
     def greeter(self):
         return self._greeter
 
-    @bridge.prop(Variant, notify=noop_signal)
+    @Bridge.prop(QVariant, notify=noop_signal)
     def features(self):
         return self._features
 
-    @bridge.prop(Variant, notify=noop_signal)
+    @Bridge.prop(QVariant, notify=noop_signal)
     def layouts(self):
         return self._layouts

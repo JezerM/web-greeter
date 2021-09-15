@@ -30,6 +30,7 @@ lib64/
 parts/
 sdist/
 var/
+web-greeter/dist
 *.egg-info/
 .installed.cfg
 *.egg

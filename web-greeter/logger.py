@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-#  keyboard.py
+#  logger.py
 #
+#  Copyright © 2017 Antergos
 #  Copyright © 2021 JezerM
 #
 #  This file is part of Web Greeter.
@@ -25,22 +26,25 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from whither.toolkits.bootstrap import WebPage, MainWindow
+from logging import (
+    getLogger,
+    DEBUG,
+    Formatter,
+    StreamHandler
+)
 
-from PyQt5.QtCore import QUrl, pyqtSignal, Qt
-from PyQt5.QtGui import QKeyEvent
+log_format = ''.join([
+    '%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(',
+    'lineno)d : %(funcName)s | %(message)s'
+])
+formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+stream_handler = StreamHandler()
 
-import globals
+global logger
+logger = getLogger("debug")
 
-
-def keyPressEvent(self, keyEvent: QKeyEvent):
-    super(MainWindow, self).keyPressEvent(keyEvent)
-    if (keyEvent.key() == Qt.Key.Key_MonBrightnessUp):
-        globals.greeter.greeter.brightnessIncrease(
-            globals.greeter.config.features.backlight["value"])
-    if (keyEvent.key() == Qt.Key.Key_MonBrightnessDown):
-        globals.greeter.greeter.brightnessDecrease(
-            globals.greeter.config.features.backlight["value"])
-
-
-MainWindow.keyPressEvent = keyPressEvent
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
+logger.propagate = False
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)

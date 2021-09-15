@@ -1,30 +1,11 @@
-import os
 import subprocess
 import shlex
 import re
 import math
 from threading import Thread
 import time
-
-from logging import (
-    getLogger,
-    DEBUG,
-    Formatter,
-    StreamHandler,
-)
-
-log_format = ''.join([
-    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
-    'lineno)d: %(message)s'
-])
-formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
-logger = getLogger("battery")
-logger.propagate = False
-stream_handler = StreamHandler()
-stream_handler.setLevel(DEBUG)
-stream_handler.setFormatter(formatter)
-logger.setLevel(DEBUG)
-logger.addHandler(stream_handler)
+from logger import logger
+from shutil import which
 
 running = False
 
@@ -95,17 +76,17 @@ class Battery:
             present = read_first_line(bstr + "/present")
 
             if tonumber(present) == 1:
-                rate_current = tonumber(read_first_line(bstr + "/current_now"))
-                rate_voltage = tonumber(read_first_line(bstr + "/voltage_now"))
-                rate_power = tonumber(read_first_line((bstr + "/power_now")))
-                charge_full = tonumber(read_first_line(bstr + "/charge_full"))
-                charge_design = tonumber(read_first_line(bstr + "/charge_full_design"))
+                rate_current = tonumber(read_first_line(bstr + "/current_now")) or 0
+                rate_voltage = tonumber(read_first_line(bstr + "/voltage_now")) or 0
+                rate_power = tonumber(read_first_line((bstr + "/power_now"))) or 0
+                charge_full = tonumber(read_first_line(bstr + "/charge_full")) or 0
+                charge_design = tonumber(read_first_line(bstr + "/charge_full_design")) or 0
 
                 energy_now = tonumber(read_first_line(bstr + "/energy_now")
-                                 or read_first_line(bstr + "/charge_now"))
-                energy_full = tonumber(read_first_line(bstr + "/energy_full") or charge_full)
+                                 or read_first_line(bstr + "/charge_now")) or 0
+                energy_full = tonumber(read_first_line(bstr + "/energy_full") or charge_full) or 0
                 energy_percentage = tonumber(read_first_line(bstr + "/capacity")
-                                 or math.floor(energy_now / energy_full * 100))
+                                 or math.floor(energy_now / energy_full * 100)) or 0
 
                 self._batteries[i]["status"] = read_first_line(bstr + "/status") or "N/A"
                 self._batteries[i]["perc"] = energy_percentage or self._batteries[i].perc
@@ -116,14 +97,14 @@ class Battery:
                     self._batteries[i]["capacity"] = math.floor(
                         charge_full / charge_design * 100)
 
-                sum_rate_current  = sum_rate_current + (rate_current or 0)
-                sum_rate_voltage  = sum_rate_voltage + (rate_voltage or 0)
-                sum_rate_power    = sum_rate_power + (rate_power or 0)
-                sum_rate_energy   = sum_rate_energy + (rate_power or (((rate_voltage or 0) * (rate_current or 0)) / 1e6))
-                sum_energy_now    = sum_energy_now + (energy_now or 0)
-                sum_energy_full   = sum_energy_full + (energy_full or 0)
-                sum_charge_full   = sum_charge_full + (charge_full or 0)
-                sum_charge_design = sum_charge_design + (charge_design or 0)
+                sum_rate_current  = sum_rate_current + rate_current
+                sum_rate_voltage  = sum_rate_voltage + rate_voltage
+                sum_rate_power    = sum_rate_power + rate_power
+                sum_rate_energy   = sum_rate_energy + (rate_power or ((rate_voltage * rate_current) / 1e6))
+                sum_energy_now    = sum_energy_now + energy_now
+                sum_energy_full   = sum_energy_full + energy_full
+                sum_charge_full   = sum_charge_full + charge_full
+                sum_charge_design = sum_charge_design + charge_design
 
         self.capacity = math.floor(min(100, sum_charge_full / sum_charge_design * 100))
         self.status = len(self._batteries) > 0 and self._batteries[0]["status"] or "N/A"
@@ -152,8 +133,8 @@ class Battery:
                         rate_time = sum_energy_now / div
 
                     if 0 < rate_time and rate_time < 0.01:
-                        rate_time_magnitude = tonumber(abs(math.floor(math.log10(rate_time))))
-                        rate_time = rate_time * 10 ^ (rate_time_magnitude - 2)
+                        rate_time_magnitude = tonumber(abs(math.floor(math.log10(rate_time)))) or 0
+                        rate_time = int(rate_time * 10) ^ (rate_time_magnitude - 2)
 
                     hours   = math.floor(rate_time)
                     minutes = math.floor((rate_time - hours) * 60)
@@ -183,6 +164,9 @@ class Battery:
     def get_state(self):
         return self.status
 
+    def get_ac_status(self):
+        return self.ac_status
+
     def get_capacity(self):
         return self.capacity
 
@@ -195,6 +179,9 @@ class Battery:
 acpi_tries = 0
 
 def acpi_listen(callback, onerror):
+    if not which("acpi_listen"):
+        return
+
     global acpi_tries
     try:
         main = subprocess.Popen(shlex.split("acpi_listen"),
