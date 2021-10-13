@@ -7,17 +7,17 @@ assignees: ''
 
 ---
 
-## **Environment**
+## Environment
 - OS: [e.g. Ubuntu 21.04]
 - web-greeter version: output of `web-greeter --version`
 
-## **Bug description**
+## Bug description
 A clear and concise description of what the bug is.
 
-## **Steps to reproduce**
+## Steps to reproduce
 Steps to reproduce the behavior.
 
-## **Expected behavior**
+## Expected behavior
 A clear and concise description of what you expected to happen.
 
 ## **Screenshots**
