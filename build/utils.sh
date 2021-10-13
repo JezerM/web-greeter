@@ -23,7 +23,8 @@ do_old_build() {
 
 	# Compile Resources
 	(combine_javascript_sources \
-		&& pyrcc5 -o "${BUILD_DIR}/${PKGNAME}/resources.py" ../resources.qrc)
+		&& pyrcc5 -o "${BUILD_DIR}/${PKGNAME}/resources.py" ../resources.qrc \
+		&& cp "${BUILD_DIR}/${PKGNAME}/resources.py" "${REPO_DIR}/web-greeter")
 
 	# Create "Zip Application"
 	(cd "${PKGNAME}" \
