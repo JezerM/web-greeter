@@ -400,7 +400,8 @@ class Greeter(BridgeObject):
         if not session.strip():
             return
         started = LightDMGreeter.start_session_sync(session)
-        if started or self.is_authenticated():
+        if started or self.is_authenticated:
+            logger.debug("Session \"" + session + "\" started")
             reset_screensaver()
         return started
 

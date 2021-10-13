@@ -247,14 +247,14 @@ class Browser(Application):
         self.show()
 
     def load(self):
+        self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
+        self.load_theme()
         self.greeter = Greeter()
         self.greeter_config = Config()
         self.theme_utils = ThemeUtils(self.greeter)
 
         self.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
         self.initialize_bridge_objects()
-        self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
-        self.load_theme()
 
     def _initialize_devtools(self):
         self.dev_view = QWebEngineView(parent=self.window)
@@ -326,6 +326,8 @@ class Browser(Application):
         if (not os.path.exists(path_to_theme)):
             print("Path does not exists")
             path_to_theme = os.path.join(dir, def_theme, "index.html")
+
+        web_greeter_config["config"]["greeter"]["theme"] = path_to_theme
 
         url = QUrl("web-greeter://app/{0}".format(path_to_theme))
         self.page.load(url)
