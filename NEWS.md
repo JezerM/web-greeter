@@ -1,5 +1,36 @@
 # Change Log
 
+## [3.1.1](https://github.com/JezerM/web-greeter/tree/3.1.1) ~ 10-27-2021
+
+**Changes:**
+
+  * Bugfixes, just bugfixes
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.1.0...3.1.1)
+
+
+## [3.1.0](https://github.com/JezerM/web-greeter/tree/3.1.0) ~ 09-15-2021
+
+**Added**:
+
+  * Devtools implemented as a side view
+  * Build system now uses **cx_freeze**
+  * Improved themes:
+    - Added keyboard layout selector
+    - Added eye password reveal
+
+**Changes:**
+
+  * Brightness and battery are now controlled by signals instead of timers
+  * Old build system (zip build) is still usable with `build_old` and `install_old`
+
+**Removed:**
+
+  * [whither](https://github.com/JezerM/whither) dependency removed
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.0.0...3.1.0)
+
+
 ## [3.0.0](https://github.com/JezerM/web-greeter/tree/3.0.0) ~ 07-28-2021
 
 **Added:**
@@ -87,7 +118,7 @@
 
 **Fixed:**
 
-  * Increased the timeout for the "theme loaded" check to ensure themes are given 
+  * Increased the timeout for the "theme loaded" check to ensure themes are given
     enough time to load (when running on less powerful systems). (GH #98)
   * Fixed issue where users' custom .face image failed to load. (GH #98)
 

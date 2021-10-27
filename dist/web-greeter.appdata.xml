@@ -44,6 +44,41 @@
 	-->
 
 	<releases>
+		<release date="2021-10-27" version="3.1.1">
+			<description>
+				<p>Bugfixes</p>
+				<p>Changes:</p>
+				<ul>
+					<li>Bugfixes, just bugfixes</li>
+				</ul>
+			</description>
+		</release>
+		<release date="2021-09-15" version="3.1.0">
+			<description>
+				<p>Web Greeter 3.1.0 is here!</p>
+				<p>The build system changed to cx_freeze, though the previous build/install method, can be used.</p>
+				<p>Added:</p>
+				<ul>
+					<li>Devtools implemented as a side view</li>
+					<li>Build system now uses cx_freeze</li>
+					<li>Improved themes:
+						<ul>
+							<li>Added keyboard layout selector</li>
+							<li>Added eye password reveal</li>
+						</ul>
+					<li>
+				</ul>
+				<p>Changes:</p>
+				<ul>
+					<li>Brightness and battery are now controlled by signals instead of timers</li>
+					<li>Old build system (zip build) is still usable with `build_old` and `install_old`</li>
+				</ul>
+				<p>Removed:</p>
+				<ul>
+					<li>whither dependency removed</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2021-07-28" version="3.0.0">
 			<description>
 				<p>Finally, Web Greeter 3.0.0 is ready!</p>

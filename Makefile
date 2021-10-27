@@ -40,6 +40,7 @@ decorated    := True
 stays_on_top := False
 endif
 
+all: build
 
 _apply_config:
 	@$(SET_CONFIG) at_spi_service        $(at_spi_service)
@@ -58,8 +59,6 @@ _apply_config:
 
 _build_init: clean
 	$(DO) build-init
-
-all: install
 
 build: _build_init _apply_config
 	$(DO) build $(PREFIX)
