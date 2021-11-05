@@ -22,7 +22,7 @@ Gruvbox and Dracula themes!
 - Tab completion for zsh and bash.
 
 ## Dependencies
-|                       |     arch      |        ubuntu        |       fedora        |       openSUSE        | 
+|                       |     arch      |        ubuntu        |       fedora        |       openSUSE        |
 |-----------------------|---------------|----------------------|---------------------|-----------------------|
 |**liblightdm-gobject** |lightdm        |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0 |
 |**pygobject**          |python-gobject |python3-gi            |pygobject3           |python3-gobject        |
@@ -35,6 +35,7 @@ Gruvbox and Dracula themes!
 - PyQtWebEngine
 - ruamel.yaml
 - python-xlib
+- [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/installation.html) (and patchelf)
 
 Install PIP dependencies with:
 ```sh
