@@ -118,7 +118,7 @@ def battery_to_dict(battery):
     return dict(
         name = battery.get_name(),
         level = battery.get_level(),
-        state = battery.get_state(),
+        status = battery.get_status(),
         ac_status = battery.get_ac_status(),
         capacity = battery.get_capacity(),
         time = battery.get_time(),

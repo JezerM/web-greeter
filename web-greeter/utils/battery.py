@@ -161,7 +161,7 @@ class Battery:
     def get_level(self):
         return self.perc
 
-    def get_state(self):
+    def get_status(self):
         return self.status
 
     def get_ac_status(self):
