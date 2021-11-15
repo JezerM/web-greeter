@@ -64,8 +64,8 @@ build: _build_init _apply_config
 	$(DO) build $(PREFIX)
 	$(DO) prepare-install $(PREFIX)
 
-build_old: _build_init _apply_config
-	$(DO) build_old $(PREFIX)
+build_freeze: _build_init _apply_config
+	$(DO) build_freeze $(PREFIX)
 	$(DO) prepare-install $(PREFIX)
 
 build_dev: build
@@ -78,9 +78,12 @@ install: build
 	$(MAYBE_SUDO_DO) install $(DESTDIR) $(PREFIX)
 	$(call colorecho, SUCCESS!)
 
-install_old: build_old
+install_freeze: build_freeze
 	$(MAYBE_SUDO_DO) install $(DESTDIR) $(PREFIX)
 	$(call colorecho, SUCCESS!)
+
+uninstall:
+	$(MAYBE_SUDO_DO) uninstall $(DESTDIR) $(PREFIX)
 
 
 .PHONY: all _apply_config _build_init build build_dev clean install

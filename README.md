@@ -35,7 +35,7 @@ Gruvbox and Dracula themes!
 - PyQtWebEngine
 - ruamel.yaml
 - python-xlib
-- [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/installation.html) (and patchelf)
+- [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/installation.html) (and patchelf) (Optional)
 
 Install PIP dependencies with:
 ```sh
@@ -52,12 +52,12 @@ sudo pip install -r requirements.txt
 sudo make install
 ```
 
-This will build and install **web-greeter** with [cx_freeze][cx_freeze]. Either `sudo make install_old`, which will use the old zippy way to install **web-greeter**; it's strongly recommended to not use the last one, as it depends on the actual python interpreter and its libraries. Update python or delete a library, and **web-greeter** won't work.
+Whis will build and install **web-greeter** in a zippy way, which compresses the python code as a zip and uses it as a binary. Either `sudo make install_freeze` to build and install with cx_freeze. The zippy method depends on the actual python interpreter and its libraries, so you could have problems when updating python or removing any dependency, while the cx_freeze method tries to fix this "problem".
 
 See [latest release][releases].
 
 ## Theme JavaScript API
-[Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Actual documentation is available in [gh-pages][gh-pages].
+[Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Current and updated documentation is available at [gh-pages][gh-pages].
 
 You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
 

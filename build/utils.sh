@@ -8,7 +8,8 @@ DESTDIR=''
 PREFIX=''
 
 clean_build_dir() {
-	find "${BUILD_DIR}" -type f ! -path '**/ci/**' ! -name '*.yml' ! -path "**/DEBIAN/**" ! -name utils.sh -delete
+	find "${BUILD_DIR}" -type f ! -path '**/ci/**' ! -name '*.yml' ! -path "**/DEBIAN/**" ! -name \
+	utils.sh ! -name setup_log -delete
 	find "${BUILD_DIR}" -type d ! -name build ! -path '**/ci' -delete 2>/dev/null || true
 }
 
@@ -18,7 +19,7 @@ combine_javascript_sources() {
 		bootstrap.js > bundle.js
 }
 
-do_old_build() {
+do_build() {
 	cd "${BUILD_DIR}"
 
 	# Compile Resources
@@ -36,7 +37,7 @@ do_old_build() {
 		&& chmod +x "${INSTALL_ROOT}${PREFIX}/bin/web-greeter")
 }
 
-do_build() {
+do_build_freeze() {
 	cd "${BUILD_DIR}"
 
 	echo "Building web-greeter with cx_freeze..."
@@ -50,7 +51,7 @@ do_build() {
 do_install() {
 	[[ -e "${DESTDIR}" ]] || mkdir -p "${DESTDIR}"
 	cp -R "${INSTALL_ROOT}"/* "${DESTDIR}"
-	ln -sf "${DESTDIR}"/opt/web-greeter/web-greeter "${DESTDIR}"/usr/bin/web-greeter
+	[[ -e "${DESTDIR}"/opt/web-greeter ]] && ln -sf "${DESTDIR}"/opt/web-greeter/web-greeter ${DESTDIR}${PREFIX}/bin/web-greeter
 }
 
 init_build_dir() {
@@ -121,6 +122,47 @@ prepare_install() {
 	fi
 }
 
+do_uninstall() {
+	# Man Page
+	rm -f ${DESTDIR}${PREFIX}/share/man/man1/web-greeter.1
+
+	# Command line completions
+	if [[ -f /usr/bin/bash ]]; then
+		rm -f ${DESTDIR}${PREFIX}/share/bash-completion/completions/${PKGNAME}
+	fi
+	if [[ -f /usr/bin/zsh ]]; then
+		rm -f ${DESTDIR}${PREFIX}/share/zsh/vendor-completions/_${PKGNAME}
+	fi
+
+	# Greeter Config
+	#rm ${DESTDIR}/etc/lightdm/${PKGNAME}.yml
+
+	# Themes
+	#rm -rf ${DESTDIR}${PREFIX}/share/web-greeter
+
+	# AppData File
+	rm -f ${DESTDIR}${PREFIX}/share/metainfo/${PKGNAME}.appdata.xml
+
+	# Greeter desktop file
+	rm -f ${DESTDIR}${PREFIX}/share/xgreeters/web-greeter.desktop
+
+	# Application desktop file
+	rm -f ${DESTDIR}${PREFIX}/share/applications/web-greeter.desktop
+
+	# XGreeter wrapper
+	rm -f ${DESTDIR}/etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf
+	rm -f ${DESTDIR}/etc/lightdm/Xgreeter
+
+	# Binary
+	rm -f ${DESTDIR}${PREFIX}/bin/web-greeter
+	[[ -e "${DESTDIR}"/opt/web-greeter ]] && rm -rf ${DESTDIR}/opt/web-greeter
+
+	echo "Themes are not uninstalled. Remove them manually:
+	${DESTDIR}${PREFIX}/share/web-greeter/"
+	echo "web-greeter config was not uninstalled. Remove it manually:
+	${DESTDIR}/etc/lightdm/${PKGNAME}.yml"
+}
+
 set_config() {
 	[[ -z "$1" || -z "$2" ]] && return 1
 
@@ -146,9 +188,9 @@ case "$1" in
 		do_build
 	;;
 
-	build_old)
+	build_freeze)
 		PREFIX="$2"
-		do_old_build
+		do_build_freeze
 	;;
 
 	build-init)
@@ -169,6 +211,12 @@ case "$1" in
 	prepare-install)
 		PREFIX="$2"
 		prepare_install
+	;;
+
+	uninstall)
+		DESTDIR="$2"
+		PREFIX="$3"
+		do_uninstall
 	;;
 
 	set-config)
