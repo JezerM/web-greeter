@@ -25,7 +25,6 @@
  * along with web-greeter; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 (() => {
 	let _channel;
 
@@ -36,9 +35,9 @@
 	 * @type Event
 	 * @memberOf window
 	 */
-	window._ready_event = new Event( 'GreeterReady' );
+	window._ready_event = new Event("GreeterReady");
 
-	function channel_ready_cb( channel ) {
+	function channel_ready_cb(channel) {
 		_channel = channel;
 
 		/**
@@ -63,16 +62,13 @@
 		 * @type {LightDM.ThemeUtils}
 		 * @memberOf window
 		 */
-		window.theme_utils = new ThemeUtils( _channel.objects.ThemeUtils );
-
-		setTimeout( function () {
-			window.dispatchEvent( _ready_event );
-		}, 2 );
+		window.theme_utils = new ThemeUtils(_channel.objects.ThemeUtils);
 	}
+	new QWebChannel(qt.webChannelTransport, channel_ready_cb);
 
-	document.addEventListener( 'DOMContentLoaded', ( event ) => {
-		new QWebChannel( qt.webChannelTransport, channel_ready_cb );
+	document.addEventListener("DOMContentLoaded", (event) => {
+		setTimeout(function () {
+			window.dispatchEvent(_ready_event);
+		}, 2);
 	});
-
 })();
-

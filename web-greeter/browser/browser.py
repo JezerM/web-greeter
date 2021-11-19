@@ -183,6 +183,9 @@ class NoneLayout(QLayout):
     def __init__(self):
         super().__init__()
 
+    def count(self) -> int:
+        return 0
+
     def sizeHint(self) -> QSize:
         size = QSize(0, 0)
         return size
@@ -319,12 +322,13 @@ class Browser(Application):
         if (theme.startswith("/")): path_to_theme = theme
         elif (theme.__contains__(".") or theme.__contains__("/")):
             path_to_theme = os.path.join(os.getcwd(), theme)
+            path_to_theme = os.path.realpath(path_to_theme)
 
         if (not path_to_theme.endswith(".html")):
             path_to_theme = os.path.join(path_to_theme, "index.html")
 
         if (not os.path.exists(path_to_theme)):
-            print("Path does not exists")
+            print("Path does not exists", path_to_theme)
             path_to_theme = os.path.join(dir, def_theme, "index.html")
 
         web_greeter_config["config"]["greeter"]["theme"] = path_to_theme
@@ -357,7 +361,6 @@ class Browser(Application):
 
     def _init_bridge_channel(self) -> None:
         self.page.setWebChannel(self.channel)
-        self.page.scripts().insert(self._get_channel_api_script())
         self.bridge_initialized = True
 
     def initialize_bridge_objects(self) -> None:
@@ -371,6 +374,9 @@ class Browser(Application):
                 # print("Registered", obj._name)
 
     def load_script(self, path: Url, name: str):
+        qt_api = self._get_channel_api_script()
+        qt_api_source = qt_api.sourceCode()
         script = self._create_webengine_script(path, name)
+        script.setSourceCode(qt_api_source + "\n" + script.sourceCode())
         self.page.scripts().insert(script)
 
