@@ -51,7 +51,11 @@ do_build_freeze() {
 do_install() {
 	[[ -e "${DESTDIR}" ]] || mkdir -p "${DESTDIR}"
 	cp -R "${INSTALL_ROOT}"/* "${DESTDIR}"
-	[[ -e "${DESTDIR}"/opt/web-greeter ]] && ln -sf "${DESTDIR}"/opt/web-greeter/web-greeter ${DESTDIR}${PREFIX}/bin/web-greeter
+	if [[ -e "${DESTDIR}"/opt/web-greeter ]]; then
+		opt_web=$(echo "${DESTDIR}"/opt/web-greeter/web-greeter | sed -E 's/\/\//\//g')
+		dest_bin=$(echo "${DESTDIR}"/"${PREFIX}"/bin/web-greeter | sed -E 's/\/\//\//g')
+		ln -sf "${opt_web}" "${dest_bin}"
+	fi
 }
 
 init_build_dir() {
@@ -64,37 +68,39 @@ init_build_dir() {
 
 prepare_install() {
 	cd "${BUILD_DIR}"
+	INSTALL_PREFIX=$(echo ${INSTALL_ROOT}/${PREFIX} | sed -E 's/\/\//\//g')
 	mkdir -p \
-		"${INSTALL_ROOT}${PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters,applications,zsh/vendor-completions,bash-completion/completions} \
-		"${INSTALL_ROOT}"/etc/{lightdm,xdg/lightdm/lightdm.conf.d}
+		"${INSTALL_PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters,applications,zsh/vendor-completions,bash-completion/completions} \
+		"${INSTALL_ROOT}"/etc/{lightdm,xdg/lightdm/lightdm.conf.d} \
+		"${INSTALL_PREFIX}"/bin
 
 	# Themes
-	(cp -R "${REPO_DIR}/themes" "${INSTALL_ROOT}${PREFIX}/share/web-greeter" \
-		&& cd "${INSTALL_ROOT}${PREFIX}/share/web-greeter" \
+	(cp -R "${REPO_DIR}/themes" "${INSTALL_PREFIX}/share/web-greeter" \
+		&& cd "${INSTALL_PREFIX}/share/web-greeter" \
 		&& mv themes/_vendor .)
 
 	# Man Page
-	cp "${BUILD_DIR}/dist/${PKGNAME}.1" "${INSTALL_ROOT}${PREFIX}/share/man/man1"
+	cp "${BUILD_DIR}/dist/${PKGNAME}.1" "${INSTALL_PREFIX}/share/man/man1"
 
 	# Command line completions
 	if [[ -f /usr/bin/bash ]]; then
-		cp "${BUILD_DIR}/dist/${PKGNAME}-bash" "${INSTALL_ROOT}${PREFIX}/share/bash-completion/completions/${PKGNAME}"
+		cp "${BUILD_DIR}/dist/${PKGNAME}-bash" "${INSTALL_PREFIX}/share/bash-completion/completions/${PKGNAME}"
 	fi
 	if [[ -f /usr/bin/zsh ]]; then
-		cp "${BUILD_DIR}/dist/${PKGNAME}-zsh" "${INSTALL_ROOT}${PREFIX}/share/zsh/vendor-completions/_${PKGNAME}"
+		cp "${BUILD_DIR}/dist/${PKGNAME}-zsh" "${INSTALL_PREFIX}/share/zsh/vendor-completions/_${PKGNAME}"
 	fi
 
 	# Greeter Config
 	cp "${BUILD_DIR}/dist/${PKGNAME}.yml" "${INSTALL_ROOT}/etc/lightdm"
 
 	# AppData File
-	cp "${BUILD_DIR}/dist/${PKGNAME}.appdata.xml" "${INSTALL_ROOT}${PREFIX}/share/metainfo"
+	cp "${BUILD_DIR}/dist/${PKGNAME}.appdata.xml" "${INSTALL_PREFIX}/share/metainfo"
 
 	# Greeter desktop File
-	cp "${BUILD_DIR}/dist/web-xgreeter.desktop" "${INSTALL_ROOT}${PREFIX}/share/xgreeters/web-greeter.desktop"
+	cp "${BUILD_DIR}/dist/web-xgreeter.desktop" "${INSTALL_PREFIX}/share/xgreeters/web-greeter.desktop"
 
 	# Application desktop File
-	cp "${BUILD_DIR}/dist/web-greeter.desktop" "${INSTALL_ROOT}${PREFIX}/share/applications/web-greeter.desktop"
+	cp "${BUILD_DIR}/dist/web-greeter.desktop" "${INSTALL_PREFIX}/share/applications/web-greeter.desktop"
 
 	# Xgreeter wrapper
 	cp "${BUILD_DIR}/dist/90-greeter-wrapper.conf" \
@@ -104,7 +110,7 @@ prepare_install() {
 
 	# Don't install hidden files
 	find "${INSTALL_ROOT}" -type f -name '.git*' -delete
-	rm -rf "${INSTALL_ROOT}/usr/share/web-greeter/themes/default/.tx"
+	rm -rf "${INSTALL_PREFIX}/share/web-greeter/themes/default/.tx"
 
 	if [[ "${DESTDIR}" != '/' ]]; then
 		# Save a list of installed files for uninstall command
@@ -114,7 +120,7 @@ prepare_install() {
 		do
 			[[ -d "${_file}" && *'/web-greeter/'* != "${_file}" ]] && continue
 
-			echo "${_file##*/install_root}" >> "${INSTALL_ROOT}${PREFIX}/share/web-greeter/.installed_files"
+			echo "${_file##*/install_root}" >> "${INSTALL_PREFIX}/share/web-greeter/.installed_files"
 
 		done < /tmp/.installed_files
 
@@ -124,41 +130,42 @@ prepare_install() {
 
 do_uninstall() {
 	# Man Page
-	rm -f ${DESTDIR}${PREFIX}/share/man/man1/web-greeter.1
+	DESTDIR_PREFIX=$(echo ${DESTDIR}/${PREFIX} | sed -E 's/\/\//\//g')
+	rm -f ${DESTDIR_PREFIX}/share/man/man1/web-greeter.1
 
 	# Command line completions
 	if [[ -f /usr/bin/bash ]]; then
-		rm -f ${DESTDIR}${PREFIX}/share/bash-completion/completions/${PKGNAME}
+		rm -f ${DESTDIR_PREFIX}/share/bash-completion/completions/${PKGNAME}
 	fi
 	if [[ -f /usr/bin/zsh ]]; then
-		rm -f ${DESTDIR}${PREFIX}/share/zsh/vendor-completions/_${PKGNAME}
+		rm -f ${DESTDIR_PREFIX}/share/zsh/vendor-completions/_${PKGNAME}
 	fi
 
 	# Greeter Config
 	#rm ${DESTDIR}/etc/lightdm/${PKGNAME}.yml
 
 	# Themes
-	#rm -rf ${DESTDIR}${PREFIX}/share/web-greeter
+	#rm -rf ${DESTDIR_PREFIX}/share/web-greeter
 
 	# AppData File
-	rm -f ${DESTDIR}${PREFIX}/share/metainfo/${PKGNAME}.appdata.xml
+	rm -f ${DESTDIR_PREFIX}/share/metainfo/${PKGNAME}.appdata.xml
 
 	# Greeter desktop file
-	rm -f ${DESTDIR}${PREFIX}/share/xgreeters/web-greeter.desktop
+	rm -f ${DESTDIR_PREFIX}/share/xgreeters/web-greeter.desktop
 
 	# Application desktop file
-	rm -f ${DESTDIR}${PREFIX}/share/applications/web-greeter.desktop
+	rm -f ${DESTDIR_PREFIX}/share/applications/web-greeter.desktop
 
 	# XGreeter wrapper
 	rm -f ${DESTDIR}/etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf
 	rm -f ${DESTDIR}/etc/lightdm/Xgreeter
 
 	# Binary
-	rm -f ${DESTDIR}${PREFIX}/bin/web-greeter
+	rm -f ${DESTDIR_PREFIX}/bin/web-greeter
 	[[ -e "${DESTDIR}"/opt/web-greeter ]] && rm -rf ${DESTDIR}/opt/web-greeter
 
 	echo "Themes are not uninstalled. Remove them manually:
-	${DESTDIR}${PREFIX}/share/web-greeter/"
+	${DESTDIR_PREFIX}/share/web-greeter/"
 	echo "web-greeter config was not uninstalled. Remove it manually:
 	${DESTDIR}/etc/lightdm/${PKGNAME}.yml"
 }
