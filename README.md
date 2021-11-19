@@ -22,12 +22,13 @@ Gruvbox and Dracula themes!
 - Tab completion for zsh and bash.
 
 ## Dependencies
-|                       |     arch      |        ubuntu        |       fedora        |       openSUSE        |
-|-----------------------|---------------|----------------------|---------------------|-----------------------|
-|**liblightdm-gobject** |lightdm        |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0 |
-|**pygobject**          |python-gobject |python3-gi            |pygobject3           |python3-gobject        |
-|**pyqt5**              |python-pyqt5   |python3-pyqt5         |python3-qt5          |python3-qt5            |
-|**qt5-webengine**      |qt5-webengine  |libqt5webengine5      |qt5-qtwebengine      |libqt5-qtwebengine     |
+|                          |        arch         |        ubuntu        |       fedora        |       openSUSE       |
+|--------------------------|---------------------|----------------------|---------------------|----------------------|
+|**liblightdm-gobject**    |lightdm              |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0|
+|**pygobject**             |python-gobject       |python3-gi            |pygobject3           |python3-gobject       |
+|**pyqt5**                 |python-pyqt5         |python3-pyqt5         |python3-qt5          |python3-qt5           |
+|**qt5-webengine**         |qt5-webengine        |libqt5webengine5      |qt5-qtwebengine      |libqt5-qtwebengine    |
+|**gobject-introspection** |gobject-introspection|gobject-introspection |gobject-introspection|gobject-introspection |
 
 ### PIP
 - PyGObject
@@ -52,7 +53,7 @@ sudo pip install -r requirements.txt
 sudo make install
 ```
 
-Whis will build and install **web-greeter** in a zippy way, which compresses the python code as a zip and uses it as a binary. Either `sudo make install_freeze` to build and install with cx_freeze. The zippy method depends on the actual python interpreter and its libraries, so you could have problems when updating python or removing any dependency, while the cx_freeze method tries to fix this "problem".
+This will build and install **web-greeter** in a zippy way, which compresses the python code as a zip and uses it as a binary. Either `sudo make install_freeze` to build and install with cx_freeze. The zippy method depends on the actual python interpreter and its libraries, so you could have problems when updating python or removing any dependency, while the cx_freeze method tries to fix this "problem".
 
 See [latest release][releases].
 
