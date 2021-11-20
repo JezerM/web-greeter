@@ -3,4 +3,3 @@ PyQt5
 PyQtWebEngine
 ruamel.yaml
 python-xlib
-cx_freeze

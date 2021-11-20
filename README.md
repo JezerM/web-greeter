@@ -30,13 +30,20 @@ Gruvbox and Dracula themes!
 |**qt5-webengine**         |qt5-webengine        |libqt5webengine5      |qt5-qtwebengine      |libqt5-qtwebengine    |
 |**gobject-introspection** |gobject-introspection|gobject-introspection |gobject-introspection|gobject-introspection |
 
+### Build dependencies
+
+- rsync
+- zip
+- make
+- pyrcc5 (Should be installed with above dependencies)
+- [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/installation.html) (and patchelf) (Optional)
+
 ### PIP
 - PyGObject
 - PyQt5
 - PyQtWebEngine
 - ruamel.yaml
 - python-xlib
-- [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/installation.html) (and patchelf) (Optional)
 
 Install PIP dependencies with:
 ```sh
