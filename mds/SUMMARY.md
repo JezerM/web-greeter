@@ -19,3 +19,11 @@
 * [Introduction](howto/intro.md)
 * [Theming](howto/theming.md)
 * [Authentication](howto/auth.md)
+    * [Manual login](howto/auth.md#manual-login)
+    * [Select user](howto/auth.md#select-user)
+    * [Both](howto/auth.md#both)
+* [Authentication methods](howto/auth_methods.md)
+    * [Delay method](howto/auth_methods.md#delay-method)
+    * [Signals approach](howto/auth_methods.md#signals-approach)
+    * [Manual approach](howto/auth_methods.md#manual-approach)
+<!--* [Signals](howto/signals.md)-->

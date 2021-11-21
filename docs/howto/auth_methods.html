@@ -3,7 +3,7 @@
 <html lang="" >
     <head>
         <meta charset="UTF-8">
-        <title>Introduction · Web Greeter Documentation</title>
+        <title>Authentication methods · Web Greeter Documentation</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="HonKit 3.6.20">
@@ -56,10 +56,8 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="theming.html" />
     
-    
-    <link rel="prev" href="../api/window.html" />
+    <link rel="prev" href="auth.html" />
     
 
     </head>
@@ -264,7 +262,7 @@
         
         
     
-        <li class="chapter active" data-level="3.1" data-path="intro.html">
+        <li class="chapter " data-level="3.1" data-path="intro.html">
             
                 <a href="intro.html">
             
@@ -348,7 +346,7 @@
             
         </li>
     
-        <li class="chapter " data-level="3.4" data-path="auth_methods.html">
+        <li class="chapter active" data-level="3.4" data-path="auth_methods.html">
             
                 <a href="auth_methods.html">
             
@@ -436,7 +434,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >Introduction</a>
+        <a href=".." >Authentication methods</a>
     </h1>
 </div>
 
@@ -451,46 +449,85 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="introduction">Introduction</h1>
-<p>Web Greeter has a simple API, documented here, which allows to communicate to the Web Greeter itself and the LightDM API.</p>
-<p>To create a theme, you will need these essential functions:</p>
-<pre><code class="lang-javascript">lightdm.authenticate(username)
-
-lightdm.respond(response)
-
-lightdm.start_session(session)
-</code></pre>
-<h3 id="lightdmauthenticateusername"><a href="../api/Greeter#LightDM_Greeter-authenticate">lightdm.authenticate(username)</a></h3>
-<p>This method starts the authentication procedure for a user, allowing to start the user session.</p>
-<p>If <code>username</code> is not provided, LightDM will prompt for it.</p>
-<h3 id="lightdmrespondresponse"><a href="../api/Greeter#LightDM_Greeter-respond">lightdm.respond(response)</a></h3>
-<p>Provide a response to a prompt. Basically, this acts like a password provider. After the authentication is initiated, you need to provide the user password with this method. It could be &quot;12345&quot;, &quot;password&quot;, &quot;strongpassword&quot;, y&apos;know, a password.</p>
-<p>However, <code>lightdm.respond</code> can provide an user, as well, if <code>lightdm.authenticate</code> didn&apos;t receive an user.</p>
-<blockquote>
-<p>NOTE: If authentication is not initiated, this will cause an error.</p>
-</blockquote>
-<h3 id="lightdmstartsessionsession"><a href="../api/Greeter#LightDM_Greeter-start_session">lightdm.start_session(session)</a></h3>
-<p>Starts a session for the authenticated user. After the user is authenticated, you will need to start the session with this method.</p>
-<blockquote>
-<p>NOTE: If user is not authenticated, this won&apos;t work.</p>
-</blockquote>
-<p>And that&apos;s it. You can create a simple javascript file with this:</p>
-<pre><code class="lang-javascript">lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
-lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
-lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
-</code></pre>
-<p>Although, if this could really work, it won&apos;t at first. The <code>lightdm</code> object is not available when the greeter is initiated, it is after a little delay. To make this work, an event is triggered when the API is ready to be used. Add an event listener to the <code>GreeterReady</code> event.</p>
-<pre><code class="lang-javascript"><span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
-</code></pre>
-<p>And so, it will look like this:</p>
-<pre><code class="lang-javascript"><span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">initGreeter</span>(<span class="hljs-params"></span>) </span>{
-  lightdm.authenticate(<span class="hljs-string">&quot;superuser&quot;</span>)
-  lightdm.respond(<span class="hljs-string">&quot;superpassword&quot;</span>)
-  lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
+                                <h1 id="different-methods-of-authentication">Different methods of authentication</h1>
+<p>You have many ways to create an authentication flow, which will be partially covered here.</p>
+<h2 id="delay-method">Delay method</h2>
+<p>As said before, doing a <code>lightdm.respond</code> inmediately after <code>lightdm.authenticate</code> provokes a failed authentication. You need to add a delay of 100ms or more.</p>
+<pre><code class="lang-javascript"><span class="hljs-keyword">async</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">wait</span>(<span class="hljs-params">ms</span>) </span>{
+  <span class="hljs-keyword">return</span> <span class="hljs-keyword">new</span> <span class="hljs-built_in">Promise</span>(<span class="hljs-function">(<span class="hljs-params">resolve</span>) =&gt;</span> {
+    <span class="hljs-built_in">setTimeout</span>(<span class="hljs-function">() =&gt;</span> resolve(), ms);
+  });
 }
 
-<span class="hljs-built_in">window</span>.addEventListener(<span class="hljs-string">&quot;GreeterReady&quot;</span>, initGreeter)
+<span class="hljs-comment">// Inside an async environment</span>
+
+lightdm.authenticate(<span class="hljs-string">&quot;user&quot;</span>);
+<span class="hljs-keyword">await</span> wait(<span class="hljs-number">100</span>);
+lightdm.respond(<span class="hljs-string">&quot;password&quot;</span>);
+lightdm.start_session(<span class="hljs-string">&quot;session&quot;</span>);
 </code></pre>
+<h2 id="signals-approach">Signals approach</h2>
+<p><strong>web-greeter</strong> provides signals to do automatic stuff when something happens from LightDM or web-greeter itself. The most relevant for this case are:</p>
+<ul>
+<li><code>lightdm.show_prompt</code> to provide the password automatically.</li>
+<li><code>lightdm.authentication_complete</code> to start_session automatically.</li>
+</ul>
+<p>So, you could have something like this:</p>
+<pre><code class="lang-javascript">lightdm.show_prompt.connect(<span class="hljs-function">(<span class="hljs-params">text, type</span>) =&gt;</span> {
+  lightdm.respond(<span class="hljs-string">&quot;password&quot;</span>);
+})
+lightdm.authentication_complete.connect(<span class="hljs-function">() =&gt;</span> {
+  lightdm.start_session(<span class="hljs-string">&quot;session&quot;</span>);
+})
+
+lightdm.authenticate(<span class="hljs-string">&quot;user&quot;</span>);
+<span class="hljs-comment">// Everything is handled by signals from here</span>
+</code></pre>
+<h3 id="lightdmrespond-and-lightdmshowprompt">lightdm.respond and lightdm.show_prompt</h3>
+<p>Aditionally, you could check the type provided to the callback of <code>lightdm.show_prompt</code> to either <strong>respond</strong> with the user or <strong>respond</strong> with the password.</p>
+<p><code>lightdm.respond</code>, as documented, provides a response to a prompt. Therefore, if you do not start the authentication process with an user, LightDM will prompt to provide it. You can experiment with it on <code>--debug</code> mode:</p>
+<pre><code class="lang-javascript">&gt; lightdm.show_prompt.connect(<span class="hljs-function">(<span class="hljs-params">text, type</span>) =&gt;</span> {<span class="hljs-built_in">console</span>.log({text, type})});
+&gt; lightdm.authentication_complete.connect(<span class="hljs-function">() =&gt;</span> {<span class="hljs-built_in">console</span>.log(<span class="hljs-string">&quot;Authenticated&quot;</span>)});
+&gt; lightdm.authenticate();
+{<span class="hljs-string">&quot;login:&quot;</span>, <span class="hljs-number">0</span>}
+&gt; lightdm.respond(<span class="hljs-string">&quot;user&quot;</span>);
+{<span class="hljs-string">&quot;Password:&quot;</span>, <span class="hljs-number">1</span>}
+&gt; lightdm.respond(<span class="hljs-string">&quot;password&quot;</span>);
+<span class="hljs-string">&quot;Authenticated&quot;</span>
+</code></pre>
+<p>According to this, LightDM provides two kind of prompts:</p>
+<ul>
+<li><code>{text: &quot;login:&quot;, type: 0}</code> when no <strong>user</strong> provided to <code>lightdm.authenticate</code><ul>
+<li>Then, use <code>lightdm.respond(&quot;user&quot;)</code></li>
+<li>If user provided with <code>lightdm.authenticate</code>, LightDM will prompt for a password</li>
+</ul>
+</li>
+<li><code>{text: &quot;Password:&quot;, type: 1}</code> after providing an <strong>user</strong><ul>
+<li>Use <code>lightdm.respond(&quot;password&quot;)</code></li>
+</ul>
+</li>
+</ul>
+<p>And so, you could have something like this:</p>
+<pre><code class="lang-javascript">lightdm.show_prompt.connect(<span class="hljs-function">(<span class="hljs-params">text, type</span>) =&gt;</span> {
+  <span class="hljs-keyword">if</span> (type == <span class="hljs-number">0</span>) <span class="hljs-comment">// Login</span>
+    lightdm.respond(<span class="hljs-string">&quot;user&quot;</span>);
+  <span class="hljs-keyword">else</span> <span class="hljs-keyword">if</span> (type == <span class="hljs-number">1</span>) <span class="hljs-comment">// Password</span>
+    lightdm.respond(<span class="hljs-string">&quot;password&quot;</span>);
+})
+lightdm.authentication_complete.connect(<span class="hljs-function">() =&gt;</span> {
+  lightdm.start_session(<span class="hljs-string">&quot;session&quot;</span>);
+})
+
+lightdm.authenticate();
+</code></pre>
+<h2 id="manual-approach">Manual approach</h2>
+<p>This might be the simplest to implement, but will require a nice web design to not mess everything up.</p>
+<p>Basically, the authentication flow is &quot;managed&quot; by the user:</p>
+<ol>
+<li>The user selects their user, and run <code>lightdm.authenticate(user)</code></li>
+<li>They will provide their password, and run <code>lightdm.respond(password)</code></li>
+<li>And so, they click on something that will run their selected session: <code>lightdm.start_session(session)</code></li>
+</ol>
 
                                 
                                 </section>
@@ -518,14 +555,10 @@ lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
 
             
                 
-                <a href="../api/window.html" class="navigation navigation-prev " aria-label="Previous page: window">
+                <a href="auth.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: Authentication">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
-                
-                <a href="theming.html" class="navigation navigation-next " aria-label="Next page: Theming">
-                    <i class="fa fa-angle-right"></i>
-                </a>
                 
             
         
@@ -534,7 +567,7 @@ lightdm.start_session(<span class="hljs-string">&quot;ubuntu&quot;</span>)
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"3.1","depth":1,"next":{"title":"Theming","level":"3.2","depth":1,"path":"howto/theming.md","ref":"howto/theming.md","articles":[]},"previous":{"title":"window","level":"2.2","depth":1,"path":"api/window.md","ref":"api/window.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/intro.md","mtime":"2021-11-21T19:35:38.402Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-11-21T21:16:24.380Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Authentication methods","level":"3.4","depth":1,"previous":{"title":"Authentication","level":"3.3","depth":1,"path":"howto/auth.md","ref":"howto/auth.md","articles":[{"title":"Manual login","level":"3.3.1","depth":2,"anchor":"#manual-login","path":"howto/auth.md","ref":"howto/auth.md#manual-login","articles":[]},{"title":"Select user","level":"3.3.2","depth":2,"anchor":"#select-user","path":"howto/auth.md","ref":"howto/auth.md#select-user","articles":[]},{"title":"Both","level":"3.3.3","depth":2,"anchor":"#both","path":"howto/auth.md","ref":"howto/auth.md#both","articles":[]}]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"howto/auth_methods.md","mtime":"2021-11-21T19:42:04.651Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-11-21T21:16:24.380Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

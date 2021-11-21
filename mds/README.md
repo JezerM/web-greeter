@@ -4,6 +4,8 @@ A modern, visually appealing greeter for LightDM, that allows to create web base
 
 This is a try to update the [Antergos web-greeter](https://github.com/Antergos/web-greeter), following what they left.
 
+This documentation works for [web-greeter](https://github.com/JezerM/web-greeter) and [nody-greeter](https://github.com/JezerM/nody-greeter) as well.
+
 ## Features
 
 - Create themes with HTML, CSS and JavaScript!

@@ -15,8 +15,12 @@ lightdm.start_session(session)
 ### [lightdm.authenticate(username)](/api/Greeter#LightDM_Greeter-authenticate)
 This method starts the authentication procedure for a user, allowing to start the user session.
 
+If `username` is not provided, LightDM will prompt for it.
+
 ### [lightdm.respond(response)](/api/Greeter#LightDM_Greeter-respond)
 Provide a response to a prompt. Basically, this acts like a password provider. After the authentication is initiated, you need to provide the user password with this method. It could be "12345", "password", "strongpassword", y'know, a password.
+
+However, `lightdm.respond` can provide an user, as well, if `lightdm.authenticate` didn't receive an user.
 
 > NOTE: If authentication is not initiated, this will cause an error.
 
