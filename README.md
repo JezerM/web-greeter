@@ -69,6 +69,13 @@ See [latest release][releases].
 
 You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
 
+
+Aditionally, you can install the TypeScript types definitions inside your theme with npm:
+
+```sh
+npm install nody-greeter-types
+```
+
 ## Enable features
 ### Brightness control
 To control the brightness inside the greeter, I recommend to use [acpilight][acpilight] replacement for `xbacklight`.
