@@ -102,6 +102,28 @@ web-greeter --debug
 
 > ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
 
+## Troubleshooting
+
+Before setting **web-greeter** as your LightDM Greeter, you should make sure it does work also with LightDM:
+
+- Run **web-greeter** as root
+- Run `lightdm --test-mode`. Although it's not supported, it could help to debug lightdm.
+
+### LightDM crashes and tries to recover over and over again
+
+LightDM does this when the greeter crashes, so it could mean **web-greeter** was not installed correctly, or some dependencies were updated/removed after a distro update.
+
+### Import errors
+
+If you see something like this: `ImportError: libQt5WebEngineCore.so.5: undefined symbol: _ZNSt12out_of_rangeC1EPKc, version Qt_5`, check out this [StackOverflow response](https://stackoverflow.com/a/68811630).
+
+With some PyQt5 import errors like `ModuleNotFoundError: No module named 'PyQt5.QtWebEngineWidgets'`, check out this [GitHub response](https://github.com/spyder-ide/spyder/issues/8952#issuecomment-499418456).
+
+web-greeter related import errors:
+
+- `AttributeError: module 'globals' has no attribute 'greeter'` means some exception happened inside the Browser constructor, maybe related to LightDM or PyQt5.
+- `ModuleNotFoundError: No module named 'resources'` could mean `path/to/web-greeter-clone/web-greeter/resources.py` was not compiled with pyrcc5 in the build/install methods.
+
 [antergos]: https://github.com/Antergos "Antergos"
 [nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
 [cx_freeze]: https://github.com/marcelotduarte/cx_Freeze "cx_Freeze"
