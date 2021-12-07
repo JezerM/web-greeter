@@ -2,7 +2,7 @@ bundle.js
 resources.py
 build/**
 !build/.gitignore
-!build/ci/Dockerfile
+!build/ci/
 !build/utils.sh
 !build/DEBIAN/
 whither/
