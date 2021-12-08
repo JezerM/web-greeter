@@ -5,4 +5,4 @@ Terminal=false
 Type=Application
 StartupWMClass=web-greeter
 Comment=Web based greeter for lightdm
-Categories=system;
+Categories=System;

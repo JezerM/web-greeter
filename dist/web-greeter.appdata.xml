@@ -61,12 +61,7 @@
 				<ul>
 					<li>Devtools implemented as a side view</li>
 					<li>Build system now uses cx_freeze</li>
-					<li>Improved themes:
-						<ul>
-							<li>Added keyboard layout selector</li>
-							<li>Added eye password reveal</li>
-						</ul>
-					<li>
+					<li>Added keyboard layout selector, and eye password reveal in both themes</li>
 				</ul>
 				<p>Changes:</p>
 				<ul>
@@ -85,70 +80,36 @@
 				<p>Added:</p>
 				<ul>
 					<li>New themes: gruvbox and dracula</li>
-					<li>Added newer documentation: https://jezerm.github.io/web-greeter/</li>
+					<li>Added newer documentation</li>
 					<li>Support for brightness control</li>
 					<li>Support for battery status</li>
 					<li>Support for ES2020, as using Chrome 83</li>
 					<li>Improved mock.js system</li>
 					<li>Better debug logging</li>
 					<li>Custom cursor theme option as "icon_theme"</li>
-					<li>Vendors added:
-						<ul>
-							<li>material-icons added</li>
-						</ul>
-					</li>
+					<li>Some vendors added</li>
 					<li>Tab completion for "web-greeter" command</li>
 				</ul>
 				<p>Changed:</p>
 				<ul>
 					<li>"lightdm-webkit2-greeter" name changed to "web-greeter"</li>
-					<li>"webkit2Gtk" replaced with "PyQtWebEngine"
-						<ul>
-							<li>Migrated from "C" to "Python"</li>
-						</ul>
-					</li>
+					<li>"webkit2Gtk" replaced with "PyQtWebEngine"</li>
 					<li>Man-pages updated</li>
 					<li>Updated API usage for LightDM 1.26.0</li>
 					<li>"greeterutil" renamed to "theme_utils"</li>
 					<li>"config" renamed to "greeter_config"</li>
 					<li>"lightdm-webkit2-greeter.conf" renamed to "web-greeter.yml"</li>
 					<li>Themes are now installed inside "/usr/share/web-greeter/themes"</li>
-					<li>Vendors updated:
-						<ul>
-							<li>"js-cookie" updated</li>
-							<li>"fontawesome" updated, now in "_vendor/fontawesome"</li>
-						</ul>
-					</li>
+					<li>Vendors updated</li>
 					<li>Previous deprecated methods and properties were removed</li>
 				</ul>
 				<p>Removed:</p>
 				<ul>
 					<li>Antergos theme removed</li>
-					<li>Vendors removed:
-						<ul>
-							<li>"jQuery" removed, as now we are in 2021</li>
-							<li>"moment.js" removed. Use "Intl"</li>
-							<li>"Bootstrap" removed. Include it in theme if needed.</li>
-						</ul>
-					</li>
+					<li>Some vendors removed</li>
 					<li>"time_format" config option removed</li>
 					<li>Transifex removed, sadly</li>
 				</ul>
-			</description>
-		</release>
-		<release date="2021-07-12" version="3.0.0rc5">
-			<description>
-				<p>This is the last release candidate for the 3.0 series.</p>
-			</description>
-		</release>
-		<release date="2018-01-07" version="3.0.0rc1">
-			<description>
-				<p>This is the first release candidate for the 3.0 series.</p>
-			</description>
-		</release>
-		<release date="2017-02-13" version="3.0.0alpha5">
-			<description>
-				<p>This is a pre-release of what will soon be the 3.0 series.</p>
 			</description>
 		</release>
 		<release date="2017-01-18" version="2.2.2">
@@ -172,7 +133,7 @@
 			<description>
 				<p>This is a milestone release with the following improvements:</p>
 				<ul>
-					<li>The JavaScript API for themes is now fully documented: https://goo.gl/0iPzA4</li>
+					<li>The JavaScript API for themes is now fully documented</li>
 					<li>New Theme Error Recovery System that will alert the user when errors are detected during JavaScript execution and give them the option to to load a fallback theme.</li>
 					<li>New config option: secure_mode (enabled by default). When enabled, only local http requests are allowed in themes. All non-local requests will be blocked.</li>
 					<li>It is now possible to override the language and format used by the greeter when displaying the current time. See the greeter config file for details.</li>
@@ -184,27 +145,15 @@
 					<li>Updated API usage for LightDM 1.19.2+.</li>
 					<li>Updated bundled JS &amp; CSS vendor libs to their latest versions.</li>
 					<li>Updated translations with latest changes contributed by the Antergos Community on Transifex.</li>
-					<li>Default theme:
-						<ul>
-							<li>Buttons and user list-box items received some minor style enhancements.</li>
-							<li>Theme is now compatible with the latest jQuery.</li>
-						</ul>
-					</li>
-					<li>Simple theme:
-						<ul>
-							<li>Removed deprecated HTML4 tags.</li>
-							<li>Improved styles for the input field.</li>
-						</ul>
-					</li>
+					<li>Buttons and user list-box received some minor style enhancements. (Default theme)</li>
+					<li>Theme is now compatible with the latest jQuery. (Default theme)</li>
+					<li>Removed deprecated HTML4 tags. (Simple theme)</li>
+					<li>Improved styles for the input field. (Simple theme)</li>
 				</ul>
 				<ul>
 					<li>The ugly default X cursor will no longer be shown after the greeter exits.</li>
-					<li>Default theme:
-						<ul>
-						<li>The error messages container will now appear correctly (size and position).</li>
-						<li>It is now once again possible to skip straight to password entry by pressing either the spacebar or the enter key.</li>
-						</ul>
-					</li>
+					<li>The error messages container will now appear correctly (size and position). (Default theme)</li>
+					<li>It is now once again possible to skip straight to password entry by pressing either the spacebar or the enter key. (Default theme)</li>
 				</ul>
 			</description>
 		</release>
