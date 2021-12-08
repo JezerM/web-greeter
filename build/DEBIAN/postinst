@@ -1,6 +1,8 @@
 #!/bin/sh
 
 # Link to the binary
-ln -sf '/opt/web-greeter/web-greeter' '/usr/bin/web-greeter'
+if [ -e '/opt/web-greeter' ]; then
+	ln -sf '/opt/web-greeter/web-greeter' '/usr/bin/web-greeter'
+fi
 
 update-desktop-database /usr/share/applications || true
