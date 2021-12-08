@@ -68,10 +68,10 @@ web_greeter_config = {
         "debug_mode": False,
         "theme_dir": "/usr/share/web-greeter/themes/",
         "version": {
-            "full": "3.1.1",
+            "full": "3.2.0",
             "major": 3,
-            "minor": 1,
-            "micro": 1,
+            "minor": 2,
+            "micro": 0,
         },
     }
 }

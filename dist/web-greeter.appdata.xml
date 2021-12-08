@@ -44,6 +44,17 @@
 	-->
 
 	<releases>
+		<release date="2021-12-08" version="3.2.0">
+			<description>
+				<p>Changes:</p>
+				<ul>
+					<li>Default build system reverted to zippy method</li>
+					<li>Battery bugfixes</li>
+					<li>QWebChannel and Web Greeter bundle merged as one file</li>
+					<li>Lots of bugfixes</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2021-10-27" version="3.1.1">
 			<description>
 				<p>Bugfixes</p>

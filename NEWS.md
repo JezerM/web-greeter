@@ -1,5 +1,15 @@
 # Change Log
 
+## [3.2.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 12-08-2021
+
+**Changes:**
+
+  * Default build system reverted to **zippy method**
+  * Battery bugfixes
+  * QWebChannel and Web Greeter bundle merged as one file
+    - LightDM API should be instantly accessible
+  * Lots of bugfixes
+
 ## [3.1.1](https://github.com/JezerM/web-greeter/tree/3.1.1) ~ 10-27-2021
 
 **Changes:**
