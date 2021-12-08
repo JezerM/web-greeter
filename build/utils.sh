@@ -63,14 +63,15 @@ init_build_dir() {
 	[[ -e "${BUILD_DIR}/dist" ]] && rm -rf "${BUILD_DIR}/dist"
 	rsync -a "${REPO_DIR}/web-greeter" "${BUILD_DIR}" --exclude "dist" --exclude "__pycache__"
 	rsync -a "${REPO_DIR}/dist" "${BUILD_DIR}"
-	cp "${REPO_DIR}/README.md" "${BUILD_DIR}/web-greeter"
+	cp "${REPO_DIR}/NEWS.md" "${BUILD_DIR}/dist/NEWS.md"
+	cp "${REPO_DIR}/README.md" "${BUILD_DIR}/web-greeter/"
 }
 
 prepare_install() {
 	cd "${BUILD_DIR}"
 	INSTALL_PREFIX=$(echo ${INSTALL_ROOT}/${PREFIX} | sed -E 's/\/\//\//g')
 	mkdir -p \
-		"${INSTALL_PREFIX}"/share/{man/man1,metainfo,web-greeter,xgreeters,applications,zsh/vendor-completions,bash-completion/completions} \
+		"${INSTALL_PREFIX}"/share/{man/man1,metainfo,doc/web-greeter,web-greeter,xgreeters,applications,zsh/vendor-completions,bash-completion/completions} \
 		"${INSTALL_ROOT}"/etc/{lightdm,xdg/lightdm/lightdm.conf.d} \
 		"${INSTALL_PREFIX}"/bin
 
@@ -80,7 +81,10 @@ prepare_install() {
 		&& mv themes/_vendor .)
 
 	# Man Page
-	cp "${BUILD_DIR}/dist/${PKGNAME}.1" "${INSTALL_PREFIX}/share/man/man1"
+	gzip -c9 "${BUILD_DIR}/dist/${PKGNAME}.1" > "${INSTALL_PREFIX}/share/man/man1/${PKGNAME}.1.gz"
+
+	# News
+	gzip -c9 "${BUILD_DIR}/dist/NEWS.md" > "${INSTALL_PREFIX}/share/doc/web-greeter/NEWS.gz"
 
 	# Command line completions
 	if [[ -f /usr/bin/bash ]]; then

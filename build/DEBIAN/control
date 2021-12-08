@@ -1,5 +1,5 @@
 Package: web-greeter
-Version: 3.1.0
+Version: 3.1.1
 Provides: lightdm-greeter
 Replaces: lightdm-webkit-greeter
 Section: x11
@@ -8,9 +8,8 @@ Homepage: https://github.com/JezerM/web-greeter
 Installed-Size: 402396
 Architecture: all
 Maintainer: JezerM <amyuki4@gmail.com>
-Depends: liblightdm-gobject-1-0,
-  liblightdm-gobject-1-dev
+Depends: liblightdm-gobject-1-0, liblightdm-gobject-1-dev, python3, python3-gi, python3-qt5, libqt5webengine5
 Description: A modern, visually appealing greeter for LightDM.
-	Web Greeter utilizes themes built with HTML/CSS/JavaScript for it's login screen. Web Greeter
-	themes provide modern, visually appealing, and feature-rich login screens. Two themes are
-	included by default. There is also a growing number of 3rd-Party themes available online.
+  Web Greeter utilizes themes built with HTML/CSS/JavaScript for it's login screen. Web Greeter
+  themes provide modern, visually appealing, and feature-rich login screens. Two themes are
+  included by default. There is also a growing number of 3rd-Party themes available online.

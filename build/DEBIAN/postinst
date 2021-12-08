@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/bin/sh
 
 # Link to the binary
 ln -sf '/opt/web-greeter/web-greeter' '/usr/bin/web-greeter'
