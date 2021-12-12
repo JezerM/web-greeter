@@ -21,6 +21,25 @@ Gruvbox and Dracula themes!
 - Battery and brightness control.
 - Tab completion for zsh and bash.
 
+## Available distro packages
+
+### Arch
+
+- AUR: https://aur.archlinux.org/packages/web-greeter/
+
+```sh
+yay -S web-greeter
+```
+
+### Ubuntu
+
+Download from the [latest release](https://github.com/JezerM/web-greeter/releases/latest) and
+install with apt.
+
+```sh
+apt install ./web-greeter-VER.deb
+```
+
 ## Dependencies
 |                          |        arch         |        ubuntu        |       fedora        |       openSUSE       |
 |--------------------------|---------------------|----------------------|---------------------|----------------------|
