@@ -236,7 +236,10 @@ class Browser(Application):
             self._initialize_devtools()
 
         if web_greeter_config["config"]["greeter"]["secure_mode"]:
-            self.profile.setUrlRequestInterceptor(self.interceptor)
+            if (hasattr(QWebEngineProfile, "setUrlRequestInterceptor")):
+                self.profile.setUrlRequestInterceptor(self.interceptor)
+            else: # Older Qt5 versions
+                self.profile.setRequestInterceptor(self.interceptor)
 
         self.page.setBackgroundColor(QColor(0, 0, 0))
         self.window.setStyleSheet("""QMainWindow, QWebEngineView {
