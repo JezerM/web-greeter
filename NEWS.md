@@ -1,5 +1,13 @@
 # Change Log
 
+## [3.2.1](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 12-11-2021
+
+**Changes:**
+
+  * Bugfixes related to older Qt versions
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.2.0...3.2.1)
+
 ## [3.2.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 12-08-2021
 
 **Changes:**
@@ -9,6 +17,8 @@
   * QWebChannel and Web Greeter bundle merged as one file
     - LightDM API should be instantly accessible
   * Lots of bugfixes
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.1.1...3.2.0)
 
 ## [3.1.1](https://github.com/JezerM/web-greeter/tree/3.1.1) ~ 10-27-2021
 
