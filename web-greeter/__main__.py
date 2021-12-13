@@ -74,6 +74,7 @@ def parse(argv):
     parser.add_argument("--normal", action="store_false", help="Run in non-debug mode", dest="debug")
     parser.add_argument("--list", action="store_true", help="List available themes")
     parser.add_argument("--theme", help="Set the theme to use", metavar="[name]")
+    parser.add_argument("--no-sandbox", action="store_true", help=argparse.SUPPRESS)
 
     args: argparse.Namespace
 

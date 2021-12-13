@@ -29,6 +29,7 @@
 # Standard lib
 
 import re
+import sys
 from browser.window import MainWindow
 import os
 from typing import (
@@ -105,7 +106,7 @@ class Application:
         QCoreApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
         QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
 
-        self.app = QApplication([])
+        self.app = QApplication(sys.argv)
         self.window = MainWindow()
         self.desktop = self.app.desktop()
 
