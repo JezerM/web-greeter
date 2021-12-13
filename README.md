@@ -41,13 +41,16 @@ apt install ./web-greeter-VER.deb
 ```
 
 ## Dependencies
-|                          |        arch         |        ubuntu        |       fedora        |       openSUSE       |
-|--------------------------|---------------------|----------------------|---------------------|----------------------|
-|**liblightdm-gobject**    |lightdm              |liblightdm-gobject-dev|lightdm-gobject-devel|liblightdm-gobject-1-0|
-|**pygobject**             |python-gobject       |python3-gi            |pygobject3           |python3-gobject       |
-|**pyqt5**                 |python-pyqt5         |python3-pyqt5         |python3-qt5          |python3-qt5           |
-|**qt5-webengine**         |qt5-webengine        |libqt5webengine5      |qt5-qtwebengine      |libqt5-qtwebengine    |
-|**gobject-introspection** |gobject-introspection|gobject-introspection |gobject-introspection|gobject-introspection |
+|                          |        arch          |          ubuntu         |       fedora        |       openSUSE       |
+|--------------------------|----------------------|-------------------------|---------------------|----------------------|
+|**liblightdm-gobject**    |lightdm               |liblightdm-gobject-1-dev |lightdm-gobject-devel|liblightdm-gobject-1-0|
+|**pygobject**             |python-gobject        |python3-gi               |pygobject3           |python3-gobject       |
+|**pyqt5**                 |python-pyqt5          |python3-pyqt5            |python3-qt5          |python3-qt5           |
+|**pyqt5-webengine**       |python-pyqt5-webengine|python3-pyqt5.qtwebengine|python3-qt5-webengine|python3-qtwebengine   |
+|**python-xlib**           |python-xlib           |python3-xlib             |python3-xlib         |python3-xlib          |
+|**python-yaml**           |python-ruamel-yaml    |python3-ruamel.yaml      |python3-ruamel-yaml  |python3-ruamel-yaml   |
+|**qt5-webengine**         |qt5-webengine         |libqt5webengine5         |qt5-qtwebengine      |libqt5-qtwebengine    |
+|**gobject-introspection** |gobject-introspection |gobject-introspection    |gobject-introspection|gobject-introspection |
 
 ### Build dependencies
 
@@ -64,22 +67,24 @@ apt install ./web-greeter-VER.deb
 - ruamel.yaml
 - python-xlib
 
-Install PIP dependencies with:
+PIP dependencies are no longer required as long as common dependencies are satisfied. However, you
+can install PIP dependencies with:
+
 ```sh
 pip install -r requirements.txt
 ```
 
-> ***NOTE*** Be sure to install pip libraries as root too, or use a venv to install these dependencies
+> ***NOTE*** If using PIP, be sure to install these dependencies as root
 
 ## Download & Install
 ```sh
 git clone https://github.com/JezerM/web-greeter.git
 cd web-greeter
-sudo pip install -r requirements.txt
 sudo make install
 ```
 
-This will build and install **web-greeter** in a zippy way, which compresses the python code as a zip and uses it as a binary. Either `sudo make install_freeze` to build and install with cx_freeze. The zippy method depends on the actual python interpreter and its libraries, so you could have problems when updating python or removing any dependency, while the cx_freeze method tries to fix this "problem".
+This will build and install **web-greeter** in a zippy way, which compresses the python code as a
+zip and uses it as a binary.
 
 See [latest release][releases].
 
@@ -101,12 +106,12 @@ To control the brightness inside the greeter, I recommend to use [acpilight][acp
 
 udev rules are needed to be applied before using it. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
 
-If you don't want to or don't have a compatible device, disable it inside `/etc/lightdm/web-greeter.yml` (disabled by default)
+Enable it inside `/etc/lightdm/web-greeter.yml`
 
 ### Battery status
 `acpi` is the only tool you need (and a battery).
 
-You can disable it inside `/etc/lightdm/web-greeter.yml` (disabled by default)
+You can enable it inside `/etc/lightdm/web-greeter.yml`
 
 ## Debugging
 You can run the greeter from within your desktop session if you add the following line to the desktop file for your session located in `/usr/share/xsessions/`: `X-LightDM-Allow-Greeter=true`.
@@ -125,7 +130,7 @@ web-greeter --debug
 
 Before setting **web-greeter** as your LightDM Greeter, you should make sure it does work also with LightDM:
 
-- Run **web-greeter** as root
+- Run **web-greeter** as root with `--no-sandbox` flag ("Unable to determine socket to daemon" and "XLib" related errors are expected)
 - Run `lightdm --test-mode`. Although it's not supported, it could help to debug lightdm.
 
 ### LightDM crashes and tries to recover over and over again
