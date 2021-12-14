@@ -46,6 +46,7 @@ class ThemeUtils(BridgeObject):
         self._greeter = greeter
 
         self._allowed_dirs = (
+            os.path.dirname(self._config["config"]["greeter"]["theme"]),
             self._config["app"]["theme_dir"],
             self._config["config"]["branding"]["background_images_dir"],
             self._greeter.shared_data_directory,
@@ -56,6 +57,9 @@ class ThemeUtils(BridgeObject):
     def dirlist(self, dir_path, only_images=True):
         if not dir_path or not isinstance(dir_path, str) or '/' == dir_path:
             return []
+
+        if (dir_path.startswith("./")):
+            dir_path = os.path.join(os.path.dirname(self._config["config"]["greeter"]["theme"]), dir_path)
 
         dir_path = os.path.realpath(os.path.normpath(dir_path))
 
