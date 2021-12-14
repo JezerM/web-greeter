@@ -38,9 +38,8 @@ let time_language = null,
 class ThemeUtils {
     constructor(instance) {
         if (null !== _ThemeUtils) {
-            return _ThemeUti;
+            return _ThemeUtils;
         }
-        ls;
 
         _ThemeUtils = instance;
     }
