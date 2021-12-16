@@ -87,9 +87,13 @@ ENABLED_SETTINGS = [
 
 def getDefaultCursor():
     cursor_theme = ""
-    file = open("/usr/share/icons/default/index.theme")
-    matched = re.search(r"Inherits=.*", file.read())
-    file.close()
+    matched = None
+    try:
+        file = open("/usr/share/icons/default/index.theme")
+        matched = re.search(r"Inherits=.*", file.read())
+        file.close()
+    except Exception:
+        return ""
     if not matched:
         logger.error("Default cursor couldn't be get")
         return ""
