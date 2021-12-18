@@ -125,8 +125,8 @@ class Greeter(BridgeObject):
     autologin_timer_expired = Bridge.signal()
     idle = Bridge.signal()
     reset = Bridge.signal()
-    show_message = Bridge.signal(str, LightDM.MessageType, arguments=('text', 'type'))
-    show_prompt = Bridge.signal(str, LightDM.PromptType, arguments=('text', 'type'))
+    show_message = Bridge.signal(str, int, arguments=('text', 'type'))
+    show_prompt = Bridge.signal(str, int, arguments=('text', 'type'))
 
     brightness_update = Bridge.signal()
     battery_update = Bridge.signal()
@@ -183,11 +183,11 @@ class Greeter(BridgeObject):
 
         LightDMGreeter.connect(
             'show-message',
-            lambda greeter, msg, mtype: self._emit_signal(self.show_message, msg, mtype)
+            lambda greeter, msg, mtype: self._emit_signal(self.show_message, msg, mtype.real)
         )
         LightDMGreeter.connect(
             'show-prompt',
-            lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype)
+            lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype.real)
         )
 
         if self._battery:
@@ -195,7 +195,8 @@ class Greeter(BridgeObject):
 
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
-        QTimer().singleShot(300, lambda: _signal.emit(*args))
+        _signal.emit(*args)
+        # QTimer().singleShot(300, lambda: _signal.emit(*args))
 
     @Bridge.prop(str, notify=property_changed)
     def authentication_user(self):
