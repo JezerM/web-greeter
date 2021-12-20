@@ -49,7 +49,8 @@ class Battery:
                 capacity = 0,
             ))
         else:
-            self.ac = re.match(r"A\w+", line).group() or self.ac
+            match = re.match(r"A\w+", line)
+            self.ac = match.group() if match else self.ac
 
     # Based on "bat" widget from "lain" awesome-wm library
 	# * (c) 2013,      Luca CPZ
@@ -106,7 +107,7 @@ class Battery:
                 sum_charge_full   = sum_charge_full + charge_full
                 sum_charge_design = sum_charge_design + charge_design
 
-        self.capacity = math.floor(min(100, sum_charge_full / sum_charge_design * 100))
+        self.capacity = math.floor(min(100, sum_charge_full / (sum_charge_design or 1) * 100))
         self.status = len(self._batteries) > 0 and self._batteries[0]["status"] or "N/A"
 
         for i in range(len(self._batteries)):
@@ -189,6 +190,7 @@ def acpi_listen(callback, onerror):
         awky = subprocess.Popen(shlex.split("grep --line-buffered -E 'battery|ac_adapter'"),
                                 stdout=subprocess.PIPE, stdin=main.stdout, text=True)
         while True:
+            if (awky.stdout == None): continue
             output = awky.stdout.readline()
             if output == "" and awky.poll() != None:
                 break
@@ -209,6 +211,7 @@ def scandir_line(path, callback):
     main = subprocess.Popen(shlex.split("ls -1 {}".format(path)),
                             stdout=subprocess.PIPE, text=True)
     while True:
+        if (main.stdout == None): continue
         line = main.stdout.readline()
         if line == "" and main.poll() != None:
             break
