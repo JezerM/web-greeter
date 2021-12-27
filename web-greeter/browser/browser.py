@@ -239,6 +239,8 @@ class Browser(Application):
 
         if web_greeter_config["config"]["greeter"]["debug_mode"]:
             self._initialize_devtools()
+        else:
+            self.view.setContextMenuPolicy(Qt.PreventContextMenu)
 
         if web_greeter_config["config"]["greeter"]["secure_mode"]:
             if (hasattr(QWebEngineProfile, "setUrlRequestInterceptor")):
@@ -254,8 +256,6 @@ class Browser(Application):
         self.window.setCentralWidget(self.view)
 
         logger.debug("Browser Window created")
-
-        self.show()
 
     def load(self):
         self.greeter = Greeter()

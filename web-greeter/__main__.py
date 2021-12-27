@@ -100,4 +100,5 @@ if __name__ == '__main__':
 
     globals.greeter = Browser()
     greeter = globals.greeter
+    greeter.show()
     greeter.run()
