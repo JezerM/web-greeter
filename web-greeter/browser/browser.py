@@ -258,6 +258,7 @@ class Browser(Application):
         logger.debug("Browser Window created")
 
     def load(self):
+        self.load_theme()
         self.greeter = Greeter()
         self.greeter_config = Config()
         self.theme_utils = ThemeUtils(self.greeter)
@@ -265,7 +266,6 @@ class Browser(Application):
         self.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
         self.initialize_bridge_objects()
         self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
-        self.load_theme()
 
     def _initialize_devtools(self):
         self.dev_view = QWebEngineView(parent=self.window)

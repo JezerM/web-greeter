@@ -28,7 +28,7 @@
 
 # Standard Lib
 import os
-from glob import glob
+import re
 import tempfile
 
 # 3rd-Party Libs
@@ -36,6 +36,7 @@ from browser.bridge import Bridge, BridgeObject
 from PyQt5.QtCore import QVariant
 
 from config import web_greeter_config
+from logger import logger
 
 class ThemeUtils(BridgeObject):
 
@@ -46,7 +47,9 @@ class ThemeUtils(BridgeObject):
         self._greeter = greeter
 
         self._allowed_dirs = (
-            os.path.dirname(self._config["config"]["greeter"]["theme"]),
+            os.path.dirname(
+                os.path.realpath(self._config["config"]["greeter"]["theme"])
+            ),
             self._config["app"]["theme_dir"],
             self._config["config"]["branding"]["background_images_dir"],
             self._greeter.shared_data_directory,
@@ -74,17 +77,17 @@ class ThemeUtils(BridgeObject):
                 break
 
         if not allowed:
+            logger.error("Path \"" + dir_path + "\" is not allowed");
             return []
 
+        result = []
         if only_images:
-            file_types = ('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp')
-            result = [
-                glob('{0}/**/*.{1}'.format(dir_path, ftype), recursive=True)
-                for ftype in file_types
-            ]
-            result = [image for image_list in result for image in image_list]
+            for f in os.scandir(dir_path):
+                if f.is_file() and re.match(r".+\.(jpe?g|png|gif|bmp|webp)", f.name):
+                    result.append(f.path)
 
         else:
             result = [os.path.join(dir_path, f) for f in os.listdir(dir_path)]
 
+        result.sort()
         return result
