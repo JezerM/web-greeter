@@ -25,7 +25,6 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from bridge.Greeter import changeBrightness, decreaseBrightness, increaseBrightness
 from PyQt5.QtCore import QFileSystemWatcher, Qt
 from PyQt5.QtWidgets import QAction, QMainWindow
 from PyQt5.QtGui import QKeyEvent
@@ -37,7 +36,6 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
         self.init_actions()
-        # self.watchBrightness()
 
     def init_actions(self):
         devAct = QAction(text="&Toggle Devtools", parent=self)
@@ -59,14 +57,13 @@ class MainWindow(QMainWindow):
         globals.greeter.toggle_devtools()
 
     def inc_brightness(self):
-        increaseBrightness()
+        if globals.greeter:
+            value = web_greeter_config["config"]["features"]["backlight"]["value"]
+            globals.greeter.greeter.inc_brightness(value)
     def dec_brightness(self):
-        decreaseBrightness()
-
-    def watchBrightness(self):
-        self.watcher = QFileSystemWatcher(parent=self)
-        self.watcher.addPath("/sys/class/backlight/intel_backlight/brightness")
-        self.watcher.fileChanged.connect(self.updateBrightness)
+        if globals.greeter:
+            value = web_greeter_config["config"]["features"]["backlight"]["value"]
+            globals.greeter.greeter.dec_brightness(value)
 
     def updateBrightness(self):
         if globals.greeter:

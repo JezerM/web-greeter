@@ -23,7 +23,7 @@ class Battery:
     callbacks = []
 
     def __init__(self):
-        if self._batteries.__len__() == 0:
+        if len(self._batteries) == 0:
             scandir_line(self.pspath, self._update_batteries)
         start_timer(self.full_update, self.onerror)
         self.full_update()
@@ -53,8 +53,8 @@ class Battery:
             self.ac = match.group() if match else self.ac
 
     # Based on "bat" widget from "lain" awesome-wm library
-	# * (c) 2013,      Luca CPZ
-	# * (c) 2010-2012, Peter Hofmann
+    # * (c) 2013,      Luca CPZ
+    # * (c) 2010-2012, Peter Hofmann
     # @see https://github.com/lcpz/lain/blob/master/widget/bat.lua
     def full_update(self):
         global running

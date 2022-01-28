@@ -42,6 +42,7 @@ from PyQt5.QtCore import QFileSystemWatcher, QVariant, QTimer
 from config import web_greeter_config
 from utils.battery import Battery
 from utils.screensaver import reset_screensaver
+from utils.brightness import BrightnessController
 import globals
 
 # This Application
@@ -58,54 +59,6 @@ from . import (
 
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
-
-
-def changeBrightness(method: str, quantity: int = None):
-    backlight = web_greeter_config["config"]["features"]["backlight"]
-    if not backlight["enabled"]:
-        return
-    if not quantity:
-        quantity = backlight["value"]
-    try:
-        steps = backlight["steps"]
-        child = subprocess.run(["xbacklight", method, str(quantity), "-steps", str(steps)])
-        if child.returncode == 1:
-            raise ChildProcessError("xbacklight returned 1")
-    except Exception as err:
-        logger.error("Brightness: {}".format(err))
-    else:
-        if globals.greeter:
-            globals.greeter.greeter.brightness_update.emit()
-
-def increaseBrightness(quantity: int = None):
-    backlight = web_greeter_config["config"]["features"]["backlight"]
-    if not backlight["enabled"]:
-        return
-    if not quantity:
-        quantity = backlight["value"]
-    thread = threading.Thread(target=changeBrightness,
-                              args=("-inc", quantity))
-    thread.start()
-
-def decreaseBrightness(quantity: int = None):
-    backlight = web_greeter_config["config"]["features"]["backlight"]
-    if not backlight["enabled"]:
-        return
-    if not quantity:
-        quantity = backlight["value"]
-    thread = threading.Thread(target=changeBrightness,
-                              args=("-dec", quantity))
-    thread.start()
-
-def setBrightness(quantity: int = None):
-    backlight = web_greeter_config["config"]["features"]["backlight"]
-    if not backlight["enabled"]:
-        return
-    if not quantity:
-        quantity = backlight["value"]
-    thread = threading.Thread(target=changeBrightness,
-                              args=("-set", quantity))
-    thread.start()
 
 def getBrightness(self):
     if self._config["features"]["backlight"]["enabled"] != True:
@@ -145,6 +98,8 @@ class Greeter(BridgeObject):
 
         if self._config["features"]["battery"]:
             self._battery = Battery()
+
+        self._brightness_controller = BrightnessController()
 
         try:
             LightDMGreeter.connect_to_daemon_sync()
@@ -220,11 +175,11 @@ class Greeter(BridgeObject):
 
     @Bridge.prop(int, notify=brightness_update)
     def brightness(self):
-        return getBrightness(self)
+        return self._brightness_controller.brightness
 
     @brightness.setter
     def brightness(self, quantity):
-        setBrightness(quantity)
+        self._brightness_controller.brightness = quantity
 
     @Bridge.prop(bool, notify=noop_signal)
     def can_hibernate(self):
@@ -353,15 +308,15 @@ class Greeter(BridgeObject):
 
     @Bridge.method(int)
     def brightnessSet(self, quantity):
-        setBrightness(quantity)
+        self._brightness_controller.set_brightness(quantity)
 
     @Bridge.method(int)
     def brightnessIncrease(self, quantity):
-        increaseBrightness(quantity)
+        self._brightness_controller.inc_brightness(quantity)
 
     @Bridge.method(int)
     def brightnessDecrease(self, quantity):
-        decreaseBrightness(quantity)
+        self._brightness_controller.dec_brightness(quantity)
 
     @Bridge.method()
     def cancel_authentication(self):
