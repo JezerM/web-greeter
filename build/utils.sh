@@ -25,7 +25,7 @@ do_build() {
 	# Compile Resources
 	(combine_javascript_sources \
 		&& pyrcc5 -o "${BUILD_DIR}/${PKGNAME}/resources.py" ../resources.qrc \
-		&& cp "${BUILD_DIR}/${PKGNAME}/resources.py" "${REPO_DIR}/web-greeter")
+		&& cp "${BUILD_DIR}/${PKGNAME}/resources.py" "${REPO_DIR}/src")
 
 	# Create "Zip Application"
 	(cd "${PKGNAME}" \
@@ -61,7 +61,7 @@ do_install() {
 init_build_dir() {
 	[[ -e "${BUILD_DIR}/web-greeter" ]] && rm -rf "${BUILD_DIR}/web-greeter"
 	[[ -e "${BUILD_DIR}/dist" ]] && rm -rf "${BUILD_DIR}/dist"
-	rsync -a "${REPO_DIR}/web-greeter" "${BUILD_DIR}" --exclude "dist" --exclude "__pycache__"
+	rsync -a "${REPO_DIR}/src/" "${BUILD_DIR}/web-greeter" --exclude "dist" --exclude "__pycache__"
 	rsync -a "${REPO_DIR}/dist" "${BUILD_DIR}"
 	cp "${REPO_DIR}/NEWS.md" "${BUILD_DIR}/dist/NEWS.md"
 	cp "${REPO_DIR}/README.md" "${BUILD_DIR}/web-greeter/"

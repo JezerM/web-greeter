@@ -13,6 +13,7 @@ RUN DEBIAN_FRONTEND=noninteractive \
 		python3-gi \
 		python3-pyqt5 \
 		python3-ruamel.yaml \
+		python3-pyinotify \
 		python3-xlib \
 		python3-pip
 
