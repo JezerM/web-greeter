@@ -1,0 +1,26 @@
+name: Build Test
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v2
+    -
+      name: Install dependencies
+      run: |
+          sudo apt update
+          sudo apt install liblightdm-gobject-1-dev libqt5webengine5 pyqt5-dev-tools python3-gi python3-pyqt5 python3-ruamel.yaml python3-pyinotify python3-xlib python3-pip
+    -
+      name: Build and install web-greeter
+      run: make install
