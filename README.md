@@ -49,6 +49,7 @@ apt install ./web-greeter-VER.deb
 |**pyqt5-webengine**       |python-pyqt5-webengine|python3-pyqt5.qtwebengine|python3-qt5-webengine|python3-qtwebengine   |
 |**python-xlib**           |python-xlib           |python3-xlib             |python3-xlib         |python3-xlib          |
 |**python-yaml**           |python-ruamel-yaml    |python3-ruamel.yaml      |python3-ruamel-yaml  |python3-ruamel-yaml   |
+|**python-inotify**        |python-pyinotify      |python3-pyinotify        |python3-inotify      |python3-inotify       |
 |**qt5-webengine**         |qt5-webengine         |libqt5webengine5         |qt5-qtwebengine      |libqt5-qtwebengine    |
 |**gobject-introspection** |gobject-introspection |gobject-introspection    |gobject-introspection|gobject-introspection |
 
@@ -74,7 +75,7 @@ can install PIP dependencies with:
 pip install -r requirements.txt
 ```
 
-> ***NOTE*** If using PIP, be sure to install these dependencies as root
+> ***NOTE*** If using PIP, be sure to install these dependencies as root. Yet, no recommended.
 
 ## Download & Install
 ```sh
@@ -100,16 +101,17 @@ Aditionally, you can install the TypeScript types definitions inside your theme 
 npm install nody-greeter-types
 ```
 
-## Enable features
-### Brightness control
-To control the brightness inside the greeter, I recommend to use [acpilight][acpilight] replacement for `xbacklight`.
+## Aditional features
 
-udev rules are needed to be applied before using it. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
+### Brightness control
+`acpi` is the only tool needed to control the brightness, besides a compatible device. This functionality is based on [acpilight][acpilight] replacement for `xbacklight`.
+
+udev rules are needed to be applied before using it, check [acpilight rules][acpilight_rules]. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
 
 Enable it inside `/etc/lightdm/web-greeter.yml`
 
 ### Battery status
-`acpi` is the only tool you need (and a battery).
+`acpi` and `acpi_listen` are the only tools you need (and a battery). This functionality is based on ["bat" widget][bat_widget] from ["lain" awesome-wm library][lain].
 
 You can enable it inside `/etc/lightdm/web-greeter.yml`
 
@@ -123,6 +125,8 @@ Themes can be opened with a debug console if you set `debug_mode` as `true` insi
 ```sh
 web-greeter --debug
 ```
+
+Check `web-greeter --help` for more commands.
 
 > ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
 
@@ -151,7 +155,10 @@ web-greeter related import errors:
 [antergos]: https://github.com/Antergos "Antergos"
 [nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
 [cx_freeze]: https://github.com/marcelotduarte/cx_Freeze "cx_Freeze"
-[acpilight]: https://gitlab.com/wavexx/acpilight "acpilight"
+[acpilight]: https://gitlab.com/wavexx/acpilight/ "acpilight"
+[acpilight_rules]: https://gitlab.com/wavexx/acpilight/-/blob/master/90-backlight.rules "udev rules"
+[bat_widget]: https://github.com/lcpz/lain/blob/master/widget/bat.lua "Battery widget"
+[lain]: https://github.com/lcpz/lain "Lain awesome library"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
 [gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"
 [live_demo]: https://jezerm.github.io/web-greeter-themes/ "Live Demo"
