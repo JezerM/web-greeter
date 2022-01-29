@@ -67,6 +67,7 @@ apt install ./web-greeter-VER.deb
 - PyQtWebEngine
 - ruamel.yaml
 - python-xlib
+- pyinotify
 
 PIP dependencies are no longer required as long as common dependencies are satisfied. However, you
 can install PIP dependencies with:
