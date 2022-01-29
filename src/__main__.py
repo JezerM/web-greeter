@@ -26,14 +26,16 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 # Standard lib
-import sys, argparse, os
+import sys
+import argparse
+import os
 from typing import List
 
 # 3rd-Party Libs
-import globals
 import config
 
 def list_themes() -> List[str]:
+    """List available themes"""
     themes_dir = config.web_greeter_config["app"]["theme_dir"]
     themes_dir = themes_dir if os.path.exists(themes_dir) else "/usr/share/web-greeter/themes"
     filenames = os.listdir(themes_dir)
@@ -46,18 +48,21 @@ def list_themes() -> List[str]:
     return dirlist
 
 def print_themes():
+    """Print available themes"""
     themes_dir = config.web_greeter_config["app"]["theme_dir"]
     themes_dir = themes_dir if os.path.exists(themes_dir) else "/usr/share/web-greeter/themes"
     themes = list_themes()
-    print("Themes are located in {themes_dir}\n".format(themes_dir = themes_dir))
+    print(f"Themes are located in {themes_dir}\n")
     for theme in themes:
         print("-", theme)
 
 
 def set_theme(theme: str):
+    """Sets the theme"""
     config.web_greeter_config["config"]["greeter"]["theme"] = theme
 
 def set_debug(value: bool):
+    """Sets debug mode"""
     conf = config.web_greeter_config["config"]
     app = config.web_greeter_config["app"]
     conf["greeter"]["debug_mode"] = value
@@ -65,16 +70,23 @@ def set_debug(value: bool):
     app["fullscreen"] = not value
 
 def parse(argv):
+    """Parse command arguments"""
     version = config.web_greeter_config["app"]["version"]["full"]
-    parser = argparse.ArgumentParser(prog="web-greeter", add_help=False)
-    parser.add_argument("-h", "--help", action="help", help="Show this help message and exit")
-    parser.add_argument("-v", "--version", action="version", version=version, help="Show version number")
+    parser = argparse.ArgumentParser(prog="web-greeter", add_help = False)
+    parser.add_argument("-h", "--help", action = "help",
+                        help = "Show this help message and exit")
+    parser.add_argument("-v", "--version", action = "version",
+                        version = version, help = "Show version number")
 
-    parser.add_argument("--debug", action="store_true", help="Run the greeter in debug mode", dest="debug", default=None)
-    parser.add_argument("--normal", action="store_false", help="Run in non-debug mode", dest="debug")
-    parser.add_argument("--list", action="store_true", help="List available themes")
-    parser.add_argument("--theme", help="Set the theme to use", metavar="[name]")
-    parser.add_argument("--no-sandbox", action="store_true", help=argparse.SUPPRESS)
+    parser.add_argument("--debug", action = "store_true",
+                        help = "Run the greeter in debug mode",
+                        dest = "debug", default = None)
+    parser.add_argument("--normal", action = "store_false",
+                        help = "Run in non-debug mode", dest = "debug")
+    parser.add_argument("--list", action = "store_true",
+                        help = "List available themes")
+    parser.add_argument("--theme", help = "Set the theme to use", metavar = "[name]")
+    parser.add_argument("--no-sandbox", action = "store_true", help = argparse.SUPPRESS)
 
     args: argparse.Namespace
 
@@ -85,20 +97,21 @@ def parse(argv):
 
     # print(args)
 
-    if (args.list):
+    if args.list:
         print_themes()
         sys.exit()
-    if (args.theme):
+    if args.theme:
         set_theme(args.theme)
-    if (args.debug != None):
+    if args.debug is not None:
         set_debug(args.debug)
 
 if __name__ == '__main__':
     parse(sys.argv[1:])
 
+    import globales
     from browser.browser import Browser
 
-    globals.greeter = Browser()
-    greeter = globals.greeter
+    globales.greeter = Browser()
+    greeter = globales.greeter
     greeter.show()
     greeter.run()

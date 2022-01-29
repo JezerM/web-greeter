@@ -33,14 +33,13 @@ from logging import (
     StreamHandler
 )
 
-log_format = ''.join([
+LOG_FORMAT = ''.join([
     '%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(',
     'lineno)d : %(funcName)s | %(message)s'
 ])
-formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 stream_handler = StreamHandler()
 
-global logger
 logger = getLogger("debug")
 
 stream_handler.setLevel(DEBUG)

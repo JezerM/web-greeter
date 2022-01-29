@@ -26,90 +26,70 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-import re
-import threading, time
-
-from logging import (
-    getLogger,
-    DEBUG,
-    ERROR,
-    Formatter,
-    StreamHandler,
-)
-
-log_format = ''.join([
-    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
-    'lineno)d : %(funcName)s | %(message)s'
-])
-formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
-logger = getLogger("greeter")
-logger.propagate = False
-stream_handler = StreamHandler()
-stream_handler.setLevel(DEBUG)
-stream_handler.setFormatter(formatter)
-logger.setLevel(DEBUG)
-logger.addHandler(stream_handler)
-
 def language_to_dict(lang):
-    if (not lang):
-        return dict()
-    return dict(code=lang.get_code(), name=lang.get_name(), territory=lang.get_territory())
+    """Returns a dict from LightDMLanguage object"""
+    if not lang:
+        return {}
+    return {
+        "code": lang.get_code(),
+        "name": lang.get_name(),
+        "territory": lang.get_territory()
+    }
 
 
 def layout_to_dict(layout):
-    if (not layout):
-        return dict()
-    return dict(
-        description=layout.get_description(),
-        name=layout.get_name(),
-        short_description=layout.get_short_description()
-    )
+    """Returns a dict from LightDMLayout object"""
+    if not layout:
+        return {}
+    return {
+        "description": layout.get_description(),
+        "name": layout.get_name(),
+        "short_description": layout.get_short_description()
+    }
 
 
 def session_to_dict(session):
-    if (not session):
-        return dict()
-    return dict(
-        comment=session.get_comment(),
-        key=session.get_key(),
-        name=session.get_name(),
-        type=session.get_session_type(),
-    )
+    """Returns a dict from LightDMSession object"""
+    if not session:
+        return {}
+    return {
+        "comment": session.get_comment(),
+        "key": session.get_key(),
+        "name": session.get_name(),
+        "type": session.get_session_type(),
+    }
 
 
 def user_to_dict(user):
-    if (not user):
-        return dict()
-    return dict(
-        background=user.get_background(),
-        display_name=user.get_display_name(),
-        home_directory=user.get_home_directory(),
-        image=user.get_image(),
-        language=user.get_language(),
-        layout=user.get_layout(),
-        layouts=user.get_layouts(),
-        logged_in=user.get_logged_in(),
-        session=user.get_session(),
-        username=user.get_name(),
-    )
+    """Returns a dict from LightDMUser object"""
+    if not user:
+        return {}
+    return {
+        "background": user.get_background(),
+        "display_name": user.get_display_name(),
+        "home_directory": user.get_home_directory(),
+        "image": user.get_image(),
+        "language": user.get_language(),
+        "layout": user.get_layout(),
+        "layouts": user.get_layouts(),
+        "logged_in": user.get_logged_in(),
+        "session": user.get_session(),
+        "username": user.get_name(),
+    }
 
 
 def battery_to_dict(battery):
-    if (not battery):
-        return dict()
-    if (len(battery._batteries) == 0):
-        return dict()
-    return dict(
-        name = battery.get_name(),
-        level = battery.get_level(),
-        status = battery.get_status(),
-        ac_status = battery.get_ac_status(),
-        capacity = battery.get_capacity(),
-        time = battery.get_time(),
-        watt = battery.get_watt()
-    )
-
-
-from .Greeter import Greeter
-from .Config import Config
-from .ThemeUtils import ThemeUtils
+    """Returns a dict from Battery object"""
+    if not battery:
+        return {}
+    if len(battery.batteries) == 0:
+        return {}
+    return {
+        "name": battery.get_name(),
+        "level": battery.get_level(),
+        "status": battery.get_status(),
+        "ac_status": battery.get_ac_status(),
+        "capacity": battery.get_capacity(),
+        "time": battery.get_time(),
+        "watt": battery.get_watt()
+    }

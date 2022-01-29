@@ -38,8 +38,10 @@ from PyQt5.QtWebEngineCore import QWebEngineUrlSchemeHandler, QWebEngineUrlReque
 
 
 class QtUrlSchemeHandler(QWebEngineUrlSchemeHandler):
+    """URL Scheme Handler for web-greeter's protocol"""
 
     def requestStarted(self, job: QWebEngineUrlRequestJob) -> None:
+        # pylint: disable=invalid-name,missing-function-docstring
         path = job.requestUrl().path()
         path = os.path.realpath(path)
 
@@ -58,8 +60,8 @@ class QtUrlSchemeHandler(QWebEngineUrlSchemeHandler):
         try:
             with open(path, 'rb') as file:
                 content_type = mimetypes.guess_type(path)
-                if not content_type[0]:
-                    content_type = ["text/plain", None]
+                if content_type[0] is None:
+                    content_type = ("text/plain", None)
                 buffer = QBuffer(parent=self)
 
                 buffer.open(QIODevice.WriteOnly)
@@ -67,8 +69,10 @@ class QtUrlSchemeHandler(QWebEngineUrlSchemeHandler):
                 buffer.seek(0)
                 buffer.close()
 
-                job.reply(content_type[0].encode(), buffer)
+                if content_type[0] is None:
+                    job.reply("text/plain", "")
+                else:
+                    job.reply(content_type[0].encode(), buffer)
 
         except Exception as err:
             raise err
-

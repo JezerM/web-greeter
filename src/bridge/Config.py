@@ -26,27 +26,32 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-# 3rd-Party Libs
-from browser.bridge import Bridge, BridgeObject
-from PyQt5.QtCore import QVariant
+# pylint: disable=wrong-import-position
 
+# Standard Lib
+from typing import List
+
+# 3rd-Party Libs
 import gi
 gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 
-from typing import List
+from PyQt5.QtCore import QVariant
+
+# This application
+from browser.bridge import Bridge, BridgeObject
 from config import web_greeter_config
 
-from . import (
-    layout_to_dict
-)
+from . import layout_to_dict
 
 def get_layouts(config_layouts: List[str]):
+    """Get layouts from web-greeter's config"""
     layouts = LightDM.get_layouts()
     final_layouts: list[LightDM.Layout] = []
     for ldm_lay in layouts:
         for conf_lay in config_layouts:
-            if type(conf_lay) != str: return
+            if not isinstance(conf_lay, str):
+                return []
             conf_lay = conf_lay.replace(" ", "\t")
             if ldm_lay.get_name() == conf_lay:
                 final_layouts.append(layout_to_dict(ldm_lay))
@@ -54,17 +59,19 @@ def get_layouts(config_layouts: List[str]):
 
 
 class Config(BridgeObject):
+    # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
+    """Config bridge class, known as `greeter_config` in javascript"""
 
     noop_signal = Bridge.signal()
 
     def __init__(self, *args, **kwargs):
         super().__init__(name='Config', *args, **kwargs)
 
-        config = web_greeter_config["config"]
-        self._branding = config["branding"]
-        self._greeter = config["greeter"]
-        self._features = config["features"]
-        self._layouts = get_layouts(config["layouts"])
+        _config = web_greeter_config["config"]
+        self._branding = _config["branding"]
+        self._greeter = _config["greeter"]
+        self._features = _config["features"]
+        self._layouts = get_layouts(_config["layouts"])
 
     @Bridge.prop(QVariant, notify=noop_signal)
     def branding(self):
@@ -81,3 +88,5 @@ class Config(BridgeObject):
     @Bridge.prop(QVariant, notify=noop_signal)
     def layouts(self):
         return self._layouts
+
+config = Config()

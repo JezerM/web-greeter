@@ -29,23 +29,30 @@
 
 # 3rd-Party Libs
 from typing import List
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
-from PyQt5.QtWidgets import QAbstractButton, QDialogButtonBox, QDialog, QVBoxLayout, QLabel, QPushButton
-from config import web_greeter_config
-
-import globals
 from logging import (
     getLogger,
     DEBUG,
     Formatter,
     StreamHandler,
 )
+from PyQt5.QtWebEngineWidgets import QWebEnginePage
+from PyQt5.QtWidgets import (
+    QAbstractButton,
+    QDialogButtonBox,
+    QDialog,
+    QVBoxLayout,
+    QLabel,
+    QPushButton
+)
+from config import web_greeter_config
 
-log_format = ''.join([
+import globales
+
+LOG_FORMAT = ''.join([
     '%(asctime)s [ %(levelname)s ] %(filename)s %(',
     'lineno)d: %(message)s'
 ])
-formatter = Formatter(fmt=log_format, datefmt="%Y-%m-%d %H:%M:%S")
+formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 logger = getLogger("javascript")
 logger.propagate = False
 stream_handler = StreamHandler()
@@ -55,66 +62,79 @@ logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
 class WebPage(QWebEnginePage):
+    """web-greeter's webpage class"""
 
-    def javaScriptConsoleMessage(self, level: QWebEnginePage.JavaScriptConsoleMessageLevel, message: str, lineNumber: int, sourceID: str):
-        if sourceID == "":
-            sourceID = "console"
+    def javaScriptConsoleMessage(
+            self, level: QWebEnginePage.JavaScriptConsoleMessageLevel,
+            message: str, line_number: int, source_id: str
+        ):
+        # pylint: disable = no-self-use,missing-function-docstring,invalid-name
+        if source_id == "":
+            source_id = "console"
 
-        logLevel = 0
-        if level == WebPage.JavaScriptConsoleMessageLevel.ErrorMessageLevel:
-            logLevel = 40
-        elif level == WebPage.JavaScriptConsoleMessageLevel.WarningMessageLevel:
-            logLevel = 30
-        elif level == WebPage.JavaScriptConsoleMessageLevel.InfoMessageLevel:
+        log_level = 0
+        if level == WebPage.ErrorMessageLevel:
+            log_level = 40
+        elif level == WebPage.WarningMessageLevel:
+            log_level = 30
+        elif level == WebPage.InfoMessageLevel:
             return
         else:
             return
 
         record = logger.makeRecord(
             name="javascript",
-            level=logLevel,
+            level=log_level,
             fn="",
-            lno=lineNumber,
+            lno=line_number,
             msg=message,
             args=(),
             exc_info=None
         )
-        record.filename = sourceID
+        record.filename = source_id
         logger.handle(record)
 
-        if logLevel == 40:
-            errorMessage = "{source} {line}: {msg}".format(
-                source=sourceID, line=lineNumber, msg=message)
-            errorPrompt(errorMessage)
+        if log_level == 40:
+            errorMessage = f"{source_id} {line_number}: {message}"
+            error_prompt(errorMessage)
 
 class Dialog(QDialog):
-    def __init__(self, parent=None, title:str = "Dialog", message:str = "Message", detail:str = "", buttons: List[str] = []):
+    """Popup dialog class"""
+
+    def __init__(
+            self, parent = None, title: str = "Dialog",
+            message: str = "Message", detail: str = "",
+            buttons: List[str] = None
+        ):
         super().__init__(parent)
         self.setWindowTitle(title)
 
-        self.buttonBox = QDialogButtonBox()
-        for i in range(0, len(buttons)):
-            button = QPushButton(buttons[i])
-            button.role = i
-            self.buttonBox.addButton(button, QDialogButtonBox.ButtonRole.NoRole)
+        self.button_box = QDialogButtonBox()
+        if buttons is not None:
+            for i, btn in enumerate(buttons, 0):
+                button = QPushButton(btn)
+                button.role = i
+                self.button_box.addButton(button, QDialogButtonBox.NoRole)
 
-        self.buttonBox.clicked.connect(self.handle_click)
+        self.button_box.clicked.connect(self.handle_click)
 
         self.layout = QVBoxLayout()
         self.layout.addWidget(QLabel(message))
         self.layout.addWidget(QLabel(detail))
-        self.layout.addWidget(self.buttonBox)
+        self.layout.addWidget(self.button_box)
 
         self.setLayout(self.layout)
 
     def handle_click(self, button: QAbstractButton):
+        # pylint: disable=missing-function-docstring
         self.done(button.role)
 
-def errorPrompt(err):
+def error_prompt(err):
+    """Prompts a popup dialog on error"""
     if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
         return
 
-    dia = Dialog(parent=globals.greeter.window, title="Error",
+    dia = Dialog(parent=globales.greeter.window, title="Error",
                  message="An error ocurred. Do you want to change to default theme?",
                  detail=err,
                  buttons=["Reload theme", "Set default theme", "Cancel"],
@@ -124,13 +144,9 @@ def errorPrompt(err):
     result = dia.result()
 
     if result == 2:  # Cancel
-        return
+        pass
     elif result == 1:  # Default theme
         web_greeter_config["config"]["greeter"]["theme"] = "gruvbox"
-        globals.greeter.load_theme()
-        return
+        globales.greeter.load_theme()
     elif result == 0:  # Reload
-        globals.greeter.load_theme()
-        return
-
-    return
+        globales.greeter.load_theme()

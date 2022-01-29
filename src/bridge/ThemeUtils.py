@@ -26,25 +26,32 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
+# pylint: disable=wrong-import-position
+
 # Standard Lib
 import os
 import re
 import tempfile
 
 # 3rd-Party Libs
-from browser.bridge import Bridge, BridgeObject
 from PyQt5.QtCore import QVariant
+
+# This application
+from browser.bridge import Bridge, BridgeObject
 
 from config import web_greeter_config
 from logger import logger
+from bridge.Greeter import greeter
 
 class ThemeUtils(BridgeObject):
+    # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
+    """ThemeUtils bridge class, known as `theem_utils` in javascript"""
 
-    def __init__(self, greeter, *args, **kwargs):
+    def __init__(self, greeter_object, *args, **kwargs):
         super().__init__(name='ThemeUtils', *args, **kwargs)
 
         self._config = web_greeter_config
-        self._greeter = greeter
+        self._greeter = greeter_object
 
         self._allowed_dirs = (
             os.path.dirname(
@@ -61,8 +68,11 @@ class ThemeUtils(BridgeObject):
         if not dir_path or not isinstance(dir_path, str) or '/' == dir_path:
             return []
 
-        if (dir_path.startswith("./")):
-            dir_path = os.path.join(os.path.dirname(self._config["config"]["greeter"]["theme"]), dir_path)
+        if dir_path.startswith("./"):
+            dir_path = os.path.join(
+                os.path.dirname(self._config["config"]["greeter"]["theme"]),
+                dir_path
+            )
 
         dir_path = os.path.realpath(os.path.normpath(dir_path))
 
@@ -77,7 +87,7 @@ class ThemeUtils(BridgeObject):
                 break
 
         if not allowed:
-            logger.error("Path \"" + dir_path + "\" is not allowed");
+            logger.error("Path \"%s\" is not allowed", dir_path)
             return []
 
         result = []
@@ -91,3 +101,5 @@ class ThemeUtils(BridgeObject):
 
         result.sort()
         return result
+
+theme_utils = ThemeUtils(greeter)

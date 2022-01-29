@@ -29,12 +29,14 @@
 from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor, QWebEngineUrlRequestInfo
 
 class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
+    """Url request interceptor for web-greeter's protocol"""
 
     def __init__(self, url_scheme: str):
         super().__init__()
         self._url_scheme = url_scheme
 
     def intercept_request(self, info: QWebEngineUrlRequestInfo) -> None:
+        """Intercept request"""
         url = info.requestUrl().toString()
         not_webg_uri = self._url_scheme != info.requestUrl().scheme()
         not_data_uri = 'data' != info.requestUrl().scheme()
@@ -43,14 +45,18 @@ class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
         # print(url)
 
         not_devtools = (
-            not url.startswith('http://127.0.0.1') and not url.startswith('ws://127.0.0.1')
+            not url.startswith('http://127.0.0.1') and
+            not url.startswith('ws://127.0.0.1')
             and not url.startswith('devtools')
         )
 
-        block_request = not_devtools and not_data_uri and not_webg_uri and not_local_file
+        block_request = (
+            not_devtools and not_data_uri and
+            not_webg_uri and not_local_file
+        )
 
         info.block(block_request) # Block everything that is not allowed
 
     def interceptRequest(self, info: QWebEngineUrlRequestInfo) -> None:
+        # pylint: disable=invalid-name,missing-function-docstring
         self.intercept_request(info)
-

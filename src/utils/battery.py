@@ -1,48 +1,40 @@
-import subprocess
-import shlex
+import os
 import re
 import math
-from threading import Thread
 import time
-from logger import logger
-from shutil import which
-
-running = False
+from typing import Union
+import globales
+from utils.acpi import ACPI
 
 class Battery:
+    # pylint: disable=too-many-instance-attributes
+    """Battery controller"""
 
-    _batteries = []
-    ac = "AC0"
+    batteries = []
+    ac_path = "AC0"
     pspath = "/sys/class/power_supply/"
     perc = -1
     status = "N/A"
     capacity = 0
     time = ""
     watt = 0
-
-    callbacks = []
+    running_update = False
 
     def __init__(self):
-        if len(self._batteries) == 0:
+        if len(self.batteries) == 0:
             scandir_line(self.pspath, self._update_batteries)
-        start_timer(self.full_update, self.onerror)
+        ACPI.connect(self.acpi_listen)
         self.full_update()
 
-    def connect(self, callback):
-        self.callbacks.append(callback)
-
-    def disconnect(self, callback):
-        self.callbacks.remove(callback)
-
-    def onerror(self):
-        self._batteries = []
-        for cb in self.callbacks:
-            cb()
+    def acpi_listen(self, data: str):
+        """Listens"""
+        if re.match(r"battery|ac_adapter", data):
+            self.full_update()
 
     def _update_batteries(self, line):
         bstr = re.match(r"BAT\w+", line)
         if bstr:
-            self._batteries.append(dict(
+            self.batteries.append(dict(
                 name = bstr.group(),
                 status = "N/A",
                 perc = 0,
@@ -50,17 +42,18 @@ class Battery:
             ))
         else:
             match = re.match(r"A\w+", line)
-            self.ac = match.group() if match else self.ac
+            self.ac_path = match.group() if match else self.ac_path
 
     # Based on "bat" widget from "lain" awesome-wm library
     # * (c) 2013,      Luca CPZ
     # * (c) 2010-2012, Peter Hofmann
     # @see https://github.com/lcpz/lain/blob/master/widget/bat.lua
     def full_update(self):
-        global running
-        if running:
+        # pylint: disable=too-many-locals,too-many-statements,too-many-branches
+        """Do a full update"""
+        if self.running_update:
             return
-        running = True
+        self.running_update = True
 
         sum_rate_current = 0
         sum_rate_voltage = 0
@@ -71,8 +64,7 @@ class Battery:
         sum_charge_full = 0
         sum_charge_design = 0
 
-        for i in range(len(self._batteries)):
-            battery = self._batteries[i]
+        for i, battery in enumerate(self.batteries):
             bstr = self.pspath + battery["name"]
             present = read_first_line(bstr + "/present")
 
@@ -89,33 +81,34 @@ class Battery:
                 energy_percentage = tonumber(read_first_line(bstr + "/capacity")
                                  or math.floor(energy_now / energy_full * 100)) or 0
 
-                self._batteries[i]["status"] = read_first_line(bstr + "/status") or "N/A"
-                self._batteries[i]["perc"] = energy_percentage or self._batteries[i].perc
+                self.batteries[i]["status"] = read_first_line(bstr + "/status") or "N/A"
+                self.batteries[i]["perc"] = energy_percentage or self.batteries[i].perc
 
                 if not charge_design or charge_design == 0:
-                    self._batteries[i]["capacity"] = 0
+                    self.batteries[i]["capacity"] = 0
                 else:
-                    self._batteries[i]["capacity"] = math.floor(
+                    self.batteries[i]["capacity"] = math.floor(
                         charge_full / charge_design * 100)
 
-                sum_rate_current  = sum_rate_current + rate_current
-                sum_rate_voltage  = sum_rate_voltage + rate_voltage
-                sum_rate_power    = sum_rate_power + rate_power
-                sum_rate_energy   = sum_rate_energy + (rate_power or ((rate_voltage * rate_current) / 1e6))
-                sum_energy_now    = sum_energy_now + energy_now
-                sum_energy_full   = sum_energy_full + energy_full
-                sum_charge_full   = sum_charge_full + charge_full
+                sum_rate_current = sum_rate_current + rate_current
+                sum_rate_voltage = sum_rate_voltage + rate_voltage
+                sum_rate_power = sum_rate_power + rate_power
+                sum_rate_energy = sum_rate_energy + (
+                    rate_power or (rate_voltage * rate_current / 1e6)
+                )
+                sum_energy_now = sum_energy_now + energy_now
+                sum_energy_full = sum_energy_full + energy_full
+                sum_charge_full = sum_charge_full + charge_full
                 sum_charge_design = sum_charge_design + charge_design
 
         self.capacity = math.floor(min(100, sum_charge_full / (sum_charge_design or 1) * 100))
-        self.status = len(self._batteries) > 0 and self._batteries[0]["status"] or "N/A"
+        self.status = self.batteries[0]["status"] if len(self.batteries) > 0 else "N/A"
 
-        for i in range(len(self._batteries)):
-            battery = self._batteries[i]
+        for i, battery in enumerate(self.batteries):
             if battery["status"] == "Discharging" or battery["status"] == "Charging":
                 self.status = battery["status"]
 
-        self.ac_status = tonumber(read_first_line(self.pspath + self.ac + "/online")) or "N/A"
+        self.ac_status = tonumber(read_first_line(self.pspath + self.ac_path + "/online")) or 0
 
         if self.status != "N/A":
             if self.status != "Full" and sum_rate_power == 0 and self.ac_status == 1:
@@ -126,117 +119,86 @@ class Battery:
             elif self.status != "Full":
                 rate_time = 0
                 if (sum_rate_power > 0 or sum_rate_current > 0):
-                    div = (sum_rate_power > 0 and sum_rate_power) or sum_rate_current
+                    div = sum_rate_power > 0 or sum_rate_current
 
                     if self.status == "Charging":
                         rate_time = (sum_energy_full - sum_energy_now) / div
                     else:
                         rate_time = sum_energy_now / div
 
-                    if 0 < rate_time and rate_time < 0.01:
+                    if rate_time and rate_time < 0.01:
                         rate_time_magnitude = tonumber(abs(math.floor(math.log10(rate_time)))) or 0
                         rate_time = int(rate_time * 10) ^ (rate_time_magnitude - 2)
 
                     hours   = math.floor(rate_time)
                     minutes = math.floor((rate_time - hours) * 60)
-                    self.perc  = math.floor(min(100, (sum_energy_now / sum_energy_full) * 100) + 0.5)
-                    self.time = "{:02d}:{:02d}".format(hours, minutes)
-                    self.watt = "{:.2f}".format(sum_rate_energy / 1e6)
+                    self.perc  = math.floor(
+                        min(100, (sum_energy_now / sum_energy_full) * 100) + 0.5
+                    )
+                    self.time = f"{hours:02d}:{minutes:02d}"
+                    self.watt = f"{sum_rate_energy/1e6:.2f}"
             elif self.status == "Full":
                 self.perc = 100
                 self.time = "00:00"
                 self.watt = 0
 
-        self.perc = self.perc == None and 0 or self.perc
+        self.perc = self.perc if self.perc is not None else 0
 
-        for cb in self.callbacks:
-            cb()
+        if hasattr(globales, "greeter"):
+            globales.greeter.greeter.battery_update.emit()
 
         time.sleep(0.1)
 
-        running = False
+        self.running_update = False
 
     def get_name(self):
-        return self._batteries[0]["name"]
+        """Get name"""
+        return self.batteries[0]["name"]
 
     def get_level(self):
+        """Get level"""
         return self.perc
 
     def get_status(self):
+        """Get status"""
         return self.status
 
     def get_ac_status(self):
+        """Get AC status"""
         return self.ac_status
 
     def get_capacity(self):
+        """Get capacity"""
         return self.capacity
 
     def get_time(self):
+        """Get time"""
         return self.time
 
     def get_watt(self):
+        """Get watt"""
         return self.watt
 
-acpi_tries = 0
-
-def acpi_listen(callback, onerror):
-    if not which("acpi_listen"):
-        return
-
-    global acpi_tries
-    try:
-        main = subprocess.Popen(shlex.split("acpi_listen"),
-                                stdout=subprocess.PIPE, text=True)
-        awky = subprocess.Popen(shlex.split("grep --line-buffered -E 'battery|ac_adapter'"),
-                                stdout=subprocess.PIPE, stdin=main.stdout, text=True)
-        while True:
-            if (awky.stdout == None): continue
-            output = awky.stdout.readline()
-            if output == "" and awky.poll() != None:
-                break
-            if output:
-                callback()
-        logger.warning("acpi_listen terminated")
-        if acpi_tries < 5:
-            acpi_tries += 1
-            logger.debug("Restarting acpi_listen")
-            return acpi_listen(callback, onerror)
-        else:
-            raise Exception("acpi_listen exceeded 5 restarts")
-    except Exception as err:
-        logger.error("Battery error: " + err.__str__())
-        onerror()
-
 def scandir_line(path, callback):
-    main = subprocess.Popen(shlex.split("ls -1 {}".format(path)),
-                            stdout=subprocess.PIPE, text=True)
-    while True:
-        if (main.stdout == None): continue
-        line = main.stdout.readline()
-        if line == "" and main.poll() != None:
-            break
-        if line:
-            callback(line)
+    """List directory"""
+    lines = os.listdir(path)
+    for _, line in enumerate(lines):
+        callback(line)
 
-def read_first_line(path):
+def read_first_line(path) -> Union[str, None]:
+    """Just read the first line of file"""
     try:
-        file = open(path, "r")
         first = None
-        if file:
+        with open(path, "r", encoding = "utf-8") as file:
             first = file.readline()
             first = first.replace("\n", "")
-            file.close()
         return first
-    except Exception:
+    except IOError:
         return None
 
-def tonumber(asa):
+def tonumber(string) -> Union[int, None]:
+    """Converts string to int or None"""
     try:
-        return int(asa)
-    except Exception:
+        return int(string)
+    except (ValueError, TypeError):
         return None
-
-def start_timer(callback, onerror):
-    thread = Thread(target = acpi_listen, args=(callback, onerror,))
-    thread.daemon = True
-    thread.start()

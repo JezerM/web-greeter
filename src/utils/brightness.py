@@ -28,16 +28,17 @@
 import os
 import stat
 import time
-import pyinotify
 from typing import List
 from threading import Thread
-import globals
+import pyinotify
 from logger import logger
 from config import web_greeter_config
+import globales
 
 sys_path = ["/sys/class/backlight/"]
 
 def get_controllers() -> List[str]:
+    """Get brightness controllers path"""
     ctrls: List[str] = []
     for dev in sys_path:
         if os.path.exists(dev) and stat.S_ISDIR(os.stat(dev).st_mode):
@@ -47,15 +48,20 @@ def get_controllers() -> List[str]:
     return ctrls
 
 class EventHandler(pyinotify.ProcessEvent):
-    def process_IN_MODIFY(self, event):
-        if globals.greeter:
-            globals.greeter.greeter.brightness_update.emit()
+    """PyInotify handler"""
+    @classmethod
+    def process_IN_MODIFY(cls, _):
+        # pylint: disable=invalid-name,missing-function-docstring
+        if hasattr(globales, "greeter"):
+            globales.greeter.greeter.brightness_update.emit()
 
 
 # Behavior based on "acpilight"
 # Copyright(c) 2016-2019 by wave++ "Yuri D'Elia" <wavexx@thregr.org>
 # See https://gitlab.com/wavexx/acpilight
 class BrightnessController:
+    # pylint: disable=too-many-instance-attributes
+    """Brightness controller for web-greeter"""
 
     _controllers: List[str] = []
     _available: bool = False
@@ -69,8 +75,8 @@ class BrightnessController:
     def __init__(self):
         self._controllers = get_controllers()
         if (len(self._controllers) == 0 or
-            self._controllers[0] == None or
-            web_greeter_config["config"]["features"]["backlight"]["enabled"] == False):
+            self._controllers[0] is None or
+            not web_greeter_config["config"]["features"]["backlight"]["enabled"]):
             self._available = False
             return
         b_path = self._controllers[0]
@@ -78,8 +84,8 @@ class BrightnessController:
         self._brightness_path = os.path.join(b_path, "brightness")
         self._max_brightness_path = os.path.join(b_path, "max_brightness")
 
-        with open(self._max_brightness_path, "r") as f:
-            self._max_brightness = int(f.read())
+        with open(self._max_brightness_path, "r", encoding = "utf-8") as file:
+            self._max_brightness = int(file.read())
 
         steps = web_greeter_config["config"]["features"]["backlight"]["steps"]
         self.steps = 1 if steps <= 1 else steps
@@ -87,15 +93,17 @@ class BrightnessController:
         self.watch_brightness()
 
     def _watch(self):
-        wm = pyinotify.WatchManager()
+        watch_manager = pyinotify.WatchManager()
         handler = EventHandler()
-        wm.add_watch(self._brightness_path, pyinotify.IN_MODIFY)
+        # pylint: disable-next=no-member
+        watch_manager.add_watch(self._brightness_path, pyinotify.IN_MODIFY)
 
-        notifier = pyinotify.Notifier(wm, handler)
+        notifier = pyinotify.Notifier(watch_manager, handler)
 
         notifier.loop()
 
     def watch_brightness(self):
+        """Starts a thread to watch brightness"""
         if not self._available:
             return
         thread = Thread(target = self._watch)
@@ -104,43 +112,53 @@ class BrightnessController:
 
     @property
     def max_brightness(self) -> int:
+        """Max brightness"""
         return self._max_brightness
 
     @property
     def real_brightness(self) -> int:
-        if not self._available: return -1
+        """Real brightness"""
+        if not self._available:
+            return -1
         try:
-            with open(self._brightness_path, "r") as f:
-                return int(f.read())
+            with open(self._brightness_path, "r", encoding = "utf-8") as file:
+                return int(file.read())
         except OSError:
-            logger.error("Couldn't read from \"" + self._brightness_path + "\"")
+            logger.error("Couldn't read from \"%s\"", self._brightness_path)
             return -1
 
     @real_brightness.setter
-    def real_brightness(self, v: int):
-        if not self._available: return
-        if v > self.max_brightness: v = self.max_brightness
-        elif v <= 0: v = 0
+    def real_brightness(self, value: int):
+        if not self._available:
+            return
+        if value > self.max_brightness:
+            value = self.max_brightness
+        elif value <= 0:
+            value = 0
 
-        if not os.path.exists(self._brightness_path): return
+        if not os.path.exists(self._brightness_path):
+            return
 
         try:
-            with open(self._brightness_path, "w") as f:
-                f.write(str(round(v)))
+            with open(self._brightness_path, "w", encoding = "utf-8") as file:
+                file.write(str(round(value)))
         except OSError:
-            logger.error("Couldn't write to \"" + self._brightness_path + "\"")
+            logger.error("Couldn't write to \"%s\"", self._brightness_path)
 
     @property
     def brightness(self) -> int:
-        if not self._available: return -1
+        """Brightness"""
+        if not self._available:
+            return -1
         return round(self.real_brightness * 100 / self.max_brightness)
 
     @brightness.setter
-    def brightness(self, v: int):
-        self.real_brightness = round(v * self.max_brightness / 100)
+    def brightness(self, value: int):
+        self.real_brightness = round(value * self.max_brightness / 100)
 
     def _set_brightness(self, value: int):
-        if not self._available: return
+        if not self._available:
+            return
         steps = self.steps or 1
         sleep = self.delay / steps
         current = self.brightness
@@ -155,11 +173,14 @@ class BrightnessController:
             self.brightness = round(brigh)
 
     def set_brightness(self, value: int):
+        """Set brightness"""
         thread = Thread(target = self._set_brightness, args = (value,))
         thread.start()
 
     def inc_brightness(self, value: int):
+        """Increase brightness"""
         self.set_brightness(self.brightness + value)
 
     def dec_brightness(self, value: int):
+        """Decrease brightness"""
         self.set_brightness(self.brightness - value)

@@ -1,40 +1,55 @@
-from logger import logger
 from Xlib.display import Display
+from Xlib.error import DisplayError
+from logger import logger
 
-saved_data: dict = {}
-saved = False
-available = False
+class Screensaver:
+    """Screensaver class"""
 
-display: Display
+    display: Display
+    available: bool = False
+    saved_data: dict[str, int]
+    saved: bool = False
 
-def init_display():
-    global display, available
-    try:
-        display = Display()
-        available = True
-    except Exception as err:
-        logger.error(f"Xlib error: {err}")
+    def __init__(self):
+        self.init_display()
 
-def set_screensaver(timeout: int):
-    global saved_data, saved, available, display
-    if saved or not available:
-        return
-    display.sync()
-    display.sync()
-    data: dict[str, int] = display.get_screen_saver()._data or {}
-    saved_data = data
-    saved = True
+    def init_display(self):
+        """Init display"""
+        try:
+            self.display = Display()
+            self.available = True
+        except DisplayError as err:
+            logger.error("Xlib error: %s", err)
 
-    display.set_screen_saver(timeout, data["interval"], data["prefer_blanking"], data["allow_exposures"])
-    display.flush()
-    logger.debug("Screensaver timeout set")
+    def set_screensaver(self, timeout: int):
+        """Set screensaver timeout"""
+        if self.saved or not self.available:
+            return
+        self.display.sync()
+        self.display.sync()
+        # pylint: disable-next=protected-access
+        data: dict[str, int] = self.display.get_screen_saver()._data or {}
+        self.saved_data = data
+        self.saved = True
 
-def reset_screensaver():
-    global saved_data, saved, available, display
-    if not saved or not available:
-        return
-    display.sync()
-    display.set_screen_saver(saved_data["timeout"], saved_data["interval"], saved_data["prefer_blanking"], saved_data["allow_exposures"])
-    display.flush()
-    saved = False
-    logger.debug("Screensaver reset")
+        self.display.set_screen_saver(timeout,
+                                 data["interval"],
+                                 data["prefer_blanking"],
+                                 data["allow_exposures"])
+        self.display.flush()
+        logger.debug("Screensaver timeout set")
+
+    def reset_screensaver(self):
+        """Reset screensaver"""
+        if not self.saved or not self.available:
+            return
+        self.display.sync()
+        self.display.set_screen_saver(self.saved_data["timeout"],
+                                 self.saved_data["interval"],
+                                 self.saved_data["prefer_blanking"],
+                                 self.saved_data["allow_exposures"])
+        self.display.flush()
+        self.saved = False
+        logger.debug("Screensaver reset")
+
+screensaver = Screensaver()

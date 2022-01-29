@@ -30,7 +30,6 @@
 
 import re
 import sys
-from browser.window import MainWindow
 import os
 from typing import (
     Dict,
@@ -39,26 +38,38 @@ from typing import (
 )
 
 # 3rd-Party Libs
-from PyQt5.QtCore import QRect, QUrl, Qt, QCoreApplication, QFile, QSize
-from PyQt5.QtWidgets import QAction, QApplication, QDesktopWidget, QDockWidget, QMainWindow, QLayout, qApp, QWidget
+from PyQt5.QtCore import QUrl, Qt, QCoreApplication, QFile, QSize
 from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
-from PyQt5.QtWebEngineWidgets import QWebEngineScript, QWebEngineProfile, QWebEngineSettings, QWebEngineView, QWebEnginePage
+from PyQt5.QtWidgets import (
+    QAction, QApplication, QDesktopWidget,
+    QDockWidget, QMainWindow, QLayout, qApp, QWidget
+)
+from PyQt5.QtWebEngineWidgets import (
+    QWebEngineScript, QWebEngineProfile,
+    QWebEngineSettings, QWebEngineView, QWebEnginePage
+)
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWebChannel import QWebChannel
 
 from browser.error_prompt import WebPage
 from browser.url_scheme import QtUrlSchemeHandler
 from browser.interceptor import QtUrlRequestInterceptor
+from browser.window import MainWindow
 
 from logger import logger
 from config import web_greeter_config
-from bridge import Greeter, Config, ThemeUtils
-from utils.screensaver import reset_screensaver, set_screensaver, init_display
+from bridge.Greeter import greeter
+from bridge.Config import config
+from bridge.ThemeUtils import theme_utils
+from utils.screensaver import screensaver
+
+# pylint: disable-next=unused-import
+# Do not ever remove this import
 import resources
 
 # Typing Helpers
-BridgeObjects = Tuple['BridgeObject']
-Url = TypeVar('Url', str, QUrl)
+BridgeObjects = Tuple["BridgeObject"]
+Url = TypeVar("Url", str, QUrl)
 
 os.environ["QT_DEVICE_PIXEL_RATIO"] = "0"
 os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
@@ -66,10 +77,10 @@ os.environ["QT_SCREEN_SCALE_FACTORS"] = "1"
 os.environ["QT_SCALE_FACTOR"] = "1"
 
 WINDOW_STATES = {
-    'NORMAL': Qt.WindowState.WindowNoState,
-    'MINIMIZED': Qt.WindowState.WindowMinimized,
-    'MAXIMIZED': Qt.WindowState.WindowMaximized,
-    'FULLSCREEN': Qt.WindowState.WindowFullScreen,
+    'NORMAL': Qt.WindowNoState,
+    'MINIMIZED': Qt.WindowMinimized,
+    'MAXIMIZED': Qt.WindowMaximized,
+    'FULLSCREEN': Qt.WindowFullScreen,
 }  # type: Dict[str, Qt.WindowState]
 
 DISABLED_SETTINGS = [
@@ -85,14 +96,15 @@ ENABLED_SETTINGS = [
     'FocusOnNavigationEnabled',      # Qt 5.11+
 ]
 
-def getDefaultCursor():
+def get_default_cursor():
+    """Gets the default cursor theme"""
+    default_theme = "/usr/share/icons/default/index.theme"
     cursor_theme = ""
     matched = None
     try:
-        file = open("/usr/share/icons/default/index.theme")
-        matched = re.search(r"Inherits=.*", file.read())
-        file.close()
-    except Exception:
+        with open(default_theme, "r", encoding = "utf-8") as file:
+            matched = re.search(r"Inherits=.*", file.read())
+    except IOError:
         return ""
     if not matched:
         logger.error("Default cursor couldn't be get")
@@ -101,31 +113,34 @@ def getDefaultCursor():
     return cursor_theme
 
 class Application:
+    """Main application"""
     app: QApplication
     desktop: QDesktopWidget
     window: QMainWindow
     states = WINDOW_STATES
 
     def __init__(self):
-        QCoreApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
-        QApplication.setAttribute(Qt.ApplicationAttribute.AA_EnableHighDpiScaling)
+        QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
 
         self.app = QApplication(sys.argv)
         self.window = MainWindow()
         self.desktop = self.app.desktop()
 
-        self.window.setAttribute(Qt.WidgetAttribute.WA_DeleteOnClose)
+        self.window.setAttribute(Qt.WA_DeleteOnClose)
         self.window.setWindowTitle("Web Greeter")
 
 
         self.window.setWindowFlags(
-            self.window.windowFlags() | Qt.WindowType.MaximizeUsingFullscreenGeometryHint
+            self.window.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
         )
 
         if web_greeter_config["app"]["frame"]:
             self._init_menu_bar()
         else:
-            self.window.setWindowFlags(self.window.windowFlags() | Qt.WindowType.FramelessWindowHint)
+            self.window.setWindowFlags(
+                self.window.windowFlags() | Qt.FramelessWindowHint
+            )
 
         screen_size = self.desktop.availableGeometry().size()
 
@@ -138,29 +153,34 @@ class Application:
 
         try:
             self.window.windowHandle().setWindowState(state)
-        except Exception:
+        except (AttributeError, TypeError):
             self.window.setWindowState(state)
 
-        self.window.setCursor(Qt.CursorShape.ArrowCursor)
-
-        init_display()
+        self.window.setCursor(Qt.ArrowCursor)
 
         timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
-        set_screensaver(timeout or 300)
+        screensaver.set_screensaver(timeout or 300)
 
         cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
-        os.environ["XCURSOR_THEME"] = cursor_theme if cursor_theme != None else getDefaultCursor()
+        if cursor_theme is not None:
+            os.environ["XCURSOR_THEME"] = cursor_theme
+        else:
+            os.environ["XCURSOR_THEME"] = get_default_cursor()
 
         self.app.aboutToQuit.connect(self._before_exit)
 
-    def _before_exit(self):
-        reset_screensaver()
+    @classmethod
+    def _before_exit(cls):
+        """Runs before exit"""
+        screensaver.reset_screensaver()
 
     def show(self):
+        """Show window"""
         self.window.show()
         logger.debug("Window is ready")
 
     def run(self) -> int:
+        """Runs the application"""
         logger.debug("Web Greeter started")
         return self.app.exec_()
 
@@ -185,23 +205,33 @@ class Application:
         about_menu.addAction(exit_action)
 
 class NoneLayout(QLayout):
-    def __init__(self):
-        super().__init__()
-
-    def count(self) -> int:
+    """Layout that shows nothing"""
+    @classmethod
+    def count(cls) -> int:
+        # pylint: disable=missing-function-docstring
         return 0
 
-    def sizeHint(self) -> QSize:
+    @classmethod
+    def sizeHint(cls) -> QSize:
+        # pylint: disable=invalid-name,missing-function-docstring
         size = QSize(0, 0)
         return size
 
-    def minimumSizeHint(self) -> QSize:
+    @classmethod
+    def minimumSizeHint(cls) -> QSize:
+        # pylint: disable=invalid-name,missing-function-docstring
         size = QSize(0, 0)
         return size
 
 
 class Browser(Application):
+    # pylint: disable=too-many-instance-attributes
+    """The main browser"""
     url_scheme: QWebEngineUrlScheme
+    bridge_initialized: bool
+    dev_view: QWebEngineView
+    dev_page: WebPage
+    qdock: QDockWidget
 
     def __init__(self):
         super().__init__()
@@ -209,6 +239,7 @@ class Browser(Application):
         self.load()
 
     def init(self):
+        """Initialize browser"""
         logger.debug("Initializing Browser Window")
 
         if web_greeter_config["config"]["greeter"]["debug_mode"]:
@@ -216,10 +247,10 @@ class Browser(Application):
 
         url_scheme = "web-greeter"
         self.url_scheme = QWebEngineUrlScheme(url_scheme.encode())
-        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.SpecialPort.PortUnspecified)
-        self.url_scheme.setFlags(QWebEngineUrlScheme.Flag.SecureScheme or
-                                 QWebEngineUrlScheme.Flag.LocalScheme or
-                                 QWebEngineUrlScheme.Flag.LocalAccessAllowed)
+        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified)
+        self.url_scheme.setFlags(QWebEngineUrlScheme.SecureScheme or
+                                 QWebEngineUrlScheme.LocalScheme or
+                                 QWebEngineUrlScheme.LocalAccessAllowed)
         QWebEngineUrlScheme.registerScheme(self.url_scheme)
 
         self.profile = QWebEngineProfile.defaultProfile()
@@ -243,7 +274,7 @@ class Browser(Application):
             self.view.setContextMenuPolicy(Qt.PreventContextMenu)
 
         if web_greeter_config["config"]["greeter"]["secure_mode"]:
-            if (hasattr(QWebEngineProfile, "setUrlRequestInterceptor")):
+            if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
                 self.profile.setUrlRequestInterceptor(self.interceptor)
             else: # Older Qt5 versions
                 self.profile.setRequestInterceptor(self.interceptor)
@@ -258,10 +289,11 @@ class Browser(Application):
         logger.debug("Browser Window created")
 
     def load(self):
+        """Load theme and initialize bridge"""
         self.load_theme()
-        self.greeter = Greeter()
-        self.greeter_config = Config()
-        self.theme_utils = ThemeUtils(self.greeter)
+        self.greeter = greeter
+        self.greeter_config = config
+        self.theme_utils = theme_utils
 
         self.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
         self.initialize_bridge_objects()
@@ -280,11 +312,12 @@ class Browser(Application):
         titlebar.setLayout(layout)
         self.qdock.setTitleBarWidget(titlebar)
 
-        self.window.addDockWidget(Qt.DockWidgetArea.RightDockWidgetArea, self.qdock)
+        self.window.addDockWidget(Qt.RightDockWidgetArea, self.qdock)
         self.qdock.hide()
         logger.debug("DevTools initialized")
 
     def toggle_devtools(self):
+        """Toggle devtools"""
         if not web_greeter_config["config"]["greeter"]["debug_mode"]:
             return
         win_size = self.window.size()
@@ -322,26 +355,28 @@ class Browser(Application):
         self.page.setView(self.view)
 
     def load_theme(self):
+        """Load theme"""
         theme = web_greeter_config["config"]["greeter"]["theme"]
-        dir = "/usr/share/web-greeter/themes/"
-        path_to_theme = os.path.join(dir, theme, "index.html")
+        dir_t = "/usr/share/web-greeter/themes/"
+        path_to_theme = os.path.join(dir_t, theme, "index.html")
         def_theme = "gruvbox"
 
-        if (theme.startswith("/")): path_to_theme = theme
-        elif (theme.__contains__(".") or theme.__contains__("/")):
+        if theme.startswith("/"):
+            path_to_theme = theme
+        elif theme.__contains__(".") or theme.__contains__("/"):
             path_to_theme = os.path.join(os.getcwd(), theme)
             path_to_theme = os.path.realpath(path_to_theme)
 
-        if (not path_to_theme.endswith(".html")):
+        if not path_to_theme.endswith(".html"):
             path_to_theme = os.path.join(path_to_theme, "index.html")
 
-        if (not os.path.exists(path_to_theme)):
+        if not os.path.exists(path_to_theme):
             print("Path does not exists", path_to_theme)
-            path_to_theme = os.path.join(dir, def_theme, "index.html")
+            path_to_theme = os.path.join(dir_t, def_theme, "index.html")
 
         web_greeter_config["config"]["greeter"]["theme"] = path_to_theme
 
-        url = QUrl("web-greeter://app/{0}".format(path_to_theme))
+        url = QUrl(f"web-greeter://app/{path_to_theme}")
         self.page.load(url)
 
         logger.debug("Theme loaded")
@@ -353,7 +388,7 @@ class Browser(Application):
 
         # print(script_file, path)
 
-        if script_file.open(QFile.OpenModeFlag.ReadOnly):
+        if script_file.open(QFile.ReadOnly):
             script_string = str(script_file.readAll(), 'utf-8')
 
             script.setInjectionPoint(QWebEngineScript.DocumentCreation)
@@ -372,19 +407,21 @@ class Browser(Application):
         self.bridge_initialized = True
 
     def initialize_bridge_objects(self) -> None:
+        """Initialize bridge objects :D"""
         if not self.bridge_initialized:
             self._init_bridge_channel()
         registered_objects = self.channel.registeredObjects()
 
         for obj in self.bridge_objects:
             if obj not in registered_objects:
+                # pylint: disable=protected-access
                 self.channel.registerObject(obj._name, obj)
                 # print("Registered", obj._name)
 
     def load_script(self, path: Url, name: str):
+        """Loads a script in page"""
         qt_api = self._get_channel_api_script()
         qt_api_source = qt_api.sourceCode()
         script = self._create_webengine_script(path, name)
         script.setSourceCode(qt_api_source + "\n" + script.sourceCode())
         self.page.scripts().insert(script)
-

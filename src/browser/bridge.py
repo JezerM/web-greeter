@@ -28,19 +28,24 @@
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
 class Bridge:
+    """Bridge class"""
     @staticmethod
     def method(*args, **kwargs):
+        """Declare a method"""
         return pyqtSlot(*args, **kwargs)
 
     @staticmethod
     def prop(*args, **kwargs):
+        """Declare a property"""
         return pyqtProperty(*args, **kwargs)
 
     @staticmethod
     def signal(*args, **kwargs):
+        """Declare a signal"""
         return pyqtSignal(*args, **kwargs)
 
 class BridgeObject(QObject):
+    """BridgeObject class"""
     def __init__(self, name: str):
         super().__init__(parent=None)
         self._name = name

@@ -25,46 +25,56 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtCore import QFileSystemWatcher, Qt
+from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QAction, QMainWindow
-from PyQt5.QtGui import QKeyEvent
 from config import web_greeter_config
 
-import globals
+import globales
 
 class MainWindow(QMainWindow):
+    """Main window for web-greeter"""
+
     def __init__(self):
         super().__init__()
         self.init_actions()
 
     def init_actions(self):
-        devAct = QAction(text="&Toggle Devtools", parent=self)
-        devAct.setShortcut("Shift+Ctrl+I")
-        devAct.triggered.connect(self.toggle_devtools)
+        """Initialize window actions and their shortcuts"""
+        dev_act = QAction(text="&Toggle Devtools", parent=self)
+        dev_act.setShortcut("Shift+Ctrl+I")
+        dev_act.triggered.connect(self.toggle_devtools)
 
-        monBUp = QAction(text="&Increase brightness", parent=self)
-        monBDo = QAction(text="&Decrease brightness", parent=self)
-        monBUp.setShortcut(Qt.Key.Key_MonBrightnessUp)
-        monBDo.setShortcut(Qt.Key.Key_MonBrightnessDown)
-        monBUp.triggered.connect(self.inc_brightness)
-        monBDo.triggered.connect(self.dec_brightness)
+        mon_bright_up = QAction(text="&Increase brightness", parent=self)
+        mon_bright_down = QAction(text="&Decrease brightness", parent=self)
+        mon_bright_up.setShortcut(Qt.Key_MonBrightnessUp)
+        mon_bright_down.setShortcut(Qt.Key_MonBrightnessDown)
+        mon_bright_up.triggered.connect(self.inc_brightness)
+        mon_bright_down.triggered.connect(self.dec_brightness)
 
-        self.addAction(devAct)
-        self.addAction(monBUp)
-        self.addAction(monBDo)
+        self.addAction(dev_act)
+        self.addAction(mon_bright_up)
+        self.addAction(mon_bright_down)
 
-    def toggle_devtools(self):
-        globals.greeter.toggle_devtools()
+    @classmethod
+    def toggle_devtools(cls):
+        """Toggle devtools"""
+        globales.greeter.toggle_devtools()
 
-    def inc_brightness(self):
-        if globals.greeter:
+    @classmethod
+    def inc_brightness(cls):
+        """Increase brightness"""
+        if globales.greeter:
             value = web_greeter_config["config"]["features"]["backlight"]["value"]
-            globals.greeter.greeter.inc_brightness(value)
-    def dec_brightness(self):
-        if globals.greeter:
+            globales.greeter.greeter.inc_brightness(value)
+    @classmethod
+    def dec_brightness(cls):
+        """Decrease brightness"""
+        if globales.greeter:
             value = web_greeter_config["config"]["features"]["backlight"]["value"]
-            globals.greeter.greeter.dec_brightness(value)
+            globales.greeter.greeter.dec_brightness(value)
 
-    def updateBrightness(self):
-        if globals.greeter:
-            globals.greeter.greeter.brightness_update.emit()
+    @classmethod
+    def update_brightness(cls):
+        """Updates brightness"""
+        if globales.greeter:
+            globales.greeter.greeter.brightness_update.emit()

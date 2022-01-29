@@ -26,16 +26,13 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 # Standard lib
 
-import sys
 import os
-import ruamel.yaml as yaml
+from ruamel import yaml
 
-import globals
 from logger import logger
 
-path_to_config = "/etc/lightdm/web-greeter.yml"
+PATH_TO_CONFIG = "/etc/lightdm/web-greeter.yml"
 
-global web_greeter_config
 web_greeter_config = {
     "config": {
         "branding": {
@@ -77,13 +74,13 @@ web_greeter_config = {
 }
 
 def load_config():
+    """Load web-greeter's config"""
     try:
-        if (not os.path.exists(path_to_config)):
+        if not os.path.exists(PATH_TO_CONFIG):
             raise Exception("Config file not found")
-        file = open(path_to_config, "r")
-        web_greeter_config["config"] = yaml.safe_load(file)
-    except Exception as err:
-        logger.error("Config was not loaded:\n\t{0}".format(err))
-    pass
+        with open(PATH_TO_CONFIG, "r", encoding="utf-8") as file:
+            web_greeter_config["config"] = yaml.safe_load(file)
+    except IOError as err:
+        logger.error("Config was not loaded:\n\t%s", err)
 
 load_config()

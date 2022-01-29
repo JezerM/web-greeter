@@ -26,33 +26,32 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-# Standard Lib
-from browser.error_prompt import Dialog
-import subprocess
-import threading
+# pylint: disable=wrong-import-position
 
 # 3rd-Party Libs
 import gi
 gi.require_version('LightDM', '1')
 from gi.repository import LightDM
+from gi.repository.GLib import GError
 
+from PyQt5.QtCore import QVariant
+
+# This Application
+from logger import logger
+from browser.error_prompt import Dialog
 from browser.bridge import Bridge, BridgeObject
-from PyQt5.QtCore import QFileSystemWatcher, QVariant, QTimer
 
 from config import web_greeter_config
 from utils.battery import Battery
-from utils.screensaver import reset_screensaver
+from utils.screensaver import screensaver
 from utils.brightness import BrightnessController
-import globals
 
-# This Application
 from . import (
     language_to_dict,
     layout_to_dict,
     session_to_dict,
     user_to_dict,
-    battery_to_dict,
-    logger
+    battery_to_dict
 )
 
 # import utils.battery as battery
@@ -60,18 +59,9 @@ from . import (
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
 
-def getBrightness(self):
-    if self._config["features"]["backlight"]["enabled"] != True:
-        return -1
-    try:
-        level = subprocess.run(["xbacklight", "-get"], stdout=subprocess.PIPE,
-                               stderr=subprocess.PIPE, text=True, check=True)
-        return int(level.stdout)
-    except Exception as err:
-        logger.error("Brightness: {}".format(err))
-        return -1
-
 class Greeter(BridgeObject):
+    # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
+    """Greeter bridge class, known as `lightdm` in javascript"""
 
     # LightDM.Greeter Signals
     authentication_complete = Bridge.signal()
@@ -103,14 +93,18 @@ class Greeter(BridgeObject):
 
         try:
             LightDMGreeter.connect_to_daemon_sync()
-        except Exception as err:
+        except GError as err:
             logger.error(err)
-            dia = Dialog(title="An error ocurred",
-                         message="Detected a problem that could interfere with the system login process",
-                         detail="LightDM: {0}\nYou can continue without major problems, but you won't be able to log in".format(err),
-                         buttons=["Okay"])
+            dia = Dialog(
+                title = "An error ocurred",
+                message = "Detected a problem that could interfere" \
+                    " with the system login process",
+                detail = f"LightDM: {err}\n" \
+                    "You can continue without major problems, " \
+                    "but you won't be able to log in",
+                buttons = ["Okay"]
+            )
             dia.exec()
-            pass
 
         self._connect_signals()
         self._determine_shared_data_directory_path()
@@ -119,34 +113,31 @@ class Greeter(BridgeObject):
     def _determine_shared_data_directory_path(self):
         user = LightDMUsers.get_users()[0]
         user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(user.get_name())
-        if user_data_dir == None:
+        if user_data_dir is None:
             return
         self._shared_data_directory = user_data_dir.rpartition('/')[0]
 
     def _connect_signals(self):
         LightDMGreeter.connect(
             'authentication-complete',
-            lambda greeter: self._emit_signal(self.authentication_complete)
+            lambda _: self._emit_signal(self.authentication_complete)
         )
         LightDMGreeter.connect(
             'autologin-timer-expired',
-            lambda greeter: self._emit_signal(self.autologin_timer_expired)
+            lambda _: self._emit_signal(self.autologin_timer_expired)
         )
 
-        LightDMGreeter.connect('idle', lambda greeter: self._emit_signal(self.idle))
-        LightDMGreeter.connect('reset', lambda greeter: self._emit_signal(self.reset))
+        LightDMGreeter.connect('idle', lambda _: self._emit_signal(self.idle))
+        LightDMGreeter.connect('reset', lambda _: self._emit_signal(self.reset))
 
         LightDMGreeter.connect(
             'show-message',
-            lambda greeter, msg, mtype: self._emit_signal(self.show_message, msg, mtype.real)
+            lambda _, msg, mtype: self._emit_signal(self.show_message, msg, mtype.real)
         )
         LightDMGreeter.connect(
             'show-prompt',
-            lambda greeter, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype.real)
+            lambda _, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype.real)
         )
-
-        if self._battery:
-            self._battery.connect(lambda: self.battery_update.emit())
 
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
@@ -171,6 +162,10 @@ class Greeter(BridgeObject):
 
     @Bridge.prop(QVariant, notify=battery_update)
     def batteryData(self):
+        return battery_to_dict(self._battery)
+
+    @Bridge.prop(QVariant, notify=battery_update)
+    def battery_data(self):
         return battery_to_dict(self._battery)
 
     @Bridge.prop(int, notify=brightness_update)
@@ -243,7 +238,7 @@ class Greeter(BridgeObject):
 
     @layout.setter
     def layout(self, layout):
-        if type(layout) != dict:
+        if not isinstance(layout, dict):
             return False
         lay = dict(
             name = layout.get("name") or "",
@@ -311,12 +306,24 @@ class Greeter(BridgeObject):
         self._brightness_controller.set_brightness(quantity)
 
     @Bridge.method(int)
+    def brightness_set(self, quantity):
+        self._brightness_controller.inc_brightness(quantity)
+
+    @Bridge.method(int)
     def brightnessIncrease(self, quantity):
+        self._brightness_controller.inc_brightness(quantity)
+
+    @Bridge.method(int)
+    def brightness_increase(self, quantity):
         self._brightness_controller.inc_brightness(quantity)
 
     @Bridge.method(int)
     def brightnessDecrease(self, quantity):
         self._brightness_controller.dec_brightness(quantity)
+
+    @Bridge.method(int)
+    def brightness_decrease(self, quantity):
+        self._brightness_controller.inc_brightness(quantity)
 
     @Bridge.method()
     def cancel_authentication(self):
@@ -343,7 +350,7 @@ class Greeter(BridgeObject):
 
     @Bridge.method(str)
     def set_language(self, lang):
-        if self.is_authenticated:
+        if self.is_authenticated is True:
             LightDMGreeter.set_language(lang)
             self.property_changed.emit()
 
@@ -354,13 +361,15 @@ class Greeter(BridgeObject):
     @Bridge.method(str, result=bool)
     def start_session(self, session):
         if not session.strip():
-            return
-        started = LightDMGreeter.start_session_sync(session)
+            return False
+        started: bool = LightDMGreeter.start_session_sync(session)
         if started or self.is_authenticated:
-            logger.debug("Session \"" + session + "\" started")
-            reset_screensaver()
+            logger.debug("Session \"%s\" started", session)
+            screensaver.reset_screensaver()
         return started
 
     @Bridge.method(result=bool)
     def suspend(self):
         return LightDM.suspend()
+
+greeter = Greeter()
