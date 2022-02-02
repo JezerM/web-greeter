@@ -108,6 +108,10 @@ class Greeter(BridgeObject):
 
         self._connect_signals()
         self._determine_shared_data_directory_path()
+
+        if LightDMGreeter.get_lock_hint():
+            screensaver.force_screensaver(True)
+
         logger.debug("LightDM API connected")
 
     def _determine_shared_data_directory_path(self):

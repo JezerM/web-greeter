@@ -1,3 +1,4 @@
+from Xlib import X
 from Xlib.display import Display
 from Xlib.error import DisplayError
 from logger import logger
@@ -51,5 +52,9 @@ class Screensaver:
         self.display.flush()
         self.saved = False
         logger.debug("Screensaver reset")
+
+    def force_screensaver(self, value: bool):
+        """Force screensaver"""
+        self.display.force_screen_saver(X.ScreenSaverActive if value else X.ScreenSaverReset)
 
 screensaver = Screensaver()
