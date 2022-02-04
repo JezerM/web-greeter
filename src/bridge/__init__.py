@@ -93,3 +93,8 @@ def battery_to_dict(battery):
         "time": battery.get_time(),
         "watt": battery.get_watt()
     }
+
+# pylint: disable=wrong-import-position
+from .Greeter import Greeter
+from .Config import Config
+from .ThemeUtils import ThemeUtils

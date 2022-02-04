@@ -327,7 +327,7 @@ class Greeter(BridgeObject):
 
     @Bridge.method(int)
     def brightness_decrease(self, quantity):
-        self._brightness_controller.inc_brightness(quantity)
+        self._brightness_controller.dec_brightness(quantity)
 
     @Bridge.method()
     def cancel_authentication(self):
@@ -375,5 +375,3 @@ class Greeter(BridgeObject):
     @Bridge.method(result=bool)
     def suspend(self):
         return LightDM.suspend()
-
-greeter = Greeter()

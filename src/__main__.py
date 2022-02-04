@@ -110,8 +110,15 @@ if __name__ == '__main__':
 
     import globales
     from browser.browser import Browser
+    from bridge import Greeter, Config, ThemeUtils
 
     globales.greeter = Browser()
-    greeter = globales.greeter
-    greeter.show()
-    greeter.run()
+    browser = globales.greeter
+
+    browser.greeter = Greeter()
+    browser.greeter_config = Config()
+    browser.theme_utils = ThemeUtils(browser.greeter)
+
+    browser.load()
+    browser.show()
+    browser.run()

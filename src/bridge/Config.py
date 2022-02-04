@@ -88,5 +88,3 @@ class Config(BridgeObject):
     @Bridge.prop(QVariant, notify=noop_signal)
     def layouts(self):
         return self._layouts
-
-config = Config()

@@ -50,6 +50,9 @@ from PyQt5.QtWebEngineWidgets import (
 )
 from PyQt5.QtGui import QColor, QIcon
 from PyQt5.QtWebChannel import QWebChannel
+from bridge.Config import Config
+from bridge.Greeter import Greeter
+from bridge.ThemeUtils import ThemeUtils
 
 from browser.error_prompt import WebPage
 from browser.url_scheme import QtUrlSchemeHandler
@@ -58,9 +61,6 @@ from browser.window import MainWindow
 
 from logger import logger
 from config import web_greeter_config
-from bridge.Greeter import greeter
-from bridge.Config import config
-from bridge.ThemeUtils import theme_utils
 from utils.screensaver import screensaver
 
 # pylint: disable-next=unused-import
@@ -118,6 +118,10 @@ class Application:
     desktop: QDesktopWidget
     window: QMainWindow
     states = WINDOW_STATES
+    greeter: Greeter
+    greeter_config: Config
+    theme_utils: ThemeUtils
+    bridge_objects: Tuple[Greeter, Config, ThemeUtils]
 
     def __init__(self):
         QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
@@ -129,7 +133,6 @@ class Application:
 
         self.window.setAttribute(Qt.WA_DeleteOnClose)
         self.window.setWindowTitle("Web Greeter")
-
 
         self.window.setWindowFlags(
             self.window.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
@@ -236,7 +239,7 @@ class Browser(Application):
     def __init__(self):
         super().__init__()
         self.init()
-        self.load()
+        # self.load()
 
     def init(self):
         """Initialize browser"""
@@ -291,9 +294,6 @@ class Browser(Application):
     def load(self):
         """Load theme and initialize bridge"""
         self.load_theme()
-        self.greeter = greeter
-        self.greeter_config = config
-        self.theme_utils = theme_utils
 
         self.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
         self.initialize_bridge_objects()

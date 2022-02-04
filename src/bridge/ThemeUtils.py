@@ -41,7 +41,6 @@ from browser.bridge import Bridge, BridgeObject
 
 from config import web_greeter_config
 from logger import logger
-from bridge.Greeter import greeter
 
 class ThemeUtils(BridgeObject):
     # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
@@ -101,5 +100,3 @@ class ThemeUtils(BridgeObject):
 
         result.sort()
         return result
-
-theme_utils = ThemeUtils(greeter)

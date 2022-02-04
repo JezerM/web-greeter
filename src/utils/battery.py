@@ -144,7 +144,7 @@ class Battery:
 
         self.perc = self.perc if self.perc is not None else 0
 
-        if hasattr(globales, "greeter"):
+        if hasattr(globales, "greeter") and hasattr(globales.greeter, "greeter"):
             globales.greeter.greeter.battery_update.emit()
 
         time.sleep(0.1)
