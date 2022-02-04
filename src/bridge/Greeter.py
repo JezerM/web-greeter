@@ -34,7 +34,7 @@ gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 from gi.repository.GLib import GError
 
-from PyQt5.QtCore import QVariant
+from PyQt5.QtCore import QVariant, QTimer
 
 # This Application
 from logger import logger
@@ -145,8 +145,8 @@ class Greeter(BridgeObject):
 
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
-        _signal.emit(*args)
-        # QTimer().singleShot(300, lambda: _signal.emit(*args))
+        # _signal.emit(*args)
+        QTimer().singleShot(300, lambda: _signal.emit(*args))
 
     @Bridge.prop(str, notify=property_changed)
     def authentication_user(self):
