@@ -2,5 +2,4 @@ PyGObject
 PyQt5
 PyQtWebEngine
 ruamel.yaml
-python-xlib
 pyinotify

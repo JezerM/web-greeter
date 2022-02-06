@@ -43,7 +43,7 @@ from browser.bridge import Bridge, BridgeObject
 
 from config import web_greeter_config
 from utils.battery import Battery
-from utils.screensaver import screensaver
+from bindings.screensaver import screensaver
 from utils.brightness import BrightnessController
 
 from . import (

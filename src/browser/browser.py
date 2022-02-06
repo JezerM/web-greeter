@@ -61,7 +61,7 @@ from browser.window import MainWindow
 
 from logger import logger
 from config import web_greeter_config
-from utils.screensaver import screensaver
+from bindings.screensaver import screensaver
 
 # pylint: disable-next=unused-import
 # Do not ever remove this import
