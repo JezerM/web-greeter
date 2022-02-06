@@ -47,11 +47,12 @@ apt install ./web-greeter-VER.deb
 |**pygobject**             |python-gobject        |python3-gi               |pygobject3           |python3-gobject       |
 |**pyqt5**                 |python-pyqt5          |python3-pyqt5            |python3-qt5          |python3-qt5           |
 |**pyqt5-webengine**       |python-pyqt5-webengine|python3-pyqt5.qtwebengine|python3-qt5-webengine|python3-qtwebengine   |
-|**python-xlib**           |python-xlib           |python3-xlib             |python3-xlib         |python3-xlib          |
 |**python-yaml**           |python-ruamel-yaml    |python3-ruamel.yaml      |python3-ruamel-yaml  |python3-ruamel-yaml   |
 |**python-inotify**        |python-pyinotify      |python3-pyinotify        |python3-inotify      |python3-inotify       |
 |**qt5-webengine**         |qt5-webengine         |libqt5webengine5         |qt5-qtwebengine      |libqt5-qtwebengine    |
 |**gobject-introspection** |gobject-introspection |gobject-introspection    |gobject-introspection|gobject-introspection |
+|**libxcb**                |libxcb                |libxcb1-dev              |libxcb-devel         |libxcb                |
+|**libx11**                |libx11                |libx11-dev               |libX11-devel         |libx11                |
 
 ### Build dependencies
 
@@ -59,14 +60,13 @@ apt install ./web-greeter-VER.deb
 - zip
 - make
 - pyrcc5 (Should be installed with above dependencies)
-- [cx_freeze](https://cx-freeze.readthedocs.io/en/latest/installation.html) (and patchelf) (Optional)
+- base-devel (build-essential)
 
 ### PIP
 - PyGObject
 - PyQt5
 - PyQtWebEngine
 - ruamel.yaml
-- python-xlib
 - pyinotify
 
 PIP dependencies are no longer required as long as common dependencies are satisfied. However, you
@@ -85,10 +85,15 @@ cd web-greeter
 sudo make install
 ```
 
-This will build and install **web-greeter** in a zippy way, which compresses the python code as a
-zip and uses it as a binary.
+This will build **web-greeter** in a virtal environment, compile some bindings with `gcc` and
+package all the files to be installed.
 
 See [latest release][releases].
+
+### Uninstall
+
+Use `sudo make uninstall` to uninstall web-greeter, but preserving web-greeter.yml and themes.
+Either, use `sudo make uninstall_all` to remove everting related to web-greeter.
 
 ## Theme JavaScript API
 [Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Current and updated documentation is available at [gh-pages][gh-pages].
