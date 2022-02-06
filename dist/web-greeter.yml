@@ -7,9 +7,9 @@
 # NOTE: Paths must be accessible to the lightdm system user account (so they cannot be anywhere in /home)
 #
 branding:
-    background_images_dir: '@background_images_dir@'
-    logo_image: '@logo_image@'
-    user_image: '@user_image@'
+    background_images_dir: /usr/share/backgrounds
+    logo_image: /usr/share/web-greeter/themes/default/img/antergos-logo-user.png
+    user_image: /usr/share/web-greeter/themes/default/img/antergos.png
 
 #
 # greeter:
@@ -24,7 +24,7 @@ branding:
 # NOTE: See IANA subtags registry for time_language options: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
 #
 greeter:
-    debug_mode: '@debug_mode@'
+    debug_mode: False
     detect_theme_errors: True
     screensaver_timeout: 300
     secure_mode: True
@@ -39,8 +39,7 @@ greeter:
 #   - gb dvorak            "en_gb_dvorak" xkb layout
 #
 # NOTE: See "man xkeyboard-config" for posible layout values. Also, see posible layouts here: https://web.archive.org/web/20161203032703/http://pastebin.com/v2vCPHjs
-# A layout value is composed in the main layout, like "us" or "latam", and its variant, like "dvorak", "colemak", "mac" or "mac_intl".
-# Separate the name and the variant with a space, like "gb dvorak"
+# A layout value is composed in the main layout, like "us" or "latam", and its variant, like "dvorak", "colemak", "mac" or "mac_intl"
 #
 layouts:
     - us
@@ -57,8 +56,8 @@ layouts:
 # NOTE: Backlight feature uses 'acpilight' or 'xbacklight' as brightness controller
 #
 features:
-    battery: '@battery_enabled@'
+    battery: False
     backlight:
-        enabled: '@backlight_enabled@'
+        enabled: False
         value: 10
         steps: 0
