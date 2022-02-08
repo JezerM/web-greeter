@@ -202,7 +202,7 @@ $(bin/screensaver.so): $(build/web-greeter)
 $(bin_local/web-greeter): build_install_root $(resources.py) $(bin/screensaver.so)
 	@rm -rf "${INSTALL_PREFIX}/lib/web-greeter/*"
 	@cp -R "${BUILD_DIR}/web-greeter"/* "${INSTALL_PREFIX}/lib/web-greeter"
-	@echo "#!/usr/bin/env bash\npython3 ${DESTDIR_PREFIX}/lib/web-greeter \$$@" > \
+	@printf "#!/usr/bin/env bash\npython3 ${DESTDIR_PREFIX}/lib/web-greeter \$$@" > \
 		"${bin_local/web-greeter}"
 	@chmod +x "${bin_local/web-greeter}"
 	@echo "✔ web-greeter binary copied"
@@ -248,10 +248,10 @@ uninstall: uninstall_preserve
 		\n${config/web-greeter}"
 
 run: venv/bin/activate $(resources.py)
-	python3 src
+	./venv/bin/python3 src
 
 run_debug: venv/bin/activate $(resources.py)
-	python3 src --debug
+	./venv/bin/python3 src --debug
 
 clean:
 	rm -rf venv ${INSTALL_ROOT} ${BUILD_DIR}/dist ${BUILD_DIR}/web-greeter
