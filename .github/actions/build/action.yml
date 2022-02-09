@@ -1,5 +1,5 @@
-name: "Build Webgreeter"
-description: "Builds webgreeter"
+name: "Build web-greeter"
+description: "Builds web-greeter"
 inputs:
  target-distro:
      required: true
