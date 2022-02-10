@@ -53,8 +53,6 @@ layouts:
 #         value:           The amount to increase/decrease brightness by greeter.
 #         steps:           How many steps are needed to do the change. 0 for instant change.
 #
-# NOTE: Backlight feature uses 'acpilight' or 'xbacklight' as brightness controller
-#
 features:
     battery: False
     backlight:
