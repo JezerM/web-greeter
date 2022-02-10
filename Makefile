@@ -17,7 +17,7 @@ ifeq (${ENABLE_BASH_COMPLETION}, true)
 endif
 
 ifeq (${ENABLE_ZSH_COMPLETION}, true)
-    ifeq ($(shell which zsh 2>/dev/null 1>&2 && echo 0), 0)
+    ifeq ($(shell which zsh >/dev/null 2>&1 && echo 0), 0)
         zshcompletiondir := /usr/share/zsh/site-functions/
     endif
 endif
@@ -36,11 +36,6 @@ else
 endif
 
 all: build
-
-# Virtual Environment
-venv/bin/activate: requirements.txt
-	python3 -m venv venv
-	./venv/bin/pip install -r requirements.txt
 
 # Dist and web-greeter directories
 build/dist := ${BUILD_DIR}/dist
@@ -66,8 +61,8 @@ $(bundle.js): $(build/web-greeter)
 
 resources.py := ${BUILD_DIR}/web-greeter/resources.py
 
-$(resources.py): venv/bin/activate $(bundle.js)
-	@./venv/bin/pyrcc5 -o ${BUILD_DIR}/web-greeter/resources.py\
+$(resources.py): $(bundle.js)
+	@pyrcc5 -o ${BUILD_DIR}/web-greeter/resources.py\
 		${BUILD_DIR}/web-greeter/resources/resources.qrc
 	@cp ${resources.py} src/
 	@echo "✔ Resources compiled with pyrcc5"
@@ -209,7 +204,7 @@ $(bin_local/web-greeter): build_install_root $(resources.py) $(bin/screensaver.s
 
 # Useful rules
 .PHONY: build
-build: venv/bin/activate $(bin_local/web-greeter)
+build: $(bin_local/web-greeter)
 	@echo "✔ Build succeded"
 
 .PHONY: install
@@ -247,11 +242,11 @@ uninstall: uninstall_preserve
 	@echo " web-greeter config was not uninstalled. Remove it manually or use \`make uninstall_all\`:\
 		\n${config/web-greeter}"
 
-run: venv/bin/activate $(resources.py)
-	./venv/bin/python3 src
+run: $(resources.py)
+	python3 src
 
-run_debug: venv/bin/activate $(resources.py)
-	./venv/bin/python3 src --debug
+run_debug: $(resources.py)
+	python3 src --debug
 
 clean:
-	rm -rf venv ${INSTALL_ROOT} ${BUILD_DIR}/dist ${BUILD_DIR}/web-greeter
+	rm -rf ${INSTALL_ROOT} ${BUILD_DIR}/dist ${BUILD_DIR}/web-greeter

@@ -54,10 +54,11 @@ apt install ./web-greeter-VER.deb
 |**libxcb**                |libxcb                |libxcb1-dev              |libxcb-devel         |libxcb                |libxcb1-dev              |
 |**libx11**                |libx11                |libx11-dev               |libX11-devel         |libx11                |libx11-dev               |
 
+> Note: web-greeter does not work in Fedora. See #19
+
 ### Build dependencies
 
 - rsync
-- zip
 - make
 - pyrcc5 (Should be installed with above dependencies)
 - base-devel (build-essential)
@@ -85,8 +86,7 @@ cd web-greeter
 sudo make install
 ```
 
-This will build **web-greeter** in a virtal environment, compile some bindings with `gcc` and
-package all the files to be installed.
+This will build **web-greeter** and package all the files to be installed.
 
 See [latest release][releases].
 
