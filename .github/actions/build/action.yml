@@ -1,0 +1,58 @@
+name: "Build web-greeter"
+description: "Builds web-greeter"
+inputs:
+ target-distro:
+     required: true
+     description: "Target distro"
+runs:
+  using: "composite"
+  steps:
+    -
+      name: Checkout
+      uses: actions/checkout@v2
+    -
+      name: Install dependencies
+      shell: bash
+      run: |
+          sudo apt update
+          sudo apt install \
+            liblightdm-gobject-1-dev \
+            libgirepository1.0-dev \
+            libqt5webengine5 \
+            pyqt5-dev-tools \
+            python3-gi \
+            python3-pyqt5 \
+            python3-ruamel.yaml \
+            python3-pyinotify \
+            python3-xlib \
+            python3-pip \
+            dpkg
+    -
+      name: Build web-greeter
+      shell: bash
+      run: make build
+    -
+      name: Prepare deb build (common)
+      shell: bash
+      run: |
+        cp -r build/DEBIAN/ build/install_root/
+    -
+      name: Prepare deb build (for Debian)
+      shell: bash
+      if: ${{ inputs.target-distro == 'debian' }}
+      run: |
+        sed -i "s/liblightdm-gobject-1-dev/liblightdm-gobject-dev/g" build/install_root/DEBIAN/control
+    -
+      name: Build deb
+      shell: bash
+      run: |
+        cd build/
+        dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
+        dpkg --info "./web-greeter.deb"
+    -
+      name: 'Upload Artifact'
+      uses: actions/upload-artifact@v2
+      with:
+        name: build-${{ inputs.target-distro }}
+        path: ./build/web-greeter.deb
+        retention-days: 7

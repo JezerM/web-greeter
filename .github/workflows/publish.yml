@@ -7,35 +7,43 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: Publish binaries
+  publish-ubuntu:
+    name: Publish ubuntu binaries
     runs-on: ubuntu-latest
-
     steps:
-    -
-      name: Checkout
+    - 
+      name: Checkout local actions
       uses: actions/checkout@v2
     -
-      name: Install dependencies
-      run: |
-          sudo apt update
-          sudo apt install liblightdm-gobject-1-dev libqt5webengine5 pyqt5-dev-tools python3-gi python3-pyqt5 python3-ruamel.yaml python3-pyinotify python3-xlib python3-pip
-          sudo apt install dpkg
-    -
       name: Build and install web-greeter
-      run: make install
-    -
-      name: Build deb
-      run: |
-        cd build/
-        cp -r DEBIAN/ install_root/
-        dpkg-deb --root-owner-group --build install_root "web-greeter.deb"
-        dpkg --info "./web-greeter.deb"
+      uses: "./.github/actions/build"
+      with:
+        target-distro: ubuntu
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
         file: build/web-greeter.deb
-        asset_name: web-greeter-$tag.deb
+        asset_name: web-greeter-$tag-ubuntu.deb
+        tag: ${{ github.ref }}
+        overwrite: true
+  publish-debian:
+    name: Publish debian binaries
+    runs-on: ubuntu-latest
+    steps:
+    - 
+      name: Checkout local actions
+      uses: actions/checkout@v2
+    -
+      name: Build web-greeter
+      uses: "./.github/actions/build"
+      with:
+       target-distro: debian
+    - name: Upload binaries to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: build/web-greeter.deb
+        asset_name: web-greeter-$tag-debian.deb
         tag: ${{ github.ref }}
         overwrite: true
