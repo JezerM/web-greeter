@@ -167,7 +167,7 @@ config/lightdm-wrapper := $(abspath ${DESTDIR}/etc/xdg/lightdm/lightdm.conf.d/90
 config/Xgreeter := $(abspath ${DESTDIR}/etc/lightdm/Xgreeter)
 
 config_local/web-greeter := $(abspath ${INSTALL_ROOT}/etc/lightdm/web-greeter.yml)
-config_local/lightdm-wrapper := $(abspath ${INSTALL_ROOT}/etc/xdg/lightdm/lightdm.conf.d/90-greeter.wrapper.conf)
+config_local/lightdm-wrapper := $(abspath ${INSTALL_ROOT}/etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf)
 config_local/Xgreeter := $(abspath ${INSTALL_ROOT}/etc/lightdm/Xgreeter)
 
 $(config_local/web-greeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.yml
@@ -177,7 +177,7 @@ $(config_local/lightdm-wrapper): $(INSTALL_ROOT) ${BUILD_DIR}/dist/90-greeter-wr
 $(config_local/Xgreeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/Xgreeter
 	@install -Dm755 "${BUILD_DIR}/dist/Xgreeter" "${config_local/Xgreeter}"
 
-build_config: $(config_local/web-greeter) $(config_local/ligtdm-wrapper) $(config_local/Xgreeter)
+build_config: $(config_local/web-greeter) $(config_local/lightdm-wrapper) $(config_local/Xgreeter)
 	@echo "✔ Config copied"
 
 build_install_root: $(INSTALL_ROOT) build_dist_files build_config build_themes build_completions
