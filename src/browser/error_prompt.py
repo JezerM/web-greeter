@@ -42,7 +42,8 @@ from PyQt5.QtWidgets import (
     QDialog,
     QVBoxLayout,
     QLabel,
-    QPushButton
+    QPushButton,
+    QAction
 )
 from config import web_greeter_config
 
@@ -97,6 +98,20 @@ class WebPage(QWebEnginePage):
         if log_level == 40:
             errorMessage = f"{source_id} {line_number}: {message}"
             error_prompt(errorMessage)
+
+    def increaseZoom(self, value = 0.1):
+        """Increase zoom"""
+        # pylint: disable=invalid-name
+        self.setZoomFactor(
+            self.zoomFactor() + (value if value else 0.1)
+        )
+
+    def decreaseZoom(self, value = 0.1):
+        """Increase zoom"""
+        # pylint: disable=invalid-name
+        self.setZoomFactor(
+            self.zoomFactor() - (value if value else 0.1)
+        )
 
 class Dialog(QDialog):
     """Popup dialog class"""
