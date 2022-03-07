@@ -138,13 +138,6 @@ class Application:
             self.window.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
         )
 
-        if web_greeter_config["app"]["frame"]:
-            self._init_menu_bar()
-        else:
-            self.window.setWindowFlags(
-                self.window.windowFlags() | Qt.FramelessWindowHint
-            )
-
         screen_size = self.desktop.availableGeometry().size()
 
         self.window.setBaseSize(screen_size)
@@ -186,26 +179,6 @@ class Application:
         """Runs the application"""
         logger.debug("Web Greeter started")
         return self.app.exec_()
-
-    def _init_menu_bar(self):
-        exit_action = QAction(QIcon('exit.png'), '&Exit', self.window)
-        exit_action.setShortcut('Ctrl+Q')
-        exit_action.setStatusTip('Exit application')
-        exit_action.triggered.connect(qApp.quit)
-
-        menu_bar = self.window.menuBar()
-
-        file_menu = menu_bar.addMenu('&File')
-        file_menu.addAction(exit_action)
-
-        edit_menu = menu_bar.addMenu('&Edit')
-        edit_menu.addAction(exit_action)
-
-        view_menu = menu_bar.addMenu('&View')
-        view_menu.addAction(exit_action)
-
-        about_menu = menu_bar.addMenu('&About')
-        about_menu.addAction(exit_action)
 
 class NoneLayout(QLayout):
     """Layout that shows nothing"""
@@ -276,6 +249,13 @@ class Browser(Application):
         else:
             self.view.setContextMenuPolicy(Qt.PreventContextMenu)
 
+        if web_greeter_config["app"]["frame"]:
+            self._init_menu_bar()
+        else:
+            self.window.setWindowFlags(
+                self.window.windowFlags() | Qt.FramelessWindowHint
+            )
+
         if web_greeter_config["config"]["greeter"]["secure_mode"]:
             if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
                 self.profile.setUrlRequestInterceptor(self.interceptor)
@@ -305,12 +285,15 @@ class Browser(Application):
         self.dev_view.setPage(self.dev_page)
         self.page.setDevToolsPage(self.dev_page)
 
+        self.dev_page.windowCloseRequested.connect(lambda: self.toggle_devtools_value(False))
+
+        inspect_element_action = self.page.action(self.page.InspectElement)
+        inspect_element_action.triggered.connect(lambda: self.toggle_devtools_value(True))
+
         self.qdock = QDockWidget()
         self.qdock.setWidget(self.dev_view)
-        titlebar = QWidget(self.qdock)
-        layout = NoneLayout()
-        titlebar.setLayout(layout)
-        self.qdock.setTitleBarWidget(titlebar)
+        self.qdock.setFeatures(QDockWidget.DockWidgetMovable or
+                               QDockWidget.DockWidgetClosable)
 
         self.window.addDockWidget(Qt.RightDockWidgetArea, self.qdock)
         self.qdock.hide()
@@ -318,19 +301,87 @@ class Browser(Application):
 
     def toggle_devtools(self):
         """Toggle devtools"""
+        self.toggle_devtools_value(not self.qdock.isVisible())
+
+    def toggle_devtools_value(self, value: bool):
         if not web_greeter_config["config"]["greeter"]["debug_mode"]:
             return
-        win_size = self.window.size()
-        # dev_size = self.qdock.size()
 
-        self.qdock.resize(int(win_size.width() / 2), int(win_size.height()))
-
-        if self.qdock.isVisible():
-            self.qdock.hide()
-            self.view.setFocus()
-        else:
+        if value:
             self.qdock.show()
             self.dev_view.setFocus()
+        else:
+            self.qdock.hide()
+            self.view.setFocus()
+
+
+    def _init_menu_bar(self):
+        exit_action = QAction(QIcon("exit.png"), "&Quit", self.window)
+        exit_action.setShortcut("Ctrl+Q")
+        exit_action.setStatusTip("Exit application")
+        exit_action.triggered.connect(qApp.quit)
+
+        undo_action = QAction("&Undo", self.window)
+        undo_action.setShortcut("Ctrl+Z")
+        undo_action.triggered.connect(self.page.action(self.page.Undo).trigger)
+        redo_action = QAction("&Redo", self.window)
+        redo_action.setShortcut("Ctrl+Shift+Z")
+        redo_action.triggered.connect(self.page.action(self.page.Redo).trigger)
+
+        toggle_dev_action = QAction("Toggle Developer Tools", self.window)
+        toggle_dev_action.setShortcut("Ctrl+Shift+I")
+        toggle_dev_action.triggered.connect(lambda: self.toggle_devtools())
+
+        fullscreen_action = QAction("Toggle Fullscreen", self.window)
+        fullscreen_action.setShortcut("F11")
+        fullscreen_action.triggered.connect(lambda: self.toggle_fullscreen())
+
+        minimize_action = QAction("Minimize", self.window)
+        minimize_action.setShortcut("Ctrl+M")
+        minimize_action.triggered.connect(self.window.showMinimized)
+        close_action = QAction("Close", self.window)
+        close_action.setShortcut("Ctrl+W")
+        close_action.triggered.connect(self.window.close)
+
+        self.page.action(self.page.ReloadAndBypassCache).setText("Force Reload")
+
+        menu_bar = self.window.menuBar()
+
+        file_menu = menu_bar.addMenu("&File")
+        file_menu.addAction(exit_action)
+
+        edit_menu = menu_bar.addMenu("&Edit")
+        edit_menu.addAction(self.page.action(self.page.Undo))
+        edit_menu.addAction(self.page.action(self.page.Redo))
+        edit_menu.addSeparator()
+        edit_menu.addAction(self.page.action(self.page.Cut))
+        edit_menu.addAction(self.page.action(self.page.Copy))
+        edit_menu.addAction(self.page.action(self.page.Paste))
+        edit_menu.addSeparator()
+        edit_menu.addAction(self.page.action(self.page.SelectAll))
+
+        view_menu = menu_bar.addMenu("&View")
+        view_menu.addAction(self.page.action(self.page.Reload))
+        view_menu.addAction(self.page.action(self.page.ReloadAndBypassCache))
+        view_menu.addAction(toggle_dev_action)
+        view_menu.addSeparator()
+        view_menu.addAction(fullscreen_action)
+
+        window_menu = menu_bar.addMenu("&Window")
+        window_menu.addAction(minimize_action)
+        window_menu.addAction(close_action)
+
+        # help_menu = menu_bar.addMenu("&Help")
+
+    def toggle_fullscreen(self):
+        if self.window.isFullScreen():
+            state = self.states["NORMAL"]
+        else:
+            state = self.states["FULLSCREEN"]
+        try:
+            self.window.windowHandle().setWindowState(state)
+        except (AttributeError, TypeError):
+            self.window.setWindowState(state)
 
     def _initialize_page(self):
         page_settings = self.page.settings().globalSettings()

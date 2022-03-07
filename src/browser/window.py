@@ -40,9 +40,6 @@ class MainWindow(QMainWindow):
 
     def init_actions(self):
         """Initialize window actions and their shortcuts"""
-        dev_act = QAction(text="&Toggle Devtools", parent=self)
-        dev_act.setShortcut("Shift+Ctrl+I")
-        dev_act.triggered.connect(self.toggle_devtools)
 
         mon_bright_up = QAction(text="&Increase brightness", parent=self)
         mon_bright_down = QAction(text="&Decrease brightness", parent=self)
@@ -51,14 +48,8 @@ class MainWindow(QMainWindow):
         mon_bright_up.triggered.connect(self.inc_brightness)
         mon_bright_down.triggered.connect(self.dec_brightness)
 
-        self.addAction(dev_act)
         self.addAction(mon_bright_up)
         self.addAction(mon_bright_down)
-
-    @classmethod
-    def toggle_devtools(cls):
-        """Toggle devtools"""
-        globales.greeter.toggle_devtools()
 
     @classmethod
     def inc_brightness(cls):
