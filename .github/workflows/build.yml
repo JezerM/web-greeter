@@ -1,12 +1,19 @@
 name: Build Test
 
-on: [push, pull_request]
+on:
+  push:
+    paths:
+      - "src/**"
+      - ".github/workflows/build.yml"
+      - ".github/actions/build/action.yml"
+  pull_request:
+  workflow_dispatch:
 
 jobs:
   build-ubuntu:
     runs-on: ubuntu-latest
     steps:
-    - 
+    -
       name: Checkout local actions
       uses: actions/checkout@v2
     -
@@ -17,7 +24,7 @@ jobs:
   build-debian:
     runs-on: ubuntu-latest
     steps:
-    - 
+    -
       name: Checkout local actions
       uses: actions/checkout@v2
     -
