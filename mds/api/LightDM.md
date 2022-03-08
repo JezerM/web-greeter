@@ -11,7 +11,8 @@ Accesible through `lightdm` global variable.
         * [lightdm.autologin_guest](Greeter#LightDM_Greeter-autologin_guest) : <code>boolean</code>
         * [lightdm.autologin_timeout](Greeter#LightDM_Greeter-autologin_timeout) : <code>number</code>
         * [lightdm.autologin_user](Greeter#LightDM_Greeter-autologin_user) : <code>string</code>
-        * [lightdm.batteryData](Greeter#LightDM_Greeter-batteryData) : [<code>Battery</code>](Battery)
+        * <del>[lightdm.batteryData](Greeter#LightDM_Greeter-batteryData) : [<code>Battery</code>](Battery)</del>
+        * [lightdm.battery_data](Greeter#LightDM_Greeter-battery_data) : [<code>Battery</code>](Battery)
         * [lightdm.brightness](Greeter#LightDM_Greeter-brightness) : <code>number</code>
         * [lightdm.can_access_battery](Greeter#LightDM_Greeter-can_access_battery) : <code>boolean</code>
         * [lightdm.can_access_brightness](Greeter#LightDM_Greeter-can_access_brightness) : <code>boolean</code>
@@ -32,7 +33,7 @@ Accesible through `lightdm` global variable.
         * [lightdm.lock_hint](Greeter#LightDM_Greeter-lock_hint) : <code>boolean</code>
         * [lightdm.remote_sessions](Greeter#LightDM_Greeter-remote_sessions) : [<code>Array.&lt;Session&gt;</code>](Session)
         * [lightdm.select_guest_hint](Greeter#LightDM_Greeter-select_guest_hint) : <code>boolean</code>
-        * [lightdm.select_user_hint](Greeter#LightDM_Greeter-select_user_hint) : <code>string</code>
+        * [lightdm.select_user_hint](Greeter#LightDM_Greeter-select_user_hint) : <code>string</code> \| <code>undefined</code>
         * [lightdm.sessions](Greeter#LightDM_Greeter-sessions) : [<code>Array.&lt;Session&gt;</code>](Session)
         * [lightdm.show_manual_login_hint](Greeter#LightDM_Greeter-show_manual_login_hint) : <code>boolean</code>
         * [lightdm.show_remote_login_hint](Greeter#LightDM_Greeter-show_remote_login_hint) : <code>boolean</code>
@@ -45,15 +46,18 @@ Accesible through `lightdm` global variable.
         * [lightdm.reset](Greeter#LightDM_Greeter-reset) : [<code>Signal</code>](Signal)
         * [lightdm.show_message](Greeter#LightDM_Greeter-show_message) : [<code>Signal</code>](Signal)
         * [lightdm.show_prompt](Greeter#LightDM_Greeter-show_prompt) : [<code>Signal</code>](Signal)
-        * [lightdm.authenticate(username)](Greeter#LightDM_Greeter-authenticate)
-        * [lightdm.authenticate_as_guest()](Greeter#LightDM_Greeter-authenticate_as_guest)
-        * [lightdm.brightnessSet(quantity)](Greeter#LightDM_Greeter-brightnessSet)
-        * [lightdm.brightnessIncrease(quantity)](Greeter#LightDM_Greeter-brightnessIncrease)
-        * [lightdm.brightnessDecrease(quantity)](Greeter#LightDM_Greeter-brightnessDecrease)
-        * [lightdm.cancel_authentication()](Greeter#LightDM_Greeter-cancel_authentication)
-        * [lightdm.cancel_autologin()](Greeter#LightDM_Greeter-cancel_autologin)
+        * [lightdm.authenticate(username)](Greeter#LightDM_Greeter-authenticate) ⇒ <code>boolean</code>
+        * [lightdm.authenticate_as_guest()](Greeter#LightDM_Greeter-authenticate_as_guest) ⇒ <code>boolean</code>
+        * <del>[lightdm.brightnessSet(quantity)](Greeter#LightDM_Greeter-brightnessSet)</del>
+        * [lightdm.brightness_set(quantity)](Greeter#LightDM_Greeter-brightness_set)
+        * <del>[lightdm.brightnessIncrease(quantity)](Greeter#LightDM_Greeter-brightnessIncrease)</del>
+        * [lightdm.brightness_increase(quantity)](Greeter#LightDM_Greeter-brightness_increase)
+        * <del>[lightdm.brightnessDecrease(quantity)](Greeter#LightDM_Greeter-brightnessDecrease)</del>
+        * [lightdm.brightness_decrease(quantity)](Greeter#LightDM_Greeter-brightness_decrease)
+        * [lightdm.cancel_authentication()](Greeter#LightDM_Greeter-cancel_authentication) ⇒ <code>boolean</code>
+        * [lightdm.cancel_autologin()](Greeter#LightDM_Greeter-cancel_autologin) ⇒ <code>boolean</code>
         * [lightdm.hibernate()](Greeter#LightDM_Greeter-hibernate) ⇒ <code>boolean</code>
-        * [lightdm.respond(response)](Greeter#LightDM_Greeter-respond)
+        * [lightdm.respond(response)](Greeter#LightDM_Greeter-respond) ⇒ <code>boolean</code>
         * [lightdm.restart()](Greeter#LightDM_Greeter-restart) ⇒ <code>boolean</code>
         * [lightdm.set_language(language)](Greeter#LightDM_Greeter-set_language) ⇒ <code>boolean</code>
         * [lightdm.shutdown()](Greeter#LightDM_Greeter-shutdown) ⇒ <code>boolean</code>
@@ -100,7 +104,7 @@ Accesible through `lightdm` global variable.
         * [signal.connect(callback)](Signal#LightDM_Signal-connect)
         * [signal.disconnect(callback)](Signal#LightDM_Signal-disconnect)
     * [.ThemeUtils](ThemeUtils)
-        * [theme_utils.bind_this(context)](ThemeUtils#LightDM_ThemeUtils-bind_this) ⇒ <code>object</code>
+        * <del>[theme_utils.bind_this(context)](ThemeUtils#LightDM_ThemeUtils-bind_this) ⇒ <code>object</code></del>
         * [theme_utils.dirlist(path, only_images, callback)](ThemeUtils#LightDM_ThemeUtils-dirlist)
         * [theme_utils.get_current_localized_date()](ThemeUtils#LightDM_ThemeUtils-get_current_localized_date) ⇒ <code>string</code>
         * [theme_utils.get_current_localized_time()](ThemeUtils#LightDM_ThemeUtils-get_current_localized_time) ⇒ <code>string</code>

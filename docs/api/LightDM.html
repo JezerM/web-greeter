@@ -462,7 +462,8 @@ Accesible through <code>lightdm</code> global variable.</p>
 <li><a href="Greeter#LightDM_Greeter-autologin_guest">lightdm.autologin_guest</a> : <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-autologin_timeout">lightdm.autologin_timeout</a> : <code>number</code></li>
 <li><a href="Greeter#LightDM_Greeter-autologin_user">lightdm.autologin_user</a> : <code>string</code></li>
-<li><a href="Greeter#LightDM_Greeter-batteryData">lightdm.batteryData</a> : <a href="Battery"><code>Battery</code></a></li>
+<li><del><a href="Greeter#LightDM_Greeter-batteryData">lightdm.batteryData</a> : <a href="Battery"><code>Battery</code></a></del></li>
+<li><a href="Greeter#LightDM_Greeter-battery_data">lightdm.battery_data</a> : <a href="Battery"><code>Battery</code></a></li>
 <li><a href="Greeter#LightDM_Greeter-brightness">lightdm.brightness</a> : <code>number</code></li>
 <li><a href="Greeter#LightDM_Greeter-can_access_battery">lightdm.can_access_battery</a> : <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-can_access_brightness">lightdm.can_access_brightness</a> : <code>boolean</code></li>
@@ -483,7 +484,7 @@ Accesible through <code>lightdm</code> global variable.</p>
 <li><a href="Greeter#LightDM_Greeter-lock_hint">lightdm.lock_hint</a> : <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-remote_sessions">lightdm.remote_sessions</a> : <a href="Session"><code>Array.&lt;Session&gt;</code></a></li>
 <li><a href="Greeter#LightDM_Greeter-select_guest_hint">lightdm.select_guest_hint</a> : <code>boolean</code></li>
-<li><a href="Greeter#LightDM_Greeter-select_user_hint">lightdm.select_user_hint</a> : <code>string</code></li>
+<li><a href="Greeter#LightDM_Greeter-select_user_hint">lightdm.select_user_hint</a> : <code>string</code> | <code>undefined</code></li>
 <li><a href="Greeter#LightDM_Greeter-sessions">lightdm.sessions</a> : <a href="Session"><code>Array.&lt;Session&gt;</code></a></li>
 <li><a href="Greeter#LightDM_Greeter-show_manual_login_hint">lightdm.show_manual_login_hint</a> : <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-show_remote_login_hint">lightdm.show_remote_login_hint</a> : <code>boolean</code></li>
@@ -496,15 +497,18 @@ Accesible through <code>lightdm</code> global variable.</p>
 <li><a href="Greeter#LightDM_Greeter-reset">lightdm.reset</a> : <a href="Signal"><code>Signal</code></a></li>
 <li><a href="Greeter#LightDM_Greeter-show_message">lightdm.show_message</a> : <a href="Signal"><code>Signal</code></a></li>
 <li><a href="Greeter#LightDM_Greeter-show_prompt">lightdm.show_prompt</a> : <a href="Signal"><code>Signal</code></a></li>
-<li><a href="Greeter#LightDM_Greeter-authenticate">lightdm.authenticate(username)</a></li>
-<li><a href="Greeter#LightDM_Greeter-authenticate_as_guest">lightdm.authenticate_as_guest()</a></li>
-<li><a href="Greeter#LightDM_Greeter-brightnessSet">lightdm.brightnessSet(quantity)</a></li>
-<li><a href="Greeter#LightDM_Greeter-brightnessIncrease">lightdm.brightnessIncrease(quantity)</a></li>
-<li><a href="Greeter#LightDM_Greeter-brightnessDecrease">lightdm.brightnessDecrease(quantity)</a></li>
-<li><a href="Greeter#LightDM_Greeter-cancel_authentication">lightdm.cancel_authentication()</a></li>
-<li><a href="Greeter#LightDM_Greeter-cancel_autologin">lightdm.cancel_autologin()</a></li>
+<li><a href="Greeter#LightDM_Greeter-authenticate">lightdm.authenticate(username)</a> ⇒ <code>boolean</code></li>
+<li><a href="Greeter#LightDM_Greeter-authenticate_as_guest">lightdm.authenticate_as_guest()</a> ⇒ <code>boolean</code></li>
+<li><del><a href="Greeter#LightDM_Greeter-brightnessSet">lightdm.brightnessSet(quantity)</a></del></li>
+<li><a href="Greeter#LightDM_Greeter-brightness_set">lightdm.brightness_set(quantity)</a></li>
+<li><del><a href="Greeter#LightDM_Greeter-brightnessIncrease">lightdm.brightnessIncrease(quantity)</a></del></li>
+<li><a href="Greeter#LightDM_Greeter-brightness_increase">lightdm.brightness_increase(quantity)</a></li>
+<li><del><a href="Greeter#LightDM_Greeter-brightnessDecrease">lightdm.brightnessDecrease(quantity)</a></del></li>
+<li><a href="Greeter#LightDM_Greeter-brightness_decrease">lightdm.brightness_decrease(quantity)</a></li>
+<li><a href="Greeter#LightDM_Greeter-cancel_authentication">lightdm.cancel_authentication()</a> ⇒ <code>boolean</code></li>
+<li><a href="Greeter#LightDM_Greeter-cancel_autologin">lightdm.cancel_autologin()</a> ⇒ <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-hibernate">lightdm.hibernate()</a> ⇒ <code>boolean</code></li>
-<li><a href="Greeter#LightDM_Greeter-respond">lightdm.respond(response)</a></li>
+<li><a href="Greeter#LightDM_Greeter-respond">lightdm.respond(response)</a> ⇒ <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-restart">lightdm.restart()</a> ⇒ <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-set_language">lightdm.set_language(language)</a> ⇒ <code>boolean</code></li>
 <li><a href="Greeter#LightDM_Greeter-shutdown">lightdm.shutdown()</a> ⇒ <code>boolean</code></li>
@@ -567,7 +571,7 @@ Accesible through <code>lightdm</code> global variable.</p>
 </ul>
 </li>
 <li><a href="ThemeUtils">.ThemeUtils</a><ul>
-<li><a href="ThemeUtils#LightDM_ThemeUtils-bind_this">theme_utils.bind_this(context)</a> ⇒ <code>object</code></li>
+<li><del><a href="ThemeUtils#LightDM_ThemeUtils-bind_this">theme_utils.bind_this(context)</a> ⇒ <code>object</code></del></li>
 <li><a href="ThemeUtils#LightDM_ThemeUtils-dirlist">theme_utils.dirlist(path, only_images, callback)</a></li>
 <li><a href="ThemeUtils#LightDM_ThemeUtils-get_current_localized_date">theme_utils.get_current_localized_date()</a> ⇒ <code>string</code></li>
 <li><a href="ThemeUtils#LightDM_ThemeUtils-get_current_localized_time">theme_utils.get_current_localized_time()</a> ⇒ <code>string</code></li>
@@ -619,7 +623,7 @@ Accesible through <code>lightdm</code> global variable.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"LightDM","level":"2.1","depth":1,"next":{"title":"Greeter","level":"2.1.1","depth":2,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},"previous":{"title":"Web Greeter","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/LightDM.md","mtime":"2021-11-21T19:44:30.711Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2021-11-21T21:16:24.380Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"LightDM","level":"2.1","depth":1,"next":{"title":"Greeter","level":"2.1.1","depth":2,"path":"api/Greeter.md","ref":"api/Greeter.md","articles":[]},"previous":{"title":"Web Greeter","level":"1.1","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"plugins":[],"root":"mds/","styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"theme":"default","author":"Antergos & JezerM","pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56},"embedFonts":false},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"variables":{},"title":"Web Greeter Documentation","gitbook":"*","description":"Documentation for LightDM Web Greeter"},"file":{"path":"api/LightDM.md","mtime":"2022-03-08T18:03:33.011Z","type":"markdown"},"gitbook":{"version":"3.6.20","time":"2022-03-08T18:03:35.318Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

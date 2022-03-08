@@ -25,55 +25,52 @@
  * along with web-greeter; If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 (() => {
-	let _channel;
+  let _channel;
 
-	/**
-	 * Greeter Ready Event. Themes should not initialize until this event has fired.
-	 * Event accesible through `window._ready_event`
-	 * @event window#GreeterReady
-	 * @name GreeterReady
-	 * @type Event
-	 * @memberOf window
-	 */
-	window._ready_event = new Event( 'GreeterReady' );
+  /**
+   * Greeter Ready Event. Themes should not initialize until this event has fired.
+   * Event accesible through `window._ready_event`
+   * @event window#GreeterReady
+   * @name GreeterReady
+   * @type Event
+   * @memberOf window
+   */
+  window._ready_event = new Event("GreeterReady");
 
-	function channel_ready_cb( channel ) {
-		_channel = channel;
+  function channel_ready_cb(channel) {
+    _channel = channel;
 
-		/**
-		 * Greeter Instance
-		 * @name lightdm
-		 * @type {LightDM.Greeter}
-		 * @memberOf window
-		 */
-		window.lightdm = _channel.objects.LightDMGreeter;
+    /**
+     * Greeter Instance
+     * @name lightdm
+     * @type {LightDM.Greeter}
+     * @memberOf window
+     */
+    window.lightdm = _channel.objects.LightDMGreeter;
 
-		/**
-		 * Greeter Config - Access values from the greeter's config file.
-		 * @name greeter_config
-		 * @type {LightDM.GreeterConfig}
-		 * @memberOf window
-		 */
-		window.greeter_config = _channel.objects.Config;
+    /**
+     * Greeter Config - Access values from the greeter's config file.
+     * @name greeter_config
+     * @type {LightDM.GreeterConfig}
+     * @memberOf window
+     */
+    window.greeter_config = _channel.objects.Config;
 
-		/**
-		 * Theme Utils - various utility methods for use in greeter themes.
-		 * @name theme_utils
-		 * @type {LightDM.ThemeUtils}
-		 * @memberOf window
-		 */
-		window.theme_utils = new ThemeUtils( _channel.objects.ThemeUtils );
+    /**
+     * Theme Utils - various utility methods for use in greeter themes.
+     * @name theme_utils
+     * @type {LightDM.ThemeUtils}
+     * @memberOf window
+     */
+    window.theme_utils = new ThemeUtils(_channel.objects.ThemeUtils);
 
-		setTimeout( function () {
-			window.dispatchEvent( _ready_event );
-		}, 2 );
-	}
+    setTimeout(function () {
+      window.dispatchEvent(_ready_event);
+    }, 2);
+  }
 
-	document.addEventListener( 'DOMContentLoaded', ( event ) => {
-		new QWebChannel( qt.webChannelTransport, channel_ready_cb );
-	});
-
+  document.addEventListener("DOMContentLoaded", (event) => {
+    new QWebChannel(qt.webChannelTransport, channel_ready_cb);
+  });
 })();
-

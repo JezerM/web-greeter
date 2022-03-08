@@ -18,13 +18,6 @@ Greeter Config - Access values from the greeter's config file.
 ### window.theme\_utils : [<code>ThemeUtils</code>](ThemeUtils)
 Theme Utils - various utility methods for use in greeter themes.
 
-<a id="window_Cookies"></a>
-
-### window.Cookies : <code>object</code>
-JS-Cookie instance - Themes must manually load the included vendor script in order to use this object.
-
-**See**: [JS Cookie Documentation](https://github.com/js-cookie/js-cookie/tree/latest#readme)  
-**Version**: 2.1.3  
 <a id="window_event_GreeterReady"></a>
 
 ### "GreeterReady"

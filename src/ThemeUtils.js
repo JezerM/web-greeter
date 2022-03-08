@@ -37,13 +37,13 @@ let time_language = null,
  * @memberOf LightDM
  */
 class ThemeUtils {
-  constructor(instance) {}
   /**
    * Binds `this` to class, `context`, for all of the class's methods.
    *
    * @arg {object} context An ES6 class instance with at least one method.
    *
    * @return {object} `context` with `this` bound to it for all of its methods.
+   * @deprecated This method will be removed in future versions
    */
   bind_this(context) {}
 
@@ -55,7 +55,7 @@ class ThemeUtils {
    *   * Is located within the greeter's shared data directory (`/var/lib/lightdm-data`).
    *   * Is located in `/tmp`.
    *
-   * @param {string}              path        The abs path to desired directory.
+   * @param {string}              path        The path to the desired directory.
    * @param {boolean}             only_images Include only images in the results. Default `true`.
    * @param {function(string[])}  callback    Callback function to be called with the result.
    */
@@ -63,7 +63,7 @@ class ThemeUtils {
 
   /**
    * Get the current date in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
-   * 	 * `language` defaults to the system's language, but can be set manually in the config file.
+   * `language` defaults to the system's language, but can be set manually in the config file.
    *
    * @returns {string} The current date.
    */
@@ -71,7 +71,7 @@ class ThemeUtils {
 
   /**
    * Get the current time in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
-   * 	 * `language` defaults to the system's language, but can be set manually in the config file.
+   * `language` defaults to the system's language, but can be set manually in the config file.
    *
    * @returns {string} The current time.
    */

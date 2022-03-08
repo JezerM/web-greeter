@@ -7,7 +7,9 @@ with the global variable: `theme_utils`
 
 <a id="LightDM_ThemeUtils-bind_this"></a>
 
-### theme_utils.bind\_this(context) ⇒ <code>object</code>
+### <del>theme_utils.bind\_this(context) ⇒ <code>object</code></del>
+***Deprecated***: This method will be removed in future versions
+
 Binds `this` to class, `context`, for all of the class's methods.
 
 **Returns**: <code>object</code> - `context` with `this` bound to it for all of its methods.  
@@ -42,7 +44,7 @@ meets at least one of the following conditions:
   </thead>
   <tbody>
 <tr>
-    <td>path</td><td><code>string</code></td><td></td><td><p>The abs path to desired directory.</p>
+    <td>path</td><td><code>string</code></td><td></td><td><p>The path to the desired directory.</p>
 </td>
     </tr><tr>
     <td>only_images</td><td><code>boolean</code></td><td><code>true</code></td><td><p>Include only images in the results. Default <code>true</code>.</p>
@@ -57,13 +59,13 @@ meets at least one of the following conditions:
 
 ### theme_utils.get\_current\_localized\_date() ⇒ <code>string</code>
 Get the current date in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
-	 * `language` defaults to the system's language, but can be set manually in the config file.
+`language` defaults to the system's language, but can be set manually in the config file.
 
 **Returns**: <code>string</code> - The current date.  
 <a id="LightDM_ThemeUtils-get_current_localized_time"></a>
 
 ### theme_utils.get\_current\_localized\_time() ⇒ <code>string</code>
 Get the current time in a localized format. Local language is autodetected by default, but can be set manually in the greeter config file.
-	 * `language` defaults to the system's language, but can be set manually in the config file.
+`language` defaults to the system's language, but can be set manually in the config file.
 
 **Returns**: <code>string</code> - The current time.  

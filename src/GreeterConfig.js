@@ -40,11 +40,9 @@ class GreeterConfig {
    * Holds keys/values from the `branding` section of the config file.
    *
    * @type {object} branding
-   * @property {string} background_images_dir Path to directory that contains background images
-   *                                      for use in greeter themes.
+   * @property {string} background_images_dir Path to directory that contains background images for use in greeter themes.
    * @property {string} logo                  Path to distro logo image for use in greeter themes.
-   * @property {string} user_image            Default user image/avatar. This is used by greeter themes
-   *                                      for users that have not configured a `.face` image.
+   * @property {string} user_image            Default user image/avatar. This is used by greeter themes for users that have not configured a `.face` image.
    * @readonly
    */
   get branding() {}
@@ -53,13 +51,10 @@ class GreeterConfig {
    *
    * @type {object}  greeter
    * @property {boolean} debug_mode          Greeter theme debug mode.
-   * @property {boolean} detect_theme_errors Provide an option to load a fallback theme when theme
-   *                                     errors are detected.
+   * @property {boolean} detect_theme_errors Provide an option to load a fallback theme when theme errors are detected.
    * @property {number}  screensaver_timeout Blank the screen after this many seconds of inactivity.
    * @property {boolean} secure_mode         Don't allow themes to make remote http requests.
-   *                                     generate localized time for display.
-   * @property {string}  time_language       Language to use when displaying the time or ""
-   *                                     to use the system's language.
+   * @property {string}  time_language       Language to use when displaying the time or "".
    * @property {string}  theme               The name of the theme to be used by the greeter.
    * @readonly
    */
@@ -68,11 +63,11 @@ class GreeterConfig {
    * Holds keys/values from the `features` section of the config file.
    *
    * @type {Object}      features
-   * @property {boolean} battery				 Enable greeter and themes to ger battery status.
+   * @property {boolean} battery          Enable greeter and themes to ger battery status.
    * @property {Object}  backlight
-   * @property {boolean} enabled				 Enable greeter and themes to control display backlight.
-   * @property {number}  value					 The amount to increase/decrease brightness by greeter.
-   * @property {number}  steps					 How many steps are needed to do the change.
+   * @property {boolean} enabled          Enable greeter and themes to control display backlight.
+   * @property {number}  value            The amount to increase/decrease brightness by greeter.
+   * @property {number}  steps            How many steps are needed to do the change.
    * @readonly
    */
   get features() {}

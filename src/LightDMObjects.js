@@ -136,7 +136,6 @@ class Layout {
  * @memberOf LightDM
  */
 class User {
-  constructor(user_info) {}
   /**
    * The user background if any
    * @type {string}

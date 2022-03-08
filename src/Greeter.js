@@ -66,8 +66,15 @@ class Greeter {
    * Gets the battery data.
    * @type {LightDM.Battery}
    * @readonly
+   * @deprecated Use [`battery_data`](Greeter#LightDM_Greeter-battery_data)
    */
   get batteryData() {}
+  /**
+   * Gets the battery data.
+   * @type {LightDM.Battery}
+   * @readonly
+   */
+  get battery_data() {}
   /**
    * The current brightness
    * @type {number}
@@ -190,7 +197,7 @@ class Greeter {
   get select_guest_hint() {}
   /**
    * The username to select by default.
-   * @type {string}
+   * @type {string|undefined}
    * @readonly
    */
   get select_user_hint() {}
@@ -226,33 +233,55 @@ class Greeter {
    * Starts the authentication procedure for a user.
    *
    * @param {string|null} username A username or "null" to prompt for a username.
+   * @returns {boolean} Whether it is successful or not
    */
   authenticate(username) {}
   /**
    * Starts the authentication procedure for the guest user.
+   * @returns {boolean} Whether it is successful or not
    */
   authenticate_as_guest() {}
   /**
    * Set the brightness to quantity
    * @param {number} quantity The quantity to set
+   * @deprecated Use [`brightness_set`](Greeter#LightDM_Greeter-brightness_set)
    */
   brightnessSet(quantity) {}
+  /**
+   * Set the brightness to quantity
+   * @param {number} quantity The quantity to set
+   */
+  brightness_set(quantity) {}
+  /**
+   * Increase the brightness by quantity
+   * @param {number} quantity The quantity to increase
+   * @deprecated Use [`brightness_increase`](Greeter#LightDM_Greeter-brightness_increase)
+   */
+  brightnessIncrease(quantity) {}
   /**
    * Increase the brightness by quantity
    * @param {number} quantity The quantity to increase
    */
-  brightnessIncrease(quantity) {}
+  brightness_increase(quantity) {}
+  /**
+   * Decrease the brightness by quantity
+   * @param {number} quantity The quantity to decrease
+   * @deprecated Use [`brightness_decrease`](Greeter#LightDM_Greeter-brightness_decrease)
+   */
+  brightnessDecrease(quantity) {}
   /**
    * Decrease the brightness by quantity
    * @param {number} quantity The quantity to decrease
    */
-  brightnessDecrease(quantity) {}
+  brightness_decrease(quantity) {}
   /**
    * Cancel user authentication that is currently in progress.
+   * @returns {boolean} Whether it is successful or not
    */
   cancel_authentication() {}
   /**
    * Cancel the automatic login.
+   * @returns {boolean} Whether it is successful or not
    */
   cancel_autologin() {}
   /**
@@ -263,6 +292,7 @@ class Greeter {
   /**
    * Provide a response to a prompt.
    * @param {string} response
+   * @returns {boolean} Whether it is successful or not
    */
   respond(response) {}
   /**
@@ -274,7 +304,7 @@ class Greeter {
    * Set the language for the currently authenticated user.
    * @param {string} language The language in the form of a locale specification (e.g.
    *     'de_DE.UTF-8')
-   * @returns {boolean} "true" if successful, otherwise "false"
+   * @returns {boolean} Whether it is successful or not
    */
   set_language(language) {}
   /**
@@ -285,7 +315,7 @@ class Greeter {
   /**
    * Start a session for the authenticated user.
    * @param {string|null} session The session to log into or "null" to use the default.
-   * @returns {boolean} "true" if successful, otherwise "false"
+   * @returns {boolean} Whether it is successful or not
    */
   start_session(session) {}
   /**
@@ -335,12 +365,3 @@ class Greeter {
    */
   show_prompt;
 }
-
-/**
- * JS-Cookie instance - Themes must manually load the included vendor script in order to use this object.
- * @name Cookies
- * @type {object}
- * @version 2.1.3
- * @memberOf window
- * @see [JS Cookie Documentation](https://github.com/js-cookie/js-cookie/tree/latest#readme)
- */
