@@ -1,12 +1,14 @@
 # Web Greeter for LightDM
 
-A modern, visually appealing greeter for LightDM, that allows to create web based themes with HTML, CSS and JavaScript.
+A modern, visually appealing greeter for LightDM, that allows to create web based themes with HTML,
+CSS and JavaScript.
 
-This is a try to update the [Antergos web-greeter](https://github.com/Antergos/web-greeter), following what they left.
+This is a fork of the [Antergos web-greeter](https://github.com/Antergos/web-greeter) that tries to
+fix and improve this project for a modern and current use. Due to this, some API changes are
+needed, which implies that current themes would need to do changes to work correctly.
 
-As this is based on the [master release](https://github.com/Antergos/web-greeter/tree/master), which does some API changes, actual themes would need to do changes to work correctly.
-
-Checkout [nody-greeter][nody-greeter], a greeter made in **Node.js** with **Electron**! (Actually, faster than Web Greeter)
+Also, check out [nody-greeter][nody-greeter], a greeter made in **Node.js** with **Electron**!
+(Actually, faster than Web Greeter)
 
 ## [See Live Demo][live_demo]
 
@@ -96,9 +98,11 @@ Use `sudo make uninstall` to uninstall web-greeter, but preserving web-greeter.y
 Either, use `sudo make uninstall_all` to remove everting related to web-greeter.
 
 ## Theme JavaScript API
-[Antergos][Antergos] documentation is no longer available, although it is accesible through [Web Archive][WebArchive]. Current and updated documentation is available at [gh-pages][gh-pages].
+[Antergos][Antergos] documentation is no longer available, although it is accesible through
+[Web Archive][WebArchive]. Current and updated documentation is available at [gh-pages][gh-pages].
 
-You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can explore the provided [themes](./themes) for real use cases.
+You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can
+explore the provided [themes](./themes) for real use cases.
 
 
 Aditionally, you can install the TypeScript types definitions inside your theme with npm:
@@ -110,23 +114,31 @@ npm install nody-greeter-types
 ## Aditional features
 
 ### Brightness control
-`acpi` is the only tool needed to control the brightness, besides a compatible device. This functionality is based on [acpilight][acpilight] replacement for `xbacklight`.
+`acpi` is the only tool needed to control the brightness, besides a compatible device.
+This functionality is based on [acpilight][acpilight] replacement for `xbacklight`.
 
-udev rules are needed to be applied before using it, check [acpilight rules][acpilight_rules]. Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user to **video** group: `sudo usermod -a -G video lightdm`
+udev rules are needed to be applied before using it, check [acpilight rules][acpilight_rules].
+Then, lightdm will need to be allowed to change backlight values, to do so add lightdm user
+to the **video** group: `sudo usermod -a -G video lightdm`
 
 Enable it inside `/etc/lightdm/web-greeter.yml`
 
 ### Battery status
-`acpi` and `acpi_listen` are the only tools you need (and a battery). This functionality is based on ["bat" widget][bat_widget] from ["lain" awesome-wm library][lain].
+`acpi` and `acpi_listen` are the only tools you need (and a battery).
+This functionality is based on ["bat" widget][bat_widget] from ["lain" awesome-wm library][lain].
 
 You can enable it inside `/etc/lightdm/web-greeter.yml`
 
 ## Debugging
-You can run the greeter from within your desktop session if you add the following line to the desktop file for your session located in `/usr/share/xsessions/`: `X-LightDM-Allow-Greeter=true`.
+You can run the greeter from within your desktop session if you add the following line to the desktop
+file for your session located in `/usr/share/xsessions/`: `X-LightDM-Allow-Greeter=true`.
 
-You have to log out and log back in after adding that line. Then you can run the greeter from command line.
+You have to log out and log back in after adding that line. Then you can run the greeter
+from command line.
 
-Themes can be opened with a debug console if you set `debug_mode` as `true` inside `/etc/lightdm/web-greeter.yml`. Or, you could run the `web-greeter` with the parameter `--debug`. I recommend to use the last one, as it is easier and handy.
+Themes can be opened with a debug console if you set `debug_mode` as `true`
+inside `/etc/lightdm/web-greeter.yml`. Or, you could run the `web-greeter` with
+the parameter `--debug`. I recommend to use the last one, as it is easier and handy.
 
 ```sh
 web-greeter --debug
@@ -141,11 +153,12 @@ Check `web-greeter --help` for more commands.
 Before setting **web-greeter** as your LightDM Greeter, you should make sure it does work also with LightDM:
 
 - Run **web-greeter** as root with `--no-sandbox` flag ("Unable to determine socket to daemon" and "XLib" related errors are expected)
-- Run `lightdm --test-mode`. Although it's not supported, it could help to debug lightdm.
+- Run `lightdm --test-mode`. Although it's not supported, if it does work then it could help to debug lightdm.
 
 ### LightDM crashes and tries to recover over and over again
 
-LightDM does this when the greeter crashes, so it could mean **web-greeter** was not installed correctly, or some dependencies were updated/removed after a distro update.
+LightDM does this when the greeter crashes, so it could mean **web-greeter** was not installed
+correctly, or some dependencies were updated/removed after a distro update.
 
 ### Import errors
 
