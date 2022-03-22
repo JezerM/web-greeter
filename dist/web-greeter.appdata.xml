@@ -44,6 +44,37 @@
 	-->
 
 	<releases>
+		<release date="2022-03-22" version="3.4.0">
+			<description>
+				<p>Added:</p>
+				<ul>
+					<li>Added top Menu-bar menus and items</li>
+					<li>Improve devtools qdock behavior</li>
+				</ul>
+				<p>Changes:</p>
+				<ul>
+					<li>Bugfixes related to LightDM signals</li>
+					<li>Fix web-greeter initialization issues</li>
+					<li>Migrate build process from utils.sh script to full Makefile</li>
+					<li>Man-pages updated</li>
+				</ul>
+				<p>Changes:</p>
+				<ul>
+					<li>Remove python-xlib dependency in favor of python C binding</li>
+				</ul>
+			</description>
+		</release>
+		<release date="2022-01-28" version="3.3.0">
+			<description>
+				<p>Changes:</p>
+				<ul>
+					<li>Bugfixes related to LightDM signals</li>
+					<li>Allow --no-sandbox argument</li>
+					<li>Allow relative path with theme_utils.dirlist</li>
+					<li>Added brightness controller to use instead of external programs</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2021-12-11" version="3.2.1">
 			<description>
 				<p>Changes:</p>

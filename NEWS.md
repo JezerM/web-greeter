@@ -1,5 +1,25 @@
 # Change Log
 
+## [3.3.0](https://github.com/JezerM/web-greeter/tree/3.3.0) ~ 03-22-2022
+
+**Added:**
+
+  * Added top Menu-bar menus and items
+  * Improve devtools qdock behavior
+
+**Changes:**
+
+  * Bugfixes related to LightDM signals
+  * Fix web-greeter initialization issues
+  * Migrate from utils.sh script to full Makefile
+  * Man-pages updated
+
+**Removed:**
+
+  * Remove python-xlib dependency in favor of python C binding
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.3.0...3.4.0)
+
 ## [3.3.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 01-28-2022
 
 **Changes:**
