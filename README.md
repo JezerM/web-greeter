@@ -33,13 +33,13 @@ Gruvbox and Dracula themes!
 yay -S web-greeter
 ```
 
-### Ubuntu
+### Ubuntu/Debian
 
 Download from the [latest release](https://github.com/JezerM/web-greeter/releases/latest) and
 install with apt.
 
 ```sh
-apt install ./web-greeter-VER.deb
+apt install ./web-greeter-VER-DISTRO.deb
 ```
 
 ## Dependencies
@@ -79,7 +79,7 @@ can install PIP dependencies with:
 pip install -r requirements.txt
 ```
 
-> ***NOTE*** If using PIP, be sure to install these dependencies as root. Yet, no recommended.
+> ***NOTE*** If using PIP, be sure to install these dependencies as root. Yet, not recommended.
 
 ## Download & Install
 ```sh
@@ -95,7 +95,7 @@ See [latest release][releases].
 ### Uninstall
 
 Use `sudo make uninstall` to uninstall web-greeter, but preserving web-greeter.yml and themes.
-Either, use `sudo make uninstall_all` to remove everting related to web-greeter.
+Either, use `sudo make uninstall_all` to remove everything related to web-greeter.
 
 ## Theme JavaScript API
 [Antergos][Antergos] documentation is no longer available, although it is accesible through
@@ -104,14 +104,13 @@ Either, use `sudo make uninstall_all` to remove everting related to web-greeter.
 You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can
 explore the provided [themes](./themes) for real use cases.
 
-
-Aditionally, you can install the TypeScript types definitions inside your theme with npm:
+Additionally, you can install the TypeScript types definitions inside your theme with npm:
 
 ```sh
 npm install nody-greeter-types
 ```
 
-## Aditional features
+## Additional features
 
 ### Brightness control
 `acpi` is the only tool needed to control the brightness, besides a compatible device.
