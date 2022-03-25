@@ -138,10 +138,7 @@ class Application:
             self.window.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
         )
 
-        screen_size = self.desktop.availableGeometry().size()
-
-        self.window.setBaseSize(screen_size)
-        self.window.resize(screen_size)
+        self.window.setGeometry(self.app.primaryScreen().geometry())
 
         state = self.states['NORMAL']
         if web_greeter_config["app"]["fullscreen"]:

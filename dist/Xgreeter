@@ -2,6 +2,7 @@
 #
 # LightDM wrapper to run around greeter X sessions.
 
+export XCURSOR_SIZE=16
 xsetroot -cursor_name left_ptr
 
 exec $@
