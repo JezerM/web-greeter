@@ -115,7 +115,6 @@ def get_default_cursor():
 class Application:
     """Main application"""
     app: QApplication
-    desktop: QDesktopWidget
     window: QMainWindow
     states = WINDOW_STATES
     greeter: Greeter
@@ -129,7 +128,6 @@ class Application:
 
         self.app = QApplication(sys.argv)
         self.window = MainWindow()
-        self.desktop = self.app.desktop()
 
         self.window.setAttribute(Qt.WA_DeleteOnClose)
         self.window.setWindowTitle("Web Greeter")
