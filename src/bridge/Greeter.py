@@ -38,13 +38,14 @@ from PyQt5.QtCore import QVariant, QTimer
 
 # This Application
 from logger import logger
-from browser.error_prompt import Dialog
+from browser.error_prompt import Dialog, general_error_prompt
 from browser.bridge import Bridge, BridgeObject
 
 from config import web_greeter_config
 from utils.battery import Battery
 from bindings.screensaver import screensaver
 from utils.brightness import BrightnessController
+import globales
 
 from . import (
     language_to_dict,
@@ -366,11 +367,22 @@ class Greeter(BridgeObject):
     def start_session(self, session):
         if not session.strip():
             return False
-        started: bool = LightDMGreeter.start_session_sync(session)
-        if started or self.is_authenticated:
-            logger.debug("Session \"%s\" started", session)
-            screensaver.reset_screensaver()
-        return started
+        try:
+            started: bool = LightDMGreeter.start_session_sync(session)
+            if started or self.is_authenticated:
+                logger.debug("Session \"%s\" started", session)
+                screensaver.reset_screensaver()
+            return started
+        except GError as err:
+            logger.error(err)
+            general_error_prompt(
+                globales.greeter.window,
+                "LightDM couldn't start session",
+                f"The provided session: \"{session}\" couldn't be started\n" \
+                f"{err}",
+                "An error ocurred"
+            )
+            return False
 
     @Bridge.method(result=bool)
     def suspend(self):

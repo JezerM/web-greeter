@@ -42,9 +42,9 @@ from PyQt5.QtWidgets import (
     QDialog,
     QVBoxLayout,
     QLabel,
-    QPushButton,
-    QAction
+    QPushButton
 )
+from PyQt5.QtGui import QWindow
 from config import web_greeter_config
 
 import globales
@@ -144,19 +144,15 @@ class Dialog(QDialog):
         # pylint: disable=missing-function-docstring
         self.done(button.role)
 
-def error_prompt(err):
-    """Prompts a popup dialog on error"""
-    if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
-        return
-
-    dia = Dialog(parent=globales.greeter.window, title="Error",
-                 message="An error ocurred. Do you want to change to default theme?",
-                 detail=err,
-                 buttons=["Reload theme", "Set default theme", "Cancel"],
-                 )
-
-    dia.exec()
-    result = dia.result()
+def general_error_prompt(window: QWindow, message: str, detail: str, title: str):
+    """General error prompt"""
+    dialog = Dialog(parent = window,
+                    title = title,
+                    message = message,
+                    detail = detail,
+                    buttons = ["Reload theme", "Use default theme", "Cancel"])
+    dialog.exec()
+    result = dialog.result()
 
     if result == 2:  # Cancel
         pass
@@ -165,3 +161,14 @@ def error_prompt(err):
         globales.greeter.load_theme()
     elif result == 0:  # Reload
         globales.greeter.load_theme()
+
+
+def error_prompt(err: str):
+    """Prompts a popup dialog on error"""
+    if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
+        return
+
+    general_error_prompt(globales.greeter.window,
+                         "An error ocurred. Do you want to change to default theme?",
+                         f"{err}",
+                         "An error ocurred")
