@@ -116,8 +116,10 @@ class Greeter(BridgeObject):
         logger.debug("LightDM API connected")
 
     def _determine_shared_data_directory_path(self):
-        user = LightDMUsers.get_users()[0]
-        user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(user.get_name())
+        users = LightDMUsers.get_users()
+        if not users:
+            return
+        user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(users[0].get_name())
         if user_data_dir is None:
             return
         self._shared_data_directory = user_data_dir.rpartition('/')[0]
