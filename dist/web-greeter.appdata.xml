@@ -44,6 +44,17 @@
 	-->
 
 	<releases>
+		<release date="2022-04-10" version="3.4.1">
+			<description>
+				<p>Changes:</p>
+				<ul>
+					<li>Fix build process</li>
+					<li>Fix typos in README</li>
+                    <li>Handle lightdm.start_session errors</li>
+					<li>Fix positioning on multiple screens</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2022-03-22" version="3.4.0">
 			<description>
 				<p>Added:</p>
@@ -58,7 +69,7 @@
 					<li>Migrate build process from utils.sh script to full Makefile</li>
 					<li>Man-pages updated</li>
 				</ul>
-				<p>Changes:</p>
+				<p>Removed:</p>
 				<ul>
 					<li>Remove python-xlib dependency in favor of python C binding</li>
 				</ul>

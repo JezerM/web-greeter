@@ -1,6 +1,17 @@
 # Change Log
 
-## [3.3.0](https://github.com/JezerM/web-greeter/tree/3.3.0) ~ 03-22-2022
+## [3.4.1](https://github.com/JezerM/web-greeter/tree/3.4.1) ~ 04-10-2022
+
+**Changes:**
+
+  * Fix build process
+  * Fix typos in README
+  * Handle lightdm_start_session errors
+  * Fix positioning on multiple screens
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.4.0...3.4.1)
+
+## [3.4.0](https://github.com/JezerM/web-greeter/tree/3.3.0) ~ 03-22-2022
 
 **Added:**
 
