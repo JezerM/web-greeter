@@ -101,7 +101,7 @@ build_completions: $(zshcompletiondir_local) $(bashcompletiondir_local)
 
 # Theme installation
 THEMES_DIR := $(abspath ${DESTDIR_PREFIX}/share/web-greeter/themes)
-THEMES_DIR_LOCAL := $(abspath ${INSTALL_ROOT}/${THEMES_DIR})
+THEMES_DIR_LOCAL := $(abspath ${INSTALL_PREFIX}/share/web-greeter/themes)
 themes/gruvbox := $(abspath ${THEMES_DIR_LOCAL}/gruvbox)
 themes/dracula := $(abspath ${THEMES_DIR_LOCAL}/dracula)
 themes/simple := $(abspath ${THEMES_DIR_LOCAL}/simple)
