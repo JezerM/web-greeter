@@ -28,39 +28,47 @@
 
 # Standard lib
 
+import math
+import random
 import re
 import sys
 import os
 from typing import (
     Dict,
+    List,
     Tuple,
     TypeVar,
 )
 
 # 3rd-Party Libs
-from PyQt5.QtCore import QUrl, Qt, QCoreApplication, QFile
+from PyQt5.QtCore import (
+    QUrl,
+    Qt,
+    QCoreApplication,
+    QFile,
+    QRect,
+    pyqtSignal
+)
 from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
 from PyQt5.QtWidgets import (
-    QAction, QApplication, QDesktopWidget,
-    QDockWidget, QMainWindow, qApp, QMenuBar
+    QAction, QApplication, QDockWidget,
+    qApp, QMenuBar
 )
 from PyQt5.QtWebEngineWidgets import (
     QWebEngineScript, QWebEngineProfile,
-    QWebEngineSettings, QWebEngineView
+    QWebEngineSettings, QWebEngineView, QWebEnginePage
 )
-from PyQt5.QtGui import QColor, QIcon
+from PyQt5.QtGui import QColor, QIcon, QScreen
 from PyQt5.QtWebChannel import QWebChannel
-from bridge.Config import Config
-from bridge.Greeter import Greeter
-from bridge.ThemeUtils import ThemeUtils
 
 from browser.error_prompt import WebPage
 from browser.url_scheme import QtUrlSchemeHandler
 from browser.interceptor import QtUrlRequestInterceptor
 from browser.window import MainWindow
+import globales
 
 from logger import logger
-from config import web_greeter_config
+from config import load_primary_theme_path, load_secondary_theme_path, load_theme_dir, web_greeter_config
 from bindings.screensaver import screensaver
 
 # pylint: disable-next=unused-import
@@ -112,320 +120,103 @@ def get_default_cursor():
     cursor_theme = matched.group().replace("Inherits=", "")
     return cursor_theme
 
-class Application:
-    """Main application"""
-    app: QApplication
-    window: QMainWindow
-    states = WINDOW_STATES
-    greeter: Greeter
-    greeter_config: Config
-    theme_utils: ThemeUtils
-    bridge_objects: Tuple[Greeter, Config, ThemeUtils]
-
-    def __init__(self):
-        QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-
-        self.app = QApplication(sys.argv)
-        self.window = MainWindow()
-
-        self.window.setAttribute(Qt.WA_DeleteOnClose)
-        self.window.setWindowTitle("Web Greeter")
-
-        self.window.setWindowFlags(
-            self.window.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
-        )
-
-        self.window.setGeometry(self.app.primaryScreen().geometry())
-
-        state = self.states['NORMAL']
-        if web_greeter_config["app"]["fullscreen"]:
-            state = self.states["FULLSCREEN"]
-
-        try:
-            self.window.windowHandle().setWindowState(state)
-        except (AttributeError, TypeError):
-            self.window.setWindowState(state)
-
-        self.window.setCursor(Qt.ArrowCursor)
-
-        timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
-        screensaver.set_screensaver(timeout or 300)
-
-        cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
-        if cursor_theme is not None:
-            os.environ["XCURSOR_THEME"] = cursor_theme
-        else:
-            os.environ["XCURSOR_THEME"] = get_default_cursor()
-
-        self.app.aboutToQuit.connect(self._before_exit)
-
-    @classmethod
-    def _before_exit(cls):
-        """Runs before exit"""
-        screensaver.reset_screensaver()
-
-    def show(self):
-        """Show window"""
-        self.window.show()
-        logger.debug("Window is ready")
-
-    def run(self) -> int:
-        """Runs the application"""
-        logger.debug("Web Greeter started")
-        return self.app.exec_()
-
-class Browser(Application):
+class BrowserWindow(MainWindow):
     # pylint: disable=too-many-instance-attributes
-    """The main browser"""
-    url_scheme: QWebEngineUrlScheme
-    bridge_initialized: bool
+    """Browser window"""
+
+    win_view: QWebEngineView
+    win_page: WebPage
     dev_view: QWebEngineView
-    dev_page: WebPage
-    qdock: QDockWidget
+    dev_page: QWebEnginePage
+    dev_tools_enabled: bool = False
+    bridge_initialized: bool
 
-    def __init__(self):
+    # closeEv: pyqtSignal
+    closeEv: pyqtSignal = pyqtSignal(MainWindow)
+
+    def __init__(self, geometry: QRect, dev_tools: bool):
         super().__init__()
-        self.init()
-        # self.load()
 
-    def init(self):
-        """Initialize browser"""
-        logger.debug("Initializing Browser Window")
-
-        if web_greeter_config["config"]["greeter"]["debug_mode"]:
-            os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = '12345'
-
-        url_scheme = "web-greeter"
-        self.url_scheme = QWebEngineUrlScheme(url_scheme.encode())
-        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified)
-        self.url_scheme.setFlags(QWebEngineUrlScheme.SecureScheme or
-                                 QWebEngineUrlScheme.LocalScheme or
-                                 QWebEngineUrlScheme.LocalAccessAllowed)
-        QWebEngineUrlScheme.registerScheme(self.url_scheme)
-
-        self.profile = QWebEngineProfile.defaultProfile()
-        self.interceptor = QtUrlRequestInterceptor(url_scheme)
-        self.url_scheme_handler = QtUrlSchemeHandler()
-
-        self.view = QWebEngineView(parent=self.window)
-        self.page = WebPage()
-        self.view.setPage(self.page)
-        self.page.setObjectName("WebG Page")
-        self.view.setObjectName("WebG View")
-
-        self.channel = QWebChannel(self.page)
+        self.dev_tools_enabled = dev_tools
         self.bridge_initialized = False
 
-        self.profile.installUrlSchemeHandler(url_scheme.encode(), self.url_scheme_handler)
+        self.setAttribute(Qt.WA_DeleteOnClose)
+        self.setWindowTitle("Web Greeter")
 
-        self._initialize_page()
+        self.setWindowFlags(
+            self.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
+        )
+        self.setGeometry(geometry)
 
-        if web_greeter_config["config"]["greeter"]["debug_mode"]:
-            self._initialize_devtools()
+        state = WINDOW_STATES['NORMAL']
+        if web_greeter_config["app"]["fullscreen"]:
+            state = WINDOW_STATES["FULLSCREEN"]
+
+        try:
+            self.windowHandle().setWindowState(state)
+        except (AttributeError, TypeError):
+            self.setWindowState(state)
+
+        self.setCursor(Qt.ArrowCursor)
+
+        self.win_view = QWebEngineView(parent=self)
+        self.win_page = WebPage()
+
+        self.win_page.setUrl(QUrl("google.com"))
+
+        self.win_view.setPage(self.win_page)
+        self.win_view.setObjectName("WebG View")
+        self.win_page.setObjectName("WebG Page")
+        self._init_winpage()
+
+        if self.dev_tools_enabled:
+            self._init_devtools()
         else:
-            self.view.setContextMenuPolicy(Qt.PreventContextMenu)
+            self.win_view.setContextMenuPolicy(Qt.PreventContextMenu)
 
         self._init_actions()
+
         if web_greeter_config["app"]["frame"]:
             self._init_menu_bar()
         else:
-            self.window.setWindowFlags(
-                self.window.windowFlags() | Qt.FramelessWindowHint
+            self.setWindowFlags(
+                self.windowFlags() | Qt.FramelessWindowHint
             )
 
-        if web_greeter_config["config"]["greeter"]["secure_mode"]:
-            if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
-                self.profile.setUrlRequestInterceptor(self.interceptor)
-            else: # Older Qt5 versions
-                self.profile.setRequestInterceptor(self.interceptor)
-
-        self.page.setBackgroundColor(QColor(0, 0, 0))
-        self.window.setStyleSheet("""QMainWindow, QWebEngineView {
+        self.win_page.setBackgroundColor(QColor(0, 0, 0))
+        self.setStyleSheet("""QMainWindow, QWebEngineView {
 	                                background: #000000;
                                  }""")
 
-        self.window.setCentralWidget(self.view)
+        self.setCentralWidget(self.win_view)
 
-        logger.debug("Browser Window created")
+        self.init_channel()
+        self.win_page.loadStarted.connect(self.init_bridge)
 
-    def load(self):
-        """Load theme and initialize bridge"""
-        self.load_theme()
+    def closeEvent(self, event):
+        """Close event"""
+        # pylint: disable=invalid-name
+        self.closeEv.emit(self)
+        print("Closed window")
+        event.accept()
 
-        self.bridge_objects = (self.greeter, self.greeter_config, self.theme_utils)
+    def init_channel(self):
+        """Initialize channel"""
+        self.channel = QWebChannel(self.win_page)
+        self.bridge_objects = (
+            globales.LDMGreeter,
+            globales.LDMGreeterConfig,
+            globales.LDMThemeUtils
+        )
+
+    def init_bridge(self):
+        """Initialize bridge objects"""
         self.initialize_bridge_objects()
         self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
+        # self.win_page.loadStarted.disconnect(self.init_channel)
 
-    def _initialize_devtools(self):
-        self.dev_view = QWebEngineView(parent=self.window)
-        self.dev_page = WebPage()
-        self.dev_view.setPage(self.dev_page)
-        self.page.setDevToolsPage(self.dev_page)
-        self.dev_view.setObjectName("Devtools view")
-        self.dev_page.setObjectName("Devtools page")
-
-        self.dev_page.windowCloseRequested.connect(lambda: self.toggle_devtools_value(False))
-
-        inspect_element_action = self.page.action(self.page.InspectElement)
-        inspect_element_action.triggered.connect(lambda: self.toggle_devtools_value(True))
-
-        self.qdock = QDockWidget()
-        self.qdock.setWidget(self.dev_view)
-        self.qdock.setFeatures(QDockWidget.DockWidgetMovable or
-                               QDockWidget.DockWidgetClosable)
-
-        self.window.addDockWidget(Qt.RightDockWidgetArea, self.qdock)
-        self.qdock.hide()
-        logger.debug("DevTools initialized")
-
-    def toggle_devtools(self):
-        """Toggle devtools"""
-        if not web_greeter_config["config"]["greeter"]["debug_mode"]:
-            return
-        self.toggle_devtools_value(not self.qdock.isVisible())
-
-    def toggle_devtools_value(self, value: bool):
-        """Toggle devtools by value"""
-        if not web_greeter_config["config"]["greeter"]["debug_mode"]:
-            return
-
-        if value:
-            self.qdock.show()
-            self.dev_view.setFocus()
-        else:
-            self.qdock.hide()
-            self.view.setFocus()
-
-    def _init_actions(self):
-        """Init browser actions"""
-        self.exit_action = QAction(QIcon("exit.png"), "&Quit", self.window)
-        self.exit_action.setShortcut("Ctrl+Q")
-        self.exit_action.setStatusTip("Exit application")
-        self.exit_action.triggered.connect(qApp.quit)
-
-        self.toggle_dev_action = QAction("Toggle Developer Tools", self.window)
-        self.toggle_dev_action.setShortcut("Ctrl+Shift+I")
-        self.toggle_dev_action.triggered.connect(self.toggle_devtools)
-
-        self.fullscreen_action = QAction("Toggle Fullscreen", self.window)
-        self.fullscreen_action.setShortcut("F11")
-        self.fullscreen_action.triggered.connect(lambda: self.toggle_fullscreen(not self.window.isFullScreen()))
-
-        self.inc_zoom_action = QAction("Zoom In", self.window)
-        self.inc_zoom_action.setShortcut("Ctrl++")
-        self.inc_zoom_action.triggered.connect(self._inc_zoom)
-        self.dec_zoom_action = QAction("Zoom Out", self.window)
-        self.dec_zoom_action.setShortcut("Ctrl+-")
-        self.dec_zoom_action.triggered.connect(self._dec_zoom)
-        self.reset_zoom_action = QAction("Actual Size", self.window)
-        self.reset_zoom_action.setShortcut("Ctrl+0")
-        self.reset_zoom_action.triggered.connect(self._reset_zoom)
-
-        self.window.addAction(self.exit_action)
-        self.window.addAction(self.toggle_dev_action)
-        self.window.addAction(self.fullscreen_action)
-        self.window.addAction(self.inc_zoom_action)
-        self.window.addAction(self.dec_zoom_action)
-        self.window.addAction(self.reset_zoom_action)
-
-    def _inc_zoom(self):
-        if self.view.hasFocus():
-            self.page.increaseZoom()
-        else:
-            self.dev_page.increaseZoom()
-    def _dec_zoom(self):
-        if self.view.hasFocus():
-            self.page.decreaseZoom()
-        else:
-            self.dev_page.decreaseZoom()
-    def _reset_zoom(self):
-        if self.view.hasFocus():
-            self.page.setZoomFactor(1)
-        else:
-            self.dev_page.setZoomFactor(1)
-
-    def _init_menu_bar(self):
-        minimize_action = QAction("Minimize", self.window)
-        minimize_action.setShortcut("Ctrl+M")
-        minimize_action.triggered.connect(self.window.showMinimized)
-        close_action = QAction("Close", self.window)
-        close_action.setShortcut("Ctrl+W")
-        close_action.triggered.connect(self.window.close)
-
-        self.page.action(self.page.ReloadAndBypassCache).setText("Force Reload")
-
-        self.page.fullScreenRequested.connect(self.accept_fullscreen)
-
-        self.menu_bar = QMenuBar()
-
-        file_menu = self.menu_bar.addMenu("&File")
-        file_menu.addAction(self.exit_action)
-
-        edit_menu = self.menu_bar.addMenu("&Edit")
-        edit_menu.addAction(self.page.action(self.page.Undo))
-        edit_menu.addAction(self.page.action(self.page.Redo))
-        edit_menu.addSeparator()
-        edit_menu.addAction(self.page.action(self.page.Cut))
-        edit_menu.addAction(self.page.action(self.page.Copy))
-        edit_menu.addAction(self.page.action(self.page.Paste))
-        edit_menu.addSeparator()
-        edit_menu.addAction(self.page.action(self.page.SelectAll))
-
-        view_menu = self.menu_bar.addMenu("&View")
-        view_menu.addAction(self.page.action(self.page.Reload))
-        view_menu.addAction(self.page.action(self.page.ReloadAndBypassCache))
-        view_menu.addAction(self.toggle_dev_action)
-        view_menu.addSeparator()
-        view_menu.addAction(self.reset_zoom_action)
-        view_menu.addAction(self.inc_zoom_action)
-        view_menu.addAction(self.dec_zoom_action)
-        view_menu.addSeparator()
-        view_menu.addAction(self.fullscreen_action)
-
-        window_menu = self.menu_bar.addMenu("&Window")
-        window_menu.addAction(minimize_action)
-        window_menu.addAction(close_action)
-
-        # help_menu = menu_bar.addMenu("&Help")
-
-        self.window.setMenuBar(self.menu_bar)
-
-    def accept_fullscreen(self, request):
-        """Accepts fullscreen requests"""
-        if web_greeter_config["config"]["greeter"]["debug_mode"]:
-            request.reject()
-            return
-        if request.toggleOn():
-            self.toggle_fullscreen(True)
-        else:
-            self.toggle_fullscreen(False)
-        request.accept()
-
-    def toggle_fullscreen(self, value: bool):
-        """Toggle fullscreen"""
-        if not web_greeter_config["config"]["greeter"]["debug_mode"]:
-            return
-        if value:
-            state = self.states["FULLSCREEN"]
-            self.window.setWindowFlags(
-                self.window.windowFlags() or Qt.FramelessWindowHint
-            )
-            self.menu_bar.setParent(None)
-            self.window.setMenuBar(None)
-        else:
-            state = self.states["NORMAL"]
-            self.window.setWindowFlags(
-                self.window.windowFlags() or not Qt.FramelessWindowHint
-            )
-            self.window.setMenuBar(self.menu_bar)
-        try:
-            self.window.windowHandle().setWindowState(state)
-        except (AttributeError, TypeError):
-            self.window.setWindowState(state)
-
-    def _initialize_page(self):
-        page_settings = self.page.settings().globalSettings()
+    def _init_winpage(self):
+        page_settings = self.win_page.settings().globalSettings()
 
         if not web_greeter_config["config"]["greeter"]["secure_mode"]:
             ENABLED_SETTINGS.append('LocalContentCanAccessRemoteUrls')
@@ -444,34 +235,177 @@ class Browser(Application):
             except AttributeError:
                 pass
 
-        self.page.setView(self.view)
+        # self.win_page.setView(self.win_view)
 
-    def load_theme(self):
-        """Load theme"""
-        theme = web_greeter_config["config"]["greeter"]["theme"]
-        dir_t = "/usr/share/web-greeter/themes/"
-        path_to_theme = os.path.join(dir_t, theme, "index.html")
-        def_theme = "gruvbox"
+    def _init_devtools(self):
+        self.dev_view = QWebEngineView(parent=self)
+        self.dev_page = QWebEnginePage()
 
-        if theme.startswith("/"):
-            path_to_theme = theme
-        elif theme.__contains__(".") or theme.__contains__("/"):
-            path_to_theme = os.path.join(os.getcwd(), theme)
-            path_to_theme = os.path.realpath(path_to_theme)
+        self.dev_view.setPage(self.dev_page)
+        self.dev_view.setObjectName("Devtools view")
+        self.dev_page.setObjectName("Devtools page")
 
-        if not path_to_theme.endswith(".html"):
-            path_to_theme = os.path.join(path_to_theme, "index.html")
+        self.win_page.setDevToolsPage(self.dev_page)
 
-        if not os.path.exists(path_to_theme):
-            print("Path does not exists", path_to_theme)
-            path_to_theme = os.path.join(dir_t, def_theme, "index.html")
+        self.dev_page.windowCloseRequested.connect(lambda: self.toggle_devtools_value(False))
 
-        web_greeter_config["config"]["greeter"]["theme"] = path_to_theme
+        inspect_element_action = self.win_page.action(self.win_page.InspectElement)
+        inspect_element_action.triggered.connect(lambda: self.toggle_devtools_value(True))
 
-        url = QUrl(f"web-greeter://app/{path_to_theme}")
-        self.page.load(url)
+        self.qdock = QDockWidget()
+        self.qdock.setWidget(self.dev_view)
+        self.qdock.setFeatures(QDockWidget.DockWidgetMovable or
+                               QDockWidget.DockWidgetClosable)
 
-        logger.debug("Theme loaded")
+        self.addDockWidget(Qt.RightDockWidgetArea, self.qdock)
+        self.qdock.hide()
+
+    def _init_menu_bar(self):
+        minimize_action = QAction("Minimize", self)
+        minimize_action.setShortcut("Ctrl+M")
+        minimize_action.triggered.connect(self.showMinimized)
+        close_action = QAction("Close", self)
+        close_action.setShortcut("Ctrl+W")
+        close_action.triggered.connect(self.close)
+
+        self.win_page.action(self.win_page.ReloadAndBypassCache).setText("Force Reload")
+
+        self.win_page.fullScreenRequested.connect(self.accept_fullscreen)
+
+        self.menu_bar = QMenuBar()
+
+        file_menu = self.menu_bar.addMenu("&File")
+        file_menu.addAction(self.exit_action)
+
+        edit_menu = self.menu_bar.addMenu("&Edit")
+        edit_menu.addAction(self.win_page.action(self.win_page.Undo))
+        edit_menu.addAction(self.win_page.action(self.win_page.Redo))
+        edit_menu.addSeparator()
+        edit_menu.addAction(self.win_page.action(self.win_page.Cut))
+        edit_menu.addAction(self.win_page.action(self.win_page.Copy))
+        edit_menu.addAction(self.win_page.action(self.win_page.Paste))
+        edit_menu.addSeparator()
+        edit_menu.addAction(self.win_page.action(self.win_page.SelectAll))
+
+        view_menu = self.menu_bar.addMenu("&View")
+        view_menu.addAction(self.win_page.action(self.win_page.Reload))
+        view_menu.addAction(self.win_page.action(self.win_page.ReloadAndBypassCache))
+        view_menu.addAction(self.toggle_dev_action)
+        view_menu.addSeparator()
+        view_menu.addAction(self.reset_zoom_action)
+        view_menu.addAction(self.inc_zoom_action)
+        view_menu.addAction(self.dec_zoom_action)
+        view_menu.addSeparator()
+        view_menu.addAction(self.fullscreen_action)
+
+        window_menu = self.menu_bar.addMenu("&Window")
+        window_menu.addAction(minimize_action)
+        window_menu.addAction(close_action)
+
+        # help_menu = menu_bar.addMenu("&Help")
+
+        self.setMenuBar(self.menu_bar)
+
+    def _init_actions(self):
+        self.exit_action = QAction(QIcon("exit.png"), "&Quit", self)
+        self.exit_action.setShortcut("Ctrl+Q")
+        self.exit_action.setStatusTip("Exit application")
+        self.exit_action.triggered.connect(qApp.quit)
+
+        self.toggle_dev_action = QAction("Toggle Developer Tools", self)
+        self.toggle_dev_action.setShortcut("Ctrl+Shift+I")
+        self.toggle_dev_action.triggered.connect(self.toggle_devtools)
+
+        self.fullscreen_action = QAction("Toggle Fullscreen", self)
+        self.fullscreen_action.setShortcut("F11")
+        self.fullscreen_action.triggered.connect(
+            lambda: self.toggle_fullscreen(not self.isFullScreen())
+        )
+
+        self.inc_zoom_action = QAction("Zoom In", self)
+        self.inc_zoom_action.setShortcut("Ctrl++")
+        self.inc_zoom_action.triggered.connect(self._inc_zoom)
+        self.dec_zoom_action = QAction("Zoom Out", self)
+        self.dec_zoom_action.setShortcut("Ctrl+-")
+        self.dec_zoom_action.triggered.connect(self._dec_zoom)
+        self.reset_zoom_action = QAction("Actual Size", self)
+        self.reset_zoom_action.setShortcut("Ctrl+0")
+        self.reset_zoom_action.triggered.connect(self._reset_zoom)
+
+        self.addAction(self.exit_action)
+        self.addAction(self.toggle_dev_action)
+        self.addAction(self.fullscreen_action)
+        self.addAction(self.inc_zoom_action)
+        self.addAction(self.dec_zoom_action)
+        self.addAction(self.reset_zoom_action)
+
+    def toggle_devtools(self):
+        """Toggle devtools"""
+        if not self.dev_tools_enabled:
+            return
+        self.toggle_devtools_value(not self.qdock.isVisible())
+
+    def toggle_devtools_value(self, value: bool):
+        """Toggle devtools by value"""
+        if not self.dev_tools_enabled:
+            return
+
+        if value:
+            self.qdock.show()
+            self.dev_view.setFocus()
+        else:
+            self.qdock.hide()
+            self.win_view.setFocus()
+
+    def _inc_zoom(self):
+        if self.win_view.hasFocus():
+            self.win_page.increaseZoom()
+        else:
+            self.dev_page.increaseZoom()
+    def _dec_zoom(self):
+        if self.win_view.hasFocus():
+            self.win_page.decreaseZoom()
+        else:
+            self.dev_page.decreaseZoom()
+    def _reset_zoom(self):
+        if self.win_view.hasFocus():
+            self.win_page.setZoomFactor(1)
+        else:
+            self.dev_page.setZoomFactor(1)
+
+
+    def accept_fullscreen(self, request):
+        """Accepts fullscreen requests"""
+        if self.dev_tools_enabled:
+            request.reject()
+            return
+        if request.toggleOn():
+            self.toggle_fullscreen(True)
+        else:
+            self.toggle_fullscreen(False)
+        request.accept()
+
+    def toggle_fullscreen(self, value: bool):
+        """Toggle fullscreen"""
+        if not self.dev_tools_enabled:
+            return
+        if value:
+            state = WINDOW_STATES["FULLSCREEN"]
+            self.setWindowFlags(
+                self.windowFlags() or Qt.FramelessWindowHint
+            )
+            self.menu_bar.setParent(None)
+            self.setMenuBar(None)
+        else:
+            state = WINDOW_STATES["NORMAL"]
+            self.setWindowFlags(
+                self.windowFlags() or not Qt.FramelessWindowHint
+            )
+            self.setMenuBar(self.menu_bar)
+        try:
+            self.windowHandle().setWindowState(state)
+        except (AttributeError, TypeError):
+            self.setWindowState(state)
 
     @staticmethod
     def _create_webengine_script(path: Url, name: str) -> QWebEngineScript:
@@ -495,7 +429,7 @@ class Browser(Application):
         return self._create_webengine_script(':/qtwebchannel/qwebchannel.js', 'QWebChannel API')
 
     def _init_bridge_channel(self) -> None:
-        self.page.setWebChannel(self.channel)
+        self.win_page.setWebChannel(self.channel)
         self.bridge_initialized = True
 
     def initialize_bridge_objects(self) -> None:
@@ -516,4 +450,184 @@ class Browser(Application):
         qt_api_source = qt_api.sourceCode()
         script = self._create_webengine_script(path, name)
         script.setSourceCode(qt_api_source + "\n" + script.sourceCode())
-        self.page.scripts().insert(script)
+        if not self.win_page.scripts().contains(script):
+            self.win_page.scripts().insert(script)
+
+class Application:
+    """Main application"""
+    app: QApplication
+    windows: List
+
+    def __init__(self):
+        QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+
+        self.app = QApplication(sys.argv)
+
+        self.set_protocol()
+
+        self.windows = self.create_windows()
+
+        timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
+        screensaver.set_screensaver(timeout or 300)
+
+        cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
+        if cursor_theme is not None:
+            os.environ["XCURSOR_THEME"] = cursor_theme
+        else:
+            os.environ["XCURSOR_THEME"] = get_default_cursor()
+
+        self.app.aboutToQuit.connect(self._before_exit)
+
+    def create_windows(self):
+        """Initialize application windows"""
+        screens: List[QScreen] = self.app.screens()
+        primary_screen = self.app.primaryScreen()
+
+        overall_boundary = {
+            "minX": math.inf,
+            "maxX": -math.inf,
+            "minY": math.inf,
+            "maxY": -math.inf,
+        }
+
+        for screen in screens:
+            overall_boundary["minX"] = min(overall_boundary["minX"],
+                                          screen.geometry().x())
+            overall_boundary["minY"] = min(overall_boundary["minY"],
+                                          screen.geometry().y())
+            overall_boundary["maxX"] = min(
+                overall_boundary["maxX"],
+                screen.geometry().x() + screen.geometry().height()
+            )
+            overall_boundary["maxY"] = min(
+                overall_boundary["maxY"],
+                screen.geometry().y() + screen.geometry().height()
+            )
+
+        windows = []
+        # screens.append(primary_screen)
+        for screen in screens:
+            is_primary: bool = screen == primary_screen
+
+            window = BrowserWindow(
+                QRect(
+                    screen.geometry().x(),
+                    screen.geometry().y(),
+                    screen.geometry().width(),
+                    screen.geometry().height()
+                ),
+                web_greeter_config["config"]["greeter"]["debug_mode"]
+            )
+
+            windows.append({
+                "is_primary": is_primary,
+                "display": screen,
+                "window": window,
+                "meta": {
+                    "id": random.randrange(1, 20000),
+                    "is_primary": is_primary,
+                    "size": {
+                        "width": screen.geometry().width(),
+                        "height": screen.geometry().height(),
+                    },
+                    "position": {
+                        "x": screen.geometry().x(),
+                        "y": screen.geometry().y(),
+                    },
+                    "overallBoundary": overall_boundary
+                }
+            })
+
+            window.closeEv.connect(self._remove_window)
+
+        logger.debug("Browser Window created")
+
+        return windows
+
+    def _remove_window(self, window):
+        wins = []
+        for win in self.windows:
+            if win["window"] != window:
+                wins.append(win)
+        self.windows = wins
+
+    def set_protocol(self):
+        """Set protocol"""
+        url_scheme = "web-greeter"
+        self.url_scheme = QWebEngineUrlScheme(url_scheme.encode())
+        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified)
+        self.url_scheme.setFlags(QWebEngineUrlScheme.SecureScheme or
+                                 QWebEngineUrlScheme.LocalScheme or
+                                 QWebEngineUrlScheme.LocalAccessAllowed)
+        QWebEngineUrlScheme.registerScheme(self.url_scheme)
+
+        self.profile = QWebEngineProfile.defaultProfile()
+        self.interceptor = QtUrlRequestInterceptor(url_scheme)
+        self.url_scheme_handler = QtUrlSchemeHandler()
+
+        self.profile.installUrlSchemeHandler(url_scheme.encode(), self.url_scheme_handler)
+
+        if web_greeter_config["config"]["greeter"]["secure_mode"]:
+            if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
+                self.profile.setUrlRequestInterceptor(self.interceptor)
+            else: # Older Qt5 versions
+                self.profile.setRequestInterceptor(self.interceptor)
+
+    @classmethod
+    def _before_exit(cls):
+        """Runs before exit"""
+        screensaver.reset_screensaver()
+
+    def show(self):
+        """Show window"""
+        for win in self.windows:
+            win["window"].show()
+            logger.debug("Web Greeter started win: %s", str(win["meta"]["id"]))
+
+    def run(self) -> int:
+        """Runs the application"""
+        logger.debug("Web Greeter started")
+        return self.app.exec_()
+
+class Browser(Application):
+    # pylint: disable=too-many-instance-attributes
+    """The main browser"""
+
+    def __init__(self):
+        super().__init__()
+        self.init()
+        self.load_theme()
+
+    def init(self):
+        """Initialize browser"""
+        logger.debug("Initializing Browser Window")
+
+        if web_greeter_config["config"]["greeter"]["debug_mode"]:
+            os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = '12345'
+
+    def load_theme(self):
+        """Load theme"""
+        load_theme_dir()
+        primary_html = load_primary_theme_path()
+        secondary_html = load_secondary_theme_path()
+
+        primary_url = QUrl(f"web-greeter://app/{primary_html}")
+        secondary_url = QUrl(f"web-greeter://app/{secondary_html}")
+
+        for win in self.windows:
+            if win["is_primary"]:
+                win["window"].win_page.setUrl(primary_url)
+                print("Primary URL loaded", primary_html)
+            else:
+                win["window"].win_page.setUrl(secondary_url)
+                print("Secondary URL loaded", secondary_html)
+
+        logger.debug("Theme loaded")
+
+    def primary_window(self):
+        """Returns the primary window"""
+        for win in self.windows:
+            if win["is_primary"]:
+                return win["window"]
+        raise Exception("No primary window initialized")
