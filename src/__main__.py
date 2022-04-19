@@ -112,13 +112,13 @@ if __name__ == '__main__':
     from browser.browser import Browser
     from bridge import Greeter, Config, ThemeUtils
 
+    globales.LDMGreeter = Greeter()
+    globales.LDMGreeterConfig = Config()
+    globales.LDMThemeUtils = ThemeUtils(globales.LDMGreeter)
+
     globales.greeter = Browser()
     browser = globales.greeter
 
-    browser.greeter = Greeter()
-    browser.greeter_config = Config()
-    browser.theme_utils = ThemeUtils(browser.greeter)
-
-    browser.load()
+    # browser.load()
     browser.show()
     browser.run()

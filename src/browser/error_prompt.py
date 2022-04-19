@@ -141,7 +141,7 @@ class Dialog(QDialog):
         self.setLayout(self.layout)
 
     def handle_click(self, button: QAbstractButton):
-        # pylint: disable=missing-function-docstring
+        """Handle click of button"""
         self.done(button.role)
 
 def general_error_prompt(window: QWindow, message: str, detail: str, title: str):
@@ -168,7 +168,7 @@ def error_prompt(err: str):
     if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
         return
 
-    general_error_prompt(globales.greeter.window,
+    general_error_prompt(globales.greeter.primary_window(),
                          "An error ocurred. Do you want to change to default theme?",
                          f"{err}",
                          "An error ocurred")
