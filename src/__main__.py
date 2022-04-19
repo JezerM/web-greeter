@@ -116,6 +116,9 @@ if __name__ == '__main__':
     globales.LDMGreeterConfig = Config()
     globales.LDMThemeUtils = ThemeUtils(globales.LDMGreeter)
 
+    config.load_theme_config()
+    config.ensure_theme()
+
     globales.greeter = Browser()
     browser = globales.greeter
 
