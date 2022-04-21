@@ -213,7 +213,7 @@ class BrowserWindow(MainWindow):
         """Initialize bridge objects"""
         self.initialize_bridge_objects()
         self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
-        # self.win_page.loadStarted.disconnect(self.init_channel)
+        self.win_page.loadStarted.disconnect(self.init_bridge)
 
     def _init_winpage(self):
         page_settings = self.win_page.settings().globalSettings()
