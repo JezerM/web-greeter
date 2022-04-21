@@ -102,8 +102,6 @@ def load_theme_dir() -> str:
                     theme, def_theme)
         theme_dir = os.path.join(directory, def_theme)
 
-    print("ThemeDir:", theme_dir)
-
     return theme_dir
 
 def load_primary_theme_path() -> str:

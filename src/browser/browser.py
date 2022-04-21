@@ -197,7 +197,6 @@ class BrowserWindow(MainWindow):
         """Close event"""
         # pylint: disable=invalid-name
         self.closeEv.emit(self)
-        print("Closed window")
         event.accept()
 
     def init_channel(self):
@@ -618,10 +617,8 @@ class Browser(Application):
         for win in self.windows:
             if win["is_primary"]:
                 win["window"].win_page.setUrl(primary_url)
-                print("Primary URL loaded", primary_html)
             else:
                 win["window"].win_page.setUrl(secondary_url)
-                print("Secondary URL loaded", secondary_html)
 
         logger.debug("Theme loaded")
 
