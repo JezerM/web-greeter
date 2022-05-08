@@ -162,8 +162,6 @@ class BrowserWindow(MainWindow):
         self.win_view = QWebEngineView(parent=self)
         self.win_page = WebPage()
 
-        self.win_page.setUrl(QUrl("google.com"))
-
         self.win_view.setPage(self.win_page)
         self.win_view.setObjectName("WebG View")
         self.win_page.setObjectName("WebG Page")
@@ -452,10 +450,64 @@ class BrowserWindow(MainWindow):
         if not self.win_page.scripts().contains(script):
             self.win_page.scripts().insert(script)
 
+class WindowSize:
+    width: float
+    height: float
+
+    def __init__(self, width, height):
+        self.width = width
+        self.height = height
+
+class WindowPosition:
+    x: float
+    y: float
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+
+class OverallBoundary:
+    minX: float
+    maxX: float
+    minY: float
+    maxY: float
+
+    def __init__(self, minX, maxX, minY, maxY):
+        self.minX = minX
+        self.maxX = maxX
+        self.minY = minY
+        self.maxY = maxY
+
+class WindowMetadata:
+    id: int
+    is_primary: bool
+    size: WindowSize
+    position: WindowPosition
+    overallBoundary: OverallBoundary
+
+    def __init__(self, id, is_primary, size, position, overallBoundary):
+        self.id = id
+        self.is_primary = is_primary
+        self.size = size
+        self.position = position
+        self.overallBoundary = overallBoundary
+
+class WindowAbstract:
+    is_primary: bool
+    display: QScreen
+    window: BrowserWindow
+    meta: WindowMetadata
+
+    def __init__(self, is_primary, display, window, meta):
+        self.is_primary = is_primary
+        self.display = display
+        self.window = window
+        self.meta = meta
+
 class Application:
     """Main application"""
     app: QApplication
-    windows: List
+    windows: List[WindowAbstract]
 
     def __init__(self):
         QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
@@ -481,30 +533,30 @@ class Application:
     def create_windows(self):
         """Initialize application windows"""
         screens: List[QScreen] = self.app.screens()
-        primary_screen = self.app.primaryScreen()
+        primary_screen: QScreen = self.app.primaryScreen()
 
-        overall_boundary = {
-            "minX": math.inf,
-            "maxX": -math.inf,
-            "minY": math.inf,
-            "maxY": -math.inf,
-        }
+        overall_boundary: OverallBoundary = OverallBoundary(
+            minX = math.inf,
+            maxX = -math.inf,
+            minY = math.inf,
+            maxY = -math.inf
+        )
 
         for screen in screens:
-            overall_boundary["minX"] = min(overall_boundary["minX"],
+            overall_boundary.minX = min(overall_boundary.minX,
                                           screen.geometry().x())
-            overall_boundary["minY"] = min(overall_boundary["minY"],
+            overall_boundary.minY = min(overall_boundary.minY,
                                           screen.geometry().y())
-            overall_boundary["maxX"] = min(
-                overall_boundary["maxX"],
+            overall_boundary.maxX = min(
+                overall_boundary.maxX,
                 screen.geometry().x() + screen.geometry().height()
             )
-            overall_boundary["maxY"] = min(
-                overall_boundary["maxY"],
+            overall_boundary.maxY = min(
+                overall_boundary.maxY,
                 screen.geometry().y() + screen.geometry().height()
             )
 
-        windows = []
+        windows: List[WindowAbstract] = []
         # screens.append(primary_screen)
         for screen in screens:
             is_primary: bool = screen == primary_screen
@@ -519,24 +571,24 @@ class Application:
                 web_greeter_config["config"]["greeter"]["debug_mode"]
             )
 
-            windows.append({
-                "is_primary": is_primary,
-                "display": screen,
-                "window": window,
-                "meta": {
-                    "id": random.randrange(1, 20000),
-                    "is_primary": is_primary,
-                    "size": {
-                        "width": screen.geometry().width(),
-                        "height": screen.geometry().height(),
-                    },
-                    "position": {
-                        "x": screen.geometry().x(),
-                        "y": screen.geometry().y(),
-                    },
-                    "overallBoundary": overall_boundary
-                }
-            })
+            windows.append(WindowAbstract(
+                is_primary = is_primary,
+                display = screen,
+                window = window,
+                meta = WindowMetadata(
+                    id = random.randrange(1, 20000),
+                    is_primary = is_primary,
+                    size = WindowSize(
+                        width = screen.geometry().width(),
+                        height = screen.geometry().height(),
+                    ),
+                    position = WindowPosition(
+                        x = screen.geometry().x(),
+                        y = screen.geometry().y(),
+                    ),
+                    overallBoundary = overall_boundary
+                )
+            ))
 
             window.closeEv.connect(self._remove_window)
 
@@ -547,7 +599,7 @@ class Application:
     def _remove_window(self, window):
         wins = []
         for win in self.windows:
-            if win["window"] != window:
+            if win.window != window:
                 wins.append(win)
         self.windows = wins
 
@@ -581,8 +633,8 @@ class Application:
     def show(self):
         """Show window"""
         for win in self.windows:
-            win["window"].show()
-            logger.debug("Web Greeter started win: %s", str(win["meta"]["id"]))
+            win.window.show()
+            logger.debug("Web Greeter started win: %s", str(win.meta.id))
 
     def run(self) -> int:
         """Runs the application"""
@@ -615,16 +667,16 @@ class Browser(Application):
         secondary_url = QUrl(f"web-greeter://app/{secondary_html}")
 
         for win in self.windows:
-            if win["is_primary"]:
-                win["window"].win_page.setUrl(primary_url)
+            if win.is_primary:
+                win.window.win_page.setUrl(primary_url)
             else:
-                win["window"].win_page.setUrl(secondary_url)
+                win.window.win_page.setUrl(secondary_url)
 
         logger.debug("Theme loaded")
 
     def primary_window(self):
         """Returns the primary window"""
         for win in self.windows:
-            if win["is_primary"]:
-                return win["window"]
+            if win.is_primary:
+                return win.window
         raise Exception("No primary window initialized")
