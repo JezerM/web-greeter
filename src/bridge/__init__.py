@@ -26,56 +26,74 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
+from logger import logger
+
 def language_to_dict(lang):
     """Returns a dict from LightDMLanguage object"""
     if not lang:
         return {}
-    return {
-        "code": lang.get_code(),
-        "name": lang.get_name(),
-        "territory": lang.get_territory()
-    }
+    try:
+        return {
+            "code": lang.get_code(),
+            "name": lang.get_name(),
+            "territory": lang.get_territory()
+        }
+    except Exception as e:
+        logger.warn(e)
+        return {}
 
 
 def layout_to_dict(layout):
     """Returns a dict from LightDMLayout object"""
     if not layout:
         return {}
-    return {
-        "description": layout.get_description(),
-        "name": layout.get_name(),
-        "short_description": layout.get_short_description()
-    }
+    try:
+        return {
+            "description": layout.get_description(),
+            "name": layout.get_name(),
+            "short_description": layout.get_short_description()
+        }
+    except Exception as e:
+        logger.warn(e)
+        return {}
 
 
 def session_to_dict(session):
     """Returns a dict from LightDMSession object"""
     if not session:
         return {}
-    return {
-        "comment": session.get_comment(),
-        "key": session.get_key(),
-        "name": session.get_name(),
-        "type": session.get_session_type(),
-    }
+    try:
+        return {
+            "comment": session.get_comment(),
+            "key": session.get_key(),
+            "name": session.get_name(),
+            "type": session.get_session_type(),
+        }
+    except Exception as e:
+        logger.warn(e)
+        return {}
 
 
 def user_to_dict(user):
     """Returns a dict from LightDMUser object"""
     if not user:
         return {}
-    return {
-        "background": user.get_background(),
-        "display_name": user.get_display_name(),
-        "home_directory": user.get_home_directory(),
-        "image": user.get_image(),
-        "language": user.get_language(),
-        "layout": user.get_layout(),
-        "layouts": user.get_layouts(),
-        "logged_in": user.get_logged_in(),
-        "session": user.get_session(),
-        "username": user.get_name(),
-    }
+    try:
+        return {
+            "background": user.get_background(),
+            "display_name": user.get_display_name(),
+            "home_directory": user.get_home_directory(),
+            "image": user.get_image(),
+            "language": user.get_language(),
+            "layout": user.get_layout(),
+            "layouts": user.get_layouts(),
+            "logged_in": user.get_logged_in(),
+            "session": user.get_session(),
+            "username": user.get_name(),
+        }
+    except Exception as e:
+        logger.warn(e)
+        return {}
 
 
 def battery_to_dict(battery):
@@ -84,15 +102,19 @@ def battery_to_dict(battery):
         return {}
     if len(battery.batteries) == 0:
         return {}
-    return {
-        "name": battery.get_name(),
-        "level": battery.get_level(),
-        "status": battery.get_status(),
-        "ac_status": battery.get_ac_status(),
-        "capacity": battery.get_capacity(),
-        "time": battery.get_time(),
-        "watt": battery.get_watt()
-    }
+    try:
+        return {
+            "name": battery.get_name(),
+            "level": battery.get_level(),
+            "status": battery.get_status(),
+            "ac_status": battery.get_ac_status(),
+            "capacity": battery.get_capacity(),
+            "time": battery.get_time(),
+            "watt": battery.get_watt()
+        }
+    except Exception as e:
+        logger.warn(e)
+        return {}
 
 # pylint: disable=wrong-import-position
 from .Greeter import Greeter
