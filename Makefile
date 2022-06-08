@@ -55,11 +55,12 @@ $(build/web-greeter): src/*
 # Resources
 bundle.js := ${BUILD_DIR}/web-greeter/resources/js/bundle.js
 bundle/ThemeUtils := ${REPO_DIR}/src/resources/js/ThemeUtils.js
+bundle/GreeterComm := ${REPO_DIR}/src/resources/js/GreeterComm.js
 bundle/bootstrap := ${REPO_DIR}/src/resources/js/bootstrap.js
 
-$(bundle.js): $(build/web-greeter) $(bundle/ThemeUtils) $(bundle/bootstrap)
+$(bundle.js): $(build/web-greeter) $(bundle/ThemeUtils) $(bundle/bootstrap) $(bundle/GreeterComm)
 	@cd build/web-greeter/resources/js; \
-	cat ${bundle/ThemeUtils} ${bundle/bootstrap} > bundle.js
+	cat ${bundle/ThemeUtils} ${bundle/bootstrap} ${bundle/GreeterComm} > bundle.js
 
 resources.py := ${BUILD_DIR}/web-greeter/resources.py
 
