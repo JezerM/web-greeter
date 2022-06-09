@@ -52,8 +52,8 @@ class EventHandler(pyinotify.ProcessEvent):
     @classmethod
     def process_IN_MODIFY(cls, _):
         # pylint: disable=invalid-name,missing-function-docstring
-        if hasattr(globales, "greeter") and hasattr(globales.greeter, "greeter"):
-            globales.greeter.greeter.brightness_update.emit()
+        if hasattr(globales, "greeter") and hasattr(globales, "LDMGreeter"):
+            globales.LDMGreeter.brightness_update.emit()
 
 
 # Behavior based on "acpilight"

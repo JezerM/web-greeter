@@ -29,8 +29,8 @@ class ScreenSaver:
     saved: bool = False
 
     def __init__(self):
-        dir = os.path.dirname(os.path.realpath(__file__))
-        libname = os.path.join(dir, "_screensaver.so")
+        directory = os.path.dirname(os.path.realpath(__file__))
+        libname = os.path.join(directory, "_screensaver.so")
         self.clib = ctypes.CDLL(libname)
         self.clib.get_screensaver.restype = ScreenSaverDataPointer
 
@@ -38,7 +38,7 @@ class ScreenSaver:
         """Gets screensaver data"""
         data: ScreenSaverDataPointer = self.clib.get_screensaver()
         if data is None:
-            return
+            return None
         contents: ScreenSaverData = data.contents
         return contents
 

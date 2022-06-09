@@ -26,6 +26,9 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
+import math
+import sys
+from typing import Literal
 from logger import logger
 
 def language_to_dict(lang):
@@ -116,7 +119,39 @@ def battery_to_dict(battery):
         logger.warn(e)
         return {}
 
+def inf_to_infinity(num: float):
+    """Converts a math.inf to "infinity" or "-infinity" """
+    if not math.isinf(num):
+        return num
+    if num > 0:
+        return "infinity"
+    return "-infinity"
+
+def window_metadata_to_dict(metadata):
+    """Returns a dict from WindowMetadata object"""
+    if not metadata:
+        return {}
+    return {
+        "id": metadata.id,
+        "is_primary": metadata.is_primary,
+        "overallBoundary": {
+            "minX": metadata.overallBoundary.minX,
+            "maxX": inf_to_infinity(metadata.overallBoundary.maxX),
+            "minY": metadata.overallBoundary.minY,
+            "maxY": inf_to_infinity(metadata.overallBoundary.maxY),
+        },
+        "position": {
+            "x": metadata.position.x,
+            "y": metadata.position.y,
+        },
+        "size": {
+            "width": metadata.size.width,
+            "height": metadata.size.height,
+        },
+    }
+
 # pylint: disable=wrong-import-position
 from .Greeter import Greeter
 from .Config import Config
 from .ThemeUtils import ThemeUtils
+from .GreeterComm import GreeterComm

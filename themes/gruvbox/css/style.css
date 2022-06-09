@@ -332,10 +332,10 @@ input::-ms-clear {
   backdrop-filter: blur(10px);
 }
 
-#layouts-list {
+#layout-list {
   padding: 0;
 }
-#layouts-button {
+#layout-list-button {
   all: unset;
   cursor: pointer;
   padding: 8px;
@@ -365,7 +365,7 @@ input::-ms-clear {
   backdrop-filter: blur(10px);
 }
 
-#sessions-list {
+#session-list {
   position: absolute;
   left: 0;
   top: 0;
@@ -373,7 +373,7 @@ input::-ms-clear {
   align-items: flex-start;
   flex-direction: column;
 }
-#users-list {
+#user-list {
   position: absolute;
   right: 0;
   top: 0;
@@ -382,12 +382,12 @@ input::-ms-clear {
   flex-direction: column;
 }
 
-#sessions-button {
+#session-list-button {
   background: var(--blue);
   margin: 10px;
 }
 
-#users-button {
+#user-list-button {
   background: var(--purple);
   margin: 10px;
   float: right;

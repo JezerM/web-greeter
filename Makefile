@@ -54,10 +54,13 @@ $(build/web-greeter): src/*
 
 # Resources
 bundle.js := ${BUILD_DIR}/web-greeter/resources/js/bundle.js
+bundle/ThemeUtils := ${REPO_DIR}/src/resources/js/ThemeUtils.js
+bundle/GreeterComm := ${REPO_DIR}/src/resources/js/GreeterComm.js
+bundle/bootstrap := ${REPO_DIR}/src/resources/js/bootstrap.js
 
-$(bundle.js): $(build/web-greeter)
+$(bundle.js): $(build/web-greeter) $(bundle/ThemeUtils) $(bundle/bootstrap) $(bundle/GreeterComm)
 	@cd build/web-greeter/resources/js; \
-	cat ThemeUtils.js bootstrap.js > bundle.js
+	cat ${bundle/ThemeUtils} ${bundle/bootstrap} ${bundle/GreeterComm} > bundle.js
 
 resources.py := ${BUILD_DIR}/web-greeter/resources.py
 
@@ -103,22 +106,39 @@ build_completions: $(zshcompletiondir_local) $(bashcompletiondir_local)
 THEMES_DIR := $(abspath ${DESTDIR_PREFIX}/share/web-greeter/themes)
 THEMES_DIR_LOCAL := $(abspath ${INSTALL_PREFIX}/share/web-greeter/themes)
 themes/gruvbox := $(abspath ${THEMES_DIR_LOCAL}/gruvbox)
+themes/gruvbox/js := $(abspath ${REPO_DIR}/themes/gruvbox/js)
 themes/dracula := $(abspath ${THEMES_DIR_LOCAL}/dracula)
+themes/dracula/js := $(abspath ${REPO_DIR}/themes/dracula/js)
 themes/simple := $(abspath ${THEMES_DIR_LOCAL}/simple)
 themes/_vendor := $(abspath ${INSTALL_PREFIX}/share/web-greeter/_vendor)
 
 $(THEMES_DIR_LOCAL): $(INSTALL_ROOT)
 	@mkdir -p "${THEMES_DIR_LOCAL}"
 
-$(themes/gruvbox): $(THEMES_DIR_LOCAL) themes/gruvbox/*
+$(themes/gruvbox/js): themes/gruvbox/ts
+	@tsc --build themes/gruvbox
+	@echo " Gruvbox theme compiled"
+
+$(themes/dracula/js): themes/dracula/ts
+	@tsc --build themes/dracula
+	@echo " Dracula theme compiled"
+
+$(themes/gruvbox): $(THEMES_DIR_LOCAL) $(themes/gruvbox/js) themes/gruvbox
+	@if [ -d "${themes/gruvbox}" ]; then \
+		rm -rf "${themes/gruvbox}"; \
+	fi
 	@cp -r "${REPO_DIR}/themes/gruvbox" "${themes/gruvbox}"
 	@echo " Gruvbox theme copied"
-$(themes/dracula): $(THEMES_DIR_LOCAL) themes/dracula/*
+$(themes/dracula): $(THEMES_DIR_LOCAL) $(themes/dracula/js) themes/dracula
+	@if [ -d "${themes/dracula}" ]; then \
+		rm -rf "${themes/dracula}"; \
+	fi
 	@cp -r "${REPO_DIR}/themes/dracula" "${themes/dracula}"
 	@echo " Dracula theme copied"
 $(themes/simple): $(THEMES_DIR_LOCAL) themes/simple/*
 	@cp -r "${REPO_DIR}/themes/simple" "${themes/simple}"
 	@echo " Simple theme copied"
+
 $(themes/_vendor): $(INSTALL_ROOT) themes/_vendor/*
 	@cp -r "${REPO_DIR}/themes/_vendor" "${themes/_vendor}"
 	@echo " Theme vendors copied"

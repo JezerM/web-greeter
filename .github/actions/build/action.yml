@@ -10,6 +10,8 @@ runs:
     -
       name: Checkout
       uses: actions/checkout@v2
+      with:
+        submodules: true
     -
       name: Install dependencies
       shell: bash
