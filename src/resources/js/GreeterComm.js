@@ -62,7 +62,7 @@ class GreeterComm {
     }
 
     _on_broadcast(window_meta, data) {
-        const event = new Event("NodyBroadcastEvent");
+        const event = new Event("GreeterBroadcastEvent");
         event.window = window_meta;
         event.data = data;
         window.dispatchEvent(event);
