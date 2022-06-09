@@ -49,7 +49,6 @@ html {
 html * {
   font-family: system-ui;
   font-size: inherit;
-  transition: var(--animation-duration);
   color: var(--fg0);
 }
 
@@ -59,6 +58,7 @@ body {
   margin: 0;
   overflow-x: hidden;
   background-color: var(--bg0);
+  transition: var(--animation-duration);
 }
 
 .hide {
@@ -610,10 +610,10 @@ button {
   backdrop-filter: blur(50px);
 }
 
-#layouts-list {
+#layout-list {
   padding: 0;
 }
-#layouts-button {
+#layout-list-button {
   all: unset;
   cursor: pointer;
   padding: 8px;
