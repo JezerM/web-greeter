@@ -27,15 +27,14 @@
 # pylint: disable=wrong-import-position
 
 
-# This Application
-from typing import Dict, TypedDict, List
-from bridge import window_metadata_to_dict
-from browser.window import WindowAbstract
-from logger import logger
-from browser.error_prompt import Dialog, general_error_prompt
-from browser.bridge import Bridge, BridgeObject
+from typing import List
 
 from PyQt5.QtCore import QVariant
+
+# This Application
+from browser.window import WindowAbstract
+from browser.bridge import Bridge, BridgeObject
+from bridge import window_metadata_to_dict
 
 import globales
 

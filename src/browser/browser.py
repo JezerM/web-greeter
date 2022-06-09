@@ -34,7 +34,6 @@ import re
 import sys
 import os
 from typing import (
-    Dict,
     List,
     Tuple,
     TypeVar,
@@ -163,7 +162,7 @@ class Application:
                 web_greeter_config["config"]["greeter"]["debug_mode"]
             )
 
-            windows.append(WindowAbstract(
+            abstract = WindowAbstract(
                 is_primary = is_primary,
                 display = screen,
                 window = window,
@@ -180,8 +179,11 @@ class Application:
                     ),
                     overallBoundary = overall_boundary
                 )
-            ))
-
+            )
+            window.bridge_objects.append(
+                GreeterComm(abstract)
+            )
+            windows.append(abstract)
             window.closeEv.connect(self._remove_window)
 
         logger.debug("Browser Window created")
@@ -193,6 +195,9 @@ class Application:
         for win in self.windows:
             if win.window != window:
                 wins.append(win)
+            else:
+                comm: GreeterComm = win.window.bridge_objects[-1]
+                comm.destroy()
         self.windows = wins
 
     def set_protocol(self):

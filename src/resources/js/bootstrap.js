@@ -63,6 +63,8 @@
          * @memberOf window
          */
         window.theme_utils = new ThemeUtils(_channel.objects.ThemeUtils);
+
+        window.greeter_comm = new GreeterComm(_channel.objects.Comm);
     }
     new QWebChannel(qt.webChannelTransport, channel_ready_cb);
 
