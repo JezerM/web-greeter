@@ -84,7 +84,7 @@ pip install -r requirements.txt
 
 ## Download & Install
 ```sh
-git clone https://github.com/JezerM/web-greeter.git
+git clone --recursive https://github.com/JezerM/web-greeter.git
 cd web-greeter
 sudo make install
 ```
