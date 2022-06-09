@@ -43,7 +43,7 @@ communications: List = []
 def communication_emit(window, data):
     """Emit broadcast_signal for each GreeterComm element in communications"""
     for comm in communications:
-        print(window)
+        # print(window)
         comm.broadcast_signal.emit(window, data)
 
 class GreeterComm(BridgeObject):
