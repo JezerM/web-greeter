@@ -23,7 +23,7 @@ export class Backgrounds {
      * Background change requests are handled via broadcast events so that all
      * windows correctly update.
      */
-    window.addEventListener("NodyBroadcastEvent", (ev) => {
+    window.addEventListener("GreeterBroadcastEvent", (ev) => {
       const data: BackgroundData = ev.data as BackgroundData;
       if (data.type == "change-background") {
         this._backgroundPath = data.path;
@@ -74,8 +74,8 @@ export class Backgrounds {
     for (const path of this._backgroundImages) {
       const button = this.createImageButton(path);
       button.addEventListener("click", () => {
-        if (window.nody_greeter) {
-          window.nody_greeter.broadcast({
+        if (window.greeter_comm) {
+          window.greeter_comm.broadcast({
             type: "change-background",
             path,
           });

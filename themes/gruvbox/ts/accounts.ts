@@ -1,4 +1,4 @@
-import { LightDMUser } from "../../../js/ldm_interfaces";
+import { LightDMUser } from "../../../ts-types/ldm_interfaces";
 
 export class Accounts {
   private _userImage: HTMLDivElement | null;

@@ -73,7 +73,7 @@
     "./ts"
   ],
   "files": [
-    "../../js/preload.d.ts",
-    "../../js/ldm_interfaces.d.ts"
+    "../../ts-types/index.d.ts",
+    "../../ts-types/ldm_interfaces.d.ts"
   ]
 }

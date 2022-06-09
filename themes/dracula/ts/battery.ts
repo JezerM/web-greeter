@@ -1,4 +1,4 @@
-import { LightDMBattery } from "../../../js/ldm_interfaces";
+import { LightDMBattery } from "../../../ts-types/ldm_interfaces";
 
 export class Battery {
   private _batteryLabel: HTMLDivElement | null;

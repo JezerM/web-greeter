@@ -3,7 +3,7 @@ import {
   Greeter as GreeterClass,
   GreeterConfig as GreeterConfigClass,
   ThemeUtils as ThemeUtilsClass,
-} from "../../../js/preload";
+} from "../../../ts-types/index";
 
 class LightDMLanguage {
   public code: string;

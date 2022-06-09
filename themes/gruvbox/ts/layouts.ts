@@ -1,4 +1,4 @@
-import { LightDMLayout } from "../../../js/ldm_interfaces";
+import { LightDMLayout } from "../../../ts-types/ldm_interfaces";
 
 export class Layouts {
   private _layoutListButton: HTMLButtonElement | null;

@@ -1,4 +1,4 @@
-import { LightDMSession } from "../../../js/ldm_interfaces";
+import { LightDMSession } from "../../../ts-types/ldm_interfaces";
 
 export class Sessions {
   private _sessionLabel: HTMLDivElement | null;
