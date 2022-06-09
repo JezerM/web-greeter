@@ -62,6 +62,7 @@ apt install ./web-greeter-VER-DISTRO.deb
 
 - rsync
 - make
+- tsc (`npm i -g typescript`)
 - pyrcc5 (Should be installed with above dependencies)
 - base-devel (build-essential)
 
