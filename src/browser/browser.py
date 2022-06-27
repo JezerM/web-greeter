@@ -138,11 +138,11 @@ class Application:
                                           screen.geometry().x())
             overall_boundary.minY = min(overall_boundary.minY,
                                           screen.geometry().y())
-            overall_boundary.maxX = min(
+            overall_boundary.maxX = max(
                 overall_boundary.maxX,
-                screen.geometry().x() + screen.geometry().height()
+                screen.geometry().x() + screen.geometry().width()
             )
-            overall_boundary.maxY = min(
+            overall_boundary.maxY = max(
                 overall_boundary.maxY,
                 screen.geometry().y() + screen.geometry().height()
             )
