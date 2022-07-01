@@ -3,6 +3,7 @@ Name=web-greeter
 Exec=/opt/web-greeter/web-greeter %U
 Terminal=false
 Type=Application
+Icon=com.github.jezerm.web-greeter
 StartupWMClass=web-greeter
 Comment=Web based greeter for lightdm
 Categories=System;

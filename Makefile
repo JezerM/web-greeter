@@ -73,7 +73,7 @@ $(resources.py): $(bundle.js)
 # Install root, where everything will be copied to
 $(INSTALL_ROOT):
 	@for d in man/man1 metainfo doc/web-greeter web-greeter \
-		xgreeters applications; do \
+		xgreeters applications icons/hicolor/scalable/apps; do \
 		mkdir -p "${INSTALL_PREFIX}/share/$$d"; \
 	done
 	@for d in lightdm xdg/lightdm/lightdm.conf.d; do \
@@ -151,12 +151,14 @@ dist/news := $(abspath ${DESTDIR_PREFIX}/share/doc/web-greeter/NEWS.gz)
 dist/metainfo := $(abspath ${DESTDIR_PREFIX}/share/metainfo/web-greeter.appdata.xml)
 dist/xg-desktop := $(abspath ${DESTDIR_PREFIX}/share/xgreeters/web-greeter.desktop)
 dist/app-desktop := $(abspath ${DESTDIR_PREFIX}/share/applications/web-greeter.desktop)
+dist/app-icon-scalable := $(abspath ${DESTDIR_PREFIX}/share/icons/hicolor/scalable/apps/com.github.jezerm.web-greeter.svg)
 
 dist_local/web-greeter.1 := $(abspath ${INSTALL_PREFIX}/share/man/man1/web-greeter.1.gz)
 dist_local/news := $(abspath ${INSTALL_PREFIX}/share/doc/web-greeter/NEWS.gz)
 dist_local/metainfo := $(abspath ${INSTALL_PREFIX}/share/metainfo/web-greeter.appdata.xml)
 dist_local/xg-desktop := $(abspath ${INSTALL_PREFIX}/share/xgreeters/web-greeter.desktop)
 dist_local/app-desktop := $(abspath ${INSTALL_PREFIX}/share/applications/web-greeter.desktop)
+dist_local/app-icon-scalable := $(abspath ${INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/com.github.jezerm.web-greeter.svg)
 
 $(dist_local/web-greeter.1): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.1
 	@gzip -c9 "${BUILD_DIR}/dist/web-greeter.1" > \
@@ -178,7 +180,11 @@ $(dist_local/app-desktop): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-g
 	@cp "${BUILD_DIR}/dist/web-greeter.desktop" \
 		"${dist_local/app-desktop}"
 
-build_dist_files: $(dist_local/web-greeter.1) $(dist_local/news) $(dist_local/metainfo) $(dist_local/xg-desktop) $(dist_local/app-desktop)
+$(dist_local/app-icon-scalable): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/com.github.jezerm.web-greeter.svg
+	@cp "${BUILD_DIR}/dist/com.github.jezerm.web-greeter.svg" \
+		"${dist_local/app-icon-scalable}"
+
+build_dist_files: $(dist_local/web-greeter.1) $(dist_local/news) $(dist_local/metainfo) $(dist_local/xg-desktop) $(dist_local/app-desktop) $(dist_local/app-icon-scalable)
 	@echo "✔ Dist files copied"
 
 # Config files
