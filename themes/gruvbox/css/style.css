@@ -109,15 +109,6 @@ button {
   font-family: inherit;
 }
 
-#background {
-  height: 100vh;
-  width: 100vw;
-  position: absolute;
-
-  background-color: var(--bg);
-  background-image: url("../assets/bubbles.svg");
-}
-
 #cover {
   height: 100vh;
   width: 100vw;
