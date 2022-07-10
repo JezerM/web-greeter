@@ -1,3 +1,11 @@
+import { Backgrounds } from "./background.js";
+
+declare global {
+  interface Window {
+    backgrounds: Backgrounds;
+  }
+}
+
 async function wait(ms: number): Promise<void> {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -18,6 +26,9 @@ function authentication_done(): void {
 
 function initGreeter(): void {
   window.lightdm?.authentication_complete?.connect(() => authentication_done());
+
+  window.backgrounds = new Backgrounds();
+  window.backgrounds.init();
 }
 
 if (window._ready_event === undefined) {
