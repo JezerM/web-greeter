@@ -328,6 +328,7 @@ input::-ms-clear {
 #layouts-dropdown {
   position: absolute;
   margin: 2px;
+  right: 0;
 }
 
 #system-status {
