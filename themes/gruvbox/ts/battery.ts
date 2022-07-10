@@ -12,7 +12,7 @@ export class Battery {
 
   public updateData(): void {
     if (!this._batteryLabel) return;
-    this._batteryInfo = window.lightdm?.batteryData ?? null;
+    this._batteryInfo = window.lightdm?.battery_data ?? null;
     console.log(this._batteryInfo);
     const level = this._batteryInfo?.level ?? 0;
     //const status = this._batteryInfo?.status;
@@ -30,16 +30,21 @@ export class Battery {
       icon = "";
     }
     if (level >= 0) {
-      this._batteryLabel.style.visibility = "visible";
+      this._batteryLabel.style.display = "";
       this._batteryLabel.innerHTML = `<span class="mdi mdi-battery${charging}${icon}"></span> ${level}%`;
     } else {
       this._batteryLabel.innerHTML = "";
-      this._batteryLabel.style.visibility = "hidden";
+      this._batteryLabel.style.display = "none";
     }
   }
 
   public setCallback(): void {
-    if (!window.lightdm?.can_access_battery) return;
+    if (!window.lightdm?.can_access_battery) {
+      if (!this._batteryLabel) return;
+      this._batteryLabel.innerHTML = "";
+      this._batteryLabel.style.display = "none";
+      return;
+    }
     this.updateData();
     window.lightdm?.battery_update.connect(() => {
       this.updateData();
