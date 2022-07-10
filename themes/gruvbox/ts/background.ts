@@ -70,7 +70,7 @@ export class Backgrounds {
   }
 
   public async createBackgroundArray(): Promise<void> {
-    const images = await this.getBackgroundImages();
+    const images = await this.findImages(this._backgroundImages);
     this._backgroundImages = defaultBackgrounds.concat(images);
     this.setBackgroundImages();
     return new Promise((resolve) => resolve());
@@ -125,6 +125,36 @@ export class Backgrounds {
     }
   }
 
+  // Taken from @manilarome/lightdm-webkit2-theme-glorious
+  public async findImages(dirlist: string[]): Promise<string[]> {
+    const images: string[] = [];
+    const subdirs: string[] = [];
+    let recursion = 0;
+
+    // Check image files/dir, and push it to its respective array
+    for (const file of dirlist) {
+      if (file.match(/.+\.(jpe?g|png|gif|bmp|webp|svg)/)) {
+        images.push(file);
+      } else if (!file.match(/\w+\.\w+/)) {
+        subdirs.push(file);
+      }
+    }
+    // Search recursively
+    if (subdirs.length && recursion < 3) {
+      recursion++;
+      for (const dir of subdirs) {
+        const list = await this.getBackgroundImages(dir);
+
+        if (list && list.length) {
+          const toadd = await this.findImages(list);
+          images.push(...toadd);
+        }
+      }
+    }
+
+    return images;
+  }
+
   public getBackgroundImages(path?: string): Promise<string[]> {
     if (!window.greeter_config || !window.theme_utils)
       return new Promise((resolve) => resolve([]));
@@ -136,7 +166,7 @@ export class Backgrounds {
     return new Promise((resolve) => {
       window.theme_utils?.dirlist(
         path ? path : this._backgroundImagesDir,
-        true,
+        false,
         (result) => {
           resolve(result);
         }
@@ -186,6 +216,7 @@ export class Backgrounds {
   public async init(): Promise<void> {
     this.setBackgroundSelectorBackButton();
     this.setBackgroundSelectorEnterButton();
+    this._backgroundImages = await this.getBackgroundImages();
     await this.createBackgroundArray();
     this.updateOnStartup();
 

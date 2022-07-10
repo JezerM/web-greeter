@@ -97,7 +97,6 @@ button.image {
 #background-selector-back:hover,
 #background-selector-back:focus {
   background-color: #3c3836aa;
-  backdrop-filter: blur(10px);
 }
 
 #background-selector-enter {
