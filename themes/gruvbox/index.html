@@ -21,9 +21,22 @@
   </head>
   <body>
     <div id="background"></div>
+
     <button id="cover" class="hide">
       <div id="message"></div>
     </button>
+
+    <div id="background-selector" class="hide">
+      <button id="background-selector-back" type="button" class="button">
+        <i class="mdi mdi-chevron-left"></i>
+      </button>
+      <div id="background-selector-current">
+        <div id="current-background"></div>
+        <h3 id="current-background-label"></h3>
+      </div>
+      <div id="background-selector-list"></div>
+    </div>
+
     <div id="screen">
       <div id="login-form">
         <div id="login-form-box">
@@ -79,7 +92,10 @@
           </div>
         </div>
       </div>
-      <div id="session-label" class="info"></div>
+      <!--<div id="session-label" class="info"></div>-->
+      <button id="background-selector-enter" type="button" class="button">
+        <span class="mdi mdi-cog"></span>
+      </button>
       <div id="lock-label" class="info hide">Lock</div>
       <div id="time-date" class="info">
         <span id="time-label">20:00</span>

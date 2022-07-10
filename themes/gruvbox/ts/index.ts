@@ -6,6 +6,7 @@ import { Layouts } from "./layouts.js";
 import { Power } from "./power.js";
 import { Battery } from "./battery.js";
 import { Brightness } from "./brightness.js";
+import { Backgrounds } from "./background.js";
 import "./mock.js";
 
 declare global {
@@ -18,6 +19,7 @@ declare global {
     power: Power;
     battery: Battery;
     brightness: Brightness;
+    backgrounds: Backgrounds;
 
     wait(ms: number): Promise<void>;
   }
@@ -53,6 +55,9 @@ async function initGreeter(): Promise<void> {
   window.battery = new Battery();
 
   window.brightness = new Brightness();
+
+  window.backgrounds = new Backgrounds();
+  await window.backgrounds.init();
 
   if (window.lightdm?.lock_hint) {
     document.querySelector("#lock-label")?.classList.remove("hide");
