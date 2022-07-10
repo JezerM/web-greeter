@@ -22,6 +22,7 @@
 
   background-color: #282828cc;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 #background-selector-current {
@@ -118,6 +119,7 @@ button.image {
 #background-selector-enter:focus {
   background: #3c3836aa;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 #background-blur > input {

@@ -100,6 +100,7 @@ body {
 .info:hover {
   background: #3c3836aa;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 button {
@@ -123,6 +124,7 @@ button {
 
   background-color: #282828aa;
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
 }
 
 #cover > #message {
@@ -161,6 +163,9 @@ button {
 #login-form-box {
   position: relative;
   height: -webkit-fill-available;
+  height: 100%;
+  box-sizing: border-box;
+
   display: flex;
   padding: 1.5em 3em;
   align-items: center;
@@ -196,7 +201,7 @@ input:focus-visible {
   bottom: 0;
   margin-top: auto;
   margin-bottom: auto;
-  height: fit-content;
+  height: 2.5em;
   background-color: var(--bg1);
 }
 #input #pass-eye:hover,
@@ -284,19 +289,6 @@ input::-ms-clear {
   font-weight: bold;
 }
 
-#time-date {
-  top: 0;
-  font-weight: bold;
-  font-size: calc(1em + 2px);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-#time-date span {
-  display: block;
-}
-
 .label-bar {
   position: absolute;
   display: flex;
@@ -322,6 +314,7 @@ input::-ms-clear {
 .label-bar > *:focus-within {
   background: #3c3836aa;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 #layout-list {
@@ -355,6 +348,7 @@ input::-ms-clear {
 #system-power > *:focus {
   background: #3c3836aa;
   backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
 }
 
 #session-list {
@@ -404,6 +398,7 @@ input::-ms-clear {
   color: var(--fg);
   padding: 0.8em;
   width: -webkit-fill-available;
+  width: -moz-available;
 }
 .dropdown button:hover,
 .dropdown button:focus {
