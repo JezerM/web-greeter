@@ -87,7 +87,7 @@ button.image {
   left: 0;
   margin: 10px;
 
-  background-color: var(--bg1);
+  background-color: transparent;
   padding: 0;
   font-size: 2em;
   width: 2em;
@@ -96,7 +96,8 @@ button.image {
 }
 #background-selector-back:hover,
 #background-selector-back:focus {
-  background-color: var(--bg2);
+  background-color: #3c3836aa;
+  backdrop-filter: blur(10px);
 }
 
 #background-selector-enter {
