@@ -8,6 +8,7 @@
     />
 
     <link rel="stylesheet" href="css/style.css" class="style" />
+    <link rel="stylesheet" href="css/top-container.css" class="style" />
     <link rel="stylesheet" href="css/background.css" class="style" />
     <link
       rel="stylesheet"
@@ -103,10 +104,19 @@
       <button id="background-selector-enter" type="button" class="button">
         <span class="mdi mdi-cog"></span>
       </button>
+
       <div id="lock-label" class="info hide">Lock</div>
-      <div id="time-date" class="info">
-        <span id="time-label">20:00</span>
-        <span id="date-label">12-07-21</span>
+
+      <div id="top-container">
+        <div id="time-date" class="info">
+          <span id="time-label">20:00</span>
+          <span id="date-label">12-07-21</span>
+        </div>
+
+        <div id="additions-container">
+          <div id="brightness-label" class="addition-label"></div>
+          <div id="battery-label" class="addition-label"></div>
+        </div>
       </div>
 
       <div id="system-status" class="label-bar">
@@ -117,10 +127,8 @@
             <li><button>English</button></li>
           </ul>
         </div>
-
-        <div id="brightness-label"></div>
-        <div id="battery-label"></div>
       </div>
+
       <div id="system-power" class="label-bar">
         <button id="shutdown-btn" class="hide">
           <span class="mdi mdi-power"></span>
