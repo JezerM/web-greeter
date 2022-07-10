@@ -103,7 +103,7 @@ export class Backgrounds {
     const imageName = this._backgroundPath.replace(/^.*[\\/]/, "");
     if (this._backgroundSelectorCurrent) {
       this._backgroundSelectorCurrent.style.backgroundImage = `url("${this._backgroundPath}")`;
-      if (imageName.endsWith(".svg")) {
+      if (defaultBackgrounds.includes(this._backgroundPath)) {
         this._backgroundSelectorCurrent.style.backgroundSize = "auto";
       } else {
         this._backgroundSelectorCurrent.style.backgroundSize = "";
@@ -114,6 +114,11 @@ export class Backgrounds {
     }
 
     this._backgroundElement.style.backgroundImage = `url("${this._backgroundPath}")`;
+    if (defaultBackgrounds.includes(this._backgroundPath)) {
+      this._backgroundElement.style.backgroundSize = "";
+    } else {
+      this._backgroundElement.style.backgroundSize = "cover";
+    }
     window.localStorage.setItem("defaultBackgroundImage", this._backgroundPath);
   }
 
