@@ -84,22 +84,23 @@ export class Backgrounds {
   }
 
   public updateBackgroundImages(): void {
-    if (
-      !this._backgroundElement ||
-      !this._backgroundSelectorCurrent ||
-      !this._backgroundSelectorCurrentLabel
-    )
-      return;
+    if (!this._backgroundElement) return;
+
     const imageName = this._backgroundPath.replace(/^.*[\\/]/, "");
-    this._backgroundSelectorCurrentLabel.innerText = imageName;
-    this._backgroundSelectorCurrent.style.backgroundImage = `url("${this._backgroundPath}")`;
-    this._backgroundElement.style.backgroundImage = `url("${this._backgroundPath}")`;
-    if (imageName.endsWith(".svg")) {
-      console.log(imageName, "SVG");
-      this._backgroundSelectorCurrent.style.backgroundSize = "auto";
-    } else {
-      this._backgroundSelectorCurrent.style.backgroundSize = "";
+    if (this._backgroundSelectorCurrent) {
+      this._backgroundSelectorCurrent.style.backgroundImage = `url("${this._backgroundPath}")`;
+      if (imageName.endsWith(".svg")) {
+        console.log(imageName, "SVG");
+        this._backgroundSelectorCurrent.style.backgroundSize = "auto";
+      } else {
+        this._backgroundSelectorCurrent.style.backgroundSize = "";
+      }
     }
+    if (this._backgroundSelectorCurrentLabel) {
+      this._backgroundSelectorCurrentLabel.innerText = imageName;
+    }
+
+    this._backgroundElement.style.backgroundImage = `url("${this._backgroundPath}")`;
     window.localStorage.setItem("defaultBackgroundImage", this._backgroundPath);
   }
 
