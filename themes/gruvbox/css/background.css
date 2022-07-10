@@ -17,7 +17,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 5em;
+  gap: 4em;
   cursor: default;
 
   background-color: #282828cc;
@@ -28,7 +28,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 5em;
+  margin-top: 4em;
   gap: 1em;
 }
 #background-selector-current > #current-background {
@@ -50,14 +50,14 @@
   gap: 2em;
 
   max-width: 60vw;
-  height: 40vh;
+  height: 50vh;
 
   align-items: flex-start;
   justify-content: space-evenly;
   align-content: flex-start;
 
   padding: 0 1em;
-  margin-bottom: 5em;
+  margin-bottom: 4em;
   overflow-y: auto;
 
   scroll-behavior: smooth;
@@ -118,4 +118,9 @@ button.image {
 #background-selector-enter:focus {
   background: #3c3836aa;
   backdrop-filter: blur(10px);
+}
+
+#background-blur > input {
+  background-color: #3c3836aa;
+  padding: 0.5em;
 }

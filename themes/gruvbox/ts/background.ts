@@ -19,6 +19,11 @@ export class Backgrounds {
   private _backgroundSelectorCurrent: HTMLDivElement | null;
   private _backgroundSelectorCurrentLabel: HTMLHeadingElement | null;
   private _backgroundElement: HTMLDivElement | null;
+
+  private _backgroundBlurDiv: HTMLDivElement | null;
+  private _backgroundBlurInput: HTMLInputElement | null;
+  private _backgroundBlur = 0;
+
   private _backgroundImages: string[];
   private _backgroundImagesDir: string;
   private _backgroundPath: string;
@@ -43,6 +48,11 @@ export class Backgrounds {
       "#background-selector-enter"
     );
     this._screenDiv = document.querySelector("#screen");
+
+    this._backgroundBlurDiv = document.querySelector("#background-blur");
+    this._backgroundBlurInput = document.querySelector(
+      "#background-blur > input"
+    );
 
     this._backgroundImages = [];
     this._backgroundImagesDir = "";
@@ -81,6 +91,10 @@ export class Backgrounds {
       window.localStorage.getItem("defaultBackgroundImage") ||
       this._backgroundImages[0];
     this.updateBackgroundImages();
+
+    this._backgroundBlur =
+      Number(window.localStorage.getItem("backgroundBlur")) || 0;
+    this.setBackgroundBlur();
   }
 
   public updateBackgroundImages(): void {
@@ -90,7 +104,6 @@ export class Backgrounds {
     if (this._backgroundSelectorCurrent) {
       this._backgroundSelectorCurrent.style.backgroundImage = `url("${this._backgroundPath}")`;
       if (imageName.endsWith(".svg")) {
-        console.log(imageName, "SVG");
         this._backgroundSelectorCurrent.style.backgroundSize = "auto";
       } else {
         this._backgroundSelectorCurrent.style.backgroundSize = "";
@@ -213,9 +226,29 @@ export class Backgrounds {
     document.querySelector("body")?.addEventListener("keydown", callback);
   }
 
+  public setBackgroundBlur(): void {
+    if (!this._backgroundBlurInput || !this._backgroundElement) return;
+    this._backgroundElement.style.filter = `blur(${this._backgroundBlur}px)`;
+    this._backgroundBlurInput.valueAsNumber = this._backgroundBlur;
+  }
+
+  public setBackgroundBlurInputEvent(): void {
+    if (!this._backgroundBlurInput) return;
+
+    this._backgroundBlurInput.addEventListener("input", () => {
+      this._backgroundBlur = this._backgroundBlurInput?.valueAsNumber ?? 0;
+      window.localStorage.setItem(
+        "backgroundBlur",
+        this._backgroundBlur.toString()
+      );
+      this.setBackgroundBlur();
+    });
+  }
+
   public async init(): Promise<void> {
     this.setBackgroundSelectorBackButton();
     this.setBackgroundSelectorEnterButton();
+    this.setBackgroundBlurInputEvent();
     this._backgroundImages = await this.getBackgroundImages();
     await this.createBackgroundArray();
     this.updateOnStartup();
