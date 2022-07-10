@@ -49,11 +49,18 @@
   flex-wrap: wrap;
   gap: 2em;
 
-  max-width: 50vw;
-  align-items: center;
-  justify-content: space-evenly;
+  max-width: 60vw;
+  height: 40vh;
 
+  align-items: flex-start;
+  justify-content: space-evenly;
+  align-content: flex-start;
+
+  padding: 0 1em;
   margin-bottom: 5em;
+  overflow-y: auto;
+
+  scroll-behavior: smooth;
 }
 #background-selector-list button.image {
   width: calc(10vh * 16 / 10);
