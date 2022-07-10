@@ -22,7 +22,7 @@ export class Sessions {
 
   public updateSessionLabel(): void {
     if (!this._sessionLabel) return;
-    this._sessionLabel.innerHTML = `<b>${this._defaultSession?.name}</b>`;
+    this._sessionLabel.innerText = this._defaultSession?.name ?? "";
   }
 
   public updateOnStartup(): void {
