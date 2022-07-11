@@ -95,7 +95,7 @@ export class Backgrounds {
     this._backgroundPath =
       window.localStorage.getItem("defaultBackgroundImage") ||
       defaultBackgrounds[0];
-    this.updateBackgroundImages();
+    this.updateBackground(this._backgroundPath);
 
     this._backgroundBlur =
       Number(window.localStorage.getItem("backgroundBlur")) || 0;
@@ -109,7 +109,9 @@ export class Backgrounds {
     const imageName = imagePath.replace(/^.*[\\/]/, "");
 
     if (imagePath == "userBackground") {
-      const user = window.accounts.getDefaultAccount();
+      const user = window.lightdm?.users.find(
+        (v) => v.username == window.lightdm?.authentication_user
+      );
       imagePath =
         user?.background && user?.background.trim().length != 0
           ? user?.background
@@ -137,6 +139,18 @@ export class Backgrounds {
     window.localStorage.setItem("defaultBackgroundImage", this._backgroundPath);
   }
 
+  public updateBackground(path: string): void {
+    if (window.greeter_comm) {
+      window.greeter_comm.broadcast({
+        type: "change-background",
+        path,
+      });
+    } else {
+      this._backgroundPath = path;
+      this.updateBackgroundImages();
+    }
+  }
+
   public setBackgroundImages(): void {
     if (!this._backgroundSelectorList) return;
     this._backgroundSelectorList.innerHTML = "";
@@ -144,15 +158,7 @@ export class Backgrounds {
     for (const path of this._backgroundImages) {
       const button = this.createImageElement(path);
       button.addEventListener("click", () => {
-        if (window.greeter_comm) {
-          window.greeter_comm.broadcast({
-            type: "change-background",
-            path,
-          });
-        } else {
-          this._backgroundPath = path;
-          this.updateBackgroundImages();
-        }
+        this.updateBackground(path);
       });
       this._backgroundSelectorList.appendChild(button);
     }

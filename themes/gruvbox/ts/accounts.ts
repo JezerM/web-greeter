@@ -90,6 +90,7 @@ export class Accounts {
         this.updateDefaults(v);
         this.setDefaultAccount();
         window.authenticate.startAuthentication();
+        window.backgrounds.updateBackground("userBackground");
       });
 
       li.appendChild(button);
