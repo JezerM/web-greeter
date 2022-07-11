@@ -1,4 +1,21 @@
-# Web Greeter for LightDM
+<div align="center">
+  <a>
+    <img
+      alt="Web Greeter Icon"
+      width="125"
+      src="./dist/com.github.jezerm.web-greeter.svg"
+    />
+  </a>
+  <h1><strong>Web Greeter</strong></h1>
+  <p>
+    <strong>A LightDM greeter made with PyQt5</strong>
+  </p>
+  <p>
+    <a href="#">
+      <img alt="License Information" src="https://img.shields.io/github/license/JezerM/web-greeter.svg">
+    </a>
+  </p>
+</div>
 
 A modern, visually appealing greeter for LightDM, that allows to create web based themes with HTML,
 CSS and JavaScript.
