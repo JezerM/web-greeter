@@ -20,7 +20,6 @@ export class Backgrounds {
   private _backgroundSelectorCurrentLabel: HTMLHeadingElement | null;
   private _backgroundElement: HTMLDivElement | null;
 
-  private _backgroundBlurDiv: HTMLDivElement | null;
   private _backgroundBlurInput: HTMLInputElement | null;
   private _backgroundBlur = 0;
 
@@ -49,7 +48,6 @@ export class Backgrounds {
     );
     this._screenDiv = document.querySelector("#screen");
 
-    this._backgroundBlurDiv = document.querySelector("#background-blur");
     this._backgroundBlurInput = document.querySelector(
       "#background-blur > input"
     );
@@ -74,14 +72,21 @@ export class Backgrounds {
   public createImageElement(path: string): HTMLButtonElement {
     const button = document.createElement("button");
     button.classList.add("image");
-    button.style.backgroundImage = `url("${path}")`;
+    if (path == "userBackground") {
+      button.innerText = "User Background";
+    } else {
+      button.style.backgroundImage = `url("${path}")`;
+    }
 
     return button;
   }
 
   public async createBackgroundArray(): Promise<void> {
     const images = await this.findImages(this._backgroundImages);
-    this._backgroundImages = defaultBackgrounds.concat(images);
+    const userBackground = ["userBackground"];
+    this._backgroundImages = userBackground
+      .concat(defaultBackgrounds)
+      .concat(images);
     this.setBackgroundImages();
     return new Promise((resolve) => resolve());
   }
@@ -89,7 +94,7 @@ export class Backgrounds {
   public updateOnStartup(): void {
     this._backgroundPath =
       window.localStorage.getItem("defaultBackgroundImage") ||
-      this._backgroundImages[0];
+      defaultBackgrounds[0];
     this.updateBackgroundImages();
 
     this._backgroundBlur =
@@ -100,10 +105,20 @@ export class Backgrounds {
   public updateBackgroundImages(): void {
     if (!this._backgroundElement) return;
 
-    const imageName = this._backgroundPath.replace(/^.*[\\/]/, "");
+    let imagePath = this._backgroundPath;
+    const imageName = imagePath.replace(/^.*[\\/]/, "");
+
+    if (imagePath == "userBackground") {
+      const user = window.accounts.getDefaultAccount();
+      imagePath =
+        user?.background && user?.background.trim().length != 0
+          ? user?.background
+          : defaultBackgrounds[0];
+    }
+
     if (this._backgroundSelectorCurrent) {
-      this._backgroundSelectorCurrent.style.backgroundImage = `url("${this._backgroundPath}")`;
-      if (defaultBackgrounds.includes(this._backgroundPath)) {
+      this._backgroundSelectorCurrent.style.backgroundImage = `url("${imagePath}")`;
+      if (defaultBackgrounds.includes(imagePath)) {
         this._backgroundSelectorCurrent.style.backgroundSize = "auto";
       } else {
         this._backgroundSelectorCurrent.style.backgroundSize = "";
@@ -113,8 +128,8 @@ export class Backgrounds {
       this._backgroundSelectorCurrentLabel.innerText = imageName;
     }
 
-    this._backgroundElement.style.backgroundImage = `url("${this._backgroundPath}")`;
-    if (defaultBackgrounds.includes(this._backgroundPath)) {
+    this._backgroundElement.style.backgroundImage = `url("${imagePath}")`;
+    if (defaultBackgrounds.includes(imagePath)) {
       this._backgroundElement.style.backgroundSize = "";
     } else {
       this._backgroundElement.style.backgroundSize = "cover";
