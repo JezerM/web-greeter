@@ -31,8 +31,13 @@ export class Accounts {
     const img = this._userImage?.querySelector("img");
     if (!img) return;
     img.src = this._defaultUser?.image ?? "";
+    if (img.src.trim().length == 0) img.style.visibility = "hidden";
+
     img.onerror = function (): void {
-      img.src = "";
+      img.style.visibility = "hidden";
+    };
+    img.onload = function (): void {
+      img.style.visibility = "";
     };
 
     if (this._userLabel) {
