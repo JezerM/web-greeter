@@ -35,21 +35,27 @@ export class Accounts {
       img.src = "";
     };
 
-    if (this._userLabel)
-      this._userLabel.innerHTML = `<b>${this._defaultUser?.display_name}</b>`;
+    if (this._userLabel) {
+      const name =
+        this._defaultUser?.display_name ??
+        this._defaultUser?.username ??
+        "No user";
+      this._userLabel.innerHTML = `<b>${name}</b>`;
+    }
   }
 
   public updateOnStartup(): void {
     if (!this._usersObject) return;
-    const dfUser = window.localStorage.getItem("defaultUser");
-    let user: LightDMUser;
-    try {
-      user = JSON.parse(dfUser ?? "");
-    } catch (e) {
-      user = this._usersObject[0];
+    const dfUserName = window.localStorage.getItem("defaultUserName");
+
+    let user = window.lightdm?.users.find(
+      (value) => value.username == dfUserName
+    );
+    if (!user) {
+      user = this._usersObject.length > 0 ? this._usersObject[0] : undefined;
     }
 
-    this._defaultUser = user;
+    this._defaultUser = user ?? null;
     this.setDefaultAccount();
   }
 
@@ -96,7 +102,7 @@ export class Accounts {
 
     this._defaultUser = user;
 
-    window.localStorage.setItem("defaultUser", JSON.stringify(user));
+    window.localStorage.setItem("defaultUserName", user.username);
   }
 
   public setKeydown(): void {
