@@ -78,10 +78,12 @@ def parse(argv):
     parser.add_argument("-v", "--version", action = "version",
                         version = version, help = "Show version number")
 
-    parser.add_argument("--debug", action = "store_true",
+    parser.add_argument("--mode", help = "Set browser mode",
+                        choices = ["debug", "normal"])
+    parser.add_argument("-d", "--debug", action = "store_true",
                         help = "Run the greeter in debug mode",
                         dest = "debug", default = None)
-    parser.add_argument("--normal", action = "store_false",
+    parser.add_argument("-n", "--normal", action = "store_false",
                         help = "Run in non-debug mode", dest = "debug")
     parser.add_argument("--list", action = "store_true",
                         help = "List available themes")
@@ -102,6 +104,10 @@ def parse(argv):
         sys.exit()
     if args.theme:
         set_theme(args.theme)
+    if args.mode == "debug":
+        args.debug = True
+    elif args.mode == "normal":
+        args.debug = False
     if args.debug is not None:
         set_debug(args.debug)
 
