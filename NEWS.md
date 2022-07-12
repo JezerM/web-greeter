@@ -1,5 +1,29 @@
 # Change Log
 
+## [3.5.0](https://github.com/JezerM/web-greeter/tree/3.5.0) ~ 07-12-2022
+
+**Added:**
+  * Added multi-monitor support from nody-greeter
+  * Added `greeter_comm` object for cross-window communication
+  * Added `GreeterBroadcastEvent` for listening to greeter_comm messages
+
+**Changes:**
+
+  * Default themes migrated to Typescript
+  * Added background selector to gruvbox theme
+  * `tsc` (typescript compiler) is now a required dependency
+  * `lightdm.batteryData` deprecated in favor of `lightdm.battery_data`.
+  * Command line arguments updated:
+    - Added `--mode` optio
+    - Added `-d` as `--debug`, and `-n` as `--normal`
+    - Updated bash and zsh completions
+  * Added Web Greeter scalable icon
+  * Lot of code refactoring
+  * Lots of improvements
+  * Lots of bugfixes
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.4.1...3.5.0)
+
 ## [3.4.1](https://github.com/JezerM/web-greeter/tree/3.4.1) ~ 04-10-2022
 
 **Changes:**

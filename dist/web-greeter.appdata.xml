@@ -16,25 +16,30 @@
 			3rd-Party themes available online.
 		</p>
 	</description>
+	<content_rating type="oars-1.0" />
 	<screenshots>
 		<screenshot height="768" width="1366" type="default">
-			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-1.png</image>
-			<caption>Login screen (gruvbox theme)</caption>
+			<image type="source">https://github.com/JezerM/web-greeter/raw/master/themes/gruvbox/assets/screenshots/theme-show-1.png</image>
+			<caption type="source">Login screen (gruvbox theme)</caption>
 		</screenshot>
 		<screenshot height="768" width="1366">
-			<image>https://github.com/JezerM/web-greeter/blob/master/themes/gruvbox/assets/screenshots/theme-show-2.png</image>
+			<image type="source">https://github.com/JezerM/web-greeter/raw/master/themes/gruvbox/assets/screenshots/theme-show-2.png</image>
 			<caption>Login screen shutting down (gruvbox theme)</caption>
 		</screenshot>
 		<screenshot height="768" width="1366">
-			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-1.png</image>
+			<image type="source">https://github.com/JezerM/web-greeter/raw/master/themes/gruvbox/assets/screenshots/theme-show-3.png</image>
+			<caption>Background selector (gruvbox theme)</caption>
+		</screenshot>
+		<screenshot height="768" width="1366">
+			<image type="source">https://github.com/JezerM/web-greeter/raw/master/themes/dracula/assets/screenshots/theme-show-1.png</image>
 			<caption>Login screen (dracula theme)</caption>
 		</screenshot>
 		<screenshot height="768" width="1366">
-			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-2.png</image>
+			<image type="source">https://github.com/JezerM/web-greeter/raw/master/themes/dracula/assets/screenshots/theme-show-2.png</image>
 			<caption>Login screen background selector (dracula theme)</caption>
 		</screenshot>
 		<screenshot height="768" width="1366">
-			<image>https://github.com/JezerM/web-greeter/blob/master/themes/dracula/assets/screenshots/theme-show-3.png</image>
+			<image type="source">https://github.com/JezerM/web-greeter/raw/master/themes/dracula/assets/screenshots/theme-show-3.png</image>
 			<caption>Login screen success message (dracula theme)</caption>
 		</screenshot>
 	</screenshots>
@@ -44,6 +49,27 @@
 	-->
 
 	<releases>
+		<release date="2022-07-12" version="3.5.0">
+			<description>
+				<p>Added:</p>
+				<ul>
+					<li>Added multi-monitor support from nody-greeter</li>
+					<li>Added "greeter_comm" object for cross-window communication</li>
+					<li>Added "GreeterBroadcastEvent" for listening to greeter_comm messages</li>
+				</ul>
+				<p>Changes:</p>
+				<ul>
+					<li>Default themes migrated to Typescript</li>
+					<li>Added background selector to gruvbox theme</li>
+					<li>tsc (typescript compiler) is now a required dependency</li>
+					<li>"lightdm.batteryData" deprecated in favor of "lightdm.battery_data"</li>
+					<li>Command line arguments updated</li>
+					<li>Updated bash and zsh completions</li>
+					<li>Added Web Greeter scalable icon</li>
+					<li>Lots of bugfixes</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2022-04-10" version="3.4.1">
 			<description>
 				<p>Changes:</p>
