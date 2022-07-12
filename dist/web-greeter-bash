@@ -5,13 +5,26 @@ _web-greeter() {
 	local cur="${COMP_WORDS[COMP_CWORD]}"
 	local last="${COMP_WORDS[COMP_CWORD - 1]}"
 	local xpat='!*.jpg'
-	local options='--debug --normal --list --theme --help -h --version -v'
+	local options='--debug -d --normal -n --mode --list --theme --help -h --version -v'
+
+	for word in "${COMP_WORDS[@]}"; do
+		case "${word}" in
+			--debug | --normal | -d | -n | --mode)
+				options=$(echo "${options}" | sed 's/--normal\|-n//g')
+				options=$(echo "${options}" | sed 's/--debug\|-d//g')
+				options=$(echo "${options}" | sed 's/--mode//g')
+				;;
+		esac
+	done
 
 	case "${last}" in
 		--theme)
 			_filedir
 			options=$(ls -1d /usr/share/web-greeter/themes/*/ | cut -c 1- |
 				rev | cut -c 2- | rev | sort | sed 's/\/usr\/share\/web-greeter\/themes\///')
+			;;
+		--mode)
+			options="debug normal"
 			;;
 	esac
 
