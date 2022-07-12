@@ -3,19 +3,27 @@
 _webgreeter() {
     integer ret=1
     local -a args
-		local themes=$(ls -1d /usr/share/web-greeter/themes/*/ | cut -c 1- |
-				rev | cut -c 2- | rev | sort | sed 's/\/usr\/share\/web-greeter\/themes\///')
+    local themes=$(ls -1d /usr/share/web-greeter/themes/*/ | cut -c 1- |
+        rev | cut -c 2- | rev | sort | sed 's/\/usr\/share\/web-greeter\/themes\///')
     args+=(
-        '--debug[Runs the greeter in debug mode]'
-        '--normal[Runs in non-debug mode]'
+        "(-d -n --debug --normal)--mode[Set browser mode]:mode:->modes"
+        "(--debug -d --normal -n --mode)"{--debug,-d}"[Runs the greeter in debug mode]"
+        "(--normal -n --debug -d --mode)"{--normal,-n}"[Runs in non-debug mode]"
         '--list[Lists available themes]'
-        "--theme[Sets the theme to use]:theme:(${themes})"
-        '--help[Show help]'
-        '-h[Show help]'
-        '--version[Print program version]'
-        '-v[Print program version]'
+        "--theme[Sets the theme to use]:theme:->themes"
+        "(--help -h)"{--help,-h}"[Show help]"
+        "(--version -v)"{--version,-v}"[Print program version]"
     )
     _arguments $args[@] && ret=0
+    case "$state" in
+        themes)
+            _files
+            _values 'themes' "${(uonzf)${themes}}"
+            ;;
+        modes)
+            _values 'modes' "debug" "normal"
+            ;;
+    esac
     return ret
 }
 

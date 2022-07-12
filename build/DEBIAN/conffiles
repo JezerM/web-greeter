@@ -1,0 +1,3 @@
+/etc/lightdm/web-greeter.yml
+/etc/lightdm/Xgreeter
+/etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf

@@ -1,79 +1,278 @@
-#!/bin/make -f
-
-DO            := ./build/utils.sh
-SET_CONFIG    := $(DO) set-config
-DESTDIR       ?= /
-PREFIX        ?= /usr
-MAYBE_SUDO_DO := $(DO)
-
-define colorecho
-	@tput setaf 118 || true
-	@echo $1        || true
-	@tput sgr0      || true
-endef
+DESTDIR ?= /
+PREFIX ?= /usr
+ENABLE_BASH_COMPLETION ?= true
+ENABLE_ZSH_COMPLETION ?= true
 
 
-ifeq ($(DESTDIR),/)
-MAYBE_SUDO_DO := sudo $(DO)
+BUILD_DIR := $(abspath build)
+REPO_DIR := $(abspath ./)
+INSTALL_ROOT := $(abspath build/install_root)
+INSTALL_PREFIX :=$(abspath $(shell echo ${INSTALL_ROOT}/${PREFIX}))
+DESTDIR_PREFIX :=$(abspath $(shell echo ${DESTDIR}/${PREFIX}))
+
+ifeq (${ENABLE_BASH_COMPLETION}, true)
+    ifeq ($(shell pkg-config --exists bash-completion && echo 0), 0)
+        bashcompletiondir := $(shell pkg-config --variable=completionsdir bash-completion)
+    endif
 endif
 
-
-# Configuration: Use values from command line if provided, default values otherwise.
-at_spi_service        ?= False
-background_images_dir ?= $(abspath $(PREFIX)/share/backgrounds)
-config_dir            ?= $(abspath /etc/lightdm)
-debug_mode            := False
-decorated             := False
-greeters_dir          ?= $(abspath $(PREFIX)/share/xgreeters)
-locale_dir            ?= $(abspath $(PREFIX)/share/locale)
-themes_dir            ?= $(abspath $(PREFIX)/share/web-greeter/themes)
-logo_image            ?= $(themes_dir)/default/img/antergos-logo-user.png
-stays_on_top          := True
-user_image            ?= $(themes_dir)/default/img/antergos.png
-battery_enabled				:= False
-backlight_enabled			:= False
-
-
-ifeq ($(MAKECMDGOALS),build_dev)
-debug_mode   := True
-decorated    := True
-stays_on_top := False
+ifeq (${ENABLE_ZSH_COMPLETION}, true)
+    ifeq ($(shell which zsh >/dev/null 2>&1 && echo 0), 0)
+        zshcompletiondir := /usr/share/zsh/site-functions/
+    endif
 endif
 
+ifdef bashcompletiondir
+    bashcompletiondir_local := ${INSTALL_ROOT}/${bashcompletiondir}
+    $(info Bash completion to install at: ${bashcompletiondir})
+else
+    $(info No Bash completion)
+endif
+ifdef zshcompletiondir
+    zshcompletiondir_local := ${INSTALL_ROOT}/${zshcompletiondir}
+    $(info ZSH completion to install at: ${zshcompletiondir})
+else
+    $(info No ZSH completion)
+endif
 
-_apply_config:
-	@$(SET_CONFIG) at_spi_service        $(at_spi_service)
-	@$(SET_CONFIG) background_images_dir $(background_images_dir)
-	@$(SET_CONFIG) config_dir            $(config_dir)
-	@$(SET_CONFIG) debug_mode            $(debug_mode)
-	@$(SET_CONFIG) decorated             $(decorated)
-	@$(SET_CONFIG) greeters_dir          $(greeters_dir)
-	@$(SET_CONFIG) locale_dir            $(locale_dir)
-	@$(SET_CONFIG) themes_dir            $(themes_dir)
-	@$(SET_CONFIG) logo_image            $(logo_image)
-	@$(SET_CONFIG) stays_on_top          $(stays_on_top)
-	@$(SET_CONFIG) user_image            $(user_image)
-	@$(SET_CONFIG) battery_enabled       $(battery_enabled)
-	@$(SET_CONFIG) backlight_enabled     $(backlight_enabled)
+all: build
 
-_build_init: clean
-	$(DO) build-init
+# Dist and web-greeter directories
+build/dist := ${BUILD_DIR}/dist
+build/web-greeter := ${BUILD_DIR}/web-greeter
 
-all: install
+$(build/dist): dist/*
+	@rm -rf "${BUILD_DIR}/dist"
+	@rsync -a "${REPO_DIR}/dist" "${BUILD_DIR}"
+	@cp "${REPO_DIR}/NEWS.md" "${BUILD_DIR}/dist/NEWS.md"
+	@echo "✔ Dist directory created at ${build/dist}"
 
-build: _build_init _apply_config
-	$(DO) build $(PREFIX)
+$(build/web-greeter): src/*
+	@rsync -a "${REPO_DIR}/src/" "${BUILD_DIR}/web-greeter" --exclude "dist" --exclude "__pycache__"
+	@cp "${REPO_DIR}/README.md" "${BUILD_DIR}/web-greeter/"
+	@echo "✔ Build directory created at ${build/web-greeter}"
 
-build_dev: install
-	$(MAYBE_SUDO_DO) install-dev
+# Resources
+bundle.js := ${BUILD_DIR}/web-greeter/resources/js/bundle.js
+bundle/ThemeUtils := ${REPO_DIR}/src/resources/js/ThemeUtils.js
+bundle/GreeterComm := ${REPO_DIR}/src/resources/js/GreeterComm.js
+bundle/bootstrap := ${REPO_DIR}/src/resources/js/bootstrap.js
+
+$(bundle.js): $(build/web-greeter) $(bundle/ThemeUtils) $(bundle/bootstrap) $(bundle/GreeterComm)
+	@cd build/web-greeter/resources/js; \
+	cat ${bundle/ThemeUtils} ${bundle/bootstrap} ${bundle/GreeterComm} > bundle.js
+
+resources.py := ${BUILD_DIR}/web-greeter/resources.py
+
+$(resources.py): $(bundle.js)
+	@pyrcc5 -o ${BUILD_DIR}/web-greeter/resources.py\
+		${BUILD_DIR}/web-greeter/resources/resources.qrc
+	@cp ${resources.py} src/
+	@echo "✔ Resources compiled with pyrcc5"
+
+# Install root, where everything will be copied to
+$(INSTALL_ROOT):
+	@for d in man/man1 metainfo doc/web-greeter web-greeter \
+		xgreeters applications icons/hicolor/scalable/apps; do \
+		mkdir -p "${INSTALL_PREFIX}/share/$$d"; \
+	done
+	@for d in lightdm xdg/lightdm/lightdm.conf.d; do \
+		mkdir -p "${INSTALL_ROOT}/etc/$$d"; \
+	done
+	@for d in lib/web-greeter bin; do \
+		mkdir -p "${INSTALL_PREFIX}/$$d"; \
+	done
+	@echo "✔ Install root created at ${INSTALL_ROOT}"
+
+# ZSH completion install
+$(zshcompletiondir_local): $(INSTALL_ROOT)
+	@if [ -n "${zshcompletiondir}" ]; then \
+		mkdir -p "${zshcompletiondir_local}"; \
+		cp "${BUILD_DIR}/dist/web-greeter-zsh" "${zshcompletiondir_local}/_web-greeter"; \
+		echo " ZSH completion copied"; \
+	fi
+
+# Bash completion install
+$(bashcompletiondir_local): $(INSTALL_ROOT)
+	@if [ -n "${bashcompletiondir}" ]; then \
+		mkdir -p "${bashcompletiondir_local}"; \
+		cp "${BUILD_DIR}/dist/web-greeter-bash" "${bashcompletiondir_local}/web-greeter"; \
+		echo " Bash completion copied"; \
+	fi
+
+build_completions: $(zshcompletiondir_local) $(bashcompletiondir_local)
+
+# Theme installation
+THEMES_DIR := $(abspath ${DESTDIR_PREFIX}/share/web-greeter/themes)
+THEMES_DIR_LOCAL := $(abspath ${INSTALL_PREFIX}/share/web-greeter/themes)
+themes/gruvbox := $(abspath ${THEMES_DIR_LOCAL}/gruvbox)
+themes/gruvbox/js := $(abspath ${REPO_DIR}/themes/gruvbox/js)
+themes/dracula := $(abspath ${THEMES_DIR_LOCAL}/dracula)
+themes/dracula/js := $(abspath ${REPO_DIR}/themes/dracula/js)
+themes/simple := $(abspath ${THEMES_DIR_LOCAL}/simple)
+themes/_vendor := $(abspath ${INSTALL_PREFIX}/share/web-greeter/_vendor)
+
+$(THEMES_DIR_LOCAL): $(INSTALL_ROOT)
+	@mkdir -p "${THEMES_DIR_LOCAL}"
+
+$(themes/gruvbox/js): themes/gruvbox/ts
+	@tsc --build themes/gruvbox
+	@echo " Gruvbox theme compiled"
+
+$(themes/dracula/js): themes/dracula/ts
+	@tsc --build themes/dracula
+	@echo " Dracula theme compiled"
+
+$(themes/gruvbox): $(THEMES_DIR_LOCAL) $(themes/gruvbox/js) themes/gruvbox
+	@if [ -d "${themes/gruvbox}" ]; then \
+		rm -rf "${themes/gruvbox}"; \
+	fi
+	@cp -r "${REPO_DIR}/themes/gruvbox" "${themes/gruvbox}"
+	@echo " Gruvbox theme copied"
+$(themes/dracula): $(THEMES_DIR_LOCAL) $(themes/dracula/js) themes/dracula
+	@if [ -d "${themes/dracula}" ]; then \
+		rm -rf "${themes/dracula}"; \
+	fi
+	@cp -r "${REPO_DIR}/themes/dracula" "${themes/dracula}"
+	@echo " Dracula theme copied"
+$(themes/simple): $(THEMES_DIR_LOCAL) themes/simple/*
+	@cp -r "${REPO_DIR}/themes/simple" "${themes/simple}"
+	@echo " Simple theme copied"
+
+$(themes/_vendor): $(INSTALL_ROOT) themes/_vendor/*
+	@cp -r "${REPO_DIR}/themes/_vendor" "${themes/_vendor}"
+	@echo " Theme vendors copied"
+
+build_themes: $(themes/gruvbox) $(themes/dracula) $(themes/simple) $(themes/_vendor)
+
+# Dist files
+dist/web-greeter.1 := $(abspath ${DESTDIR_PREFIX}/share/man/man1/web-greeter.1.gz)
+dist/news := $(abspath ${DESTDIR_PREFIX}/share/doc/web-greeter/NEWS.gz)
+dist/metainfo := $(abspath ${DESTDIR_PREFIX}/share/metainfo/web-greeter.appdata.xml)
+dist/xg-desktop := $(abspath ${DESTDIR_PREFIX}/share/xgreeters/web-greeter.desktop)
+dist/app-desktop := $(abspath ${DESTDIR_PREFIX}/share/applications/web-greeter.desktop)
+dist/app-icon-scalable := $(abspath ${DESTDIR_PREFIX}/share/icons/hicolor/scalable/apps/com.github.jezerm.web-greeter.svg)
+
+dist_local/web-greeter.1 := $(abspath ${INSTALL_PREFIX}/share/man/man1/web-greeter.1.gz)
+dist_local/news := $(abspath ${INSTALL_PREFIX}/share/doc/web-greeter/NEWS.gz)
+dist_local/metainfo := $(abspath ${INSTALL_PREFIX}/share/metainfo/web-greeter.appdata.xml)
+dist_local/xg-desktop := $(abspath ${INSTALL_PREFIX}/share/xgreeters/web-greeter.desktop)
+dist_local/app-desktop := $(abspath ${INSTALL_PREFIX}/share/applications/web-greeter.desktop)
+dist_local/app-icon-scalable := $(abspath ${INSTALL_PREFIX}/share/icons/hicolor/scalable/apps/com.github.jezerm.web-greeter.svg)
+
+$(dist_local/web-greeter.1): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.1
+	@gzip -c9 "${BUILD_DIR}/dist/web-greeter.1" > \
+		"${dist_local/web-greeter.1}"
+
+$(dist_local/news): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/NEWS.md
+	@gzip -c9 "${BUILD_DIR}/dist/NEWS.md" > \
+		"${dist_local/news}"
+
+$(dist_local/metainfo): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.appdata.xml
+	@cp "${BUILD_DIR}/dist/web-greeter.appdata.xml" \
+		"${dist_local/metainfo}"
+
+$(dist_local/xg-desktop): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-xgreeter.desktop
+	@cp "${BUILD_DIR}/dist/web-xgreeter.desktop" \
+		"${dist_local/xg-desktop}"
+
+$(dist_local/app-desktop): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.desktop
+	@cp "${BUILD_DIR}/dist/web-greeter.desktop" \
+		"${dist_local/app-desktop}"
+
+$(dist_local/app-icon-scalable): $(build/dist) $(INSTALL_ROOT) ${BUILD_DIR}/dist/com.github.jezerm.web-greeter.svg
+	@cp "${BUILD_DIR}/dist/com.github.jezerm.web-greeter.svg" \
+		"${dist_local/app-icon-scalable}"
+
+build_dist_files: $(dist_local/web-greeter.1) $(dist_local/news) $(dist_local/metainfo) $(dist_local/xg-desktop) $(dist_local/app-desktop) $(dist_local/app-icon-scalable)
+	@echo "✔ Dist files copied"
+
+# Config files
+config/web-greeter := $(abspath ${DESTDIR}/etc/lightdm/web-greeter.yml)
+config/lightdm-wrapper := $(abspath ${DESTDIR}/etc/xdg/lightdm/lightdm.conf.d/90-greeter.wrapper.conf)
+config/Xgreeter := $(abspath ${DESTDIR}/etc/lightdm/Xgreeter)
+
+config_local/web-greeter := $(abspath ${INSTALL_ROOT}/etc/lightdm/web-greeter.yml)
+config_local/lightdm-wrapper := $(abspath ${INSTALL_ROOT}/etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf)
+config_local/Xgreeter := $(abspath ${INSTALL_ROOT}/etc/lightdm/Xgreeter)
+
+$(config_local/web-greeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.yml
+	@cp "${BUILD_DIR}/dist/web-greeter.yml" "${config_local/web-greeter}"
+$(config_local/lightdm-wrapper): $(INSTALL_ROOT) ${BUILD_DIR}/dist/90-greeter-wrapper.conf
+	@cp "${BUILD_DIR}/dist/90-greeter-wrapper.conf" "${config_local/lightdm-wrapper}"
+$(config_local/Xgreeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/Xgreeter
+	@install -Dm755 "${BUILD_DIR}/dist/Xgreeter" "${config_local/Xgreeter}"
+
+build_config: $(config_local/web-greeter) $(config_local/lightdm-wrapper) $(config_local/Xgreeter)
+	@echo "✔ Config copied"
+
+build_install_root: $(INSTALL_ROOT) build_dist_files build_config build_themes build_completions
+
+# Binaries
+bin/web-greeter := $(abspath ${DESTDIR}/bin/web-greeter)
+bin_local/web-greeter := $(abspath ${INSTALL_PREFIX}/bin/web-greeter)
+
+bin/screensaver.so := ${BUILD_DIR}/web-greeter/bindings/_screensaver.so
+bin/screensaver.c := ${BUILD_DIR}/web-greeter/bindings/screensaver.c
+
+$(bin/screensaver.so): $(build/web-greeter)
+	@gcc ${bin/screensaver.c} -o ${bin/screensaver.so} -shared -lX11 -lxcb
+	@cp ${bin/screensaver.so} src/bindings/
+	@echo "✔ Screensaver.so compiled"
+
+$(bin_local/web-greeter): build_install_root $(resources.py) $(bin/screensaver.so)
+	@rm -rf "${INSTALL_PREFIX}/lib/web-greeter/*"
+	@cp -R "${BUILD_DIR}/web-greeter"/* "${INSTALL_PREFIX}/lib/web-greeter"
+	@printf "#!/usr/bin/env bash\npython3 ${DESTDIR_PREFIX}/lib/web-greeter \$$@" > \
+		"${bin_local/web-greeter}"
+	@chmod +x "${bin_local/web-greeter}"
+	@echo "✔ web-greeter binary copied"
+
+# Useful rules
+.PHONY: build
+build: $(bin_local/web-greeter)
+	@echo "✔ Build succeded"
+
+.PHONY: install
+install: build
+	[ -e "${DESTDIR}" ] || mkdir -p "${DESTDIR}"
+	cp -R "${INSTALL_ROOT}"/* "${DESTDIR}"
+	@echo "✔ Install succeded"
+
+# Uninstall everything except themes and web-greeter.yml
+uninstall_preserve:
+	@rm -f "${dist/web-greeter.1}"
+	@rm -f "${dist/app-desktop}"
+	@rm -f "${dist/xg-desktop}"
+	@rm -f "${dist/metainfo}"
+	@rm -f "${dist/news}"
+	@rm -f "${config/lightdm-wrapper}"
+	@rm -f "${config/Xgreeter}"
+	@rm -f "${bin/web-greeter}"
+	@if [ -n "${bashcompletiondir}" ]; then \
+		rm -f "${bashcompletiondir}/web-greeter"; \
+	fi
+	@if [ -n "${zshcompletiondir}" ]; then \
+		rm -f "${zshcompletiondir}/_web-greeter"; \
+	fi
+
+# Uninstall everything
+uninstall_all: uninstall_preserve
+	@rm -rf "${config/web-greeter}"
+	@rm -rf "${DESTDIR_PREFIX}/web-greeter/"
+
+.PHONY: uninstall
+uninstall: uninstall_preserve
+	@echo " Themes are not uninstalled. Remove them manually or use \`make uninstall_all\`:\
+		\n${DESTDIR_PREFIX}/share/web-greeter"
+	@echo " web-greeter config was not uninstalled. Remove it manually or use \`make uninstall_all\`:\
+		\n${config/web-greeter}"
+
+run: $(resources.py)
+	python3 src
+
+run_debug: $(resources.py)
+	python3 src --debug
 
 clean:
-	$(DO) clean
-
-install: build
-	./build/utils.sh prepare-install $(PREFIX)
-	$(MAYBE_SUDO_DO) install $(DESTDIR) $(PREFIX)
-	$(call colorecho, SUCCESS!)
-
-
-.PHONY: all _apply_config _build_init build build_dev clean install
+	rm -rf ${INSTALL_ROOT} ${BUILD_DIR}/dist ${BUILD_DIR}/web-greeter

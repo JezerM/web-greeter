@@ -1,5 +1,122 @@
 # Change Log
 
+## [3.5.0](https://github.com/JezerM/web-greeter/tree/3.5.0) ~ 07-12-2022
+
+**Added:**
+  * Added multi-monitor support from nody-greeter
+  * Added `greeter_comm` object for cross-window communication
+  * Added `GreeterBroadcastEvent` for listening to greeter_comm messages
+
+**Changes:**
+
+  * Default themes migrated to Typescript
+  * Added background selector to gruvbox theme
+  * `tsc` (typescript compiler) is now a required dependency
+  * `lightdm.batteryData` deprecated in favor of `lightdm.battery_data`.
+  * Command line arguments updated:
+    - Added `--mode` optio
+    - Added `-d` as `--debug`, and `-n` as `--normal`
+    - Updated bash and zsh completions
+  * Added Web Greeter scalable icon
+  * Lot of code refactoring
+  * Lots of improvements
+  * Lots of bugfixes
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.4.1...3.5.0)
+
+## [3.4.1](https://github.com/JezerM/web-greeter/tree/3.4.1) ~ 04-10-2022
+
+**Changes:**
+
+  * Fix build process
+  * Fix typos in README
+  * Handle lightdm_start_session errors
+  * Fix positioning on multiple screens
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.4.0...3.4.1)
+
+## [3.4.0](https://github.com/JezerM/web-greeter/tree/3.3.0) ~ 03-22-2022
+
+**Added:**
+
+  * Added top Menu-bar menus and items
+  * Improve devtools qdock behavior
+
+**Changes:**
+
+  * Bugfixes related to LightDM signals
+  * Fix web-greeter initialization issues
+  * Migrate from utils.sh script to full Makefile
+  * Man-pages updated
+
+**Removed:**
+
+  * Remove python-xlib dependency in favor of python C binding
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.3.0...3.4.0)
+
+## [3.3.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 01-28-2022
+
+**Changes:**
+
+  * Bugfixes related to LightDM signals
+  * Allow --no-sandbox argument
+  * Allowed relative path with theme_utils.dirlist
+  * Added brightness controller to use instead of external programs
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.2.1...3.3.0)
+
+## [3.2.1](https://github.com/JezerM/web-greeter/tree/3.2.1) ~ 12-11-2021
+
+**Changes:**
+
+  * Bugfixes related to older Qt versions
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.2.0...3.2.1)
+
+## [3.2.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 12-08-2021
+
+**Changes:**
+
+  * Default build system reverted to **zippy method**
+  * Battery bugfixes
+  * QWebChannel and Web Greeter bundle merged as one file
+    - LightDM API should be instantly accessible
+  * Lots of bugfixes
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.1.1...3.2.0)
+
+## [3.1.1](https://github.com/JezerM/web-greeter/tree/3.1.1) ~ 10-27-2021
+
+**Changes:**
+
+  * Bugfixes, just bugfixes
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.1.0...3.1.1)
+
+
+## [3.1.0](https://github.com/JezerM/web-greeter/tree/3.1.0) ~ 09-15-2021
+
+**Added**:
+
+  * Devtools implemented as a side view
+  * Build system now uses **cx_freeze**
+  * Improved themes:
+    - Added keyboard layout selector
+    - Added eye password reveal
+
+**Changes:**
+
+  * Brightness and battery are now controlled by signals instead of timers
+  * Old build system (zip build) is still usable with `build_old` and `install_old`
+
+**Removed:**
+
+  * [whither](https://github.com/JezerM/whither) dependency removed
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/3.0.0...3.1.0)
+
+
 ## [3.0.0](https://github.com/JezerM/web-greeter/tree/3.0.0) ~ 07-28-2021
 
 **Added:**
@@ -87,7 +204,7 @@
 
 **Fixed:**
 
-  * Increased the timeout for the "theme loaded" check to ensure themes are given 
+  * Increased the timeout for the "theme loaded" check to ensure themes are given
     enough time to load (when running on less powerful systems). (GH #98)
   * Fixed issue where users' custom .face image failed to load. (GH #98)
 

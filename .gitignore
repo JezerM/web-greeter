@@ -2,8 +2,9 @@ bundle.js
 resources.py
 build/**
 !build/.gitignore
-!build/ci/Dockerfile
+!build/ci/
 !build/utils.sh
+!build/DEBIAN/
 whither/
 
 ### JetBrains template
@@ -20,6 +21,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
+venv/
 develop-eggs/
 downloads/
 eggs/
@@ -29,6 +31,7 @@ lib64/
 parts/
 sdist/
 var/
+web-greeter/dist
 *.egg-info/
 .installed.cfg
 *.egg
@@ -55,3 +58,6 @@ Makefile.in
 _book/
 node_modules/
 package-lock.json
+
+# vscode
+.vscode/

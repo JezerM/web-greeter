@@ -1,0 +1,128 @@
+#background {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+
+  background-color: var(--bg);
+}
+
+#background-selector {
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  z-index: 8;
+  transition: opacity var(--animation-duration);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4em;
+  cursor: default;
+
+  background-color: #282828cc;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#background-selector-current {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 4em;
+  gap: 1em;
+}
+#background-selector-current > #current-background {
+  width: calc(25vh * 16 / 10);
+  height: 25vh;
+  cursor: pointer;
+  border-radius: 1em;
+  filter: drop-shadow(2px 4px 16px #00000088);
+
+  background-color: var(--bg);
+  background-position: center;
+  background-size: cover;
+}
+
+#background-selector-list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2em;
+
+  max-width: 60vw;
+  height: 50vh;
+
+  align-items: flex-start;
+  justify-content: space-evenly;
+  align-content: flex-start;
+
+  padding: 0 1em;
+  margin-bottom: 4em;
+  overflow-y: auto;
+
+  scroll-behavior: smooth;
+}
+#background-selector-list button.image {
+  width: calc(10vh * 16 / 10);
+  height: 10vh;
+  cursor: pointer;
+}
+
+button.image {
+  display: block;
+  border-color: var(--fg0);
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 0.5em;
+  padding: 0;
+
+  background-color: var(--bg);
+  background-position: center;
+  background-size: cover;
+}
+
+#background-selector-back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 10px;
+
+  background-color: transparent;
+  padding: 0;
+  font-size: 2em;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+}
+#background-selector-back:hover,
+#background-selector-back:focus {
+  background-color: #3c3836aa;
+}
+
+#background-selector-enter {
+  position: absolute;
+  border-radius: 5px;
+  background-color: transparent;
+
+  padding: 0;
+  margin: 10px;
+  bottom: 0;
+  left: 0;
+
+  font-size: 2em;
+  width: 2em;
+  height: 2em;
+  cursor: pointer;
+}
+#background-selector-enter:hover,
+#background-selector-enter:focus {
+  background: #3c3836aa;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#background-blur > input {
+  background-color: #3c3836aa;
+  padding: 0.5em;
+}

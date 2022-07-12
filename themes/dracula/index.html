@@ -1,139 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, viewport-fit=cover, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Dracula theme</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, viewport-fit=cover, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Dracula theme</title>
 
-  <link rel="stylesheet" href="css/style.css" class="style">
-  <link rel="stylesheet" href="../../_vendor/material-icons/css/materialdesignicons.min.css" onerror="this.href='../_vendor/material-icons/css/materialdesignicons.min.css'" class="style">
+    <link rel="stylesheet" href="css/style.css" class="style" />
+    <link
+      rel="stylesheet"
+      href="../../_vendor/material-icons/css/materialdesignicons.min.css"
+      onerror="this.href='../_vendor/material-icons/css/materialdesignicons.min.css'"
+      class="style"
+    />
 
-  <script src="../_vendor/js/mock.js"></script>
+    <!--<script src="..//js/mock.js"></script>-->
+  </head>
+  <body>
+    <div id="background">
+      <div id="bg-cover"></div>
+    </div>
 
-</head>
-<body>
+    <button id="cover" class="hide">
+      <div id="message"></div>
+    </button>
 
-  <div id="background">
-    <div id="bg-cover"></div>
-    <img src="./assets/dracula.png" alt="">
-  </div>
+    <div id="screen">
+      <div id="login-wrapper">
+        <div id="top-bar">Welcome!</div>
 
-  <div id="cover" class="hide">
-    <div id="message"></div>
-  </div>
+        <div id="login-wrapper-box">
+          <button id="time-date">
+            <h2 id="time-label">20:00</h2>
+            <h2 id="date-label">20-05-2021</h2>
+          </button>
 
-  <div id="screen">
+          <div id="auth-message" class="hide"></div>
 
-    <div id="login-wrapper">
+          <div id="pass-form" class="hide">
+            <form action="POST" id="login-form">
+              <div id="user-wrapper">
+                <input
+                  id="input-username"
+                  name="username"
+                  type="text"
+                  autocomplete="off"
+                  autofocus="true"
+                  placeholder="Enter your username"
+                />
 
-      <div id="top-bar">
-        Welcome!
-      </div>
-
-      <div id="login-wrapper-box">
-        <button id="time-date">
-          <h2 id="time-label">20:00</h2>
-          <h4 id="date-label">20-05-2021</h2>
-        </button>
-
-        <div id="auth-message" class="hide"></div>
-
-        <div id="pass-form" class="hide">
-          <form action="POST" id="login-form">
-            <div id="user-wrapper">
-              <input id="input-username" name="username" type="text" autocomplete="off" autofocus="true" placeholder="Enter your username">
-
-              <div id="users-button-wrapper">
-                <button id="users-button" class="button hide" type="button">
-                  <span class="mdi mdi-chevron-down mdi-24px"></span>
-                </button>
-                <div id="users-dropdown">
-                  <ul class="dropdown hide">
-                    <li><button type="button">Vlad Tepes</button></li>
-                    <li><button type="button">Belmont</button></li>
-                  </ul>
+                <div id="users-button-wrapper">
+                  <button id="users-button" class="button hide" type="button">
+                    <span class="mdi mdi-chevron-down mdi-24px"></span>
+                  </button>
+                  <div id="users-dropdown">
+                    <ul class="dropdown hide">
+                      <li><button type="button">Vlad Tepes</button></li>
+                      <li><button type="button">Belmont</button></li>
+                    </ul>
+                  </div>
                 </div>
               </div>
 
-            </div>
-
-            <div id="pass-wrapper">
-              <input id="input-password" name="password" type="password" autocomplete="off" autofocus="true" placeholder="Enter your password">
-              <button id="submit-button" class="button" type="submit">
-                <span class="mdi mdi-chevron-right mdi-24px"></span>
-              </button>
-            </div>
-
-          </form>
+              <div id="pass-wrapper">
+                <div id="input">
+                  <input
+                    id="input-password"
+                    name="password"
+                    type="password"
+                    autocomplete="off"
+                    autofocus="true"
+                    placeholder="Enter your password"
+                  />
+                  <button id="pass-eye" type="button" class="button">
+                    <i class="mdi mdi-eye"></i>
+                  </button>
+                </div>
+                <button id="submit-button" class="button" type="submit">
+                  <span class="mdi mdi-chevron-right mdi-24px"></span>
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
 
+        <div id="bottom-bar">
+          <div id="sessions-button-wrapper">
+            <button id="sessions-button" class="button">
+              <span class="text">Awesome</span>
+              <span class="mdi mdi-chevron-down mdi-24px"></span>
+            </button>
+            <ul id="sessions-dropdown" class="dropdown hide">
+              <li><button>Awesome</button></li>
+              <li><button>Ubuntu</button></li>
+            </ul>
+          </div>
+
+          <div id="bottom-right" class="button-group">
+            <button id="shutdown-button" class="hide">
+              <span class="mdi mdi-power"></span>
+            </button>
+
+            <button id="restart-button" class="hide">
+              <span class="mdi mdi-restart"></span>
+            </button>
+
+            <button id="suspend-button" class="hide">
+              <span class="mdi mdi-power-sleep"></span>
+            </button>
+
+            <button id="hibernate-button" class="hide">
+              <span class="mdi mdi-power-cycle"></span>
+            </button>
+          </div>
+        </div>
       </div>
 
-      <div id="bottom-bar">
-        <div id="sessions-button-wrapper">
-          <button id="sessions-button" class="button">
-            <span class="text">Awesome</span> <span class="mdi mdi-chevron-down mdi-24px"></span>
-          </button>
-          <ul id="sessions-dropdown" class="dropdown hide">
-            <li><button>Awesome</button></li>
-            <li><button>Ubuntu</button></li>
+      <div id="system-bar">
+        <div id="layout-list">
+          <button id="layout-list-button" class="">LATAM</button>
+          <ul id="layouts-dropdown" class="dropdown hide">
+            <li><button>Latam</button></li>
+            <li><button>English</button></li>
           </ul>
         </div>
 
-        <div id="bottom-right" class="button-group">
-          <button id="shutdown-button" class="hide">
-            <span class="mdi mdi-power"></span>
-          </button>
-
-          <button id="restart-button" class="hide">
-            <span class="mdi mdi-restart"></span>
-          </button>
-
-          <button id="suspend-button" class="hide">
-            <span class="mdi mdi-power-sleep"></span>
-          </button>
-
-          <button id="hibernate-button" class="hide">
-            <span class="mdi mdi-power-cycle"></span>
-          </button>
-        </div>
-
+        <div id="brightness-label"></div>
+        <div id="battery-label"></div>
       </div>
 
-    </div>
-
-    <button id="panel-button" class="button">
-      <span class="mdi mdi-menu mdi-24px"></span>
-    </button>
-
-    <div id="sidebar" class="panel hide">
-      <h3>Background selector</h3>
-      <button id="close-panel-button" class="button">
-        <span class="mdi mdi-close-thick mdi-24px"></span>
+      <button id="panel-button" class="button">
+        <span class="mdi mdi-menu mdi-24px"></span>
       </button>
 
-      <div id="background-selector">
-        <button class="image" tabindex="0">
-          <img src="./assets/dracula.png" alt="">
+      <div id="sidebar" class="panel hide">
+        <h3>Background selector</h3>
+        <button id="close-panel-button" class="button">
+          <span class="mdi mdi-close-thick mdi-24px"></span>
         </button>
-        <button class="image" tabindex="0">
-          <img src="./assets/dracula.png" alt="">
-        </button>
-        <button class="image" tabindex="0">
-          <img src="./assets/dracula.png" alt="">
-        </button>
+
+        <div id="background-selector">
+          <button class="image" tabindex="0">
+            <img src="./assets/dracula.png" alt="" />
+          </button>
+          <button class="image" tabindex="0">
+            <img src="./assets/dracula.png" alt="" />
+          </button>
+          <button class="image" tabindex="0">
+            <img src="./assets/dracula.png" alt="" />
+          </button>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script src="js/debug.js"></script>
-  <script src="js/accounts.js"></script>
-  <script src="js/sessions.js"></script>
-  <script src="js/authenticate.js"></script>
-  <script src="js/sidebar.js"></script>
-  <script src="js/backgrounds.js"></script>
-  <script src="js/time-date.js"></script>
-  <script src="js/power.js"></script>
-  <script src="js/index.js"></script>
-</body>
+    <!--<script src="js/debug.js"></script>-->
+    <script src="js/index.js" type="module"></script>
+  </body>
 </html>

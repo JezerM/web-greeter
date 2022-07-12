@@ -1,6 +1,7 @@
 # Web Greeter dracula theme
 
 ## Overview
+
 This is a web-greeter theme based on [dracula color scheme][dracula], included with [web-greeter][web-greeter].
 
 Based also on [glorious-theme][glorious] by manilarome.
@@ -21,6 +22,7 @@ Based also on [glorious-theme][glorious] by manilarome.
 </center>
 
 ## Installation
+
 This theme is shipped with `web-greeter`. To use it, set the `theme` as `dracula` inside `/etc/lightdm/web-greeter.yml`
 
 ## Credits
@@ -30,6 +32,7 @@ Dracula theme wallpaper found [here](https://draculatheme.com/wallpaper)
 Window blurred background image by [Riley Briggs](https://unsplash.com/photos/cSe3oKQ03OQ) on [Unsplash](https://unsplash.com/)
 
 ## TODO
+
 - Battery and brightness support
 - Lock indicator
 - Translations support

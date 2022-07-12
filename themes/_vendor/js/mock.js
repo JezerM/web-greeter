@@ -49,23 +49,29 @@ class LightDMSession {
 }
 
 class LightDMUser {
-	constructor( {display_name, username, language, layout, image, home_directory, session, logged_in} ) {
+	constructor( {display_name, username, language, layout, layouts, image, home_directory, session, logged_in, background} ) {
 		this.display_name = display_name;
 		this.username = username;
 		this.language = language;
 		this.layout = layout;
+		this.layouts = layouts;
 		this.image = image;
 		this.home_directory = home_directory;
+		this.background = background;
 		this.session = session;
 		this.logged_in = logged_in;
 	}
 }
 
 class LightDMBattery {
-	constructor( {name, level, status}) {
+	constructor( {name, level, status, ac_status}) {
 		this.name = name;
 		this.level = level;
 		this.status = status;
+		this.ac_status = ac_status;
+		this.capacity = 100;
+		this.time = "00:00";
+		this.watt = 0;
 	}
 }
 
@@ -115,7 +121,7 @@ function emitSignal(name) {
 	signal._run()
 }
 
-_mockData = {
+const _mockData = {
 	languages: [
 		new LightDMLanguage({
 			name: 'English',
@@ -192,6 +198,8 @@ _mockData = {
 			home_directory: '/home/superman',
 			session: 'gnome',
 			logged_in: false,
+			background: "",
+			layouts: [],
 		}),
 		new LightDMUser({
 			display_name: 'Bruce Wayne',
@@ -202,6 +210,8 @@ _mockData = {
 			home_directory: '/home/batman',
 			session: 'cinnamon',
 			logged_in: false,
+			background: "",
+			layouts: [],
 		}),
 		new LightDMUser({
 			display_name: 'Peter Parker',
@@ -212,12 +222,15 @@ _mockData = {
 			home_directory: '/home/spiderman',
 			session: 'MATE',
 			logged_in: false,
+			background: "",
+			layouts: [],
 		})
 	],
 	battery: new LightDMBattery({
 		name: "Battery 0",
 		level: 85,
-		state: "Discharging"
+		status: "Discharging",
+		ac_status: 1,
 	}),
 }
 
@@ -558,13 +571,6 @@ class Greeter {
 	}
 
 	/**
-	 * Updates the battery data
-	 */
-	batteryUpdate() {
-		console.log("Battery updated")
-	}
-
-	/**
 	 * Set the brightness to quantity
 	 * @param {Number} quantity The quantity to set
 	 */
@@ -682,6 +688,8 @@ class Greeter {
 
 	brightness_update = new Signal("brightness_update");
 
+	battery_update = new Signal("battery_update");
+
 	idle = new Signal("idle");
 
 	reset = new Signal("reset");
@@ -724,6 +732,8 @@ class GreeterConfig {
 			steps: 0
 		}
 	}
+
+	_layouts = _mockData.layouts
 
 	/**
 	 * Holds keys/values from the `branding` section of the config file.
@@ -771,6 +781,10 @@ class GreeterConfig {
 	 */
 	get features() {
 		return this._features;
+	}
+
+	get layouts() {
+		return this._layouts;
 	}
 
 }
@@ -953,6 +967,4 @@ new Greeter();
 
 window._ready_event = new Event("GreeterReady")
 
-setTimeout(() => {
-	window.dispatchEvent(_ready_event)
-}, 1000)
+window.addEventListener("load", () => {window.dispatchEvent(_ready_event)})
