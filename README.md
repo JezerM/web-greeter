@@ -117,7 +117,7 @@ Either, use `sudo make uninstall_all` to remove everything related to web-greete
 
 ## Theme JavaScript API
 [Antergos][Antergos] documentation is no longer available, although it is accesible through
-[Web Archive][WebArchive]. Current and updated documentation is available at [gh-pages][gh-pages].
+[Web Archive][WebArchive]. Current and updated documentation is available at [web-greeter-page/docs][web-greeter-docs].
 
 You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can
 explore the provided [themes](./themes) for real use cases.
@@ -196,6 +196,6 @@ web-greeter related import errors:
 [bat_widget]: https://github.com/lcpz/lain/blob/master/widget/bat.lua "Battery widget"
 [lain]: https://github.com/lcpz/lain "Lain awesome library"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
-[gh-pages]: https://jezerm.github.io/web-greeter/ "API Documentation"
+[web-greeter-docs]: https://jezerm.github.io/web-greeter-page/docs/ "Documentation"
 [live_demo]: https://jezerm.github.io/web-greeter-themes/ "Live Demo"
 [releases]: https://github.com/JezerM/web-greeter/releases "Releases"
