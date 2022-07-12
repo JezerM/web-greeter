@@ -1,12 +1,12 @@
 Package: web-greeter
-Version: 3.4.1
+Version: 3.5.0
 Provides: lightdm-greeter
 Replaces: lightdm-webkit-greeter
 Section: x11
 Priority: optional
 Homepage: https://github.com/JezerM/web-greeter
-Installed-Size: 15296
-Architecture: all
+Installed-Size: 18068
+Architecture: amd64
 Maintainer: JezerM <amyuki4@gmail.com>
 Depends: liblightdm-gobject-1-0, liblightdm-gobject-1-dev, python3, python3-gi, python3-pyqt5, pyqt5-dev, python3-pyinotify, libqt5webengine5, python3-pyqt5.qtwebengine, python3-ruamel.yaml, libxcb1, libx11-6
 Description: A modern, visually appealing greeter for LightDM.
