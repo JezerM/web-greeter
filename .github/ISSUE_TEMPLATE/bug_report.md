@@ -14,6 +14,8 @@ assignees: ''
 ## Bug description
 A clear and concise description of what the bug is.
 
+<!--Include web-greeter's log if applicable-->
+
 ## Steps to reproduce
 Steps to reproduce the behavior.
 
