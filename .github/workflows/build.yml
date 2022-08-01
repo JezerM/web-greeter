@@ -17,7 +17,7 @@ jobs:
       name: Checkout local actions
       uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: recursive
     -
       name: Build and install web-greeter
       uses: "./.github/actions/build"
@@ -30,7 +30,7 @@ jobs:
       name: Checkout local actions
       uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: recursive
     -
       name: Build web-greeter
       uses: "./.github/actions/build"
