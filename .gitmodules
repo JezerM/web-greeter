@@ -1,3 +1,6 @@
 [submodule "ts-types"]
 	path = ts-types
 	url = git@github.com:JezerM/nody-greeter-types.git
+[submodule "themes"]
+	path = themes
+	url = https://github.com/JezerM/web-greeter-themes.git

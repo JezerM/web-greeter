@@ -11,7 +11,7 @@ runs:
       name: Checkout
       uses: actions/checkout@v2
       with:
-        submodules: true
+        submodules: recursive
     -
       name: Install dependencies
       shell: bash
