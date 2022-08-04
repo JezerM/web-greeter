@@ -170,9 +170,8 @@ def load_theme_config():
             theme_config = yaml.safe_load(file)
             web_greeter_config["theme"] = theme_config
 
-    except OSError as err:
-        logger.warn("Theme config was not loaded:\n\t%s",
-                    err.strerror)
+    except Exception as err:
+        logger.warn("Theme config was not loaded:\n\t%s", err)
         logger.debug("Using default theme config")
 
 def ensure_theme():
@@ -200,7 +199,7 @@ def load_config():
             raise Exception("Config file not found")
         with open(PATH_TO_CONFIG, "r", encoding="utf-8") as file:
             web_greeter_config["config"] = yaml.safe_load(file)
-    except IOError as err:
+    except Exception as err:
         logger.error("Config was not loaded:\n\t%s", err)
 
 load_config()
