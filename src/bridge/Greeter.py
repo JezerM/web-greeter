@@ -149,7 +149,7 @@ class Greeter(BridgeObject):
     def _emit_signal(self, _signal, *args):
         self.property_changed.emit()
         # _signal.emit(*args)
-        QTimer().singleShot(300, lambda: _signal.emit(*args))
+        QTimer().singleShot(60, lambda: _signal.emit(*args))
 
     @Bridge.prop(str, notify=property_changed)
     def authentication_user(self):

@@ -29,7 +29,7 @@
 
 from typing import List
 
-from PyQt5.QtCore import QVariant
+from PyQt5.QtCore import QVariant, QTimer
 
 # This Application
 from browser.window import WindowAbstract
@@ -52,7 +52,7 @@ class GreeterComm(BridgeObject):
 
     broadcast_signal = Bridge.signal(QVariant, QVariant, arguments=("window", "data"))
 
-    noop_signal = Bridge.signal()
+    property_changed = Bridge.signal()
     window: WindowAbstract
 
     def __init__(self, window, *args, **kwargs):
@@ -61,7 +61,7 @@ class GreeterComm(BridgeObject):
 
         communications.append(self)
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QVariant, notify=property_changed)
     def window_metadata(self):
         for win in globales.greeter.windows:
             if self.window.meta.id == win.meta.id:
@@ -73,8 +73,8 @@ class GreeterComm(BridgeObject):
 
     @Bridge.method(QVariant)
     def broadcast(self, data):
-        self.noop_signal.emit()
-        communication_emit(self.window_metadata, data)
+        self.property_changed.emit()
+        QTimer().singleShot(60, lambda: communication_emit(self.window_metadata, data))
 
     def destroy(self):
         global communications
