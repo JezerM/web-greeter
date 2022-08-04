@@ -3,6 +3,7 @@
 	<qresource prefix="/_greeter">
 		<file>css/style.css</file>
 		<file>js/bundle.js</file>
+		<file>js/qwebchannel.js</file>
 	</qresource>
 </RCC>
 

@@ -422,7 +422,7 @@ class BrowserWindow(MainWindow):
         return script
 
     def _get_channel_api_script(self) -> QWebEngineScript:
-        return self._create_webengine_script(':/qtwebchannel/qwebchannel.js', 'QWebChannel API')
+        return self._create_webengine_script(':/_greeter/js/qwebchannel.js', 'QWebChannel API')
 
     def _init_bridge_channel(self) -> None:
         self.win_page.setWebChannel(self.channel)
@@ -446,6 +446,7 @@ class BrowserWindow(MainWindow):
         qt_api_source = qt_api.sourceCode()
         script = self._create_webengine_script(path, name)
         script.setSourceCode(qt_api_source + "\n" + script.sourceCode())
+        # script.setWorldId(42)
         if not self.win_page.scripts().contains(script):
             self.win_page.scripts().insert(script)
 
