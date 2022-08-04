@@ -412,10 +412,8 @@ class QWebChannel {
     }
 
     _handleSignal(message) {
-        console.debug("Handling signal", message);
         const object = this.objects[message.object];
         if (object) {
-            console.debug("Signal:", object);
             object._signalEmitted(message.signal, message.args);
         } else {
             console.warn("Unhandled signal: " + message.object + "::" + message.signal);
@@ -434,11 +432,9 @@ class QWebChannel {
     }
 
     _handlePropertyUpdate(message) {
-        console.debug("Handling property update", message);
         message.data.forEach((data) => {
             const object = this.objects[data.object];
             if (object) {
-                console.debug("Property:", object);
                 object._propertyUpdate(data.signals, data.properties);
             } else {
                 console.warn("Unhandled property update: " + data.object + "::" + data.signal);
