@@ -5,7 +5,7 @@ _web-greeter() {
 	local cur="${COMP_WORDS[COMP_CWORD]}"
 	local last="${COMP_WORDS[COMP_CWORD - 1]}"
 	local xpat='!*.jpg'
-	local options='--debug -d --normal -n --mode --list --theme --help -h --version -v'
+	local options='--debug -d --normal -n --mode --list --theme --help -h --version -v --api-version'
 
 	for word in "${COMP_WORDS[@]}"; do
 		case "${word}" in

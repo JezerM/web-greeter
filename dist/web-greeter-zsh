@@ -13,6 +13,7 @@ _webgreeter() {
         "--theme[Sets the theme to use]:theme:->themes"
         "(--help -h)"{--help,-h}"[Show help]"
         "(--version -v)"{--version,-v}"[Print program version]"
+        "--api-version[Print JavaScript API version number]"
     )
     _arguments $args[@] && ret=0
     case "$state" in
