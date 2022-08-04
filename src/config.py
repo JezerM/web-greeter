@@ -70,6 +70,12 @@ web_greeter_config = {
             "minor": 5,
             "micro": 0,
         },
+        "api_version": {
+            "full": "1.0.0",
+            "major:": 1,
+            "minor": 0,
+            "micro": 0,
+        },
     },
     "theme": {
         "primary_html": "index.html",

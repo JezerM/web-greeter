@@ -72,11 +72,15 @@ def set_debug(value: bool):
 def parse(argv):
     """Parse command arguments"""
     version = config.web_greeter_config["app"]["version"]["full"]
+    api_version = config.web_greeter_config["app"]["api_version"]["full"]
+
     parser = argparse.ArgumentParser(prog="web-greeter", add_help = False)
     parser.add_argument("-h", "--help", action = "help",
                         help = "Show this help message and exit")
     parser.add_argument("-v", "--version", action = "version",
                         version = version, help = "Show version number")
+    parser.add_argument("--api-version", action = "version",
+                        version = api_version, help = "Show JavaScript API version number")
 
     parser.add_argument("--mode", help = "Set browser mode",
                         choices = ["debug", "normal"])
