@@ -63,8 +63,9 @@ $(bundle.js): $(build/web-greeter) $(bundle/ThemeUtils) $(bundle/bootstrap) $(bu
 	cat ${bundle/ThemeUtils} ${bundle/bootstrap} ${bundle/GreeterComm} > bundle.js
 
 resources.py := ${BUILD_DIR}/web-greeter/resources.py
+qwebchannel.js := ${REPO_DIR}/src/resources/js/qwebchannel.js
 
-$(resources.py): $(bundle.js)
+$(resources.py): $(bundle.js) $(qwebchannel.js)
 	@pyrcc5 -o ${BUILD_DIR}/web-greeter/resources.py\
 		${BUILD_DIR}/web-greeter/resources/resources.qrc
 	@cp ${resources.py} src/
