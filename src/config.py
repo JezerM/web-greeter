@@ -65,10 +65,10 @@ web_greeter_config = {
         "debug_mode": False,
         "theme_dir": "/usr/share/web-greeter/themes/",
         "version": {
-            "full": "3.5.0",
+            "full": "3.5.1",
             "major": 3,
             "minor": 5,
-            "micro": 0,
+            "micro": 1,
         },
         "api_version": {
             "full": "1.0.0",
@@ -130,7 +130,7 @@ def load_primary_theme_path() -> str:
     path_to_theme = os.path.join(theme_dir, primary)
 
     if not path_to_theme.endswith(".html"):
-        path_to_theme = os.path.join(path_to_theme, "index.html");
+        path_to_theme = os.path.join(path_to_theme, "index.html")
 
     if not os.path.exists(path_to_theme):
         logger.warn("\"%s\" theme does not exists. Using \"%s\" theme",
