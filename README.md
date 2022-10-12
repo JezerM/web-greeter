@@ -120,7 +120,7 @@ Either, use `sudo make uninstall_all` to remove everything related to web-greete
 [Web Archive][WebArchive]. Current and updated documentation is available at [web-greeter-page/docs][web-greeter-docs].
 
 You can access the man-pages `man web-greeter` for some documentation and explanation. Also, you can
-explore the provided [themes](./themes) for real use cases.
+explore the provided [themes](https://github.com/JezerM/web-greeter-themes/tree/master/themes) for real use cases.
 
 Additionally, you can install the TypeScript types definitions inside your theme with npm:
 
