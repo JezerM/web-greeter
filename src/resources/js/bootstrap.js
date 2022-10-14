@@ -37,6 +37,27 @@
      */
     window._ready_event = new Event("GreeterReady");
 
+    let dispatched = false;
+
+    function dispatch_channel_ready_cb() {
+        if (window.lightdm === undefined) {
+            console.debug(
+                "LIGHTDM:",
+                "Document loaded before channel is done. Won't dispatch GreeterReady"
+            );
+            return;
+        }
+        if (dispatched) {
+            console.debug("LIGHTDM:", "GreeterReady already dispatched");
+            return;
+        }
+        dispatched = true;
+        setTimeout(function () {
+            console.debug("LIGHTDM:", "Event dispatch");
+            window.dispatchEvent(_ready_event);
+        }, 2);
+    }
+
     function channel_ready_cb(channel) {
         _channel = channel;
 
@@ -65,12 +86,19 @@
         window.theme_utils = new ThemeUtils(_channel.objects.ThemeUtils);
 
         window.greeter_comm = new GreeterComm(_channel.objects.Comm);
+
+        console.debug("LIGHTDM:", "Channel is done");
+        console.debug("LIGHTDM:", "Document state", document.readyState);
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", dispatch_channel_ready_cb);
+        } else if (document.readyState === "interactive") {
+            window.addEventListener("load", dispatch_channel_ready_cb);
+        } else {
+            dispatch_channel_ready_cb();
+        }
     }
     new QWebChannel(qt.webChannelTransport, channel_ready_cb);
 
-    document.addEventListener("DOMContentLoaded", (event) => {
-        setTimeout(function () {
-            window.dispatchEvent(_ready_event);
-        }, 2);
-    });
+    window.addEventListener("DOMContentLoaded", dispatch_channel_ready_cb);
 })();
