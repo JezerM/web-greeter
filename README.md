@@ -60,18 +60,18 @@ apt install ./web-greeter-VER-DISTRO.deb
 ```
 
 ## Dependencies
-|                          |        arch          |          ubuntu         |       fedora        |       openSUSE       |          debian         |
-|--------------------------|----------------------|-------------------------|---------------------|----------------------|-------------------------|
-|**liblightdm-gobject**    |lightdm               |liblightdm-gobject-1-dev |lightdm-gobject-devel|liblightdm-gobject-1-0|liblightdm-gobject-dev   |
-|**pygobject**             |python-gobject        |python3-gi               |pygobject3           |python3-gobject       |python3-gi               |
-|**pyqt5**                 |python-pyqt5          |python3-pyqt5            |python3-qt5          |python3-qt5           |python3-pyqt5            |
-|**pyqt5-webengine**       |python-pyqt5-webengine|python3-pyqt5.qtwebengine|python3-qt5-webengine|python3-qtwebengine   |python3-pyqt5.qtwebengine|
-|**python-yaml**           |python-ruamel-yaml    |python3-ruamel.yaml      |python3-ruamel-yaml  |python3-ruamel-yaml   |python3-ruamel.yaml      |
-|**python-inotify**        |python-pyinotify      |python3-pyinotify        |python3-inotify      |python3-inotify       |python3-pyinotify        |
-|**qt5-webengine**         |qt5-webengine         |libqt5webengine5         |qt5-qtwebengine      |libqt5-qtwebengine    |libqt5webengine5         |
-|**gobject-introspection** |gobject-introspection |gobject-introspection    |gobject-introspection|gobject-introspection |gobject-introspection    |
-|**libxcb**                |libxcb                |libxcb1-dev              |libxcb-devel         |libxcb                |libxcb1-dev              |
-|**libx11**                |libx11                |libx11-dev               |libX11-devel         |libx11                |libx11-dev               |
+|                          |        arch          |          ubuntu         |       fedora        |        openSUSE       |          debian         |
+|--------------------------|----------------------|-------------------------|---------------------|-----------------------|-------------------------|
+|**liblightdm-gobject**    |lightdm               |liblightdm-gobject-1-dev |lightdm-gobject-devel|typelib-1_0-LightDM-1  |liblightdm-gobject-dev   |
+|**pygobject**             |python-gobject        |python3-gi               |pygobject3           |python3-gobject        |python3-gi               |
+|**pyqt5**                 |python-pyqt5          |python3-pyqt5            |python3-qt5          |python3-qt5            |python3-pyqt5            |
+|**pyqt5-webengine**       |python-pyqt5-webengine|python3-pyqt5.qtwebengine|python3-qt5-webengine|python3-qtwebengine-qt5|python3-pyqt5.qtwebengine|
+|**python-yaml**           |python-ruamel-yaml    |python3-ruamel.yaml      |python3-ruamel-yaml  |python3-ruamel.yaml    |python3-ruamel.yaml      |
+|**python-inotify**        |python-pyinotify      |python3-pyinotify        |python3-inotify      |python3-pyinotify      |python3-pyinotify        |
+|**qt5-webengine**         |qt5-webengine         |libqt5webengine5         |qt5-qtwebengine      |libqt5-qtwebengine     |libqt5webengine5         |
+|**gobject-introspection** |gobject-introspection |gobject-introspection    |gobject-introspection|gobject-introspection  |gobject-introspection    |
+|**libxcb**                |libxcb                |libxcb1-dev              |libxcb-devel         |libxcb                 |libxcb1-dev              |
+|**libx11**                |libx11                |libx11-dev               |libX11-devel         |libX11                 |libx11-dev               |
 
 > Note: web-greeter does not work in Fedora. See #19
 
