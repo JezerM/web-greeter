@@ -378,7 +378,7 @@ class Greeter(BridgeObject):
         except GError as err:
             logger.error(err)
             general_error_prompt(
-                globales.greeter.window,
+                globales.greeter.primary_window(),
                 "LightDM couldn't start session",
                 f"The provided session: \"{session}\" couldn't be started\n" \
                 f"{err}",
