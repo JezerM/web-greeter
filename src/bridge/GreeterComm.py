@@ -47,10 +47,11 @@ def communication_emit(window, data):
         comm.broadcast_signal.emit(window, data)
 
 class GreeterComm(BridgeObject):
-    # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
+    # pylint: disable=missing-function-docstring,too-many-public-methods,invalid-name
     """Greeter Communication bridge class, known as `greeter_comm` in javascript"""
 
     broadcast_signal = Bridge.signal(QVariant, QVariant, arguments=("window", "data"))
+    metadata_signal = Bridge.signal(QVariant, arguments=("metadata"))
 
     property_changed = Bridge.signal()
     window: WindowAbstract
@@ -75,6 +76,13 @@ class GreeterComm(BridgeObject):
     def broadcast(self, data):
         self.property_changed.emit()
         QTimer().singleShot(60, lambda: communication_emit(self.window_metadata, data))
+
+    @Bridge.method()
+    def requestMetadata(self):
+        for win in globales.greeter.windows:
+            if self.window.meta.id == win.meta.id:
+                meta = window_metadata_to_dict(win.meta)
+                self.metadata_signal.emit(meta)
 
     def destroy(self):
         global communications

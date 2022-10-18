@@ -32,33 +32,53 @@ function inf_to_infinity(num) {
 }
 
 class GreeterComm {
-    static _instance = null;
+    static _comm = null; // Bridge object
+    static _instance = null; // GreeterComm object
 
-    constructor(instance) {
+    _windowMetadata = null;
+
+    constructor(comm) {
         if (GreeterComm._instance !== null) {
             return GreeterComm._instance;
         }
 
-        GreeterComm._instance = instance;
-        GreeterComm._instance.broadcast_signal.connect(this._on_broadcast);
+        GreeterComm._comm = comm;
+        GreeterComm._comm.broadcast_signal.connect(this._on_broadcast);
+
+        // Obtain metadata and fire the whenReady promise
+        GreeterComm._comm.metadata_signal.connect((metadata) => {
+            let meta = metadata;
+            meta.overallBoundary.minX = inf_to_infinity(meta.overallBoundary.minX);
+            meta.overallBoundary.minY = inf_to_infinity(meta.overallBoundary.minY);
+            meta.overallBoundary.maxX = inf_to_infinity(meta.overallBoundary.maxX);
+            meta.overallBoundary.maxY = inf_to_infinity(meta.overallBoundary.maxY);
+            this._windowMetadata = meta;
+            if (this._ready) this._ready();
+        });
+
+        this._readyPromise = new Promise((resolve) => {
+            this._ready = resolve;
+        });
+
+        // Send initial request for metadata
+        GreeterComm._comm.requestMetadata();
+
+        GreeterComm._instance = this;
     }
 
     get window_metadata() {
-        let meta = GreeterComm._instance.window_metadata;
-        if (Object.keys(meta).length == 0) {
-            throw new Error(
-                `window_metadata not available, did you wait for the GreeterReady event?`
-            );
+        if (this._windowMetadata) {
+            return this._windowMetadata;
         }
-        meta.overallBoundary.minX = inf_to_infinity(meta.overallBoundary.minX);
-        meta.overallBoundary.minY = inf_to_infinity(meta.overallBoundary.minY);
-        meta.overallBoundary.maxX = inf_to_infinity(meta.overallBoundary.maxX);
-        meta.overallBoundary.maxY = inf_to_infinity(meta.overallBoundary.maxY);
-        return meta;
+        throw new Error(`window_metadata not available, did you wait for the GreeterReady event?`);
+    }
+
+    whenReady() {
+        return this._readyPromise;
     }
 
     broadcast(data) {
-        GreeterComm._instance.broadcast(data);
+        GreeterComm._comm.broadcast(data);
     }
 
     _on_broadcast(window_meta, data) {
