@@ -1,0 +1,8 @@
+--- Xgreeter	2022-12-21 15:40:30.120000813 -0600
++++ Xgreeter-new	2022-12-22 16:32:31.520001039 -0600
+@@ -4,4 +4,4 @@
+ 
+ xsetroot -cursor_name left_ptr
+ 
+-exec $@
++exec $@ --no-sandbox

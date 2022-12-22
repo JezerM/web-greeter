@@ -10,6 +10,8 @@ INSTALL_ROOT := $(abspath build/install_root)
 INSTALL_PREFIX :=$(abspath $(shell echo ${INSTALL_ROOT}/${PREFIX}))
 DESTDIR_PREFIX :=$(abspath $(shell echo ${DESTDIR}/${PREFIX}))
 
+DISTRO := $(shell [ -e "/etc/os-release" ] && cat /etc/os-release|sed -n -e 's/^ID="\?\(\w*\)"\?/\1/p' )
+
 ifeq (${ENABLE_BASH_COMPLETION}, true)
     ifeq ($(shell pkg-config --exists bash-completion && echo 0), 0)
         bashcompletiondir := $(shell pkg-config --variable=completionsdir bash-completion)
@@ -200,8 +202,13 @@ $(config_local/web-greeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/web-greeter.yml
 	@cp "${BUILD_DIR}/dist/web-greeter.yml" "${config_local/web-greeter}"
 $(config_local/lightdm-wrapper): $(INSTALL_ROOT) ${BUILD_DIR}/dist/90-greeter-wrapper.conf
 	@cp "${BUILD_DIR}/dist/90-greeter-wrapper.conf" "${config_local/lightdm-wrapper}"
-$(config_local/Xgreeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/Xgreeter
+$(config_local/Xgreeter): $(INSTALL_ROOT) ${BUILD_DIR}/dist/Xgreeter ${BUILD_DIR}/Xgreeter.patch /etc/os-release
 	@install -Dm755 "${BUILD_DIR}/dist/Xgreeter" "${config_local/Xgreeter}"
+	@case "${DISTRO}" in \
+		fedora) \
+			patch -bN "${config_local/Xgreeter}" "${BUILD_DIR}/Xgreeter.patch"; \
+			;; \
+	esac
 
 build_config: $(config_local/web-greeter) $(config_local/lightdm-wrapper) $(config_local/Xgreeter)
 	@echo "✔ Config copied"
