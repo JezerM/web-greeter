@@ -49,6 +49,19 @@
 	-->
 
 	<releases>
+		<release date="2022-08-13" version="3.5.1">
+			<description>
+				<p>Added:</p>
+				<ul>
+					<li>Added --api-version command line argument, starting at 1.0.0</li>
+				</ul>
+				<p>Changes:</p>
+				<ul>
+					<li>Removed themes in favor of web-greeter-themes submodule.</li>
+					<li>Reduced signal execution to 60ms, which should make web-greeter to feel faster.</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2022-07-12" version="3.5.0">
 			<description>
 				<p>Added:</p>

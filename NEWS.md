@@ -1,6 +1,18 @@
 # Change Log
 
-## [3.5.0](https://github.com/JezerM/web-greeter/tree/3.5.0) ~ 07-12-2022
+## [3.5.1](https://github.com/JezerM/web-greeter/tree/3.5.1) ~ 2022-08-13
+
+Decided to start using ISO Date format in this file.
+
+**Added:**
+  * Added `--api-version` command line argument, starting at 1.0.0
+
+**Changes:**
+  * Removed **themes** in favor of [web-greeter-themes](https://github.com/JezerM/web-greeter-themes) submodule.
+  * Reduced signal execution to 60ms, which should make web-greeter to feel faster.
+    `GreeterBroadcastEvent` was delayed to 60ms, fixing some bugs.
+
+## [3.5.0](https://github.com/JezerM/web-greeter/tree/3.5.0) ~ 2022-07-12
 
 **Added:**
   * Added multi-monitor support from nody-greeter
@@ -24,7 +36,7 @@
 
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.4.1...3.5.0)
 
-## [3.4.1](https://github.com/JezerM/web-greeter/tree/3.4.1) ~ 04-10-2022
+## [3.4.1](https://github.com/JezerM/web-greeter/tree/3.4.1) ~ 2022-04-10
 
 **Changes:**
 
@@ -35,7 +47,7 @@
 
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.4.0...3.4.1)
 
-## [3.4.0](https://github.com/JezerM/web-greeter/tree/3.3.0) ~ 03-22-2022
+## [3.4.0](https://github.com/JezerM/web-greeter/tree/3.3.0) ~ 2022-03-22
 
 **Added:**
 
@@ -55,7 +67,7 @@
 
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.3.0...3.4.0)
 
-## [3.3.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 01-28-2022
+## [3.3.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 2022-01-28
 
 **Changes:**
 
@@ -66,7 +78,7 @@
 
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.2.1...3.3.0)
 
-## [3.2.1](https://github.com/JezerM/web-greeter/tree/3.2.1) ~ 12-11-2021
+## [3.2.1](https://github.com/JezerM/web-greeter/tree/3.2.1) ~ 2021-12-11
 
 **Changes:**
 
@@ -74,7 +86,7 @@
 
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.2.0...3.2.1)
 
-## [3.2.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 12-08-2021
+## [3.2.0](https://github.com/JezerM/web-greeter/tree/3.2.0) ~ 2021-12-08
 
 **Changes:**
 
@@ -86,7 +98,7 @@
 
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.1.1...3.2.0)
 
-## [3.1.1](https://github.com/JezerM/web-greeter/tree/3.1.1) ~ 10-27-2021
+## [3.1.1](https://github.com/JezerM/web-greeter/tree/3.1.1) ~ 2021-10-27
 
 **Changes:**
 
@@ -95,7 +107,7 @@
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.1.0...3.1.1)
 
 
-## [3.1.0](https://github.com/JezerM/web-greeter/tree/3.1.0) ~ 09-15-2021
+## [3.1.0](https://github.com/JezerM/web-greeter/tree/3.1.0) ~ 2021-09-15
 
 **Added**:
 
@@ -117,7 +129,7 @@
 [Full changelog](https://github.com/JezerM/web-greeter/compare/3.0.0...3.1.0)
 
 
-## [3.0.0](https://github.com/JezerM/web-greeter/tree/3.0.0) ~ 07-28-2021
+## [3.0.0](https://github.com/JezerM/web-greeter/tree/3.0.0) ~ 2021-07-28
 
 **Added:**
 
@@ -163,7 +175,7 @@
 [Full Changelog](https://github.com/JezerM/web-greeter/compare/2.2.4...3.0.0)
 
 
-## [2.2.5](https://github.com/antergos/web-greeter/tree/2.2.5) ~ 04-24-2017
+## [2.2.5](https://github.com/antergos/web-greeter/tree/2.2.5) ~ 2017-04-24
 
 **Fixed:**
 
@@ -172,7 +184,7 @@
 [Full Changelog](https://github.com/antergos/web-greeter/compare/2.2.4...2.2.5)
 
 
-## [2.2.4](https://github.com/antergos/web-greeter/tree/2.2.4) ~ 04-04-2017
+## [2.2.4](https://github.com/antergos/web-greeter/tree/2.2.4) ~ 2017-04-04
 
 **Added:**
 
@@ -181,7 +193,7 @@
 [Full Changelog](https://github.com/antergos/web-greeter/compare/2.2.3...2.2.4)
 
 
-## [2.2.3](https://github.com/antergos/web-greeter/tree/2.2.3) ~ 02-18-2017
+## [2.2.3](https://github.com/antergos/web-greeter/tree/2.2.3) ~ 2017-02-18
 
 **Changed:**
 
@@ -191,7 +203,7 @@
 [Full Changelog](https://github.com/antergos/web-greeter/compare/2.2.2...2.2.3)
 
 
-## [2.2.2](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.2.2) ~ 01-18-2017
+## [2.2.2](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.2.2) ~ 2017-01-18
 
 **Fixed:**
 
@@ -200,7 +212,7 @@
 [Full Changelog](https://github.com/antergos/lightdm-webkit2-greeter/compare/2.2.1...2.2.2)
 
 
-## [2.2.1](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.2.1) ~ 12-26-2016
+## [2.2.1](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.2.1) ~ 2016-12-26
 
 **Fixed:**
 
@@ -211,7 +223,7 @@
 [Full Changelog](https://github.com/antergos/lightdm-webkit2-greeter/compare/2.2...2.2.1)
 
 
-## [2.2](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.2) ~ 12-18-2016
+## [2.2](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.2) ~ 2016-12-18
 
 **Added:**
 
@@ -253,7 +265,7 @@
 [Full Changelog](https://github.com/antergos/lightdm-webkit2-greeter/compare/2.1.6...2.2)
 
 
-## [2.1.6](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.6) ~ 10-17-2016
+## [2.1.6](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.6) ~ 2016-10-17
 
 **Added:**
 
@@ -262,7 +274,7 @@
 [Full Changelog](https://github.com/antergos/lightdm-webkit2-greeter/compare/2.1.5...2.1.6)
 
 
-## [2.1.5](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.5) ~ 10-14-2016
+## [2.1.5](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.5) ~ 2016-10-14
 
 **Fixed:**
 
@@ -272,7 +284,7 @@
 [Full Changelog](https://github.com/antergos/lightdm-webkit2-greeter/compare/2.1.4...2.1.5)
 
 
-## [2.1.4](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.4) ~ 04-27-2016
+## [2.1.4](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.4) ~ 2016-04-27
 
 **Added:**
 
@@ -285,7 +297,7 @@
 [Full Changelog](https://github.com/antergos/lightdm-webkit2-greeter/compare/2.1.3...2.1.4)
 
 
-## [2.1.3](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.3) ~ 04-16-2016
+## [2.1.3](https://github.com/antergos/lightdm-webkit2-greeter/tree/2.1.3) ~ 2016-04-16
 
 **Added:**
 
