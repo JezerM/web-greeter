@@ -121,6 +121,12 @@ if __name__ == '__main__':
     import globales
     from browser.browser import Browser
     from bridge import Greeter, Config, ThemeUtils
+    from PyQt5.QtWidgets import QApplication
+    from PyQt5.QtCore import Qt, QCoreApplication
+
+    QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    app = QApplication(sys.argv)
 
     globales.LDMGreeter = Greeter()
     globales.LDMGreeterConfig = Config()
@@ -129,7 +135,7 @@ if __name__ == '__main__':
     config.load_theme_config()
     config.ensure_theme()
 
-    globales.greeter = Browser()
+    globales.greeter = Browser(app)
     browser = globales.greeter
 
     # browser.load()

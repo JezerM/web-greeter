@@ -43,7 +43,6 @@ from typing import (
 from PyQt5.QtCore import (
     QUrl,
     Qt,
-    QCoreApplication,
     QRect,
 )
 from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
@@ -100,11 +99,8 @@ class Application:
     app: QApplication
     windows: List[WindowAbstract]
 
-    def __init__(self):
-        QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-
-        self.app = QApplication(sys.argv)
+    def __init__(self, application):
+        self.app = application
 
         self.set_protocol()
 
@@ -242,8 +238,8 @@ class Browser(Application):
     # pylint: disable=too-many-instance-attributes
     """The main browser"""
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, application):
+        super().__init__(application)
         self.init()
         self.load_theme()
 
