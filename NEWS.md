@@ -1,5 +1,19 @@
 # Change Log
 
+## [3.5.2](https://github.com/JezerM/web-greeter/tree/3.5.2) ~ 2023-01-11
+
+**Changes:**
+  * Update themes submodule.
+    - Select user default session on user change in Dracula.
+    - Some fixes in Simple theme.
+    - Make use of global Data object to load/save theme related data in Gruvbox.
+  * Update openSUSE dependencies.
+  * Fix GreeterReady being dispatched earlier or never.
+  * Forgot to add `greeter_comm.whenReady` method, so I added it.
+  * Possibly issue #19 has been solved.
+    - Patch Xgreeter file to run nody-greeter as non-sandboxed in Fedora.
+  * Fix crash when a Dialog is created before the Application itself.
+
 ## [3.5.1](https://github.com/JezerM/web-greeter/tree/3.5.1) ~ 2022-08-13
 
 Decided to start using ISO Date format in this file.

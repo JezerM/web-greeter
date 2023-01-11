@@ -49,6 +49,18 @@
 	-->
 
 	<releases>
+		<release date="2023-01-11" version="3.5.2">
+			<description>
+				<p>Changes:</p>
+				<ul>
+					<li>Update themes submodule.</li>
+					<li>Update openSUSE dependencies.</li>
+					<li>Fix GreeterReady being dispatched earlier or never.</li>
+					<li>Possibly issue #19 has been solved, so it could be executed in Fedora.</li>
+					<li>Fix crash when a Dialog is created before the Application itself.</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2022-08-13" version="3.5.1">
 			<description>
 				<p>Added:</p>
