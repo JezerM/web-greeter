@@ -64,7 +64,7 @@ apt install ./web-greeter-VER-DISTRO.deb
 |--------------------------|----------------------|-------------------------|---------------------|-----------------------|-------------------------|
 |**liblightdm-gobject**    |lightdm               |liblightdm-gobject-1-dev |lightdm-gobject-devel|typelib-1_0-LightDM-1  |liblightdm-gobject-dev   |
 |**pygobject**             |python-gobject        |python3-gi               |pygobject3           |python3-gobject        |python3-gi               |
-|**pyqt5**                 |python-pyqt5          |python3-pyqt5            |python3-qt5          |python3-qt5            |python3-pyqt5            |
+|**pyqt5**                 |python-pyqt5          |python3-pyqt5            |python3-qt5          |python3-qt5-devel      |python3-pyqt5            |
 |**pyqt5-webengine**       |python-pyqt5-webengine|python3-pyqt5.qtwebengine|python3-qt5-webengine|python3-qtwebengine-qt5|python3-pyqt5.qtwebengine|
 |**python-yaml**           |python-ruamel-yaml    |python3-ruamel.yaml      |python3-ruamel-yaml  |python3-ruamel.yaml    |python3-ruamel.yaml      |
 |**python-inotify**        |python-pyinotify      |python3-pyinotify        |python3-inotify      |python3-pyinotify      |python3-pyinotify        |
