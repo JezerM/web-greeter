@@ -33,6 +33,8 @@ from logger import logger
 
 PATH_TO_CONFIG = "/etc/lightdm/web-greeter.yml"
 
+yaml_loader = yaml.YAML(typ='safe', pure=True)
+
 web_greeter_config = {
     "config": {
         "branding": {
@@ -173,7 +175,7 @@ def load_theme_config():
         if not os.path.exists(path_to_theme_config):
             raise Exception("index.yml file not found")
         with open(path_to_theme_config, "r", encoding="utf-8") as file:
-            theme_config = yaml.safe_load(file)
+            theme_config = yaml_loader.load(file)
             web_greeter_config["theme"] = theme_config
 
     except Exception as err:
@@ -204,7 +206,7 @@ def load_config():
         if not os.path.exists(PATH_TO_CONFIG):
             raise Exception("Config file not found")
         with open(PATH_TO_CONFIG, "r", encoding="utf-8") as file:
-            web_greeter_config["config"] = yaml.safe_load(file)
+            web_greeter_config["config"] = yaml_loader.load(file)
     except Exception as err:
         logger.error("Config was not loaded:\n\t%s", err)
 
