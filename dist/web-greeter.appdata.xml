@@ -49,6 +49,14 @@
 	-->
 
 	<releases>
+		<release date="2024-03-30" version="3.5.3">
+			<description>
+				<p>Changes:</p>
+				<ul>
+					<li>Fixed ruamel.yaml usage</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2023-01-11" version="3.5.2">
 			<description>
 				<p>Changes:</p>
