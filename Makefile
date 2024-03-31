@@ -238,13 +238,13 @@ $(bin_local/web-greeter): build_install_root $(resources.py) $(bin/screensaver.s
 # Useful rules
 .PHONY: build
 build: $(bin_local/web-greeter)
-	@echo "✔ Build succeded"
+	@echo "✔ Build succeeded"
 
 .PHONY: install
 install: build
 	[ -e "${DESTDIR}" ] || mkdir -p "${DESTDIR}"
 	cp -R "${INSTALL_ROOT}"/* "${DESTDIR}"
-	@echo "✔ Install succeded"
+	@echo "✔ Install succeeded"
 
 # Uninstall everything except themes and web-greeter.yml
 uninstall_preserve:
