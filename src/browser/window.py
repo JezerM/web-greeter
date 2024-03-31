@@ -125,7 +125,7 @@ class BrowserWindow(MainWindow):
     win_view: QWebEngineView
     win_page: WebPage
     dev_view: QWebEngineView
-    dev_page: QWebEnginePage
+    dev_page: WebPage
     dev_tools_enabled: bool = False
     bridge_initialized: bool
 
@@ -235,7 +235,7 @@ class BrowserWindow(MainWindow):
 
     def _init_devtools(self):
         self.dev_view = QWebEngineView(parent=self)
-        self.dev_page = QWebEnginePage()
+        self.dev_page = WebPage()
 
         self.dev_view.setPage(self.dev_page)
         self.dev_view.setObjectName("Devtools view")
