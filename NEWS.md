@@ -1,6 +1,6 @@
 # Change Log
 
-## [3.5.3](https://github.com/JezerM/web-greeter/tree/3.5.3) ~ 2023-03-30
+## [3.5.3](https://github.com/JezerM/web-greeter/tree/3.5.3) ~ 2024-03-30
 
 **Changes:**
   * Fixed ruamel.yaml usage
