@@ -191,7 +191,7 @@ build_dist_files: $(dist_local/web-greeter.1) $(dist_local/news) $(dist_local/me
 
 # Config files
 config/web-greeter := $(abspath ${DESTDIR}/etc/lightdm/web-greeter.yml)
-config/lightdm-wrapper := $(abspath ${DESTDIR}/etc/xdg/lightdm/lightdm.conf.d/90-greeter.wrapper.conf)
+config/lightdm-wrapper := $(abspath ${DESTDIR}/etc/xdg/lightdm/lightdm.conf.d/90-greeter-wrapper.conf)
 config/Xgreeter := $(abspath ${DESTDIR}/etc/lightdm/Xgreeter)
 
 config_local/web-greeter := $(abspath ${INSTALL_ROOT}/etc/lightdm/web-greeter.yml)
@@ -248,11 +248,13 @@ install: build
 
 # Uninstall everything except themes and web-greeter.yml
 uninstall_preserve:
+	@rm -rf "${DESTDIR_PREFIX}/lib/web-greeter/"
 	@rm -f "${dist/web-greeter.1}"
 	@rm -f "${dist/app-desktop}"
 	@rm -f "${dist/xg-desktop}"
 	@rm -f "${dist/metainfo}"
 	@rm -f "${dist/news}"
+	@rm -f "${dist/app-icon-scalable}"
 	@rm -f "${config/lightdm-wrapper}"
 	@rm -f "${config/Xgreeter}"
 	@rm -f "${bin/web-greeter}"
@@ -265,8 +267,8 @@ uninstall_preserve:
 
 # Uninstall everything
 uninstall_all: uninstall_preserve
-	@rm -rf "${config/web-greeter}"
-	@rm -rf "${DESTDIR_PREFIX}/web-greeter/"
+	@rm -rf "${DESTDIR_PREFIX}/share/web-greeter/"
+	@rm -f "${config/web-greeter}"
 
 .PHONY: uninstall
 uninstall: uninstall_preserve
