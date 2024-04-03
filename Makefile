@@ -272,9 +272,9 @@ uninstall_all: uninstall_preserve
 
 .PHONY: uninstall
 uninstall: uninstall_preserve
-	@echo " Themes are not uninstalled. Remove them manually or use \`make uninstall_all\`:\
+	@echo -e " Themes are not uninstalled. Remove them manually or use \`make uninstall_all\`:\
 		\n${DESTDIR_PREFIX}/share/web-greeter"
-	@echo " web-greeter config was not uninstalled. Remove it manually or use \`make uninstall_all\`:\
+	@echo -e " web-greeter config was not uninstalled. Remove it manually or use \`make uninstall_all\`:\
 		\n${config/web-greeter}"
 
 run: $(resources.py)
