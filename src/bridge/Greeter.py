@@ -93,6 +93,10 @@ class Greeter(BridgeObject):
         self._brightness_controller = BrightnessController()
 
         try:
+            # Set Graceful finish behavior
+            if hasattr(LightDMGreeter, "set_finish_behavior"):
+                LightDMGreeter.set_finish_behavior(LightDM.GreeterFinishBehavior.GRACEFUL)
+
             LightDMGreeter.connect_to_daemon_sync()
         except GError as err:
             logger.error(err)
@@ -370,13 +374,16 @@ class Greeter(BridgeObject):
 
     @Bridge.method(str, result=bool)
     def start_session(self, session):
+        from PyQt5.QtCore import QCoreApplication
+
         if not session.strip():
             return False
         try:
             started: bool = LightDMGreeter.start_session_sync(session)
-            if started or self.is_authenticated:
+            if started:
                 logger.debug("Session \"%s\" started", session)
                 screensaver.reset_screensaver()
+                QCoreApplication.quit() # Quit application after start_session
             return started
         except GError as err:
             logger.error(err)
