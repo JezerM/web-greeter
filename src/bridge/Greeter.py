@@ -119,7 +119,10 @@ class Greeter(BridgeObject):
         users = LightDMUsers.get_users()
         if not users:
             return
-        user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(users[0].get_name())
+        try:
+            user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(users[0].get_name())
+        except Exception:
+            return
         if user_data_dir is None:
             return
         self._shared_data_directory = user_data_dir.rpartition('/')[0]
