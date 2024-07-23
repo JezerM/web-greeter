@@ -196,6 +196,6 @@ web-greeter related import errors:
 [bat_widget]: https://github.com/lcpz/lain/blob/master/widget/bat.lua "Battery widget"
 [lain]: https://github.com/lcpz/lain "Lain awesome library"
 [WebArchive]: https://web.archive.org/web/20190524032923/https://doclets.io/Antergos/web-greeter/stable "Web Archive"
-[web-greeter-docs]: https://jezerm.github.io/web-greeter-page/docs/ "Documentation"
+[web-greeter-docs]: https://web-greeter-page.vercel.app "Documentation"
 [live_demo]: https://jezerm.github.io/web-greeter-themes/ "Live Demo"
 [releases]: https://github.com/JezerM/web-greeter/releases "Releases"
