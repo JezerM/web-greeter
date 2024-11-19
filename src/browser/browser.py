@@ -225,9 +225,19 @@ class Application:
 
     def show(self):
         """Show window"""
+        primary: WindowAbstract | None = None
         for win in self.windows:
+            if win.is_primary:
+                primary = win
+                continue
             win.window.show()
             logger.debug("Web Greeter started win: %s", str(win.meta.id))
+
+        if primary and primary.is_primary:
+            primary.window.show()
+            primary.window.activateWindow()
+            primary.window.raise_()
+            logger.debug("Web Greeter started win: %s", str(primary.meta.id))
 
     def run(self) -> int:
         """Runs the application"""
