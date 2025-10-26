@@ -25,24 +25,24 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
+from PySide6.QtCore import QObject, Signal, Slot, Property
 
 class Bridge:
     """Bridge class"""
     @staticmethod
     def method(*args, **kwargs):
         """Declare a method"""
-        return pyqtSlot(*args, **kwargs)
+        return Slot(*args, **kwargs)
 
     @staticmethod
     def prop(*args, **kwargs):
         """Declare a property"""
-        return pyqtProperty(*args, **kwargs)
+        return Property(*args, **kwargs)
 
     @staticmethod
     def signal(*args, **kwargs):
         """Declare a signal"""
-        return pyqtSignal(*args, **kwargs)
+        return Signal(*args, **kwargs)
 
 class BridgeObject(QObject):
     """BridgeObject class"""

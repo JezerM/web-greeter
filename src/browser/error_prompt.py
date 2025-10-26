@@ -35,8 +35,8 @@ from logging import (
     Formatter,
     StreamHandler,
 )
-from PyQt5.QtWebEngineWidgets import QWebEnginePage
-from PyQt5.QtWidgets import (
+from PySide6.QtWebEngineCore import QWebEnginePage
+from PySide6.QtWidgets import (
     QAbstractButton,
     QDialogButtonBox,
     QDialog,
@@ -44,7 +44,7 @@ from PyQt5.QtWidgets import (
     QLabel,
     QPushButton
 )
-from PyQt5.QtGui import QWindow
+from PySide6.QtGui import QWindow
 from config import web_greeter_config
 
 import globales

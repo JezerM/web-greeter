@@ -32,23 +32,22 @@ from typing import (
     TypeVar,
 )
 
-from PyQt5.QtWidgets import (
-    QAction, QMainWindow, QDockWidget,
-    qApp, QMenuBar
+from PySide6.QtWidgets import (
+    QMainWindow, QDockWidget, QMenuBar
 )
-from PyQt5.QtWebEngineWidgets import (
-    QWebEngineScript,
-    QWebEngineSettings, QWebEngineView, QWebEnginePage
+from PySide6.QtWebEngineWidgets import QWebEngineView
+from PySide6.QtWebEngineCore import (
+    QWebEnginePage, QWebEngineScript, QWebEngineSettings
 )
-from PyQt5.QtCore import (
+from PySide6.QtCore import (
     Qt,
     QUrl,
     QFile,
     QRect,
-    pyqtSignal
+    Signal
 )
-from PyQt5.QtGui import QColor, QIcon, QScreen
-from PyQt5.QtWebChannel import QWebChannel
+from PySide6.QtGui import QAction, QColor, QIcon, QScreen
+from PySide6.QtWebChannel import QWebChannel
 from browser.browser_interfaces import WindowMetadata
 from browser.error_prompt import WebPage
 
@@ -129,8 +128,7 @@ class BrowserWindow(MainWindow):
     dev_tools_enabled: bool = False
     bridge_initialized: bool
 
-    # closeEv: pyqtSignal
-    closeEv: pyqtSignal = pyqtSignal(MainWindow)
+    closeEv: Signal = Signal(MainWindow)
 
     def __init__(self, geometry: QRect, dev_tools: bool):
         super().__init__()
@@ -212,7 +210,7 @@ class BrowserWindow(MainWindow):
         self.win_page.loadStarted.disconnect(self.init_bridge)
 
     def _init_winpage(self):
-        page_settings = self.win_page.settings().globalSettings()
+        page_settings = self.win_page.settings()
 
         if not web_greeter_config["config"]["greeter"]["secure_mode"]:
             ENABLED_SETTINGS.append('LocalContentCanAccessRemoteUrls')

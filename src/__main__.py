@@ -121,8 +121,8 @@ if __name__ == '__main__':
     import globales
     from browser.browser import Browser
     from bridge import Greeter, Config, ThemeUtils
-    from PyQt5.QtWidgets import QApplication
-    from PyQt5.QtCore import Qt, QCoreApplication
+    from PySide6.QtWidgets import QApplication
+    from PySide6.QtCore import Qt, QCoreApplication
 
     QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)

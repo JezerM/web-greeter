@@ -26,7 +26,7 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 # 3rd-Party Libs
-from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor, QWebEngineUrlRequestInfo
+from PySide6.QtWebEngineCore import QWebEngineUrlRequestInterceptor, QWebEngineUrlRequestInfo
 
 class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
     """Url request interceptor for web-greeter's protocol"""

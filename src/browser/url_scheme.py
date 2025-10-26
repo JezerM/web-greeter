@@ -33,8 +33,8 @@ import os
 import mimetypes
 
 # 3rd-Party Libs
-from PyQt5.QtCore import QBuffer, QIODevice
-from PyQt5.QtWebEngineCore import QWebEngineUrlSchemeHandler, QWebEngineUrlRequestJob
+from PySide6.QtCore import QBuffer, QIODevice
+from PySide6.QtWebEngineCore import QWebEngineUrlSchemeHandler, QWebEngineUrlRequestJob
 
 
 class QtUrlSchemeHandler(QWebEngineUrlSchemeHandler):

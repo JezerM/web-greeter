@@ -34,7 +34,7 @@ import re
 import tempfile
 
 # 3rd-Party Libs
-from PyQt5.QtCore import QVariant
+from PySide6.QtCore import QObject
 
 # This application
 from browser.bridge import Bridge, BridgeObject
@@ -62,7 +62,7 @@ class ThemeUtils(BridgeObject):
             tempfile.gettempdir(),
         )
 
-    @Bridge.method(str, bool, result=QVariant)
+    @Bridge.method(str, bool, result=QObject)
     def dirlist(self, dir_path, only_images=True):
         if not dir_path or not isinstance(dir_path, str) or '/' == dir_path:
             return []

@@ -30,7 +30,8 @@ import stat
 import time
 from typing import List
 from threading import Thread
-import pyinotify
+import inotify.adapters
+import inotify.constants
 from logger import logger
 from config import web_greeter_config
 import globales
@@ -46,15 +47,6 @@ def get_controllers() -> List[str]:
             for name in drs:
                 ctrls.append(os.path.join(dev, name))
     return ctrls
-
-class EventHandler(pyinotify.ProcessEvent):
-    """PyInotify handler"""
-    @classmethod
-    def process_IN_MODIFY(cls, _):
-        # pylint: disable=invalid-name,missing-function-docstring
-        if hasattr(globales, "greeter") and hasattr(globales, "LDMGreeter"):
-            globales.LDMGreeter.brightness_update.emit()
-
 
 # Behavior based on "acpilight"
 # Copyright(c) 2016-2019 by wave++ "Yuri D'Elia" <wavexx@thregr.org>
@@ -93,14 +85,12 @@ class BrightnessController:
         self.watch_brightness()
 
     def _watch(self):
-        watch_manager = pyinotify.WatchManager()
-        handler = EventHandler()
-        # pylint: disable-next=no-member
-        watch_manager.add_watch(self._brightness_path, pyinotify.IN_MODIFY)
+        i = inotify.adapters.Inotify()
+        i.add_watch(self._brightness_path, inotify.constants.IN_MODIFY)
 
-        notifier = pyinotify.Notifier(watch_manager, handler)
-
-        notifier.loop()
+        for event in i.event_gen(yield_nones=False):
+            if hasattr(globales, "greeter") and hasattr(globales, "LDMGreeter"):
+                globales.LDMGreeter.brightness_update.emit()
 
     def watch_brightness(self):
         """Starts a thread to watch brightness"""

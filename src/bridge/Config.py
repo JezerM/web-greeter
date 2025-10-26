@@ -36,7 +36,7 @@ import gi
 gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 
-from PyQt5.QtCore import QVariant
+from PySide6.QtCore import QObject
 
 # This application
 from browser.bridge import Bridge, BridgeObject
@@ -73,18 +73,18 @@ class Config(BridgeObject):
         self._features = _config["features"]
         self._layouts = get_layouts(_config["layouts"])
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def branding(self):
         return self._branding
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def greeter(self):
         return self._greeter
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def features(self):
         return self._features
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def layouts(self):
         return self._layouts

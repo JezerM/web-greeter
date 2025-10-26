@@ -40,19 +40,16 @@ from typing import (
 )
 
 # 3rd-Party Libs
-from PyQt5.QtCore import (
+from PySide6.QtCore import (
     QUrl,
     Qt,
     QRect,
 )
-from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
-from PyQt5.QtWidgets import (
+from PySide6.QtWebEngineCore import QWebEngineUrlScheme, QWebEngineProfile
+from PySide6.QtWidgets import (
     QApplication
 )
-from PyQt5.QtWebEngineWidgets import (
-    QWebEngineProfile
-)
-from PyQt5.QtGui import QScreen
+from PySide6.QtGui import QScreen
 
 from browser.url_scheme import QtUrlSchemeHandler
 from browser.interceptor import QtUrlRequestInterceptor
@@ -67,7 +64,7 @@ from bindings.screensaver import screensaver
 
 # pylint: disable-next=unused-import
 # Do not ever remove this import
-import resources
+import resources.rc_resources
 
 # Typing Helpers
 BridgeObjects = Tuple["BridgeObject"]
@@ -200,7 +197,7 @@ class Application:
         """Set protocol"""
         url_scheme = "web-greeter"
         self.url_scheme = QWebEngineUrlScheme(url_scheme.encode())
-        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified)
+        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified.value)
         self.url_scheme.setFlags(QWebEngineUrlScheme.SecureScheme or
                                  QWebEngineUrlScheme.LocalScheme or
                                  QWebEngineUrlScheme.LocalAccessAllowed)

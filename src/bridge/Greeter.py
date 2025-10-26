@@ -34,7 +34,7 @@ gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 from gi.repository.GLib import GError
 
-from PyQt5.QtCore import QVariant, QTimer
+from PySide6.QtCore import QObject, QTimer
 
 # This Application
 from logger import logger
@@ -170,11 +170,11 @@ class Greeter(BridgeObject):
     def autologin_user(self):
         return LightDMGreeter.get_autologin_user_hint()
 
-    @Bridge.prop(QVariant, notify=battery_update)
+    @Bridge.prop(QObject, notify=battery_update)
     def batteryData(self):
         return battery_to_dict(self._battery)
 
-    @Bridge.prop(QVariant, notify=battery_update)
+    @Bridge.prop(QObject, notify=battery_update)
     def battery_data(self):
         return battery_to_dict(self._battery)
 
@@ -234,15 +234,15 @@ class Greeter(BridgeObject):
     def is_authenticated(self):
         return LightDMGreeter.get_is_authenticated()
 
-    @Bridge.prop(QVariant, notify=property_changed)
+    @Bridge.prop(QObject, notify=property_changed)
     def language(self):
         return language_to_dict(LightDM.get_language())
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def languages(self):
         return [language_to_dict(lang) for lang in LightDM.get_languages()]
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def layout(self):
         return layout_to_dict(LightDM.get_layout())
 
@@ -257,7 +257,7 @@ class Greeter(BridgeObject):
         )
         return LightDM.set_layout(LightDM.Layout(**lay))
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def layouts(self):
         return [layout_to_dict(layout) for layout in LightDM.get_layouts()]
 
@@ -265,7 +265,7 @@ class Greeter(BridgeObject):
     def lock_hint(self):
         return LightDMGreeter.get_lock_hint()
 
-    @Bridge.prop(QVariant, notify=property_changed)
+    @Bridge.prop(QObject, notify=property_changed)
     def remote_sessions(self):
         return [session_to_dict(session) for session in LightDM.get_remote_sessions()]
 
@@ -277,7 +277,7 @@ class Greeter(BridgeObject):
     def select_user_hint(self):
         return LightDMGreeter.get_select_user_hint() or ''
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def sessions(self):
         return [session_to_dict(session) for session in LightDM.get_sessions()]
 
@@ -297,7 +297,7 @@ class Greeter(BridgeObject):
     def themes_directory(self):
         return self._themes_directory
 
-    @Bridge.prop(QVariant, notify=noop_signal)
+    @Bridge.prop(QObject, notify=noop_signal)
     def users(self):
         return [user_to_dict(user) for user in LightDMUsers.get_users()]
 
