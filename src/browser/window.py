@@ -196,12 +196,12 @@ class BrowserWindow(MainWindow):
     def init_channel(self):
         """Initialize channel"""
         self.channel = QWebChannel(self.win_page)
-        self.bridge_objects = [
-            globales.LDMGreeter,
-            globales.LDMGreeterConfig,
-            globales.LDMThemeUtils,
-            # GreeterComm(self)
-        ]
+        # self.bridge_objects = [
+        #     globales.LDMGreeter,
+        #     globales.LDMGreeterConfig,
+        #     globales.LDMThemeUtils,
+        #     # GreeterComm(self)
+        # ]
 
     def init_bridge(self):
         """Initialize bridge objects"""
@@ -243,7 +243,7 @@ class BrowserWindow(MainWindow):
 
         self.dev_page.windowCloseRequested.connect(lambda: self.toggle_devtools_value(False))
 
-        inspect_element_action = self.win_page.action(self.win_page.InspectElement)
+        inspect_element_action = self.win_page.action(QWebEnginePage.WebAction.InspectElement)
         inspect_element_action.triggered.connect(lambda: self.toggle_devtools_value(True))
 
         self.qdock = QDockWidget()
@@ -262,7 +262,7 @@ class BrowserWindow(MainWindow):
         close_action.setShortcut("Ctrl+W")
         close_action.triggered.connect(self.close)
 
-        self.win_page.action(self.win_page.ReloadAndBypassCache).setText("Force Reload")
+        self.win_page.action(QWebEnginePage.WebAction.ReloadAndBypassCache).setText("Force Reload")
 
         self.win_page.fullScreenRequested.connect(self.accept_fullscreen)
 
@@ -272,18 +272,18 @@ class BrowserWindow(MainWindow):
         file_menu.addAction(self.exit_action)
 
         edit_menu = self.menu_bar.addMenu("&Edit")
-        edit_menu.addAction(self.win_page.action(self.win_page.Undo))
-        edit_menu.addAction(self.win_page.action(self.win_page.Redo))
+        edit_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Undo))
+        edit_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Redo))
         edit_menu.addSeparator()
-        edit_menu.addAction(self.win_page.action(self.win_page.Cut))
-        edit_menu.addAction(self.win_page.action(self.win_page.Copy))
-        edit_menu.addAction(self.win_page.action(self.win_page.Paste))
+        edit_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Cut))
+        edit_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Copy))
+        edit_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Paste))
         edit_menu.addSeparator()
-        edit_menu.addAction(self.win_page.action(self.win_page.SelectAll))
+        edit_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.SelectAll))
 
         view_menu = self.menu_bar.addMenu("&View")
-        view_menu.addAction(self.win_page.action(self.win_page.Reload))
-        view_menu.addAction(self.win_page.action(self.win_page.ReloadAndBypassCache))
+        view_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Reload))
+        view_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.ReloadAndBypassCache))
         view_menu.addAction(self.toggle_dev_action)
         view_menu.addSeparator()
         view_menu.addAction(self.reset_zoom_action)
@@ -432,11 +432,11 @@ class BrowserWindow(MainWindow):
             self._init_bridge_channel()
         registered_objects = self.channel.registeredObjects()
 
-        for obj in self.bridge_objects:
-            if obj not in registered_objects:
-                # pylint: disable=protected-access
-                self.channel.registerObject(obj._name, obj)
-                # print("Registered", obj._name)
+        # for obj in self.bridge_objects:
+        #     if obj not in registered_objects:
+        #         # pylint: disable=protected-access
+        #         self.channel.registerObject(obj._name, obj)
+        #         # print("Registered", obj._name)
 
     def load_script(self, path: Url, name: str):
         """Loads a script in page"""

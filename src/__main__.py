@@ -124,8 +124,8 @@ if __name__ == '__main__':
     from PySide6.QtWidgets import QApplication
     from PySide6.QtCore import Qt, QCoreApplication
 
-    QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    # QCoreApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
+    # QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
     app = QApplication(sys.argv)
 
     globales.LDMGreeter = Greeter()
@@ -140,4 +140,4 @@ if __name__ == '__main__':
 
     # browser.load()
     browser.show()
-    browser.run()
+    sys.exit(app.exec())

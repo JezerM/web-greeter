@@ -104,7 +104,7 @@ class Application:
         self.windows = self.create_windows()
 
         timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
-        screensaver.set_screensaver(timeout or 300)
+        # screensaver.set_screensaver(timeout or 300)
 
         cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
         if cursor_theme is not None:
@@ -173,9 +173,9 @@ class Application:
                     overallBoundary = overall_boundary
                 )
             )
-            window.bridge_objects.append(
-                GreeterComm(abstract)
-            )
+            # window.bridge_objects.append(
+            #     GreeterComm(abstract)
+            # )
             windows.append(abstract)
             window.closeEv.connect(self._remove_window)
 
@@ -189,8 +189,9 @@ class Application:
             if win.window != window:
                 wins.append(win)
             else:
-                comm: GreeterComm = win.window.bridge_objects[-1]
-                comm.destroy()
+                # comm: GreeterComm = win.window.bridge_objects[-1]
+                # comm.destroy()
+                pass
         self.windows = wins
 
     def set_protocol(self):
@@ -218,7 +219,8 @@ class Application:
     @classmethod
     def _before_exit(cls):
         """Runs before exit"""
-        screensaver.reset_screensaver()
+        pass
+        # screensaver.reset_screensaver()
 
     def show(self):
         """Show window"""
@@ -235,11 +237,6 @@ class Application:
             primary.window.activateWindow()
             primary.window.raise_()
             logger.debug("Web Greeter started win: %s", str(primary.meta.id))
-
-    def run(self) -> int:
-        """Runs the application"""
-        logger.debug("Web Greeter started")
-        return self.app.exec_()
 
 class Browser(Application):
     # pylint: disable=too-many-instance-attributes
