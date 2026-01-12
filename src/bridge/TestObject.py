@@ -62,7 +62,7 @@ class TestObject(QObject):
     """Greeter bridge class, known as `lightdm` in javascript"""
 
     noop_signal = Signal()
-    propChanged = Signal(str)
+    prop_changed = Signal()
 
     def __init__(self, *args, **kwargs):
         super().__init__(parent=None)
@@ -70,18 +70,19 @@ class TestObject(QObject):
 
         self._user_name = "unknown"
 
-        # self.property_changed.connect(lambda _: print("Property changed"))
-
     @Slot(str, result=str)
     def hello(self, user_name):
-        print("Received: ", user_name)
         self._user_name = user_name
-        self.propChanged.emit(self.prop)
+        self.prop_changed.emit()
         return "Hello " + user_name
 
-    @Property(str)
-    def prop(self):
+    @Property(str, notify=prop_changed)
+    def user_name_message(self):
         return "HOLA " + self._user_name
+
+    @Property(str, notify=prop_changed)
+    def user_name(self):
+        return self._user_name
 
 
 # test_object.property_changed.connect((v) => console.log("CHANGED", v))
