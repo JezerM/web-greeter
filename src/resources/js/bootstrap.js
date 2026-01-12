@@ -69,6 +69,8 @@
          */
         window.lightdm = _channel.objects.LightDMGreeter;
 
+        window.test_object = _channel.objects.test_object;
+
         /**
          * Greeter Config - Access values from the greeter's config file.
          * @name greeter_config

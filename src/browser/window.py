@@ -51,6 +51,8 @@ from PySide6.QtWebChannel import QWebChannel
 from browser.browser_interfaces import WindowMetadata
 from browser.error_prompt import WebPage
 
+from bridge.TestObject import TestObject
+
 from config import web_greeter_config
 
 import globales
@@ -195,13 +197,15 @@ class BrowserWindow(MainWindow):
 
     def init_channel(self):
         """Initialize channel"""
-        self.channel = QWebChannel(self.win_page)
-        # self.bridge_objects = [
-        #     globales.LDMGreeter,
-        #     globales.LDMGreeterConfig,
-        #     globales.LDMThemeUtils,
-        #     # GreeterComm(self)
-        # ]
+        self.channel = QWebChannel(self)
+
+        self.bridge_objects = [
+            TestObject(self),
+            # globales.LDMGreeter,
+            # globales.LDMGreeterConfig,
+            # globales.LDMThemeUtils,
+            # GreeterComm(self)
+        ]
 
     def init_bridge(self):
         """Initialize bridge objects"""

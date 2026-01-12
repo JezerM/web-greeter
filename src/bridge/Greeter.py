@@ -105,7 +105,7 @@ class Greeter(BridgeObject):
                     "but you won't be able to log in",
                 buttons = ["Okay"]
             )
-            dia.exec()
+            # dia.exec()
 
         self._connect_signals()
         self._determine_shared_data_directory_path()

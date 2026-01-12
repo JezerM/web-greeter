@@ -97,7 +97,7 @@ class WebPage(QWebEnginePage):
 
         if log_level == 40:
             errorMessage = f"{source_id} {line_number}: {message}"
-            error_prompt(errorMessage)
+            # error_prompt(errorMessage)
 
     def increaseZoom(self, value = 0.1):
         """Increase zoom"""
