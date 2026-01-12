@@ -36,10 +36,9 @@ import gi
 gi.require_version('LightDM', '1')
 from gi.repository import LightDM
 
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Signal, Property
 
 # This application
-from browser.bridge import Bridge, BridgeObject
 from config import web_greeter_config
 
 from . import layout_to_dict
@@ -58,14 +57,15 @@ def get_layouts(config_layouts: List[str]):
     return final_layouts
 
 
-class Config(BridgeObject):
+class Config(QObject):
     # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
     """Config bridge class, known as `greeter_config` in javascript"""
 
-    noop_signal = Bridge.signal()
+    noop_signal = Signal()
 
     def __init__(self, *args, **kwargs):
-        super().__init__(name='Config', *args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self._name = "Config"
 
         _config = web_greeter_config["config"]
         self._branding = _config["branding"]
@@ -73,18 +73,18 @@ class Config(BridgeObject):
         self._features = _config["features"]
         self._layouts = get_layouts(_config["layouts"])
 
-    @Bridge.prop(QObject, notify=noop_signal)
+    @Property(dict, notify=noop_signal)
     def branding(self):
         return self._branding
 
-    @Bridge.prop(QObject, notify=noop_signal)
+    @Property(dict, notify=noop_signal)
     def greeter(self):
         return self._greeter
 
-    @Bridge.prop(QObject, notify=noop_signal)
+    @Property(dict, notify=noop_signal)
     def features(self):
         return self._features
 
-    @Bridge.prop(QObject, notify=noop_signal)
+    @Property(list, notify=noop_signal)
     def layouts(self):
         return self._layouts

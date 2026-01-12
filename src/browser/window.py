@@ -201,9 +201,9 @@ class BrowserWindow(MainWindow):
 
         self.bridge_objects = [
             TestObject(self),
-            # globales.LDMGreeter,
-            # globales.LDMGreeterConfig,
-            # globales.LDMThemeUtils,
+            globales.LDMGreeter,
+            globales.LDMGreeterConfig,
+            globales.LDMThemeUtils,
             # GreeterComm(self)
         ]
 

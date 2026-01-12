@@ -29,11 +29,10 @@
 
 from typing import List
 
-from PySide6.QtCore import QObject, QTimer
+from PySide6.QtCore import QObject, QTimer, Signal, Slot, Property
 
 # This Application
 from browser.window import WindowAbstract
-from browser.bridge import Bridge, BridgeObject
 from bridge import window_metadata_to_dict
 
 import globales
@@ -46,23 +45,25 @@ def communication_emit(window, data):
         # print(window)
         comm.broadcast_signal.emit(window, data)
 
-class GreeterComm(BridgeObject):
+class GreeterComm(QObject):
     # pylint: disable=missing-function-docstring,too-many-public-methods,invalid-name
     """Greeter Communication bridge class, known as `greeter_comm` in javascript"""
 
-    broadcast_signal = Bridge.signal("window", "data")
-    metadata_signal = Bridge.signal("metadata")
+    broadcast_signal = Signal(dict, dict)
+    metadata_signal = Signal(dict)
 
-    property_changed = Bridge.signal()
+    property_changed = Signal()
     window: WindowAbstract
 
     def __init__(self, window, *args, **kwargs):
-        super().__init__(name='Comm', *args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self._name = "Comm"
+
         self.window = window
 
         communications.append(self)
 
-    @Bridge.prop(QObject, notify=property_changed)
+    @Property(dict, notify=property_changed)
     def window_metadata(self):
         for win in globales.greeter.windows:
             if self.window.meta.id == win.meta.id:
@@ -72,12 +73,12 @@ class GreeterComm(BridgeObject):
 
         return {}
 
-    @Bridge.method(QObject)
+    @Slot(dict)
     def broadcast(self, data):
         self.property_changed.emit()
         QTimer().singleShot(60, lambda: communication_emit(self.window_metadata, data))
 
-    @Bridge.method()
+    @Slot()
     def requestMetadata(self):
         for win in globales.greeter.windows:
             if self.window.meta.id == win.meta.id:

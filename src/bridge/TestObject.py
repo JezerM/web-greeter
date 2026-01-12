@@ -39,7 +39,6 @@ from PySide6.QtCore import QObject, QTimer, Signal, Slot, Property
 # This Application
 from logger import logger
 from browser.error_prompt import Dialog, general_error_prompt
-from browser.bridge import Bridge, BridgeObject
 
 from config import web_greeter_config
 from utils.battery import Battery

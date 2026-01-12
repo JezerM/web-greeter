@@ -79,6 +79,14 @@ class ThemeUtils {
         return context;
     }
 
+    _dirlist(path, only_images = true, callback) {
+        if (callback) {
+            return _ThemeUtils.dirlist(path, only_images, callback);
+        } else {
+            return _ThemeUtils.dirlist(path, only_images);
+        }
+    }
+
     /**
      * Returns the contents of directory found at `path` provided that the (normalized) `path`
      * meets at least one of the following conditions:
@@ -96,7 +104,7 @@ class ThemeUtils {
             console.error(`theme_utils.dirlist(): path must be a non-empty string!`);
             return callback([]);
         } else if (null !== path.match(/^[^/].+/)) {
-            return _ThemeUtils.dirlist(path, only_images, callback);
+            return this._dirlist(path, only_images, callback);
         }
 
         if (null !== path.match(/\/\.+(?=\/)/)) {
@@ -105,7 +113,7 @@ class ThemeUtils {
         }
 
         try {
-            return _ThemeUtils.dirlist(path, only_images, callback);
+            return this._dirlist(path, only_images, callback);
         } catch (err) {
             console.error(`theme_utils.dirlist(): ${err}`);
             return callback([]);

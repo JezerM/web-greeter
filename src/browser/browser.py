@@ -173,9 +173,9 @@ class Application:
                     overallBoundary = overall_boundary
                 )
             )
-            # window.bridge_objects.append(
-            #     GreeterComm(abstract)
-            # )
+            window.bridge_objects.append(
+                GreeterComm(abstract)
+            )
             windows.append(abstract)
             window.closeEv.connect(self._remove_window)
 

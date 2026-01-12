@@ -34,20 +34,19 @@ import re
 import tempfile
 
 # 3rd-Party Libs
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Slot
 
 # This application
-from browser.bridge import Bridge, BridgeObject
-
 from config import web_greeter_config
 from logger import logger
 
-class ThemeUtils(BridgeObject):
+class ThemeUtils(QObject):
     # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
     """ThemeUtils bridge class, known as `theem_utils` in javascript"""
 
     def __init__(self, greeter_object, *args, **kwargs):
-        super().__init__(name='ThemeUtils', *args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self._name = "ThemeUtils"
 
         self._config = web_greeter_config
         self._greeter = greeter_object
@@ -62,7 +61,7 @@ class ThemeUtils(BridgeObject):
             tempfile.gettempdir(),
         )
 
-    @Bridge.method(str, bool, result=QObject)
+    @Slot(str, bool, result=list)
     def dirlist(self, dir_path, only_images=True):
         if not dir_path or not isinstance(dir_path, str) or '/' == dir_path:
             return []
