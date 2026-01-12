@@ -26,7 +26,7 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-""" Custom Url Scheme Handler """
+"""Custom Url Scheme Handler"""
 
 # Standard Lib
 import os
@@ -58,7 +58,7 @@ class QtUrlSchemeHandler(QWebEngineUrlSchemeHandler):
             return
 
         try:
-            with open(path, 'rb') as file:
+            with open(path, "rb") as file:
                 content_type = mimetypes.guess_type(path)
                 if content_type[0] is None:
                     content_type = ("text/plain", None)

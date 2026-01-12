@@ -6,6 +6,7 @@ from typing import Union
 import globales
 from utils.acpi import ACPI
 
+
 class Battery:
     # pylint: disable=too-many-instance-attributes
     """Battery controller"""
@@ -34,12 +35,14 @@ class Battery:
     def _update_batteries(self, line):
         bstr = re.match(r"BAT\w+", line)
         if bstr:
-            self.batteries.append(dict(
-                name = bstr.group(),
-                status = "N/A",
-                perc = 0,
-                capacity = 0,
-            ))
+            self.batteries.append(
+                dict(
+                    name=bstr.group(),
+                    status="N/A",
+                    perc=0,
+                    capacity=0,
+                )
+            )
         else:
             match = re.match(r"A\w+", line)
             self.ac_path = match.group() if match else self.ac_path
@@ -73,13 +76,27 @@ class Battery:
                 rate_voltage = tonumber(read_first_line(bstr + "/voltage_now")) or 0
                 rate_power = tonumber(read_first_line((bstr + "/power_now"))) or 0
                 charge_full = tonumber(read_first_line(bstr + "/charge_full")) or 0
-                charge_design = tonumber(read_first_line(bstr + "/charge_full_design")) or 0
+                charge_design = (
+                    tonumber(read_first_line(bstr + "/charge_full_design")) or 0
+                )
 
-                energy_now = tonumber(read_first_line(bstr + "/energy_now")
-                                 or read_first_line(bstr + "/charge_now")) or 0
-                energy_full = tonumber(read_first_line(bstr + "/energy_full") or charge_full) or 0
-                energy_percentage = tonumber(read_first_line(bstr + "/capacity")
-                                 or math.floor(energy_now / energy_full * 100)) or 0
+                energy_now = (
+                    tonumber(
+                        read_first_line(bstr + "/energy_now")
+                        or read_first_line(bstr + "/charge_now")
+                    )
+                    or 0
+                )
+                energy_full = (
+                    tonumber(read_first_line(bstr + "/energy_full") or charge_full) or 0
+                )
+                energy_percentage = (
+                    tonumber(
+                        read_first_line(bstr + "/capacity")
+                        or math.floor(energy_now / energy_full * 100)
+                    )
+                    or 0
+                )
 
                 self.batteries[i]["status"] = read_first_line(bstr + "/status") or "N/A"
                 self.batteries[i]["perc"] = energy_percentage or self.batteries[i].perc
@@ -88,7 +105,8 @@ class Battery:
                     self.batteries[i]["capacity"] = 0
                 else:
                     self.batteries[i]["capacity"] = math.floor(
-                        charge_full / charge_design * 100)
+                        charge_full / charge_design * 100
+                    )
 
                 sum_rate_current = sum_rate_current + rate_current
                 sum_rate_voltage = sum_rate_voltage + rate_voltage
@@ -101,24 +119,29 @@ class Battery:
                 sum_charge_full = sum_charge_full + charge_full
                 sum_charge_design = sum_charge_design + charge_design
 
-        self.capacity = math.floor(min(100, sum_charge_full / (sum_charge_design or 1) * 100))
+        self.capacity = math.floor(
+            min(100, sum_charge_full / (sum_charge_design or 1) * 100)
+        )
         self.status = self.batteries[0]["status"] if len(self.batteries) > 0 else "N/A"
 
         for i, battery in enumerate(self.batteries):
             if battery["status"] == "Discharging" or battery["status"] == "Charging":
                 self.status = battery["status"]
 
-        self.ac_status = tonumber(read_first_line(self.pspath + self.ac_path + "/online")) or 0
+        self.ac_status = (
+            tonumber(read_first_line(self.pspath + self.ac_path + "/online")) or 0
+        )
 
         if self.status != "N/A":
             if self.status != "Full" and sum_rate_power == 0 and self.ac_status == 1:
-                self.perc = math.floor(min(100,
-                            sum_energy_now / sum_energy_full * 100 + 0.5))
+                self.perc = math.floor(
+                    min(100, sum_energy_now / sum_energy_full * 100 + 0.5)
+                )
                 self.time = "00:00"
                 self.watt = 0
             elif self.status != "Full":
                 rate_time = 0
-                if (sum_rate_power > 0 or sum_rate_current > 0):
+                if sum_rate_power > 0 or sum_rate_current > 0:
                     div = sum_rate_power > 0 or sum_rate_current
 
                     if self.status == "Charging":
@@ -127,16 +150,18 @@ class Battery:
                         rate_time = sum_energy_now / div
 
                     if rate_time and rate_time < 0.01:
-                        rate_time_magnitude = tonumber(abs(math.floor(math.log10(rate_time)))) or 0
+                        rate_time_magnitude = (
+                            tonumber(abs(math.floor(math.log10(rate_time)))) or 0
+                        )
                         rate_time = int(rate_time * 10) ^ (rate_time_magnitude - 2)
 
-                    hours   = math.floor(rate_time)
+                    hours = math.floor(rate_time)
                     minutes = math.floor((rate_time - hours) * 60)
-                    self.perc  = math.floor(
+                    self.perc = math.floor(
                         min(100, (sum_energy_now / sum_energy_full) * 100) + 0.5
                     )
                     self.time = f"{hours:02d}:{minutes:02d}"
-                    self.watt = f"{sum_rate_energy/1e6:.2f}"
+                    self.watt = f"{sum_rate_energy / 1e6:.2f}"
             elif self.status == "Full":
                 self.perc = 100
                 self.time = "00:00"
@@ -179,22 +204,25 @@ class Battery:
         """Get watt"""
         return self.watt
 
+
 def scandir_line(path, callback):
     """List directory"""
     lines = os.listdir(path)
     for _, line in enumerate(lines):
         callback(line)
 
+
 def read_first_line(path) -> Union[str, None]:
     """Just read the first line of file"""
     try:
         first = None
-        with open(path, "r", encoding = "utf-8") as file:
+        with open(path, "r", encoding="utf-8") as file:
             first = file.readline()
             first = first.replace("\n", "")
         return first
     except IOError:
         return None
+
 
 def tonumber(string) -> Union[int, None]:
     """Converts string to int or None"""

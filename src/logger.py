@@ -26,17 +26,14 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from logging import (
-    getLogger,
-    DEBUG,
-    Formatter,
-    StreamHandler
-)
+from logging import getLogger, DEBUG, Formatter, StreamHandler
 
-LOG_FORMAT = ''.join([
-    '%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(',
-    'lineno)d : %(funcName)s | %(message)s'
-])
+LOG_FORMAT = "".join(
+    [
+        "%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(",
+        "lineno)d : %(funcName)s | %(message)s",
+    ]
+)
 formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 stream_handler = StreamHandler()
 

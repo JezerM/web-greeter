@@ -33,7 +33,8 @@ from typing import List
 
 # 3rd-Party Libs
 import gi
-gi.require_version('LightDM', '1')
+
+gi.require_version("LightDM", "1")
 from gi.repository import LightDM
 
 from PySide6.QtCore import QObject, Signal, Property
@@ -42,6 +43,7 @@ from PySide6.QtCore import QObject, Signal, Property
 from config import web_greeter_config
 
 from . import layout_to_dict
+
 
 def get_layouts(config_layouts: List[str]):
     """Get layouts from web-greeter's config"""

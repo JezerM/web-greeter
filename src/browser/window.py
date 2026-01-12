@@ -32,20 +32,10 @@ from typing import (
     TypeVar,
 )
 
-from PySide6.QtWidgets import (
-    QMainWindow, QDockWidget, QMenuBar
-)
+from PySide6.QtWidgets import QMainWindow, QDockWidget, QMenuBar
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import (
-    QWebEnginePage, QWebEngineScript, QWebEngineSettings
-)
-from PySide6.QtCore import (
-    Qt,
-    QUrl,
-    QFile,
-    QRect,
-    Signal
-)
+from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineScript, QWebEngineSettings
+from PySide6.QtCore import Qt, QUrl, QFile, QRect, Signal
 from PySide6.QtGui import QAction, QColor, QIcon, QScreen
 from PySide6.QtWebChannel import QWebChannel
 from browser.browser_interfaces import WindowMetadata
@@ -61,24 +51,25 @@ BridgeObjects = Tuple["BridgeObject"]
 Url = TypeVar("Url", str, QUrl)
 
 WINDOW_STATES = {
-    'NORMAL': Qt.WindowNoState,
-    'MINIMIZED': Qt.WindowMinimized,
-    'MAXIMIZED': Qt.WindowMaximized,
-    'FULLSCREEN': Qt.WindowFullScreen,
+    "NORMAL": Qt.WindowNoState,
+    "MINIMIZED": Qt.WindowMinimized,
+    "MAXIMIZED": Qt.WindowMaximized,
+    "FULLSCREEN": Qt.WindowFullScreen,
 }  # type: Dict[str, Qt.WindowState]
 
 DISABLED_SETTINGS = [
-    'PluginsEnabled',  # Qt 5.6+
+    "PluginsEnabled",  # Qt 5.6+
 ]
 
 ENABLED_SETTINGS = [
-    'FocusOnNavigationEnabled',      # Qt 5.8+
-    'FullScreenSupportEnabled',      # Qt 5.6+
-    'LocalContentCanAccessFileUrls',
-    'ScreenCaptureEnabled',          # Qt 5.7+
-    'ScrollAnimatorEnabled',
-    'FocusOnNavigationEnabled',      # Qt 5.11+
+    "FocusOnNavigationEnabled",  # Qt 5.8+
+    "FullScreenSupportEnabled",  # Qt 5.6+
+    "LocalContentCanAccessFileUrls",
+    "ScreenCaptureEnabled",  # Qt 5.7+
+    "ScrollAnimatorEnabled",
+    "FocusOnNavigationEnabled",  # Qt 5.11+
 ]
+
 
 class MainWindow(QMainWindow):
     """Main window for web-greeter"""
@@ -106,6 +97,7 @@ class MainWindow(QMainWindow):
         if globales.greeter:
             value = web_greeter_config["config"]["features"]["backlight"]["value"]
             globales.LDMGreeter.brightness_increase(value)
+
     @classmethod
     def dec_brightness(cls):
         """Decrease brightness"""
@@ -118,6 +110,7 @@ class MainWindow(QMainWindow):
         """Updates brightness"""
         if globales.greeter:
             globales.LDMGreeter.brightness_update.emit()
+
 
 class BrowserWindow(MainWindow):
     # pylint: disable=too-many-instance-attributes
@@ -141,12 +134,10 @@ class BrowserWindow(MainWindow):
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.setWindowTitle("Web Greeter")
 
-        self.setWindowFlags(
-            self.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint
-        )
+        self.setWindowFlags(self.windowFlags() | Qt.MaximizeUsingFullscreenGeometryHint)
         self.setGeometry(geometry)
 
-        state = WINDOW_STATES['NORMAL']
+        state = WINDOW_STATES["NORMAL"]
         if web_greeter_config["app"]["fullscreen"]:
             state = WINDOW_STATES["FULLSCREEN"]
 
@@ -175,14 +166,10 @@ class BrowserWindow(MainWindow):
         if web_greeter_config["app"]["frame"]:
             self._init_menu_bar()
         else:
-            self.setWindowFlags(
-                self.windowFlags() | Qt.FramelessWindowHint
-            )
+            self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
 
         self.win_page.setBackgroundColor(QColor(0, 0, 0))
-        self.setStyleSheet("""QMainWindow, QWebEngineView {
-	                                background: #000000;
-                                 }""")
+        self.setStyleSheet("QMainWindow, QWebEngineView { background: #000000; }")
 
         self.setCentralWidget(self.win_view)
 
@@ -210,16 +197,17 @@ class BrowserWindow(MainWindow):
     def init_bridge(self):
         """Initialize bridge objects"""
         self.initialize_bridge_objects()
-        self.load_script(':/_greeter/js/bundle.js', 'Web Greeter Bundle')
+        self.load_script(":/qtwebchannel/qwebchannel.js", "QWebChannel API")
+        self.load_script(":/_greeter/js/bundle.js", "Web Greeter Bundle")
         self.win_page.loadStarted.disconnect(self.init_bridge)
 
     def _init_winpage(self):
         page_settings = self.win_page.settings()
 
         if not web_greeter_config["config"]["greeter"]["secure_mode"]:
-            ENABLED_SETTINGS.append('LocalContentCanAccessRemoteUrls')
+            ENABLED_SETTINGS.append("LocalContentCanAccessRemoteUrls")
         else:
-            DISABLED_SETTINGS.append('LocalContentCanAccessRemoteUrls')
+            DISABLED_SETTINGS.append("LocalContentCanAccessRemoteUrls")
 
         for setting in DISABLED_SETTINGS:
             try:
@@ -245,15 +233,22 @@ class BrowserWindow(MainWindow):
 
         self.win_page.setDevToolsPage(self.dev_page)
 
-        self.dev_page.windowCloseRequested.connect(lambda: self.toggle_devtools_value(False))
+        self.dev_page.windowCloseRequested.connect(
+            lambda: self.toggle_devtools_value(False)
+        )
 
-        inspect_element_action = self.win_page.action(QWebEnginePage.WebAction.InspectElement)
-        inspect_element_action.triggered.connect(lambda: self.toggle_devtools_value(True))
+        inspect_element_action = self.win_page.action(
+            QWebEnginePage.WebAction.InspectElement
+        )
+        inspect_element_action.triggered.connect(
+            lambda: self.toggle_devtools_value(True)
+        )
 
         self.qdock = QDockWidget()
         self.qdock.setWidget(self.dev_view)
-        self.qdock.setFeatures(QDockWidget.DockWidgetMovable or
-                               QDockWidget.DockWidgetClosable)
+        self.qdock.setFeatures(
+            QDockWidget.DockWidgetMovable or QDockWidget.DockWidgetClosable
+        )
 
         self.addDockWidget(Qt.RightDockWidgetArea, self.qdock)
         self.qdock.hide()
@@ -266,7 +261,9 @@ class BrowserWindow(MainWindow):
         close_action.setShortcut("Ctrl+W")
         close_action.triggered.connect(self.close)
 
-        self.win_page.action(QWebEnginePage.WebAction.ReloadAndBypassCache).setText("Force Reload")
+        self.win_page.action(QWebEnginePage.WebAction.ReloadAndBypassCache).setText(
+            "Force Reload"
+        )
 
         self.win_page.fullScreenRequested.connect(self.accept_fullscreen)
 
@@ -287,7 +284,9 @@ class BrowserWindow(MainWindow):
 
         view_menu = self.menu_bar.addMenu("&View")
         view_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.Reload))
-        view_menu.addAction(self.win_page.action(QWebEnginePage.WebAction.ReloadAndBypassCache))
+        view_menu.addAction(
+            self.win_page.action(QWebEnginePage.WebAction.ReloadAndBypassCache)
+        )
         view_menu.addAction(self.toggle_dev_action)
         view_menu.addSeparator()
         view_menu.addAction(self.reset_zoom_action)
@@ -360,17 +359,18 @@ class BrowserWindow(MainWindow):
             self.win_page.increaseZoom()
         else:
             self.dev_page.increaseZoom()
+
     def _dec_zoom(self):
         if self.win_view.hasFocus():
             self.win_page.decreaseZoom()
         else:
             self.dev_page.decreaseZoom()
+
     def _reset_zoom(self):
         if self.win_view.hasFocus():
             self.win_page.setZoomFactor(1)
         else:
             self.dev_page.setZoomFactor(1)
-
 
     def accept_fullscreen(self, request):
         """Accepts fullscreen requests"""
@@ -389,16 +389,12 @@ class BrowserWindow(MainWindow):
             return
         if value:
             state = WINDOW_STATES["FULLSCREEN"]
-            self.setWindowFlags(
-                self.windowFlags() or Qt.FramelessWindowHint
-            )
+            self.setWindowFlags(self.windowFlags() or Qt.FramelessWindowHint)
             self.menu_bar.setParent(None)
             self.setMenuBar(None)
         else:
             state = WINDOW_STATES["NORMAL"]
-            self.setWindowFlags(
-                self.windowFlags() or not Qt.FramelessWindowHint
-            )
+            self.setWindowFlags(self.windowFlags() or not Qt.FramelessWindowHint)
             self.setMenuBar(self.menu_bar)
         try:
             self.windowHandle().setWindowState(state)
@@ -413,7 +409,7 @@ class BrowserWindow(MainWindow):
         # print(script_file, path)
 
         if script_file.open(QFile.ReadOnly):
-            script_string = str(script_file.readAll(), 'utf-8')
+            script_string = str(script_file.readAll(), "utf-8")
 
             script.setInjectionPoint(QWebEngineScript.DocumentCreation)
             script.setName(name)
@@ -422,9 +418,6 @@ class BrowserWindow(MainWindow):
             # print(script_string)
 
         return script
-
-    def _get_channel_api_script(self) -> QWebEngineScript:
-        return self._create_webengine_script(':/qtwebchannel/qwebchannel.js', 'QWebChannel API')
 
     def _init_bridge_channel(self) -> None:
         self.win_page.setWebChannel(self.channel)
@@ -436,18 +429,15 @@ class BrowserWindow(MainWindow):
             self._init_bridge_channel()
         registered_objects = self.channel.registeredObjects()
 
-        # for obj in self.bridge_objects:
-        #     if obj not in registered_objects:
-        #         # pylint: disable=protected-access
-        #         self.channel.registerObject(obj._name, obj)
-        #         # print("Registered", obj._name)
+        for obj in self.bridge_objects:
+            if obj not in registered_objects:
+                # pylint: disable=protected-access
+                self.channel.registerObject(obj._name, obj)
+                # print("Registered", obj._name)
 
     def load_script(self, path: Url, name: str):
         """Loads a script in page"""
-        qt_api = self._get_channel_api_script()
-        qt_api_source = qt_api.sourceCode()
         script = self._create_webengine_script(path, name)
-        script.setSourceCode(qt_api_source + "\n" + script.sourceCode())
         if not self.win_page.scripts().contains(script):
             self.win_page.scripts().insert(script)
 

@@ -1,4 +1,3 @@
-
 class WindowSize:
     width: float
     height: float
@@ -7,6 +6,7 @@ class WindowSize:
         self.width = width
         self.height = height
 
+
 class WindowPosition:
     x: float
     y: float
@@ -14,6 +14,7 @@ class WindowPosition:
     def __init__(self, x, y):
         self.x = x
         self.y = y
+
 
 class OverallBoundary:
     minX: float
@@ -26,6 +27,7 @@ class OverallBoundary:
         self.maxX = maxX
         self.minY = minY
         self.maxY = maxY
+
 
 class WindowMetadata:
     id: int

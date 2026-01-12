@@ -30,7 +30,8 @@
 
 # 3rd-Party Libs
 import gi
-gi.require_version('LightDM', '1')
+
+gi.require_version("LightDM", "1")
 from gi.repository import LightDM
 from gi.repository.GLib import GError
 
@@ -51,13 +52,14 @@ from . import (
     layout_to_dict,
     session_to_dict,
     user_to_dict,
-    battery_to_dict
+    battery_to_dict,
 )
 
 # import utils.battery as battery
 
 LightDMGreeter = LightDM.Greeter()
 LightDMUsers = LightDM.UserList()
+
 
 class Greeter(QObject):
     # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
@@ -68,8 +70,8 @@ class Greeter(QObject):
     autologin_timer_expired = Signal()
     idle = Signal()
     reset = Signal()
-    show_message = Signal(str, int, arguments=('text', 'type'))
-    show_prompt = Signal(str, int, arguments=('text', 'type'))
+    show_message = Signal(str, int, arguments=("text", "type"))
+    show_prompt = Signal(str, int, arguments=("text", "type"))
 
     brightness_update = Signal()
     battery_update = Signal()
@@ -82,10 +84,10 @@ class Greeter(QObject):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self._name = 'LightDMGreeter'
+        self._name = "LightDMGreeter"
 
         self._config = web_greeter_config["config"]
-        self._shared_data_directory = ''
+        self._shared_data_directory = ""
         self._themes_directory = web_greeter_config["app"]["theme_dir"]
 
         if self._config["features"]["battery"]:
@@ -98,13 +100,13 @@ class Greeter(QObject):
         except GError as err:
             logger.error(err)
             dia = Dialog(
-                title = "An error ocurred",
-                message = "Detected a problem that could interfere" \
-                    " with the system login process",
-                detail = f"LightDM: {err}\n" \
-                    "You can continue without major problems, " \
-                    "but you won't be able to log in",
-                buttons = ["Okay"]
+                title="An error ocurred",
+                message="Detected a problem that could interfere"
+                " with the system login process",
+                detail=f"LightDM: {err}\n"
+                "You can continue without major problems, "
+                "but you won't be able to log in",
+                buttons=["Okay"],
             )
             # dia.exec()
 
@@ -121,33 +123,35 @@ class Greeter(QObject):
         if not users:
             return
         try:
-            user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(users[0].get_name())
+            user_data_dir = LightDMGreeter.ensure_shared_data_dir_sync(
+                users[0].get_name()
+            )
         except Exception:
             return
         if user_data_dir is None:
             return
-        self._shared_data_directory = user_data_dir.rpartition('/')[0]
+        self._shared_data_directory = user_data_dir.rpartition("/")[0]
 
     def _connect_signals(self):
         LightDMGreeter.connect(
-            'authentication-complete',
-            lambda _: self._emit_signal(self.authentication_complete)
+            "authentication-complete",
+            lambda _: self._emit_signal(self.authentication_complete),
         )
         LightDMGreeter.connect(
-            'autologin-timer-expired',
-            lambda _: self._emit_signal(self.autologin_timer_expired)
+            "autologin-timer-expired",
+            lambda _: self._emit_signal(self.autologin_timer_expired),
         )
 
-        LightDMGreeter.connect('idle', lambda _: self._emit_signal(self.idle))
-        LightDMGreeter.connect('reset', lambda _: self._emit_signal(self.reset))
+        LightDMGreeter.connect("idle", lambda _: self._emit_signal(self.idle))
+        LightDMGreeter.connect("reset", lambda _: self._emit_signal(self.reset))
 
         LightDMGreeter.connect(
-            'show-message',
-            lambda _, msg, mtype: self._emit_signal(self.show_message, msg, mtype.real)
+            "show-message",
+            lambda _, msg, mtype: self._emit_signal(self.show_message, msg, mtype.real),
         )
         LightDMGreeter.connect(
-            'show-prompt',
-            lambda _, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype.real)
+            "show-prompt",
+            lambda _, msg, mtype: self._emit_signal(self.show_prompt, msg, mtype.real),
         )
 
     def _emit_signal(self, _signal, *args):
@@ -157,7 +161,7 @@ class Greeter(QObject):
 
     @Property(str, notify=property_changed)
     def authentication_user(self):
-        return LightDMGreeter.get_authentication_user() or ''
+        return LightDMGreeter.get_authentication_user() or ""
 
     @Property(bool, notify=noop_signal)
     def autologin_guest(self):
@@ -252,9 +256,9 @@ class Greeter(QObject):
         if not isinstance(layout, dict):
             return False
         lay = dict(
-            name = layout.get("name") or "",
-            description = layout.get("description") or "",
-            short_description = layout.get("short_description") or ""
+            name=layout.get("name") or "",
+            description=layout.get("description") or "",
+            short_description=layout.get("short_description") or "",
         )
         return LightDM.set_layout(LightDM.Layout(**lay))
 
@@ -276,7 +280,7 @@ class Greeter(QObject):
 
     @Property(str, notify=noop_signal)
     def select_user_hint(self):
-        return LightDMGreeter.get_select_user_hint() or ''
+        return LightDMGreeter.get_select_user_hint() or ""
 
     @Property(list, notify=noop_signal)
     def sessions(self):
@@ -284,7 +288,7 @@ class Greeter(QObject):
 
     @Property(str, notify=noop_signal)
     def shared_data_directory(self):
-        return self._shared_data_directory or ''
+        return self._shared_data_directory or ""
 
     @Property(bool, notify=noop_signal)
     def show_manual_login_hint(self):
@@ -376,7 +380,7 @@ class Greeter(QObject):
         try:
             started: bool = LightDMGreeter.start_session_sync(session)
             if started or self.is_authenticated:
-                logger.debug("Session \"%s\" started", session)
+                logger.debug('Session "%s" started', session)
                 screensaver.reset_screensaver()
             return started
         except GError as err:
@@ -384,9 +388,8 @@ class Greeter(QObject):
             general_error_prompt(
                 globales.greeter.primary_window(),
                 "LightDM couldn't start session",
-                f"The provided session: \"{session}\" couldn't be started\n" \
-                f"{err}",
-                "An error ocurred"
+                f'The provided session: "{session}" couldn\'t be started\n{err}',
+                "An error ocurred",
             )
             return False
 

@@ -42,17 +42,16 @@ from PySide6.QtWidgets import (
     QDialog,
     QVBoxLayout,
     QLabel,
-    QPushButton
+    QPushButton,
 )
 from PySide6.QtGui import QWindow
 from config import web_greeter_config
 
 import globales
 
-LOG_FORMAT = ''.join([
-    '%(asctime)s [ %(levelname)s ] %(filename)s %(',
-    'lineno)d: %(message)s'
-])
+LOG_FORMAT = "".join(
+    ["%(asctime)s [ %(levelname)s ] %(filename)s %(", "lineno)d: %(message)s"]
+)
 formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 logger = getLogger("javascript")
 logger.propagate = False
@@ -62,13 +61,17 @@ stream_handler.setFormatter(formatter)
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)
 
+
 class WebPage(QWebEnginePage):
     """web-greeter's webpage class"""
 
     def javaScriptConsoleMessage(
-            self, level: QWebEnginePage.JavaScriptConsoleMessageLevel,
-            message: str, line_number: int, source_id: str
-        ):
+        self,
+        level: QWebEnginePage.JavaScriptConsoleMessageLevel,
+        message: str,
+        line_number: int,
+        source_id: str,
+    ):
         # pylint: disable = no-self-use,missing-function-docstring,invalid-name
         if source_id == "":
             source_id = "console"
@@ -90,7 +93,7 @@ class WebPage(QWebEnginePage):
             lno=line_number,
             msg=message,
             args=(),
-            exc_info=None
+            exc_info=None,
         )
         record.filename = source_id
         logger.handle(record)
@@ -99,28 +102,28 @@ class WebPage(QWebEnginePage):
             errorMessage = f"{source_id} {line_number}: {message}"
             # error_prompt(errorMessage)
 
-    def increaseZoom(self, value = 0.1):
+    def increaseZoom(self, value=0.1):
         """Increase zoom"""
         # pylint: disable=invalid-name
-        self.setZoomFactor(
-            self.zoomFactor() + (value if value else 0.1)
-        )
+        self.setZoomFactor(self.zoomFactor() + (value if value else 0.1))
 
-    def decreaseZoom(self, value = 0.1):
+    def decreaseZoom(self, value=0.1):
         """Increase zoom"""
         # pylint: disable=invalid-name
-        self.setZoomFactor(
-            self.zoomFactor() - (value if value else 0.1)
-        )
+        self.setZoomFactor(self.zoomFactor() - (value if value else 0.1))
+
 
 class Dialog(QDialog):
     """Popup dialog class"""
 
     def __init__(
-            self, parent = None, title: str = "Dialog",
-            message: str = "Message", detail: str = "",
-            buttons: List[str] = None
-        ):
+        self,
+        parent=None,
+        title: str = "Dialog",
+        message: str = "Message",
+        detail: str = "",
+        buttons: List[str] = None,
+    ):
         super().__init__(parent)
         self.setWindowTitle(title)
 
@@ -144,13 +147,16 @@ class Dialog(QDialog):
         """Handle click of button"""
         self.done(button.role)
 
+
 def general_error_prompt(window: QWindow, message: str, detail: str, title: str):
     """General error prompt"""
-    dialog = Dialog(parent = window,
-                    title = title,
-                    message = message,
-                    detail = detail,
-                    buttons = ["Reload theme", "Use default theme", "Cancel"])
+    dialog = Dialog(
+        parent=window,
+        title=title,
+        message=message,
+        detail=detail,
+        buttons=["Reload theme", "Use default theme", "Cancel"],
+    )
     dialog.exec()
     result = dialog.result()
 
@@ -168,7 +174,9 @@ def error_prompt(err: str):
     if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
         return
 
-    general_error_prompt(globales.greeter.primary_window(),
-                         "An error ocurred. Do you want to change to default theme?",
-                         f"{err}",
-                         "An error ocurred")
+    general_error_prompt(
+        globales.greeter.primary_window(),
+        "An error ocurred. Do you want to change to default theme?",
+        f"{err}",
+        "An error ocurred",
+    )

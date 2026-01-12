@@ -38,6 +38,7 @@ import globales
 
 sys_path = ["/sys/class/backlight/"]
 
+
 def get_controllers() -> List[str]:
     """Get brightness controllers path"""
     ctrls: List[str] = []
@@ -47,6 +48,7 @@ def get_controllers() -> List[str]:
             for name in drs:
                 ctrls.append(os.path.join(dev, name))
     return ctrls
+
 
 # Behavior based on "acpilight"
 # Copyright(c) 2016-2019 by wave++ "Yuri D'Elia" <wavexx@thregr.org>
@@ -66,9 +68,11 @@ class BrightnessController:
 
     def __init__(self):
         self._controllers = get_controllers()
-        if (len(self._controllers) == 0 or
-            self._controllers[0] is None or
-            not web_greeter_config["config"]["features"]["backlight"]["enabled"]):
+        if (
+            len(self._controllers) == 0
+            or self._controllers[0] is None
+            or not web_greeter_config["config"]["features"]["backlight"]["enabled"]
+        ):
             self._available = False
             return
         b_path = self._controllers[0]
@@ -76,7 +80,7 @@ class BrightnessController:
         self._brightness_path = os.path.join(b_path, "brightness")
         self._max_brightness_path = os.path.join(b_path, "max_brightness")
 
-        with open(self._max_brightness_path, "r", encoding = "utf-8") as file:
+        with open(self._max_brightness_path, "r", encoding="utf-8") as file:
             self._max_brightness = int(file.read())
 
         steps = web_greeter_config["config"]["features"]["backlight"]["steps"]
@@ -96,7 +100,7 @@ class BrightnessController:
         """Starts a thread to watch brightness"""
         if not self._available:
             return
-        thread = Thread(target = self._watch)
+        thread = Thread(target=self._watch)
         thread.daemon = True
         thread.start()
 
@@ -111,10 +115,10 @@ class BrightnessController:
         if not self._available:
             return -1
         try:
-            with open(self._brightness_path, "r", encoding = "utf-8") as file:
+            with open(self._brightness_path, "r", encoding="utf-8") as file:
                 return int(file.read())
         except OSError:
-            logger.error("Couldn't read from \"%s\"", self._brightness_path)
+            logger.error('Couldn\'t read from "%s"', self._brightness_path)
             return -1
 
     @real_brightness.setter
@@ -130,10 +134,10 @@ class BrightnessController:
             return
 
         try:
-            with open(self._brightness_path, "w", encoding = "utf-8") as file:
+            with open(self._brightness_path, "w", encoding="utf-8") as file:
                 file.write(str(round(value)))
         except OSError:
-            logger.error("Couldn't write to \"%s\"", self._brightness_path)
+            logger.error('Couldn\'t write to "%s"', self._brightness_path)
 
     @property
     def brightness(self) -> int:
@@ -164,7 +168,7 @@ class BrightnessController:
 
     def set_brightness(self, value: int):
         """Set brightness"""
-        thread = Thread(target = self._set_brightness, args = (value,))
+        thread = Thread(target=self._set_brightness, args=(value,))
         thread.start()
 
     def inc_brightness(self, value: int):

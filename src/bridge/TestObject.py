@@ -30,7 +30,8 @@
 
 # 3rd-Party Libs
 import gi
-gi.require_version('LightDM', '1')
+
+gi.require_version("LightDM", "1")
 from gi.repository import LightDM
 from gi.repository.GLib import GError
 
@@ -51,10 +52,11 @@ from . import (
     layout_to_dict,
     session_to_dict,
     user_to_dict,
-    battery_to_dict
+    battery_to_dict,
 )
 
 # import utils.battery as battery
+
 
 class TestObject(QObject):
     # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
@@ -65,7 +67,7 @@ class TestObject(QObject):
 
     def __init__(self, *args, **kwargs):
         super().__init__(parent=None)
-        self._name = 'test_object'
+        self._name = "test_object"
 
         self._user_name = "unknown"
 

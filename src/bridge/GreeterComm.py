@@ -39,11 +39,13 @@ import globales
 
 communications: List = []
 
+
 def communication_emit(window, data):
     """Emit broadcast_signal for each GreeterComm element in communications"""
     for comm in communications:
         # print(window)
         comm.broadcast_signal.emit(window, data)
+
 
 class GreeterComm(QObject):
     # pylint: disable=missing-function-docstring,too-many-public-methods,invalid-name

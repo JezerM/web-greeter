@@ -31,6 +31,7 @@ import sys
 from typing import Literal
 from logger import logger
 
+
 def language_to_dict(lang):
     """Returns a dict from LightDMLanguage object"""
     if not lang:
@@ -39,7 +40,7 @@ def language_to_dict(lang):
         return {
             "code": lang.get_code(),
             "name": lang.get_name(),
-            "territory": lang.get_territory()
+            "territory": lang.get_territory(),
         }
     except Exception as e:
         logger.warn(e)
@@ -54,7 +55,7 @@ def layout_to_dict(layout):
         return {
             "description": layout.get_description(),
             "name": layout.get_name(),
-            "short_description": layout.get_short_description()
+            "short_description": layout.get_short_description(),
         }
     except Exception as e:
         logger.warn(e)
@@ -113,11 +114,12 @@ def battery_to_dict(battery):
             "ac_status": battery.get_ac_status(),
             "capacity": battery.get_capacity(),
             "time": battery.get_time(),
-            "watt": battery.get_watt()
+            "watt": battery.get_watt(),
         }
     except Exception as e:
         logger.warn(e)
         return {}
+
 
 def inf_to_infinity(num: float):
     """Converts a math.inf to "infinity" or "-infinity" """
@@ -126,6 +128,7 @@ def inf_to_infinity(num: float):
     if num > 0:
         return "infinity"
     return "-infinity"
+
 
 def window_metadata_to_dict(metadata):
     """Returns a dict from WindowMetadata object"""
@@ -149,6 +152,7 @@ def window_metadata_to_dict(metadata):
             "height": metadata.size.height,
         },
     }
+
 
 # pylint: disable=wrong-import-position
 from .Greeter import Greeter

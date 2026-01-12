@@ -33,7 +33,7 @@ from logger import logger
 
 PATH_TO_CONFIG = "/etc/lightdm/web-greeter.yml"
 
-yaml_loader = yaml.YAML(typ='safe', pure=True)
+yaml_loader = yaml.YAML(typ="safe", pure=True)
 
 web_greeter_config = {
     "config": {
@@ -58,8 +58,8 @@ web_greeter_config = {
                 "enabled": False,
                 "value": 10,
                 "steps": 0,
-            }
-        }
+            },
+        },
     },
     "app": {
         "fullscreen": True,
@@ -82,12 +82,13 @@ web_greeter_config = {
     "theme": {
         "primary_html": "index.html",
         "secondary_html": "",
-    }
+    },
 }
 
 path_to_config = os.getenv("WEB_GREETER_CONFIG") or "/etc/lightdm/web-greeter.yml"
 
 theme_dir = None
+
 
 def load_theme_dir() -> str:
     """Loads the theme directory"""
@@ -106,11 +107,11 @@ def load_theme_dir() -> str:
         theme_dir = os.path.dirname(theme_dir)
 
     if not os.path.exists(theme_dir):
-        logger.warn("\"%s\" theme does not exists. Using \"%s\" theme",
-                    theme, def_theme)
+        logger.warn('"%s" theme does not exists. Using "%s" theme', theme, def_theme)
         theme_dir = os.path.join(directory, def_theme)
 
     return theme_dir
+
 
 def load_primary_theme_path() -> str:
     """
@@ -135,12 +136,14 @@ def load_primary_theme_path() -> str:
         path_to_theme = os.path.join(path_to_theme, "index.html")
 
     if not os.path.exists(path_to_theme):
-        logger.warn("\"%s\" theme does not exists. Using \"%s\" theme",
-                    path_to_theme, def_theme)
+        logger.warn(
+            '"%s" theme does not exists. Using "%s" theme', path_to_theme, def_theme
+        )
         path_to_theme = os.path.join(directory, def_theme, "index.html")
 
     web_greeter_config["config"]["greeter"]["theme"] = path_to_theme
     return path_to_theme
+
 
 def load_secondary_theme_path() -> str:
     """
@@ -158,11 +161,15 @@ def load_secondary_theme_path() -> str:
         path_to_theme = os.path.join(path_to_theme, "index.html")
 
     if not os.path.exists(path_to_theme):
-        logger.warn("\"%s\" does not exists. Using \"%s\" for secondary monitors",
-                    secondary, primary)
+        logger.warn(
+            '"%s" does not exists. Using "%s" for secondary monitors',
+            secondary,
+            primary,
+        )
         path_to_theme = load_primary_theme_path()
 
     return path_to_theme
+
 
 def load_theme_config():
     """Loads the theme config inside "index.yml" """
@@ -182,6 +189,7 @@ def load_theme_config():
         logger.warn("Theme config was not loaded:\n\t%s", err)
         logger.debug("Using default theme config")
 
+
 def ensure_theme():
     """
     Ensures that the theme does exists
@@ -200,6 +208,7 @@ def ensure_theme():
         theme_dir = os.path.join(directory, def_theme)
         load_theme_config()
 
+
 def load_config():
     """Load web-greeter's config"""
     try:
@@ -209,5 +218,6 @@ def load_config():
             web_greeter_config["config"] = yaml_loader.load(file)
     except Exception as err:
         logger.error("Config was not loaded:\n\t%s", err)
+
 
 load_config()
