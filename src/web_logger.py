@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-#  logger.py
+#  web_logger.py
 #
-#  Copyright © 2017 Antergos
-#  Copyright © 2021 JezerM
+#  Copyright © 2026 JezerM
 #
 #  This file is part of Web Greeter.
 #
@@ -30,8 +29,7 @@ from logging import getLogger, DEBUG, Formatter, StreamHandler
 
 LOG_FORMAT = "".join(
     [
-        "%(asctime)s [ %(levelname)s ] %(module)s - %(filename)s:%(",
-        "lineno)d : %(funcName)s | %(message)s",
+        "%(asctime)s [ %(levelname)s ] %(filename)s %(", "lineno)d: %(message)s",
     ]
 )
 formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
@@ -40,7 +38,7 @@ stream_handler = StreamHandler()
 stream_handler.setLevel(DEBUG)
 stream_handler.setFormatter(formatter)
 
-logger = getLogger("debug")
+logger = getLogger("javascript")
 logger.propagate = False
 logger.setLevel(DEBUG)
 logger.addHandler(stream_handler)

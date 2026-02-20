@@ -39,7 +39,7 @@ from PySide6.QtCore import Qt, QUrl, QFile, QRect, Signal
 from PySide6.QtGui import QAction, QColor, QIcon, QScreen
 from PySide6.QtWebChannel import QWebChannel
 from browser.browser_interfaces import WindowMetadata
-from browser.error_prompt import WebPage
+from browser.web_page import WebPage
 
 from bridge.TestObject import TestObject
 
@@ -67,7 +67,6 @@ ENABLED_SETTINGS = [
     "LocalContentCanAccessFileUrls",
     "ScreenCaptureEnabled",  # Qt 5.7+
     "ScrollAnimatorEnabled",
-    "FocusOnNavigationEnabled",  # Qt 5.11+
 ]
 
 
