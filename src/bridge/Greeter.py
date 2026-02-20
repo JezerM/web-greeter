@@ -86,11 +86,11 @@ class Greeter(QObject):
 
         self._name = "LightDMGreeter"
 
-        self._config = web_greeter_config["config"]
+        self._config = web_greeter_config.config
         self._shared_data_directory = ""
-        self._themes_directory = web_greeter_config["app"]["theme_dir"]
+        self._themes_directory = web_greeter_config.app.theme_dir
 
-        if self._config["features"]["battery"]:
+        if self._config.features.battery.enabled:
             self._battery = Battery()
 
         self._brightness_controller = BrightnessController()
@@ -209,11 +209,11 @@ class Greeter(QObject):
 
     @Property(bool, notify=noop_signal)
     def can_access_brightness(self):
-        return self._config["features"]["backlight"]["enabled"]
+        return self._config.features.backlight.enabled
 
     @Property(bool, notify=noop_signal)
     def can_access_battery(self):
-        return self._config["features"]["battery"]
+        return self._config.features.battery.enabled
 
     @Property(str, notify=noop_signal)
     def default_session(self):

@@ -95,14 +95,14 @@ class MainWindow(QMainWindow):
     def inc_brightness(cls):
         """Increase brightness"""
         if globales.greeter:
-            value = web_greeter_config["config"]["features"]["backlight"]["value"]
+            value = web_greeter_config.config.features.backlight.delta
             globales.LDMGreeter.brightness_increase(value)
 
     @classmethod
     def dec_brightness(cls):
         """Decrease brightness"""
         if globales.greeter:
-            value = web_greeter_config["config"]["features"]["backlight"]["value"]
+            value = web_greeter_config.config.features.backlight.delta
             globales.LDMGreeter.brightness_decrease(value)
 
     @classmethod
@@ -138,7 +138,7 @@ class BrowserWindow(MainWindow):
         self.setGeometry(geometry)
 
         state = WINDOW_STATES["NORMAL"]
-        if web_greeter_config["app"]["fullscreen"]:
+        if web_greeter_config.app.fullscreen:
             state = WINDOW_STATES["FULLSCREEN"]
 
         try:
@@ -163,7 +163,7 @@ class BrowserWindow(MainWindow):
 
         self._init_actions()
 
-        if web_greeter_config["app"]["frame"]:
+        if web_greeter_config.app.frame:
             self._init_menu_bar()
         else:
             self.setWindowFlags(self.windowFlags() | Qt.FramelessWindowHint)
@@ -204,7 +204,7 @@ class BrowserWindow(MainWindow):
     def _init_winpage(self):
         page_settings = self.win_page.settings()
 
-        if not web_greeter_config["config"]["greeter"]["secure_mode"]:
+        if not web_greeter_config.config.greeter.secure_mode:
             ENABLED_SETTINGS.append("LocalContentCanAccessRemoteUrls")
         else:
             DISABLED_SETTINGS.append("LocalContentCanAccessRemoteUrls")

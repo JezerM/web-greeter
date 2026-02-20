@@ -5,10 +5,10 @@ description = ""
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "dataclass-binder>=0.3.5",
     "inotify>=0.2.12",
     "pygobject>=3.54.5",
     "pyside6>=6.10.0",
-    "ruamel-yaml>=0.18.16",
 ]
 
 # [build-system]

@@ -71,7 +71,7 @@ class BrightnessController:
         if (
             len(self._controllers) == 0
             or self._controllers[0] is None
-            or not web_greeter_config["config"]["features"]["backlight"]["enabled"]
+            or not web_greeter_config.config.features.backlight.enabled
         ):
             self._available = False
             return
@@ -83,7 +83,7 @@ class BrightnessController:
         with open(self._max_brightness_path, "r", encoding="utf-8") as file:
             self._max_brightness = int(file.read())
 
-        steps = web_greeter_config["config"]["features"]["backlight"]["steps"]
+        steps = web_greeter_config.config.features.backlight.steps
         self.steps = 1 if steps <= 1 else steps
         self.delay = 200
         self.watch_brightness()

@@ -1,0 +1,64 @@
+#
+# A list of preferred layouts to use
+#
+# NOTE: See "man xkeyboard-config" for posible layout values. Also, see posible layouts here: https://web.archive.org/web/20161203032703/http://pastebin.com/v2vCPHjs
+#
+layouts = [
+  "us", # "en_us" xkb layout
+  "latam", # "es_latam" xkb layout
+  # "gb dvorak", # "en_gb_dvorak" xkb layout
+]
+
+#
+# Settings for the greeter and themes
+#
+# debug-mode = Enable debug mode for the greeter and themes
+# detect-theme-errors = Provides an option to load a fallback theme when theme errors are detected
+# screensaver-timeout = Blank the screen after this many seconds of inactivity
+# secure-mode = Themes are not allowed to make http requests (Recommended)
+# theme = Greeter theme to use
+# icon-theme = Icon/cursor theme to use, located in /usr/share/icons/
+# time-language = Language to use when displaying the date or time, i.e. "en-us", "es-419", "ko", "ja". See IANA subtags registry: https://www.iana.org/assignments/language-subtag-registry/language-subtag-registry
+#
+[greeter]
+debug-mode = false
+detect-theme-errors = true
+screensaver-timeout = 300
+secure-mode = true
+theme = "gruvbox"
+# icon_theme = "Adwaita"
+# time_language = "en-us"
+
+#
+# Battery display feature
+#
+# enabled = Enable themes to get battery status
+#
+[features.battery]
+enabled = false
+
+#
+# Brightness control feature
+
+# enabled = Enable themes to control display backlight
+# delta = Amount to increase/decrease brightness per keypress (+/-)
+# steps = Number of interpolation steps (0 = no transition, instant)
+#
+[features.backlight]
+enabled = false
+delta = 10
+steps = 0
+
+#
+# Settings used for branding purposes
+#
+# background_images_dir = Path to directory that contains background images for use in themes
+# logo-image: Path to logo image for use in themes. E.g. a distro image
+# user-image: Default user image/avatar used by themes when user has no .face image
+#
+# NOTE: Paths must be accessible to the lightdm system user account (so they cannot be anywhere in /home)
+#
+[branding]
+background-images-dir = "/usr/share/backgrounds"
+logo-image = "/usr/share/web-greeter/themes/default/img/antergos-logo-user.png"
+user-image = "/usr/share/web-greeter/themes/default/img/antergos.png"

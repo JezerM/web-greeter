@@ -30,6 +30,7 @@
 
 # Standard Lib
 from typing import List
+from dataclasses import asdict
 
 # 3rd-Party Libs
 import gi
@@ -69,11 +70,11 @@ class Config(QObject):
         super().__init__(*args, **kwargs)
         self._name = "Config"
 
-        _config = web_greeter_config["config"]
-        self._branding = _config["branding"]
-        self._greeter = _config["greeter"]
-        self._features = _config["features"]
-        self._layouts = get_layouts(_config["layouts"])
+        _config = web_greeter_config.config
+        self._branding = asdict(_config.branding)
+        self._greeter = asdict(_config.greeter)
+        self._features = asdict(_config.features)
+        self._layouts = get_layouts(_config.layouts)
 
     @Property(dict, notify=noop_signal)
     def branding(self):

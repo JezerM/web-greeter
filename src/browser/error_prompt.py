@@ -163,7 +163,7 @@ def general_error_prompt(window: QWindow, message: str, detail: str, title: str)
     if result == 2:  # Cancel
         pass
     elif result == 1:  # Default theme
-        web_greeter_config["config"]["greeter"]["theme"] = "gruvbox"
+        web_greeter_config.config.greeter.theme = "gruvbox"
         globales.greeter.load_theme()
     elif result == 0:  # Reload
         globales.greeter.load_theme()
@@ -171,7 +171,7 @@ def general_error_prompt(window: QWindow, message: str, detail: str, title: str)
 
 def error_prompt(err: str):
     """Prompts a popup dialog on error"""
-    if not web_greeter_config["config"]["greeter"]["detect_theme_errors"]:
+    if not web_greeter_config.config.greeter.detect_theme_errors:
         return
 
     general_error_prompt(

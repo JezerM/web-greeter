@@ -54,10 +54,10 @@ class ThemeUtils(QObject):
 
         self._allowed_dirs = (
             os.path.dirname(
-                os.path.realpath(self._config["config"]["greeter"]["theme"])
+                os.path.realpath(self._config.config.greeter.theme)
             ),
-            self._config["app"]["theme_dir"],
-            self._config["config"]["branding"]["background_images_dir"],
+            self._config.app.theme_dir,
+            self._config.config.branding.background_images_dir,
             self._greeter.shared_data_directory,
             tempfile.gettempdir(),
         )
@@ -69,7 +69,7 @@ class ThemeUtils(QObject):
 
         if dir_path.startswith("./"):
             dir_path = os.path.join(
-                os.path.dirname(self._config["config"]["greeter"]["theme"]), dir_path
+                os.path.dirname(self._config.config.greeter.theme), dir_path
             )
 
         dir_path = os.path.realpath(os.path.normpath(dir_path))

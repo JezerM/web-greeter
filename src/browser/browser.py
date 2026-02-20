@@ -114,10 +114,10 @@ class Application:
 
         self.windows = self.create_windows()
 
-        timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
+        timeout = web_greeter_config.config.greeter.screensaver_timeout
         # screensaver.set_screensaver(timeout or 300)
 
-        cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
+        cursor_theme = web_greeter_config.config.greeter.icon_theme
         if cursor_theme is not None:
             os.environ["XCURSOR_THEME"] = cursor_theme
         else:
@@ -157,7 +157,7 @@ class Application:
                     screen.geometry().width(),
                     screen.geometry().height(),
                 ),
-                web_greeter_config["config"]["greeter"]["debug_mode"],
+                web_greeter_config.config.greeter.debug_mode,
             )
 
             abstract = WindowAbstract(
@@ -217,7 +217,7 @@ class Application:
             url_scheme.encode(), self.url_scheme_handler
         )
 
-        if web_greeter_config["config"]["greeter"]["secure_mode"]:
+        if web_greeter_config.config.greeter.secure_mode:
             if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
                 self.profile.setUrlRequestInterceptor(self.interceptor)
             else:  # Older Qt5 versions
@@ -259,7 +259,7 @@ class Browser(Application):
         """Initialize browser"""
         logger.debug("Initializing Browser Window")
 
-        if web_greeter_config["config"]["greeter"]["debug_mode"]:
+        if web_greeter_config.config.greeter.debug_mode:
             os.environ["QTWEBENGINE_REMOTE_DEBUGGING"] = "12345"
 
     def load_theme(self):
@@ -267,6 +267,9 @@ class Browser(Application):
         load_theme_dir()
         primary_html = load_primary_theme_path()
         secondary_html = load_secondary_theme_path()
+
+        logger.debug(f"Primary HTML: {primary_html}")
+        logger.debug(f"Secondary HTML: {secondary_html}")
 
         primary_url = QUrl(f"web-greeter://app/{primary_html}")
         secondary_url = QUrl(f"web-greeter://app/{secondary_html}")
