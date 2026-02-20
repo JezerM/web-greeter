@@ -14,6 +14,7 @@ _webgreeter() {
         "(--help -h)"{--help,-h}"[Show help]"
         "(--version -v)"{--version,-v}"[Print program version]"
         "--api-version[Print JavaScript API version number]"
+        "--print-config[Print current config]"
     )
     _arguments $args[@] && ret=0
     case "$state" in
