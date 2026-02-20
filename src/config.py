@@ -34,11 +34,13 @@ from dataclasses import dataclass, fields, field
 from logger import logger
 from dataclass_binder import Binder
 
+
 @dataclass
 class ConfigBranding:
     background_images_dir: str = "/usr/share/backgrounds/"
     logo_image: str = ""
     user_image: str = ""
+
 
 @dataclass
 class ConfigGreeter:
@@ -50,19 +52,23 @@ class ConfigGreeter:
     icon_theme: str | None = None
     time_language: str | None = None
 
+
 @dataclass
 class SimpleFeature:
     enabled: bool = False
+
 
 @dataclass
 class BacklightFeature(SimpleFeature):
     delta: int = 10
     steps: int = 0
 
+
 @dataclass
 class ConfigFeatures:
     battery: SimpleFeature = field(default_factory=SimpleFeature)
     backlight: BacklightFeature = field(default_factory=BacklightFeature)
+
 
 @dataclass
 class Config:
@@ -70,6 +76,7 @@ class Config:
     greeter: ConfigGreeter = field(default_factory=ConfigGreeter)
     features: ConfigFeatures = field(default_factory=ConfigFeatures)
     layouts: list[str] = field(default_factory=list)
+
 
 @dataclass
 class AppConfig:
@@ -80,16 +87,19 @@ class AppConfig:
     version: str = "3.5.3"
     api_version: str = "1.0.0"
 
+
 @dataclass
 class ThemeConfig:
     primary_html: str = "index.html"
     secondary_html: str = ""
+
 
 @dataclass
 class WebGreeterConfig:
     config: Config = field(default_factory=Config)
     app: AppConfig = field(default_factory=AppConfig)
     theme: ThemeConfig = field(default_factory=ThemeConfig)
+
 
 web_greeter_config = WebGreeterConfig()
 

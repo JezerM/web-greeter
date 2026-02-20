@@ -40,6 +40,7 @@ from config import web_greeter_config
 
 import globales
 
+
 def general_error_prompt(window: QWindow, message: str, detail: str, title: str):
     """General error prompt"""
     dialog = Dialog(

@@ -38,6 +38,7 @@ from typing import List
 from PySide6.QtWebEngineCore import QWebEnginePage
 from web_logger import logger
 
+
 class WebPage(QWebEnginePage):
     """web-greeter's webpage class"""
 
@@ -122,5 +123,3 @@ class Dialog(QDialog):
     def handle_click(self, button: QAbstractButton):
         """Handle click of button"""
         self.done(button.role)
-
-

@@ -53,9 +53,7 @@ class ThemeUtils(QObject):
         self._greeter = greeter_object
 
         self._allowed_dirs = (
-            os.path.dirname(
-                os.path.realpath(self._config.config.greeter.theme)
-            ),
+            os.path.dirname(os.path.realpath(self._config.config.greeter.theme)),
             self._config.app.theme_dir,
             self._config.config.branding.background_images_dir,
             self._greeter.shared_data_directory,

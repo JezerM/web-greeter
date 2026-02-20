@@ -34,6 +34,7 @@ from typing import List
 # 3rd-Party Libs
 import config
 
+
 def list_themes() -> List[str]:
     """List available themes"""
     themes_dir = config.web_greeter_config.app.theme_dir
@@ -114,7 +115,9 @@ def parse(argv):
     parser.add_argument("--list", action="store_true", help="List available themes")
     parser.add_argument("--theme", help="Set the theme to use", metavar="[name]")
     parser.add_argument("--no-sandbox", action="store_true", help=argparse.SUPPRESS)
-    parser.add_argument("--print-config", action="store_true", help="Print current config")
+    parser.add_argument(
+        "--print-config", action="store_true", help="Print current config"
+    )
 
     args: argparse.Namespace
 
@@ -131,6 +134,7 @@ def parse(argv):
     if args.print_config:
         import json
         from dataclasses import asdict
+
         c = json.dumps(asdict(config.web_greeter_config.config))
         print(c)
         sys.exit()

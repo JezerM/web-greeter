@@ -29,7 +29,8 @@ from logging import getLogger, DEBUG, Formatter, StreamHandler
 
 LOG_FORMAT = "".join(
     [
-        "%(asctime)s [ %(levelname)s ] %(filename)s %(", "lineno)d: %(message)s",
+        "%(asctime)s [ %(levelname)s ] %(filename)s %(",
+        "lineno)d: %(message)s",
     ]
 )
 formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
