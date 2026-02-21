@@ -78,7 +78,7 @@ class GreeterComm(QObject):
     @Slot(dict)
     def broadcast(self, data):
         self.property_changed.emit()
-        QTimer().singleShot(60, lambda: communication_emit(self.window_metadata, data))
+        QTimer.singleShot(60, lambda: communication_emit(self.window_metadata, data))
 
     @Slot()
     def requestMetadata(self):
