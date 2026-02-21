@@ -66,9 +66,10 @@ nuitka = custom_target(
     ],
 )
 
-meson.add_install_script(
-    'sh', '-c',
-    'cp -r "${MESON_BUILD_ROOT}/web-greeter.dist" "${DESTDIR}/opt/web-greeter"'
+install_subdir(
+    meson.build_root() + '/../web-greeter.dist',
+    install_dir: '/opt/web-greeter',
+    strip_directory: true
 )
 
 install_symlink(
