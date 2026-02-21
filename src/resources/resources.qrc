@@ -2,6 +2,8 @@
 <RCC version="1.0">
 	<qresource prefix="/_greeter">
 		<file>css/style.css</file>
-		<file>js/bundle.js</file>
+		<file>js/GreeterComm.js</file>
+		<file>js/ThemeUtils.js</file>
+		<file>js/bootstrap.js</file>
 	</qresource>
 </RCC>

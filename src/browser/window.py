@@ -197,7 +197,9 @@ class BrowserWindow(MainWindow):
         """Initialize bridge objects"""
         self.initialize_bridge_objects()
         self.load_script(":/qtwebchannel/qwebchannel.js", "QWebChannel API")
-        self.load_script(":/_greeter/js/bundle.js", "Web Greeter Bundle")
+        self.load_script(":/_greeter/js/GreeterComm.js", "GreeterComm")
+        self.load_script(":/_greeter/js/ThemeUtils.js", "ThemeUtils")
+        self.load_script(":/_greeter/js/bootstrap.js", "Bootstrap")
         self.win_page.loadStarted.disconnect(self.init_bridge)
 
     def _init_winpage(self):
