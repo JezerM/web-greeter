@@ -14,7 +14,7 @@ dependencies = [
 # [build-system]
 # requires = ["uv_build >= 0.9.5, <0.10.0"]
 # build-backend = "uv_build"
-#
+
 [tool.pyside6-project]
 files = ["./src/__main__.py", "./src/resources/resources.qrc"]
 
@@ -24,3 +24,11 @@ line-length = 88
 [tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
+
+[dependency-groups]
+dev = [
+    "nuitka>=4.0.1",
+    "ordered-set>=4.1.0",
+    "patchelf>=0.17.2.4",
+    "zstandard>=0.25.0",
+]
