@@ -94,14 +94,14 @@ class MainWindow(QMainWindow):
     def inc_brightness(cls):
         """Increase brightness"""
         if globales.greeter:
-            value = web_greeter_config.config.features.backlight.delta
+            value = web_greeter_config.config.features.backlight.value
             globales.LDMGreeter.brightness_increase(value)
 
     @classmethod
     def dec_brightness(cls):
         """Decrease brightness"""
         if globales.greeter:
-            value = web_greeter_config.config.features.backlight.delta
+            value = web_greeter_config.config.features.backlight.value
             globales.LDMGreeter.brightness_decrease(value)
 
     @classmethod

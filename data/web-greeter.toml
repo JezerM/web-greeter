@@ -41,12 +41,12 @@ enabled = false
 # Brightness control feature
 
 # enabled = Enable themes to control display backlight
-# delta = Amount to increase/decrease brightness per keypress (+/-)
+# value = Amount to increase/decrease brightness per keypress (+/-)
 # steps = Number of interpolation steps (0 = no transition, instant)
 #
 [features.backlight]
 enabled = false
-delta = 10
+value = 10
 steps = 0
 
 #

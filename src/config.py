@@ -60,7 +60,7 @@ class SimpleFeature:
 
 @dataclass
 class BacklightFeature(SimpleFeature):
-    delta: int = 10
+    value: int = 10
     steps: int = 0
 
 
