@@ -84,7 +84,7 @@ class AppConfig:
     frame: bool = False
     debug_mode: bool = False
     theme_dir: str = "/usr/share/web-greeter/themes/"
-    version: str = "3.5.3"
+    version: str = "4.0.0"
     api_version: str = "1.0.0"
 
 
