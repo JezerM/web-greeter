@@ -1,4 +1,4 @@
-python = find_program('uv', required: true)
+uv = find_program('uv', required: true)
 
 x11_dep = dependency('x11')
 xcb_dep = dependency('xcb')
@@ -16,7 +16,7 @@ screensaver = shared_library(
 qt_build = custom_target(
     'qt_build',
     output: 'qt_stamp',
-    command: ['uv', 'run', 'pyside6-project', 'build', '@SOURCE_ROOT@'],
+    command: [uv, 'run', 'pyside6-project', 'build', '@SOURCE_ROOT@'],
     build_by_default: true
 )
 
@@ -41,15 +41,18 @@ gi_modules = [
 nuitka = custom_target(
     'nuitka',
     input: '__main__.py',
-    output: 'greeter_stamp',
+    build_by_default: true,
+    output: 'web-greeter.dist',
     depends: [screensaver, qt_build],
     command: [
-        'uv', 'run', 'python', '-m', 'nuitka',
+        uv, 'run', 'nuitka',
         '--standalone',
         '--follow-imports',
+        '--quiet',
+        '--python-flag=-m',
         '--output-filename=' + meson.project_name(),
         '--output-folder-name=' + meson.project_name(),
-        '--output-dir=@BUILD_ROOT@/src',
+        '--output-dir=@BUILD_ROOT@',
         '--product-name=' + meson.project_name(),
         '--product-version=' + meson.project_version(),
         '--copyright=' + meson.project_license().get(0),
@@ -61,5 +64,15 @@ nuitka = custom_target(
         '--noinclude-data-files=**/*.typelib', # Do not include girepository typelibs
         '@INPUT@',
     ],
-    build_by_default: true
+)
+
+meson.add_install_script(
+    'sh', '-c',
+    'cp -r "${MESON_BUILD_ROOT}/web-greeter.dist" "${DESTDIR}/opt/web-greeter"'
+)
+
+install_symlink(
+  'web-greeter',
+  pointing_to: '/opt/web-greeter/web-greeter',
+  install_dir: '/usr/bin'
 )

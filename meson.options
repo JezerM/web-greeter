@@ -1,0 +1,4 @@
+option('with-no-sandbox',
+    type: 'boolean',
+    value: false,
+    description: 'Add --no-sandbox to web-greeter execution')
