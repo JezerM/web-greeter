@@ -33,6 +33,8 @@ runs:
           liblightdm-gobject-1-dev \
           libgirepository-2.0-dev \
           libcairo2-dev \
+          libsnappy1v5 \
+          libminizip1t64 \
           python3-gi \
           python3-cairo \
           python3-pip \
@@ -55,9 +57,15 @@ runs:
     -
       name: Prepare deb build (for Debian)
       shell: bash
-      if: ${{ inputs.target-distro == 'debian' }}
+      if: ${{ startsWith(inputs.target-distro, 'debian') }}
       run: |
         sed -i "s/liblightdm-gobject-1-dev/liblightdm-gobject-dev/g" build/install_root/DEBIAN/control
+    -
+      name: Prepare deb build (for arm64)
+      shell: bash
+      if: ${{ endsWith(inputs.target-distro, 'arm') }}
+      run: |
+        sed -i "s/adm64/arm64/g" build/install_root/DEBIAN/control
     -
       name: Build deb
       shell: bash
