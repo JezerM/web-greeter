@@ -74,6 +74,6 @@ install_subdir(
 
 install_symlink(
   'web-greeter',
-  pointing_to: join_paths(get_option('prefix'), 'opt/web-greeter/web-greeter'),
+  pointing_to: '/opt/web-greeter/web-greeter',
   install_dir: get_option('bindir')
 )
