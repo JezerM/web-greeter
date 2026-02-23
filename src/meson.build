@@ -67,13 +67,13 @@ nuitka = custom_target(
 )
 
 install_subdir(
-    meson.build_root() + '/../web-greeter.dist',
+    meson.build_root() + '/web-greeter.dist',
     install_dir: '/opt/web-greeter',
     strip_directory: true
 )
 
 install_symlink(
   'web-greeter',
-  pointing_to: '/opt/web-greeter/web-greeter',
-  install_dir: '/usr/bin'
+  pointing_to: join_paths(get_option('prefix'), 'opt/web-greeter/web-greeter'),
+  install_dir: get_option('bindir')
 )

@@ -21,41 +21,41 @@ custom_target(
 
 install_subdir(
   '../themes/themes/gruvbox',
-  install_dir: '/usr/share/web-greeter/themes',
+  install_dir: join_paths(get_option('datadir'), 'web-greeter', 'themes'),
   strip_directory: false
 )
 install_subdir(
   '../themes/themes/dracula',
-  install_dir: '/usr/share/web-greeter/themes',
+  install_dir: join_paths(get_option('datadir'), 'web-greeter', 'themes'),
   strip_directory: false
 )
 install_subdir(
   '../themes/themes/simple',
-  install_dir: '/usr/share/web-greeter/themes',
+  install_dir: join_paths(get_option('datadir'), 'web-greeter', 'themes'),
   strip_directory: false
 )
 install_subdir(
   '../themes/themes/_vendor',
-  install_dir: '/usr/share/web-greeter',
+  install_dir: join_paths(get_option('datadir'), 'web-greeter'),
   strip_directory: false
 )
 
 icon = 'com.github.jezerm.web-greeter.svg'
 install_data(
   icon,
-  install_dir: '/usr/share/icons/hicolor/scalable/apps',
+  install_dir: join_paths(get_option('datadir'), 'icons/hicolor/scalable/apps'),
 )
 
-install_data('web-greeter.toml', install_dir: '/etc/lightdm')
-install_data('web-xgreeter.desktop', install_dir: '/usr/share/xgreeters', rename: 'web-greeter.desktop')
+install_data('web-greeter.toml', install_dir: join_paths(get_option('sysconfdir'), 'lightdm'))
+install_data('web-xgreeter.desktop', install_dir: join_paths(get_option('datadir'), 'xgreeters'), rename: 'web-greeter.desktop')
 
 install_man('web-greeter.1')
 
-install_data('web-greeter-bash', install_dir: '/usr/share/bash-completion/completions', rename: 'web-greeter')
-install_data('web-greeter-zsh', install_dir: '/usr/share/zsh/site-functions', rename: '_web-greeter')
+install_data('web-greeter-bash', install_dir: join_paths(get_option('datadir'), 'bash-completion/completions'), rename: 'web-greeter')
+install_data('web-greeter-zsh', install_dir: join_paths(get_option('datadir'), 'zsh/site-functions'), rename: '_web-greeter')
 
-install_data('90-greeter-wrapper.conf', install_dir: '/etc/xdg/lightdm/lightdm.conf.d')
-install_data('web-greeter.appdata.xml', install_dir: '/usr/share/metainfo/')
+install_data('90-greeter-wrapper.conf', install_dir: join_paths(get_option('sysconfdir'), 'xdg/lightdm/lightdm.conf.d'))
+install_data('web-greeter.appdata.xml', install_dir: join_paths(get_option('datadir'), 'metainfo'))
 
 xgreeter_extra_args = ''
 if get_option('with-no-sandbox')
@@ -70,4 +70,4 @@ xgreeter_file = configure_file(
     }
 )
 
-install_data(xgreeter_file, install_dir: '/etc/lightdm', install_mode: 'rwxr-xr-x')
+install_data(xgreeter_file, install_dir: join_paths(get_option('sysconfdir'), 'lightdm'), install_mode: 'rwxr-xr-x')
