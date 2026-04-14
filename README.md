@@ -76,7 +76,7 @@ apt install ./web-greeter-VER-DISTRO.deb
 ```sh
 git clone --recursive https://github.com/JezerM/web-greeter.git
 cd web-greeter
-meson build -Dprefix=/usr/
+meson build -Dprefix=/usr -Dsysconfdir=/etc
 ninja -C build
 sudo ninja -C build install
 ```
