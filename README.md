@@ -55,13 +55,6 @@ apt install ./web-greeter-VER-DISTRO.deb
 ```
 
 ## Dependencies
-|                          |        arch          |          ubuntu         |       fedora        |        openSUSE       |          debian         |
-|--------------------------|----------------------|-------------------------|---------------------|-----------------------|-------------------------|
-|**liblightdm-gobject**    |lightdm               |liblightdm-gobject-1-dev |lightdm-gobject-devel|typelib-1_0-LightDM-1  |liblightdm-gobject-dev   |
-|**pygobject**             |python-gobject        |python3-gi               |pygobject3           |python3-gobject        |python3-gi               |
-|**gobject-introspection** |gobject-introspection |gobject-introspection    |gobject-introspection|gobject-introspection  |gobject-introspection    |
-|**libxcb**                |libxcb                |libxcb1-dev              |libxcb-devel         |libxcb                 |libxcb1-dev              |
-|**libx11**                |libx11                |libx11-dev               |libX11-devel         |libX11                 |libx11-dev               |
 
 ### Build dependencies
 
@@ -71,6 +64,48 @@ apt install ./web-greeter-VER-DISTRO.deb
 - Ninja
 - tsc (`npm i -g typescript`)
 - base-devel (build-essential)
+
+### Ubuntu/Debian
+
+```sh
+sudo apt install \
+    \
+    python3 \
+    python3-pip \
+    meson \
+    ninja-build \
+    node-typescript \
+    build-essential \
+    \
+    liblightdm-gobject-dev \
+    gobject-introspection \
+    libxcb1-dev \
+    libx11-dev \
+    libcairo2-dev \
+    libgirepository-2.0-dev
+```
+
+Install uv ([astral.sh][astral-uv-install]) according to its manual.
+
+### Arch Linux
+
+```
+sudo pacman -Sy \
+    \
+    meson \
+    ninja \
+    typescript \
+    base-devel \
+    \
+    lightdm \
+    python3 \
+    gobject-introspection \
+    libxcb \
+    libx11 \
+    cairo
+```
+
+You can also install web-greeter from the [AUR][web-greeter-aur].
 
 ## Download & Install
 ```sh
@@ -138,7 +173,7 @@ web-greeter --debug
 
 Check `web-greeter --help` for more commands.
 
-> ***Note:*** Do not use `lightdm --test-mode` as it is not supported.
+> ***Note:*** Do not use `lightdm --test-mode` as it is not supported in some desktop sessions.
 
 ## Troubleshooting
 
@@ -152,8 +187,16 @@ Before setting **web-greeter** as your LightDM Greeter, you should make sure it 
 LightDM does this when the greeter crashes, so it could mean **web-greeter** was not installed
 correctly, or some dependencies were updated/removed after a distro update.
 
+## Known issues
+
+### Fedora
+
+I was not able to reproduce the installation process in Fedora Workstation 43, due to some issues related to Nuitka, which resulted in segmentation faults when running web-greeter. As for now, I will not support web-greeter in Fedora; if anyone is able to successfully build and execute it, let me know!
+
 [nody-greeter]: https://github.com/JezerM/nody-greeter "Nody Greeter"
 [astral-uv]: https://docs.astral.sh/uv/ "Astral UV"
+[astral-uv-install]: https://docs.astral.sh/uv/getting-started/installation/ "Install Astral UV"
+[web-greeter-aur]: https://aur.archlinux.org/packages/web-greeter "Web Greeter AUR"
 [acpilight]: https://gitlab.com/wavexx/acpilight/ "acpilight"
 [acpilight_rules]: https://gitlab.com/wavexx/acpilight/-/blob/master/90-backlight.rules "udev rules"
 [bat_widget]: https://github.com/lcpz/lain/blob/master/widget/bat.lua "Battery widget"
