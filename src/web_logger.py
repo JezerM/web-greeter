@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 #
-#  bridge.py
+#  web_logger.py
 #
-#  Copyright © 2016-2017 Antergos
+#  Copyright © 2026 JezerM
 #
 #  This file is part of Web Greeter.
 #
@@ -25,27 +25,21 @@
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
+from logging import getLogger, DEBUG, Formatter, StreamHandler
 
-class Bridge:
-    """Bridge class"""
-    @staticmethod
-    def method(*args, **kwargs):
-        """Declare a method"""
-        return pyqtSlot(*args, **kwargs)
+LOG_FORMAT = "".join(
+    [
+        "%(asctime)s [ %(levelname)s ] %(filename)s %(",
+        "lineno)d: %(message)s",
+    ]
+)
+formatter = Formatter(fmt=LOG_FORMAT, datefmt="%Y-%m-%d %H:%M:%S")
 
-    @staticmethod
-    def prop(*args, **kwargs):
-        """Declare a property"""
-        return pyqtProperty(*args, **kwargs)
+stream_handler = StreamHandler()
+stream_handler.setLevel(DEBUG)
+stream_handler.setFormatter(formatter)
 
-    @staticmethod
-    def signal(*args, **kwargs):
-        """Declare a signal"""
-        return pyqtSignal(*args, **kwargs)
-
-class BridgeObject(QObject):
-    """BridgeObject class"""
-    def __init__(self, name: str):
-        super().__init__(parent=None)
-        self._name = name
+logger = getLogger("javascript")
+logger.propagate = False
+logger.setLevel(DEBUG)
+logger.addHandler(stream_handler)

@@ -6,6 +6,7 @@ from logger import logger
 
 class ScreenSaverData(ctypes.Structure):
     """Screensaver data"""
+
     _fields_ = [
         ("timeout", ctypes.c_int),
         ("interval", ctypes.c_int),
@@ -20,7 +21,9 @@ class ScreenSaverData(ctypes.Structure):
         allow_exp = getattr(self, "allow_exp")
         return f"{timeout} {interval} {prefer_blank} {allow_exp}"
 
+
 ScreenSaverDataPointer = ctypes.POINTER(ScreenSaverData)
+
 
 class ScreenSaver:
     """Screensaver wrapper"""
@@ -42,7 +45,7 @@ class ScreenSaver:
         contents: ScreenSaverData = data.contents
         return contents
 
-    def set_screensaver(self, timeout = -1, interval = -1, prefer_blank = -1, allow_exp = -1):
+    def set_screensaver(self, timeout=-1, interval=-1, prefer_blank=-1, allow_exp=-1):
         """Sets screensaver properties"""
         if self.saved:
             return
@@ -52,7 +55,7 @@ class ScreenSaver:
             ctypes.c_int(timeout),
             ctypes.c_int(interval),
             ctypes.c_int(prefer_blank),
-            ctypes.c_int(allow_exp)
+            ctypes.c_int(allow_exp),
         )
         logger.debug("Screensaver timeout set")
 
@@ -64,7 +67,7 @@ class ScreenSaver:
             ctypes.c_int(getattr(self.saved_data, "timeout")),
             ctypes.c_int(getattr(self.saved_data, "interval")),
             ctypes.c_int(getattr(self.saved_data, "prefer_blank")),
-            ctypes.c_int(getattr(self.saved_data, "allow_exp"))
+            ctypes.c_int(getattr(self.saved_data, "allow_exp")),
         )
         self.saved = False
         logger.debug("Screensaver reset")
@@ -72,5 +75,6 @@ class ScreenSaver:
     def force_screensaver(self, value: bool):
         """Force screensaver"""
         self.clib.force_screensaver(ctypes.c_bool(value))
+
 
 screensaver = ScreenSaver()

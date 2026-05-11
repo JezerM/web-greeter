@@ -1,4 +1,3 @@
-
 import subprocess
 from threading import Thread
 from typing import List, Callable, Any
@@ -6,6 +5,7 @@ from shutil import which
 from logger import logger
 
 Callback = Callable[[str], Any]
+
 
 class ACPIController:
     """ACPI controller"""
@@ -36,9 +36,9 @@ class ACPIController:
 
     def _listen(self):
         try:
-            with subprocess.Popen("acpi_listen",
-                                  stdout = subprocess.PIPE,
-                                  text = True) as process:
+            with subprocess.Popen(
+                "acpi_listen", stdout=subprocess.PIPE, text=True
+            ) as process:
                 if not process.stdout:
                     raise IOError("No stdout")
                 while True:
@@ -56,8 +56,9 @@ class ACPIController:
 
     def listen(self):
         """Listens to acpi_listen"""
-        self.thread = Thread(target = self._listen)
+        self.thread = Thread(target=self._listen)
         self.thread.daemon = True
         self.thread.start()
+
 
 ACPI = ACPIController()

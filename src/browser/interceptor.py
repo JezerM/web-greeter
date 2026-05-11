@@ -26,7 +26,11 @@
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
 
 # 3rd-Party Libs
-from PyQt5.QtWebEngineCore import QWebEngineUrlRequestInterceptor, QWebEngineUrlRequestInfo
+from PySide6.QtWebEngineCore import (
+    QWebEngineUrlRequestInterceptor,
+    QWebEngineUrlRequestInfo,
+)
+
 
 class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
     """Url request interceptor for web-greeter's protocol"""
@@ -39,23 +43,22 @@ class QtUrlRequestInterceptor(QWebEngineUrlRequestInterceptor):
         """Intercept request"""
         url = info.requestUrl().toString()
         not_webg_uri = self._url_scheme != info.requestUrl().scheme()
-        not_data_uri = 'data' != info.requestUrl().scheme()
+        not_data_uri = "data" != info.requestUrl().scheme()
         not_local_file = not info.requestUrl().isLocalFile()
 
         # print(url)
 
         not_devtools = (
-            not url.startswith('http://127.0.0.1') and
-            not url.startswith('ws://127.0.0.1')
-            and not url.startswith('devtools')
+            not url.startswith("http://127.0.0.1")
+            and not url.startswith("ws://127.0.0.1")
+            and not url.startswith("devtools")
         )
 
         block_request = (
-            not_devtools and not_data_uri and
-            not_webg_uri and not_local_file
+            not_devtools and not_data_uri and not_webg_uri and not_local_file
         )
 
-        info.block(block_request) # Block everything that is not allowed
+        info.block(block_request)  # Block everything that is not allowed
 
     def interceptRequest(self, info: QWebEngineUrlRequestInfo) -> None:
         # pylint: disable=invalid-name,missing-function-docstring

@@ -1,5 +1,16 @@
 # Change Log
 
+## [4.0.0](https://github.com/JezerM/web-greeter/tree/4.0.0) ~ 2026-02-22
+
+**Changes:**
+
+  * Migrate from Qt5 to Qt6
+  * Update build system with meson + ninja
+  * Use Nuitka to build a standalone app
+  * Improve codebase
+
+[Full changelog](https://github.com/JezerM/web-greeter/compare/4.0.0...3.5.3)
+
 ## [3.5.3](https://github.com/JezerM/web-greeter/tree/3.5.3) ~ 2024-03-30
 
 **Changes:**

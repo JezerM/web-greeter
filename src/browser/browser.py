@@ -40,43 +40,44 @@ from typing import (
 )
 
 # 3rd-Party Libs
-from PyQt5.QtCore import (
+from PySide6.QtCore import (
     QUrl,
     Qt,
     QRect,
 )
-from PyQt5.QtWebEngineCore import QWebEngineUrlScheme
-from PyQt5.QtWidgets import (
-    QApplication
-)
-from PyQt5.QtWebEngineWidgets import (
-    QWebEngineProfile
-)
-from PyQt5.QtGui import QScreen
+from PySide6.QtWebEngineCore import QWebEngineUrlScheme, QWebEngineProfile
+from PySide6.QtWidgets import QApplication
+from PySide6.QtGui import QScreen
 
 from browser.url_scheme import QtUrlSchemeHandler
 from browser.interceptor import QtUrlRequestInterceptor
 from bridge.GreeterComm import GreeterComm
-from browser.browser_interfaces import OverallBoundary, WindowMetadata, WindowPosition, WindowSize
+from browser.browser_interfaces import (
+    OverallBoundary,
+    WindowMetadata,
+    WindowPosition,
+    WindowSize,
+)
 from browser.window import BrowserWindow, WindowAbstract
 import globales
 
 from logger import logger
-from config import load_primary_theme_path, load_secondary_theme_path, load_theme_dir, web_greeter_config
+from config import (
+    load_primary_theme_path,
+    load_secondary_theme_path,
+    load_theme_dir,
+    web_greeter_config,
+)
 from bindings.screensaver import screensaver
 
 # pylint: disable-next=unused-import
 # Do not ever remove this import
-import resources
+import resources.rc_resources
 
 # Typing Helpers
 BridgeObjects = Tuple["BridgeObject"]
 Url = TypeVar("Url", str, QUrl)
 
-os.environ["QT_DEVICE_PIXEL_RATIO"] = "0"
-os.environ["QT_AUTO_SCREEN_SCALE_FACTOR"] = "1"
-os.environ["QT_SCREEN_SCALE_FACTORS"] = "1"
-os.environ["QT_SCALE_FACTOR"] = "1"
 
 def get_default_cursor():
     """Gets the default cursor theme"""
@@ -84,7 +85,7 @@ def get_default_cursor():
     cursor_theme = ""
     matched = None
     try:
-        with open(default_theme, "r", encoding = "utf-8") as file:
+        with open(default_theme, "r", encoding="utf-8") as file:
             matched = re.search(r"Inherits=.*", file.read())
     except IOError:
         return ""
@@ -94,8 +95,10 @@ def get_default_cursor():
     cursor_theme = matched.group().replace("Inherits=", "")
     return cursor_theme
 
+
 class Application:
     """Main application"""
+
     app: QApplication
     windows: List[WindowAbstract]
 
@@ -106,10 +109,10 @@ class Application:
 
         self.windows = self.create_windows()
 
-        timeout = web_greeter_config["config"]["greeter"]["screensaver_timeout"]
-        screensaver.set_screensaver(timeout or 300)
+        timeout = web_greeter_config.config.greeter.screensaver_timeout
+        # screensaver.set_screensaver(timeout or 300)
 
-        cursor_theme = web_greeter_config["config"]["greeter"]["icon_theme"]
+        cursor_theme = web_greeter_config.config.greeter.icon_theme
         if cursor_theme is not None:
             os.environ["XCURSOR_THEME"] = cursor_theme
         else:
@@ -123,24 +126,18 @@ class Application:
         primary_screen: QScreen = self.app.primaryScreen()
 
         overall_boundary: OverallBoundary = OverallBoundary(
-            minX = math.inf,
-            maxX = -math.inf,
-            minY = math.inf,
-            maxY = -math.inf
+            minX=math.inf, maxX=-math.inf, minY=math.inf, maxY=-math.inf
         )
 
         for screen in screens:
-            overall_boundary.minX = min(overall_boundary.minX,
-                                          screen.geometry().x())
-            overall_boundary.minY = min(overall_boundary.minY,
-                                          screen.geometry().y())
+            overall_boundary.minX = min(overall_boundary.minX, screen.geometry().x())
+            overall_boundary.minY = min(overall_boundary.minY, screen.geometry().y())
             overall_boundary.maxX = max(
-                overall_boundary.maxX,
-                screen.geometry().x() + screen.geometry().width()
+                overall_boundary.maxX, screen.geometry().x() + screen.geometry().width()
             )
             overall_boundary.maxY = max(
                 overall_boundary.maxY,
-                screen.geometry().y() + screen.geometry().height()
+                screen.geometry().y() + screen.geometry().height(),
             )
 
         windows: List[WindowAbstract] = []
@@ -153,32 +150,30 @@ class Application:
                     screen.geometry().x(),
                     screen.geometry().y(),
                     screen.geometry().width(),
-                    screen.geometry().height()
+                    screen.geometry().height(),
                 ),
-                web_greeter_config["config"]["greeter"]["debug_mode"]
+                web_greeter_config.config.greeter.debug_mode,
             )
 
             abstract = WindowAbstract(
-                is_primary = is_primary,
-                display = screen,
-                window = window,
-                meta = WindowMetadata(
-                    id = random.randrange(1, 20000),
-                    is_primary = is_primary,
-                    size = WindowSize(
-                        width = screen.geometry().width(),
-                        height = screen.geometry().height(),
+                is_primary=is_primary,
+                display=screen,
+                window=window,
+                meta=WindowMetadata(
+                    id=random.randrange(1, 20000),
+                    is_primary=is_primary,
+                    size=WindowSize(
+                        width=screen.geometry().width(),
+                        height=screen.geometry().height(),
                     ),
-                    position = WindowPosition(
-                        x = screen.geometry().x(),
-                        y = screen.geometry().y(),
+                    position=WindowPosition(
+                        x=screen.geometry().x(),
+                        y=screen.geometry().y(),
                     ),
-                    overallBoundary = overall_boundary
-                )
+                    overallBoundary=overall_boundary,
+                ),
             )
-            window.bridge_objects.append(
-                GreeterComm(abstract)
-            )
+            window.bridge_objects.append(GreeterComm(abstract))
             windows.append(abstract)
             window.closeEv.connect(self._remove_window)
 
@@ -192,36 +187,42 @@ class Application:
             if win.window != window:
                 wins.append(win)
             else:
-                comm: GreeterComm = win.window.bridge_objects[-1]
-                comm.destroy()
+                # comm: GreeterComm = win.window.bridge_objects[-1]
+                # comm.destroy()
+                pass
         self.windows = wins
 
     def set_protocol(self):
         """Set protocol"""
         url_scheme = "web-greeter"
         self.url_scheme = QWebEngineUrlScheme(url_scheme.encode())
-        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified)
-        self.url_scheme.setFlags(QWebEngineUrlScheme.SecureScheme or
-                                 QWebEngineUrlScheme.LocalScheme or
-                                 QWebEngineUrlScheme.LocalAccessAllowed)
+        self.url_scheme.setDefaultPort(QWebEngineUrlScheme.PortUnspecified.value)
+        self.url_scheme.setFlags(
+            QWebEngineUrlScheme.SecureScheme
+            or QWebEngineUrlScheme.LocalScheme
+            or QWebEngineUrlScheme.LocalAccessAllowed
+        )
         QWebEngineUrlScheme.registerScheme(self.url_scheme)
 
         self.profile = QWebEngineProfile.defaultProfile()
         self.interceptor = QtUrlRequestInterceptor(url_scheme)
         self.url_scheme_handler = QtUrlSchemeHandler()
 
-        self.profile.installUrlSchemeHandler(url_scheme.encode(), self.url_scheme_handler)
+        self.profile.installUrlSchemeHandler(
+            url_scheme.encode(), self.url_scheme_handler
+        )
 
-        if web_greeter_config["config"]["greeter"]["secure_mode"]:
+        if web_greeter_config.config.greeter.secure_mode:
             if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
                 self.profile.setUrlRequestInterceptor(self.interceptor)
-            else: # Older Qt5 versions
+            else:  # Older Qt5 versions
                 self.profile.setRequestInterceptor(self.interceptor)
 
     @classmethod
     def _before_exit(cls):
         """Runs before exit"""
-        screensaver.reset_screensaver()
+        pass
+        # screensaver.reset_screensaver()
 
     def show(self):
         """Show window"""
@@ -239,10 +240,6 @@ class Application:
             primary.window.raise_()
             logger.debug("Web Greeter started win: %s", str(primary.meta.id))
 
-    def run(self) -> int:
-        """Runs the application"""
-        logger.debug("Web Greeter started")
-        return self.app.exec_()
 
 class Browser(Application):
     # pylint: disable=too-many-instance-attributes
@@ -257,14 +254,17 @@ class Browser(Application):
         """Initialize browser"""
         logger.debug("Initializing Browser Window")
 
-        if web_greeter_config["config"]["greeter"]["debug_mode"]:
-            os.environ['QTWEBENGINE_REMOTE_DEBUGGING'] = '12345'
+        if web_greeter_config.config.greeter.debug_mode:
+            os.environ["QTWEBENGINE_REMOTE_DEBUGGING"] = "12345"
 
     def load_theme(self):
         """Load theme"""
         load_theme_dir()
         primary_html = load_primary_theme_path()
         secondary_html = load_secondary_theme_path()
+
+        logger.debug(f"Primary HTML: {primary_html}")
+        logger.debug(f"Secondary HTML: {secondary_html}")
 
         primary_url = QUrl(f"web-greeter://app/{primary_html}")
         secondary_url = QUrl(f"web-greeter://app/{secondary_html}")

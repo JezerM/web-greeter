@@ -34,43 +34,40 @@ import re
 import tempfile
 
 # 3rd-Party Libs
-from PyQt5.QtCore import QVariant
+from PySide6.QtCore import QObject, Slot
 
 # This application
-from browser.bridge import Bridge, BridgeObject
-
 from config import web_greeter_config
 from logger import logger
 
-class ThemeUtils(BridgeObject):
+
+class ThemeUtils(QObject):
     # pylint: disable=no-self-use,missing-function-docstring,too-many-public-methods,invalid-name
     """ThemeUtils bridge class, known as `theem_utils` in javascript"""
 
     def __init__(self, greeter_object, *args, **kwargs):
-        super().__init__(name='ThemeUtils', *args, **kwargs)
+        super().__init__(*args, **kwargs)
+        self._name = "ThemeUtils"
 
         self._config = web_greeter_config
         self._greeter = greeter_object
 
         self._allowed_dirs = (
-            os.path.dirname(
-                os.path.realpath(self._config["config"]["greeter"]["theme"])
-            ),
-            self._config["app"]["theme_dir"],
-            self._config["config"]["branding"]["background_images_dir"],
+            os.path.dirname(os.path.realpath(self._config.config.greeter.theme)),
+            self._config.app.theme_dir,
+            self._config.config.branding.background_images_dir,
             self._greeter.shared_data_directory,
             tempfile.gettempdir(),
         )
 
-    @Bridge.method(str, bool, result=QVariant)
+    @Slot(str, bool, result=list)
     def dirlist(self, dir_path, only_images=True):
-        if not dir_path or not isinstance(dir_path, str) or '/' == dir_path:
+        if not dir_path or not isinstance(dir_path, str) or "/" == dir_path:
             return []
 
         if dir_path.startswith("./"):
             dir_path = os.path.join(
-                os.path.dirname(self._config["config"]["greeter"]["theme"]),
-                dir_path
+                os.path.dirname(self._config.config.greeter.theme), dir_path
             )
 
         dir_path = os.path.realpath(os.path.normpath(dir_path))
@@ -86,7 +83,7 @@ class ThemeUtils(BridgeObject):
                 break
 
         if not allowed:
-            logger.error("Path \"%s\" is not allowed", dir_path)
+            logger.error('Path "%s" is not allowed', dir_path)
             return []
 
         result = []

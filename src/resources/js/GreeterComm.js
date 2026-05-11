@@ -78,6 +78,9 @@ class GreeterComm {
     }
 
     broadcast(data) {
+        if (typeof data !== 'object') {
+            throw new Error("Argument is not an object");
+        }
         GreeterComm._comm.broadcast(data);
     }
 

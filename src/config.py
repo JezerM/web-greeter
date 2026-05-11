@@ -24,75 +24,93 @@
 #
 #  You should have received a copy of the GNU General Public License
 #  along with Web Greeter; If not, see <http://www.gnu.org/licenses/>.
-# Standard lib
 
+# Standard lib
 import os
-from ruamel import yaml
+import tomllib
+import dataclasses
+from dataclasses import dataclass, fields, field
 
 from logger import logger
+from dataclass_binder import Binder
 
-PATH_TO_CONFIG = "/etc/lightdm/web-greeter.yml"
 
-yaml_loader = yaml.YAML(typ='safe', pure=True)
+@dataclass
+class ConfigBranding:
+    background_images_dir: str = "/usr/share/backgrounds/"
+    logo_image: str = ""
+    user_image: str = ""
 
-web_greeter_config = {
-    "config": {
-        "branding": {
-            "background_images_dir": "/usr/share/backgrounds",
-            "logo_image": "",
-            "user_image": "",
-        },
-        "greeter": {
-            "debug_mode": False,
-            "detect_theme_errors": True,
-            "screensaver_timeout": 300,
-            "secure_mode": True,
-            "theme": "gruvbox",
-            "icon_theme": None,
-            "time_language": None,
-        },
-        "layouts": ["us", "latam"],
-        "features": {
-            "battery": False,
-            "backlight": {
-                "enabled": False,
-                "value": 10,
-                "steps": 0,
-            }
-        }
-    },
-    "app": {
-        "fullscreen": True,
-        "frame": False,
-        "debug_mode": False,
-        "theme_dir": "/usr/share/web-greeter/themes/",
-        "version": {
-            "full": "3.5.3",
-            "major": 3,
-            "minor": 5,
-            "micro": 3,
-        },
-        "api_version": {
-            "full": "1.0.0",
-            "major:": 1,
-            "minor": 0,
-            "micro": 0,
-        },
-    },
-    "theme": {
-        "primary_html": "index.html",
-        "secondary_html": "",
-    }
-}
 
-path_to_config = os.getenv("WEB_GREETER_CONFIG") or "/etc/lightdm/web-greeter.yml"
+@dataclass
+class ConfigGreeter:
+    debug_mode: bool = False
+    detect_theme_errors: bool = True
+    screensaver_timeout: int = 300
+    secure_mode: bool = True
+    theme: str = "gruvbox"
+    icon_theme: str | None = None
+    time_language: str | None = None
 
+
+@dataclass
+class SimpleFeature:
+    enabled: bool = False
+
+
+@dataclass
+class BacklightFeature(SimpleFeature):
+    value: int = 10
+    steps: int = 0
+
+
+@dataclass
+class ConfigFeatures:
+    battery: SimpleFeature = field(default_factory=SimpleFeature)
+    backlight: BacklightFeature = field(default_factory=BacklightFeature)
+
+
+@dataclass
+class Config:
+    branding: ConfigBranding = field(default_factory=ConfigBranding)
+    greeter: ConfigGreeter = field(default_factory=ConfigGreeter)
+    features: ConfigFeatures = field(default_factory=ConfigFeatures)
+    layouts: list[str] = field(default_factory=list)
+
+
+@dataclass
+class AppConfig:
+    fullscreen: bool = True
+    frame: bool = False
+    debug_mode: bool = False
+    theme_dir: str = "/usr/share/web-greeter/themes/"
+    version: str = "4.0.0"
+    api_version: str = "1.0.0"
+
+
+@dataclass
+class ThemeConfig:
+    primary_html: str = "index.html"
+    secondary_html: str = ""
+
+
+@dataclass
+class WebGreeterConfig:
+    config: Config = field(default_factory=Config)
+    app: AppConfig = field(default_factory=AppConfig)
+    theme: ThemeConfig = field(default_factory=ThemeConfig)
+
+
+web_greeter_config = WebGreeterConfig()
+
+PATH_TO_CONFIG = os.getenv("WEB_GREETER_CONFIG") or "/etc/lightdm/web-greeter.toml"
 theme_dir = None
+
 
 def load_theme_dir() -> str:
     """Loads the theme directory"""
-    theme: str = web_greeter_config["config"]["greeter"]["theme"]
-    directory: str = web_greeter_config["app"]["theme_dir"]
+    theme: str = web_greeter_config.config.greeter.theme
+    directory: str = web_greeter_config.app.theme_dir
     def_theme = "gruvbox"
 
     theme_dir = os.path.join(directory, theme)
@@ -106,81 +124,89 @@ def load_theme_dir() -> str:
         theme_dir = os.path.dirname(theme_dir)
 
     if not os.path.exists(theme_dir):
-        logger.warn("\"%s\" theme does not exists. Using \"%s\" theme",
-                    theme, def_theme)
+        logger.warn('"%s" theme does not exists. Using "%s" theme', theme, def_theme)
         theme_dir = os.path.join(directory, def_theme)
 
     return theme_dir
 
+
 def load_primary_theme_path() -> str:
     """
     Loads the primary theme path
-    The provided theme with `--theme` flag is preferred over index.yml
+    The provided theme with `--theme` flag is preferred over index.toml
     """
     global theme_dir
     if not theme_dir:
         theme_dir = load_theme_dir()
-    abs_theme: str = web_greeter_config["config"]["greeter"]["theme"]
+    abs_theme: str = web_greeter_config.config.greeter.theme
     abs_theme_name = abs_theme.split("/").pop()
-    directory: str = web_greeter_config["app"]["theme_dir"]
+    directory: str = web_greeter_config.app.theme_dir
     def_theme = "gruvbox"
 
     if abs_theme_name.endswith(".html"):
-        web_greeter_config["theme"]["primary_html"] = abs_theme_name
+        web_greeter_config.theme.primary_html = abs_theme_name
 
-    primary = web_greeter_config["theme"]["primary_html"]
+    primary = web_greeter_config.theme.primary_html
     path_to_theme = os.path.join(theme_dir, primary)
 
     if not path_to_theme.endswith(".html"):
         path_to_theme = os.path.join(path_to_theme, "index.html")
 
     if not os.path.exists(path_to_theme):
-        logger.warn("\"%s\" theme does not exists. Using \"%s\" theme",
-                    path_to_theme, def_theme)
+        logger.warn(
+            '"%s" theme does not exists. Using "%s" theme', path_to_theme, def_theme
+        )
         path_to_theme = os.path.join(directory, def_theme, "index.html")
 
-    web_greeter_config["config"]["greeter"]["theme"] = path_to_theme
+    web_greeter_config.config.greeter.theme = path_to_theme
     return path_to_theme
+
 
 def load_secondary_theme_path() -> str:
     """
     Loads the secondary theme path
-    This can only be set with index.yml, either it defaults to primary html
+    This can only be set with index.toml, either it defaults to primary html
     """
     global theme_dir
     if not theme_dir:
         theme_dir = load_theme_dir()
-    primary = web_greeter_config["theme"]["primary_html"]
-    secondary = web_greeter_config["theme"]["secondary_html"]
+    primary = web_greeter_config.theme.primary_html
+    secondary = web_greeter_config.theme.secondary_html
     path_to_theme = os.path.join(theme_dir, secondary or primary)
 
     if not path_to_theme.endswith(".html"):
         path_to_theme = os.path.join(path_to_theme, "index.html")
 
     if not os.path.exists(path_to_theme):
-        logger.warn("\"%s\" does not exists. Using \"%s\" for secondary monitors",
-                    secondary, primary)
+        logger.warn(
+            '"%s" does not exists. Using "%s" for secondary monitors',
+            secondary,
+            primary,
+        )
         path_to_theme = load_primary_theme_path()
 
     return path_to_theme
 
+
 def load_theme_config():
-    """Loads the theme config inside "index.yml" """
+    """Loads the theme config inside "index.toml" """
     global theme_dir
     if not theme_dir:
         theme_dir = load_theme_dir()
-    path_to_theme_config = os.path.join(theme_dir, "index.yml")
+    path_to_theme_config = os.path.join(theme_dir, "index.toml")
 
     try:
         if not os.path.exists(path_to_theme_config):
-            raise Exception("index.yml file not found")
-        with open(path_to_theme_config, "r", encoding="utf-8") as file:
-            theme_config = yaml_loader.load(file)
-            web_greeter_config["theme"] = theme_config
+            raise Exception("index.toml file not found")
+
+        with open(path_to_theme_config, "rb") as file:
+            parsed = tomllib.load(file)
+            web_greeter_config.theme = Binder(ThemeConfig).bind(parsed)
 
     except Exception as err:
         logger.warn("Theme config was not loaded:\n\t%s", err)
         logger.debug("Using default theme config")
+
 
 def ensure_theme():
     """
@@ -190,8 +216,8 @@ def ensure_theme():
     global theme_dir
     if not theme_dir:
         theme_dir = load_theme_dir()
-    primary = web_greeter_config["theme"]["primary_html"]
-    directory = web_greeter_config["app"]["theme_dir"]
+    primary = web_greeter_config.theme.primary_html
+    directory = web_greeter_config.app.theme_dir
     def_theme = "gruvbox"
 
     primary_exists = os.path.exists(os.path.join(theme_dir, primary))
@@ -200,14 +226,15 @@ def ensure_theme():
         theme_dir = os.path.join(directory, def_theme)
         load_theme_config()
 
+
 def load_config():
     """Load web-greeter's config"""
     try:
         if not os.path.exists(PATH_TO_CONFIG):
             raise Exception("Config file not found")
-        with open(PATH_TO_CONFIG, "r", encoding="utf-8") as file:
-            web_greeter_config["config"] = yaml_loader.load(file)
+
+        with open(PATH_TO_CONFIG, "rb") as file:
+            parsed = tomllib.load(file)
+            web_greeter_config.config = Binder(Config).bind(parsed)
     except Exception as err:
         logger.error("Config was not loaded:\n\t%s", err)
-
-load_config()

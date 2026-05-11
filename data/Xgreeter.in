@@ -4,4 +4,4 @@
 
 xsetroot -cursor_name left_ptr
 
-exec $@
+exec "$@" @EXTRA_ARGS@

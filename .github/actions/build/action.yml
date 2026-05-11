@@ -1,49 +1,71 @@
 name: "Build web-greeter"
 description: "Builds web-greeter"
 inputs:
- target-distro:
-     required: true
-     description: "Target distro"
+  target-distro:
+    required: true
+    description: "Target distro"
 runs:
   using: "composite"
   steps:
     -
       name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v6
       with:
         submodules: recursive
+    -
+      name: "Set up Python"
+      uses: actions/setup-python@v6
+    -
+      name: Install uv
+      uses: astral-sh/setup-uv@v7
+      with:
+        # Install a specific version of uv.
+        version: "0.9.21"
+        enable-cache: true
     -
       name: Install dependencies
       shell: bash
       run: |
-          sudo apt update
-          sudo apt install \
-            liblightdm-gobject-1-dev \
-            libgirepository1.0-dev \
-            libqt5webengine5 \
-            pyqt5-dev-tools \
-            python3-gi \
-            python3-pyqt5 \
-            python3-ruamel.yaml \
-            python3-pyinotify \
-            python3-xlib \
-            python3-pip \
-            dpkg
+        sudo apt update
+        sudo apt install \
+          meson \
+          ninja-build \
+          liblightdm-gobject-1-dev \
+          libgirepository-2.0-dev \
+          libcairo2-dev \
+          libsnappy1v5 \
+          libminizip1t64 \
+          python3-gi \
+          python3-cairo \
+          python3-pip \
+          dpkg
+    -
+      name: Install the project
+      shell: bash
+      run: uv sync --locked --all-extras --dev
     -
       name: Build web-greeter
       shell: bash
-      run: make build
+      run: |
+        meson setup build -Dprefix=/usr/
+        DESTDIR=install_root/ ninja -C build install
     -
       name: Prepare deb build (common)
       shell: bash
       run: |
-        cp -r build/DEBIAN/ build/install_root/
+        cp -r data/DEBIAN/ build/install_root/
     -
       name: Prepare deb build (for Debian)
       shell: bash
-      if: ${{ inputs.target-distro == 'debian' }}
+      if: ${{ startsWith(inputs.target-distro, 'debian') }}
       run: |
         sed -i "s/liblightdm-gobject-1-dev/liblightdm-gobject-dev/g" build/install_root/DEBIAN/control
+    -
+      name: Prepare deb build (for arm64)
+      shell: bash
+      if: ${{ endsWith(inputs.target-distro, 'arm') }}
+      run: |
+        sed -i "s/adm64/arm64/g" build/install_root/DEBIAN/control
     -
       name: Build deb
       shell: bash
@@ -53,7 +75,7 @@ runs:
         dpkg --info "./web-greeter.deb"
     -
       name: 'Upload Artifact'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v6
       with:
         name: build-${{ inputs.target-distro }}
         path: ./build/web-greeter.deb

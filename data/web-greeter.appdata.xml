@@ -49,6 +49,17 @@
 	-->
 
 	<releases>
+		<release date="2026-02-22" version="4.0.0">
+			<description>
+				<p>Changes:</p>
+				<ul>
+					<li>Migrate from Qt5 to Qt6</li>
+					<li>Update build system with meson + ninja</li>
+					<li>Use Nuitka to build a standalone app</li>
+					<li>Improve codebase</li>
+				</ul>
+			</description>
+		</release>
 		<release date="2024-03-30" version="3.5.3">
 			<description>
 				<p>Changes:</p>
