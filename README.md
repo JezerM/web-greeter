@@ -3,7 +3,7 @@
     <img
       alt="Web Greeter Icon"
       width="125"
-      src="./dist/com.github.jezerm.web-greeter.svg"
+      src="./data/com.github.jezerm.web-greeter.svg"
     />
   </a>
   <h1><strong>Web Greeter</strong></h1>
@@ -89,7 +89,7 @@ Install uv ([astral.sh][astral-uv-install]) according to its manual.
 
 ### Arch Linux
 
-```
+```sh
 sudo pacman -Sy \
     \
     meson \
