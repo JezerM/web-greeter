@@ -34,7 +34,12 @@ from typing import (
 
 from PySide6.QtWidgets import QMainWindow, QDockWidget, QMenuBar
 from PySide6.QtWebEngineWidgets import QWebEngineView
-from PySide6.QtWebEngineCore import QWebEnginePage, QWebEngineScript, QWebEngineSettings
+from PySide6.QtWebEngineCore import (
+    QWebEnginePage,
+    QWebEngineProfile,
+    QWebEngineScript,
+    QWebEngineSettings,
+)
 from PySide6.QtCore import Qt, QUrl, QFile, QRect, Signal
 from PySide6.QtGui import QAction, QColor, QIcon, QScreen
 from PySide6.QtWebChannel import QWebChannel
@@ -124,7 +129,7 @@ class BrowserWindow(MainWindow):
 
     closeEv: Signal = Signal(MainWindow)
 
-    def __init__(self, geometry: QRect, dev_tools: bool):
+    def __init__(self, profile, geometry: QRect, dev_tools: bool):
         super().__init__()
 
         self.dev_tools_enabled = dev_tools
@@ -148,7 +153,9 @@ class BrowserWindow(MainWindow):
         self.setCursor(Qt.ArrowCursor)
 
         self.win_view = QWebEngineView(parent=self)
-        self.win_page = WebPage()
+
+        self.profile = profile
+        self.win_page = WebPage(self.profile)
 
         self.win_view.setPage(self.win_page)
         self.win_view.setObjectName("WebG View")
@@ -226,7 +233,7 @@ class BrowserWindow(MainWindow):
 
     def _init_devtools(self):
         self.dev_view = QWebEngineView(parent=self)
-        self.dev_page = WebPage()
+        self.dev_page = WebPage(self.profile)
 
         self.dev_view.setPage(self.dev_page)
         self.dev_view.setObjectName("Devtools view")
