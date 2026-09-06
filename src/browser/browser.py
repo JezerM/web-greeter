@@ -107,6 +107,22 @@ class Application:
 
         self.set_protocol()
 
+        self.profile = QWebEngineProfile("web-greeter")
+
+        self.interceptor = QtUrlRequestInterceptor("web-greeter")
+        self.url_scheme_handler = QtUrlSchemeHandler()
+
+        self.profile.installUrlSchemeHandler(
+            b"web-greeter",
+            self.url_scheme_handler
+        )
+
+        if web_greeter_config.config.greeter.secure_mode:
+            if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
+                self.profile.setUrlRequestInterceptor(self.interceptor)
+            else:
+                self.profile.setRequestInterceptor(self.interceptor)
+
         self.windows = self.create_windows()
 
         timeout = web_greeter_config.config.greeter.screensaver_timeout
@@ -146,6 +162,7 @@ class Application:
             is_primary: bool = screen == primary_screen
 
             window = BrowserWindow(
+                self.profile,
                 QRect(
                     screen.geometry().x(),
                     screen.geometry().y(),
@@ -203,20 +220,6 @@ class Application:
             or QWebEngineUrlScheme.LocalAccessAllowed
         )
         QWebEngineUrlScheme.registerScheme(self.url_scheme)
-
-        self.profile = QWebEngineProfile.defaultProfile()
-        self.interceptor = QtUrlRequestInterceptor(url_scheme)
-        self.url_scheme_handler = QtUrlSchemeHandler()
-
-        self.profile.installUrlSchemeHandler(
-            url_scheme.encode(), self.url_scheme_handler
-        )
-
-        if web_greeter_config.config.greeter.secure_mode:
-            if hasattr(QWebEngineProfile, "setUrlRequestInterceptor"):
-                self.profile.setUrlRequestInterceptor(self.interceptor)
-            else:  # Older Qt5 versions
-                self.profile.setRequestInterceptor(self.interceptor)
 
     @classmethod
     def _before_exit(cls):

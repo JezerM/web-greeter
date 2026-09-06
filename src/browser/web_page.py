@@ -42,6 +42,9 @@ from web_logger import logger
 class WebPage(QWebEnginePage):
     """web-greeter's webpage class"""
 
+    def __init__(self, profile):
+        super().__init__(profile)
+
     def javaScriptConsoleMessage(
         self,
         level: QWebEnginePage.JavaScriptConsoleMessageLevel,
