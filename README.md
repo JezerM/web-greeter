@@ -54,6 +54,39 @@ install with apt.
 apt install ./web-greeter-VER-DISTRO.deb
 ```
 
+### NixOS
+
+This repository is a flake, so no separate packaging repository is needed. The stock themes are a
+submodule, and Nix fetches submodules only when the URL asks for them, so `submodules=1` is required.
+
+```sh
+nix build 'git+https://github.com/JezerM/web-greeter?submodules=1'
+```
+
+In a NixOS configuration, add the flake as an input and point LightDM at it. The package exposes
+`passthru.xgreeters`, a directory holding only the greeter's desktop file, because LightDM's
+`greeters-directory` is a plain directory rather than a package prefix.
+
+```nix
+inputs.web-greeter.url = "git+https://github.com/JezerM/web-greeter?submodules=1";
+```
+
+```nix
+services.xserver.displayManager.lightdm.greeter = {
+    package = inputs.web-greeter.packages.${pkgs.stdenv.hostPlatform.system}.web-greeter.xgreeters;
+    name = "web-greeter";
+};
+```
+
+web-greeter reads `/etc/lightdm/web-greeter.toml` unconditionally, so the configuration goes there.
+
+```nix
+environment.etc."lightdm/web-greeter.toml".text = ''
+    [greeter]
+    theme = "gruvbox"
+'';
+```
+
 ## Dependencies
 
 ### Build dependencies

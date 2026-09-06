@@ -62,3 +62,7 @@ package-lock.json
 
 # vscode
 .vscode/
+
+### Nix
+result
+result-*
